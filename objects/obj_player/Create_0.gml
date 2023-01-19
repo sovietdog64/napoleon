@@ -7,6 +7,8 @@ inDialogue = false;//bool stating whether the player is talking with an NPC.
 invOpen = false;
 clickedItem = -1;
 
+hurtCooldown = 0;
+
 followingSequences = array_create(0); //List of animations that follow the player.
 
 lungeForward = false;

@@ -1,7 +1,7 @@
 if(instance_exists(obj_game) && obj_game.gamePaused || obj_player.inDialogue) return;
 var moveLeft = obj_player.x < x;
 var moveRight = obj_player.x > x;
-var jump = y-obj_player.y > 32;
+var vertMovement = sign(y-obj_player.y);
 var distToPlayer = distanceBetweenPoints(x, y, obj_player.x, obj_player.y);
 //Horizontal movement
 {
@@ -16,16 +16,20 @@ var distToPlayer = distanceBetweenPoints(x, y, obj_player.x, obj_player.y);
 		if(isHurt) {
 			//Cause knockback effect when hit
 			hsp *= 0.9;
+			vsp *= 0.9
 			if(abs(hsp) < 1) {
 				isHurt = false;
 				hsp = 0;
+				vsp = 0;
 			}
 		}
 		else if(lungeForward) {
 			hsp *= 0.9;
+			vsp *= 0.9;
 			if(abs(hsp) < 1) {
 				lungeForward = false;
 				hsp = 0;
+				vsp = 0;
 			}
 		}
 		else {
@@ -40,23 +44,7 @@ var distToPlayer = distanceBetweenPoints(x, y, obj_player.x, obj_player.y);
 
 //Vertical movement
 {
-	if(!wallCrawling) vsp += grv;
-}
-
-if(place_free(x+hsp, y+vsp) && !isHurt && !lungeForward) {
-	var temp = 0;
-	var willFall = true;
-	var tempY = y+vsp;
-	while (temp < room_height) {
-		if(!place_free(x+hsp, tempY+temp)) {
-			willFall = false;
-			break;
-		}
-		temp += 5;
-	}
-	if(willFall) {
-		hsp = 0;
-	}
+	vsp = hspWalk * vertMovement;
 }
 
 {//Collision

@@ -99,8 +99,8 @@ if(isItem(clickedItem)) {
 //Drawing hotbar/items in use when outside of inventory
 if(!invOpen && !global.dead) {
 	for(var i = 0; i < array_length(global.hotbarItems); i++) {
-		var xx = (width*0.05)+128*i;
-		var yy = height*0.7;
+		var xx = (width*0.7)+128*i;
+		var yy = height*0.05;
 		
 		var spriteToDraw = -1;
 		var itemAmount = 0;
@@ -113,7 +113,7 @@ if(!invOpen && !global.dead) {
 		draw_set_color(c_white)
 		draw_set_font(fnt_npc);
 		draw_set_halign(fa_left);
-		draw_text_transformed(xx, yy+128, "Key " + string(i+1), 1, 1, 0);
+		draw_text_transformed(xx, yy+65, "Key " + string(i+1), 1, 1, 0);
 		//If a hotkey for an item in use is pressed, equip it.
 		if(keyboard_check_pressed(ord(string(i+1)))) {
 			global.equippedItem = i;

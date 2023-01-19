@@ -2,6 +2,7 @@ if(instance_exists(obj_game) && obj_game.gamePaused || obj_player.invOpen) retur
 if(!isItem(item))
 	return;
 hsp *= 0.95;
+vsp *= 0.95;
 
 //Set sprite to item sprite
 sprite_index = item.itemSpr;

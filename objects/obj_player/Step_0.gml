@@ -14,7 +14,7 @@ if(inDialogue) {//If in dialogue, do gravity. nothing else
 	y += vsp;
 	return;
 }
-
+if(hurtCooldown > 0)hurtCooldown--;
 if(global.dead)  
 	return;
 if(instance_exists(obj_game) && obj_game.gamePaused) 
