@@ -27,6 +27,7 @@ if(ds_list_size(enemies) > 0) {
 		inst.hsp = -15 * sign(inst.sprite_width);
 		inst.vsp = -5;
 		inst.hp--;
+		inst.knockBack(x, y, knockbackSpeed);
 		var hasHitInstance = true;
 	}
 }

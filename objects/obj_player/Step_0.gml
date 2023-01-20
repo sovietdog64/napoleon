@@ -1,19 +1,6 @@
 var heldItem = global.hotbarItems[global.equippedItem];
-if(inDialogue) {//If in dialogue, do gravity. nothing else
-	vsp += grv;
-	if(!place_free(x, y+vsp)) {
-		y = round(y)
-		while(place_free(x, y)) {
-			y += sign(vsp);
-		}
-		while(!place_free(x, y)) {
-			y -= sign(vsp);
-		}
-		vsp = 0;
-	}
-	y += vsp;
+if(inDialogue) 
 	return;
-}
 if(hurtCooldown > 0)hurtCooldown--;
 if(global.dead)  
 	return;
@@ -58,7 +45,6 @@ var horizDirection = moveRight-moveLeft;
 var up = keyboard_check(ord("W"));
 var down = keyboard_check(ord("S"));
 var vertDirection = down-up;
-var jump = keyboard_check(vk_space);
 global.level = 5;
 global.levelUpThreshold = 480;
 //Movement
@@ -67,16 +53,20 @@ global.levelUpThreshold = 480;
 		//Checks direction  & speed of horizontal movement.
 		if(isHurt) {
 			hsp *= 0.8;
-			if(abs(hsp) < 1) {
+			vsp *= 0.8;
+			if(abs(hsp) < 1 && abs(vsp) < 1) {
 				isHurt = false;
 				hsp = 0;
+				vsp = 0;
 			}
 		} 
 		else if(lungeForward) {
-			hsp *= 0.8
-			if(abs(hsp) < 1) {
+			hsp *= 0.8;
+			vsp *= 0.8;
+			if(abs(hsp) < 1 && abs(vsp) < 1) {
 				lungeForward = false;
 				hsp = 0;
+				vsp = 0;
 			}
 		}
 		else {
@@ -87,68 +77,75 @@ global.levelUpThreshold = 480;
 	}
 		
 	{//Vertical movement
-		vsp = vertDirection * hspWalk;
+		if(!isHurt && !lungeForward)
+			vsp = vertDirection * hspWalk;
 	}
 }
 
 {//Item usage/animations
-	//Using items on left press
 	leftAttackCooldown--;
-	if(mouse_check_button_pressed(mb_left) && leftAttackCooldown <= 0) {
-		if(is_struct(heldItem)) {
-			if(heldItem.itemSpr == spr_boxingGloves) {
-				leftAttackCooldown = room_speed*0.21;
-				var horizontalDir = sprite_width/2;
-				var verticalDir = (down-up)*sprite_height/2;
-				if(verticalDir || verticalDir < 0) horizontalDir = 0;
-				horizontalDir *= 2;
-				sprite_index = choose(spr_playerPunchLeft, spr_playerPunchRight);
-				var inst = instance_create_layer(x+horizontalDir, y+verticalDir, "Instances", obj_damageHitbox);
-				inst.enemyHit = false;
-				inst.instToFollow = instance_nearest(x, y, obj_player);
-				inst.followOffsetX = horizontalDir;
-				inst.followOffsetY = verticalDir;
-				inst.damage = 1;
-				inst.lifeSpan = 12;
-		
-				if((place_free(x-10, y) || place_free(x+10, y)) && horizontalDir != 0) {
+	if(isItem(heldItem)) {
+		//Using items on left press
+		if(mouse_check_button_pressed(mb_left) && leftAttackCooldown <= 0) {
+			if(is_struct(heldItem)) {
+				if(heldItem.itemSpr == spr_boxingGloves) {
+					leftAttackCooldown = room_speed*0.21;
+					var dir = (point_direction(x, y, mouse_x, mouse_y));
+					//Calculate the direction of the punch hitbox
+					var xx = x + (50*dcos(dir));
+					var yy = y + (-50*dsin(dir));
+				
+					sprite_index = choose(spr_playerPunchLeft, spr_playerPunchRight);
+					//Create dmg hitbox (hitboxes are more resource efficient compared to individial enemy collision checks)
+					var inst = instance_create_layer(x+xx, y+yy, "Instances", obj_damageHitbox);
+					inst.enemyHit = false;
+					inst.instToFollow = instance_nearest(x, y, obj_player);
+					inst.followOffsetX = xx-x;
+					inst.followOffsetY = yy-y;
+					inst.damage = 1;
+					inst.lifeSpan = 12;
+					inst.sprite_index = spr_npc;
+				
 					lungeForward = true;
-					hsp = sign(sprite_width) * hspWalk;
+					hsp = (xx-x)/5;
+					vsp = (yy-y)/5;
+					if(hsp < 0) {image_xscale = -1; direction = 180;}
+					else if(hsp> 0) {image_xscale = 1; direction = 0;}
 				}
 			}
 		}
-	}
 
-	//Using items when holding down left
-	if(mouse_check_button(mb_left) && leftAttackCooldown <= 0) {
-		if(isFirearm(heldItem)) {
-			leftAttackCooldown = heldItem.cooldown;
-			var firedBullet = fireBullet(x, y, mouse_x, mouse_y, heldItem);
-			//If mag empty, try reloading
-			if(!firedBullet && mouse_check_button_pressed(mb_left)) {
-				var hasReloaded = reload(heldItem);
-				//If reloaded, do reload animation
-				if(hasReloaded) {
-					array_push(followingSequences, placeSequenceAnimation(x, y, heldItem.reloadSeq));
-					leftAttackCooldown = heldItem.reloadDuration;
+		//Using items when holding down left
+		if(mouse_check_button(mb_left) && leftAttackCooldown <= 0) {
+			if(isFirearm(heldItem)) {
+				leftAttackCooldown = heldItem.cooldown;
+				var firedBullet = fireBullet(x, y, mouse_x, mouse_y, heldItem);
+				//If mag empty, try reloading
+				if(!firedBullet && mouse_check_button_pressed(mb_left)) {
+					var hasReloaded = reload(heldItem);
+					//If reloaded, do reload animation
+					if(hasReloaded) {
+						array_push(followingSequences, placeSequenceAnimation(x, y, heldItem.reloadSeq));
+						leftAttackCooldown = heldItem.reloadDuration;
+					}
 				}
 			}
 		}
-	}
 
-	//Make specific sequences follow player
-	for(var i=0; i<array_length(followingSequences); i++) {
-		var seq = followingSequences[i];
-		if(!layer_sequence_exists("Animations", seq))
-			continue;
-		if(layer_sequence_is_finished(followingSequences[i]) || global.dead) {
-			layer_sequence_destroy(followingSequences[i]);
-			array_delete(followingSequences, i, 1);
-			continue;
+		//Make specific sequences follow player
+		for(var i=0; i<array_length(followingSequences); i++) {
+			var seq = followingSequences[i];
+			if(!layer_sequence_exists("Animations", seq))
+				continue;
+			if(layer_sequence_is_finished(followingSequences[i]) || global.dead) {
+				layer_sequence_destroy(followingSequences[i]);
+				array_delete(followingSequences, i, 1);
+				continue;
+			}
+			layer_sequence_xscale(seq, image_xscale);
+			layer_sequence_x(seq, x);
+			layer_sequence_y(seq, y);
 		}
-		layer_sequence_xscale(seq, image_xscale);
-		layer_sequence_x(seq, x);
-		layer_sequence_y(seq, y);
 	}
 }
 
@@ -181,6 +178,23 @@ global.levelUpThreshold = 480;
 		y += vsp;
 	}
 }
+	
+{//Enemy collision
+		if(hurtCooldown > 0) 
+			hurtCooldown--;
+		if(hurtCooldown <= 0 && !isHurt) {
+			var enem = instance_place(x, y, obj_enemy);
+			if(enem != noone) {
+				global.hp--;
+				isHurt = true;
+				hurtCooldown = room_speed;
+				var dir = point_direction(x, y, enem.x, enem.y)-180;
+				hsp = (25*dcos(dir));
+				vsp = (-25*dsin(dir));
+			}
+		}
+	}
+	
 //Prevent player from going off-screen
 x = clamp(x, 0, room_width);
 
@@ -200,13 +214,6 @@ if(instance_exists(obj_camera)) {
 		obj_camera.targX = x;
 		obj_camera.targY = y;
 	}
-}
-
-//Gets rid of one health if fell into void
-if(y >= room_height) {
-	global.hp--;
-	x = safeX;
-	y = safeY;
 }
 
 //Death of player. Makes player invisible and 1s delay to respawn

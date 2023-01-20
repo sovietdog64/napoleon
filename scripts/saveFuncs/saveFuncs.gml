@@ -38,6 +38,8 @@ function saveRoom() {
 	for(var i=0; i<instance_number(obj_item); i++) {
 		var itemInst = instance_find(obj_item, i);
 		var tempStruct = {};
+		if(!isItem(itemInst.item))
+			continue;
 		var instItemStruct = copyStruct(itemInst.item);
 		{//Loop through all item struct vars and add to temp struct (doing this because some variables in item structs include assets of varying types)
 		    var key, value;
@@ -59,7 +61,6 @@ function saveRoom() {
 		{
 			x : itemInst.x,
 			y : itemInst.y,
-			grv : itemInst.grv,
 			hsp : itemInst.hsp,
 			vsp : itemInst.vsp,
 			pickedUp : itemInst.pickedUp,
@@ -118,7 +119,6 @@ function saveRoom() {
 				y : enemy.y,
 				hp : enemy.hp,
 				maxHp : enemy.maxHp,
-				grv : enemy.grv,
 				hsp : enemy.hsp,
 				vsp : enemy.vsp,
 				hspWalk : enemy.hspWalk,
@@ -139,6 +139,8 @@ function saveRoom() {
 		
 		for(var j=0; j<array_length(chest.items); j++) {//Loop through all items and stores them in an array
 			var tempStruct = {};
+			if(!isItem(chest.items[j]))
+				continue;
 			var itemStruct = copyStruct(chest.items[j]);
 			{//Loop through all item struct vars and add to temp struct (doing this because some variables in item structs include assets of varying types)
 			    var key, value;
@@ -232,7 +234,6 @@ function loadRoom() {
 		var inst = instance_create_layer(savedItem.x, savedItem.y, "Instances", obj_item);
 		inst.x = savedItem.x;
 		inst.y = savedItem.y;
-		inst.grv = savedItem.grv;
 		inst.hsp = savedItem.hsp;
 		inst.vsp = savedItem.vsp;
 		inst.pickedUp = savedItem.pickedUp;
@@ -326,17 +327,16 @@ function loadRoom() {
 		for(var j=0; j<array_length(roomStruct.enemies); j++) {
 			var savedEnemy = roomStruct.enemies[i][j];
 			var inst = instance_create_layer(savedEnemy.x, savedEnemy.y, "Enemies", global.allSaveableEnemyObjects[i], savedEnemy);
-			//inst.x = savedEnemy.x;
-			//inst.y = savedEnemy.y;
-			//inst.hp = savedEnemy.hp;
-			//inst.maxHp = savedEnemy.maxHp;
-			//inst.grv = savedEnemy.grv;
-			//inst.hsp = savedEnemy.hsp;
-			//inst.vsp = savedEnemy.vsp;
-			//inst.hspWalk = savedEnemy.hspWalk;
-			//inst.vspJump = savedEnemy.vspJump;
-			//inst.drops = savedEnemy.drops;
-			//inst.xpDrop = xpDrop;
+			inst.x = savedEnemy.x;
+			inst.y = savedEnemy.y;
+			inst.hp = savedEnemy.hp;
+			inst.maxHp = savedEnemy.maxHp;
+			inst.hsp = savedEnemy.hsp;
+			inst.vsp = savedEnemy.vsp;
+			inst.hspWalk = savedEnemy.hspWalk;
+			inst.vspJump = savedEnemy.vspJump;
+			inst.drops = savedEnemy.drops;
+			inst.xpDrop = xpDrop;
 		}
 	}
 	

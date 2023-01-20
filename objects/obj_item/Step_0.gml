@@ -61,6 +61,3 @@ if(canBePickedUp && !pickedUp && place_meeting(x, y, obj_player)) {
 		break;
 	}
 }
-
-if(y > room_height)
-	instance_destroy();

@@ -7,9 +7,8 @@ var yOrigin = y-7;
 var heldItem = global.hotbarItems[global.equippedItem];
 if(!isItem(heldItem)) {
 	draw_self();
-	return;
 }
-if(!global.dead && isFirearm(heldItem) && leftAttackCooldown <= 0) {
+else if(!global.dead && isFirearm(heldItem) && leftAttackCooldown <= 0) {
 	sprite_index = spr_playerNoHands;
 	var mouseDir = point_direction(xOrigin, yOrigin, mouse_x, mouse_y);
 	var dist = 42;
