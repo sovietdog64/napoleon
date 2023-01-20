@@ -12,10 +12,6 @@ global.spawnX = 0;
 global.spawnY = 0;
 global.spawnRoom = rm_entrance;
 global.setPosToSpawnPos = false;
-//Variable that prevents loadRoom() from setting the player to an incorect position when respawning
-global.enteredRoom = false;
-
-roomPrev = 0;
 
 //Array containing quest structs.
 global.activeQuests = array_create(0);
@@ -26,6 +22,7 @@ global.npcActions =
 {
 	options : {
 		gunsmith : function (npcInst) {
+						//Musket purchase
 						if(npcInst.optionClicked == 0) {
 							var result = drawPopup(camWidth()/2, camHeight()/2, "Purchase", spr_musket, "Musket for 100 gold?", "yes/no");
 							if(result != undefined) {
@@ -55,6 +52,7 @@ global.npcActions =
 								}
 							}
 						}
+						//Musket ball purchase
 						if(npcInst.optionClicked == 1) {
 							var result = drawPopup(camWidth()/2, camHeight()/2, "Purchase", spr_musketBall, "Musket Ball 10x for 100 gold?", "yes/no");
 							if(result != undefined) {
@@ -79,13 +77,7 @@ global.npcActions =
 									npcInst.resetNPC();
 								}
 							}
-							//npcInst.optionReactionIndex = npcInst.optionClicked;
-							//npcInst.currentReactionMessages = string_split(npcInst.optionReactionList[npcInst.optionReactionIndex], "%%")
-							//Add extra actions here if necessary
 						}
-						//Add if statement for each option
-						
-						//if(npcInst.optionClicked != undefined) npcInst.canShowOptions = false;
 					},
 		
 	},

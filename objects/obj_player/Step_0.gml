@@ -87,31 +87,29 @@ global.levelUpThreshold = 480;
 	if(isItem(heldItem)) {
 		//Using items on left press
 		if(mouse_check_button_pressed(mb_left) && leftAttackCooldown <= 0) {
-			if(is_struct(heldItem)) {
-				if(heldItem.itemSpr == spr_boxingGloves) {
-					leftAttackCooldown = room_speed*0.21;
-					var dir = (point_direction(x, y, mouse_x, mouse_y));
-					//Calculate the direction of the punch hitbox
-					var xx = x + (50*dcos(dir));
-					var yy = y + (-50*dsin(dir));
+			if(heldItem.itemSpr == spr_boxingGloves) {
+				leftAttackCooldown = room_speed*0.21;
+				var dir = (point_direction(x, y, mouse_x, mouse_y));
+				//Calculate the direction of the punch hitbox
+				var xx = x + (50*dcos(dir));
+				var yy = y + (-50*dsin(dir));
 				
-					sprite_index = choose(spr_playerPunchLeft, spr_playerPunchRight);
-					//Create dmg hitbox (hitboxes are more resource efficient compared to individial enemy collision checks)
-					var inst = instance_create_layer(x+xx, y+yy, "Instances", obj_damageHitbox);
-					inst.enemyHit = false;
-					inst.instToFollow = instance_nearest(x, y, obj_player);
-					inst.followOffsetX = xx-x;
-					inst.followOffsetY = yy-y;
-					inst.damage = 1;
-					inst.lifeSpan = 12;
-					inst.sprite_index = spr_npc;
+				sprite_index = choose(spr_playerPunchLeft, spr_playerPunchRight);
+				//Create dmg hitbox (hitboxes are more resource efficient compared to individial enemy collision checks)
+				var inst = instance_create_layer(x+xx, y+yy, "Instances", obj_damageHitbox);
+				inst.enemyHit = false;
+				inst.instToFollow = instance_nearest(x, y, obj_player);
+				inst.followOffsetX = xx-x;
+				inst.followOffsetY = yy-y;
+				inst.damage = 1;
+				inst.lifeSpan = 12;
+				inst.sprite_index = spr_npc;
 				
-					lungeForward = true;
-					hsp = (xx-x)/5;
-					vsp = (yy-y)/5;
-					if(hsp < 0) {image_xscale = -1; direction = 180;}
-					else if(hsp> 0) {image_xscale = 1; direction = 0;}
-				}
+				lungeForward = true;
+				hsp = (xx-x)/5;
+				vsp = (yy-y)/5;
+				if(hsp < 0) {image_xscale = -1; direction = 180;}
+				else if(hsp> 0) {image_xscale = 1; direction = 0;}
 			}
 		}
 
@@ -137,12 +135,11 @@ global.levelUpThreshold = 480;
 			var seq = followingSequences[i];
 			if(!layer_sequence_exists("Animations", seq))
 				continue;
-			if(layer_sequence_is_finished(followingSequences[i]) || global.dead) {
+			if(layer_sequence_is_finished(followingSequences[i])) {
 				layer_sequence_destroy(followingSequences[i]);
 				array_delete(followingSequences, i, 1);
 				continue;
 			}
-			layer_sequence_xscale(seq, image_xscale);
 			layer_sequence_x(seq, x);
 			layer_sequence_y(seq, y);
 		}
@@ -195,8 +192,9 @@ global.levelUpThreshold = 480;
 		}
 	}
 	
-//Prevent player from going off-screen
+//Prevent from going off-screen
 x = clamp(x, 0, room_width);
+y = clamp(y, 0, room_height);
 
 //Move camera towards mouse when holding firearm
 //If not firearm, center cam on player

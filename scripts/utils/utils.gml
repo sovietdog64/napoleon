@@ -56,7 +56,12 @@ function sequenceGetName(sequenceId) {
 	if(layer_exists("Animations") &&  layer_sequence_exists("Animations", sequenceId)) {
 		return layer_sequence_get_sequence(sequenceId).name;
 	}
-	return sequence_get(sequenceId).name;
+	try {
+		return sequence_get(sequenceId).name;
+	}
+	catch(err) {
+		return -1;
+	}
 }
 
 {//Fire arm

@@ -120,6 +120,7 @@ if(!invOpen && !global.dead) {
 		}
 	}
 }
+
 //Drawing health
 for(var i = 0; i < global.hp; i++) {
 	draw_sprite(spr_health, 0, (32*i)-5, 70);

@@ -80,6 +80,10 @@ var distToPlayer = distanceBetweenPoints(x, y, obj_player.x, obj_player.y);
 	}
 }
 
+//Prevent from going off-screen
+x = clamp(x, 0, room_width);
+y = clamp(y, 0, room_height);
+
 //Spider death
 if(hp <= 0) {
 	instance_destroy();

@@ -1,12 +1,12 @@
 {
   "resourceType": "GMObject",
   "resourceVersion": "1.0",
-  "name": "obj_solid",
+  "name": "obj_triggerPosition",
   "spriteId": {
-    "name": "spr_solid",
-    "path": "sprites/spr_solid/spr_solid.yy",
+    "name": "spr_triggerPosition_1",
+    "path": "sprites/spr_triggerPosition_1/spr_triggerPosition_1.yy",
   },
-  "solid": true,
+  "solid": false,
   "visible": true,
   "managed": true,
   "spriteMaskId": null,
@@ -24,11 +24,14 @@
   "physicsStartAwake": true,
   "physicsKinematic": false,
   "physicsShapePoints": [],
-  "eventList": [],
+  "eventList": [
+    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","isDnD":false,"eventNum":0,"eventType":3,"collisionObjectId":null,},
+    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","isDnD":false,"eventNum":0,"eventType":0,"collisionObjectId":null,},
+  ],
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Solids",
-    "path": "folders/Objects/Solids.yy",
+    "name": "Miscellaneous",
+    "path": "folders/Objects/Miscellaneous.yy",
   },
 }

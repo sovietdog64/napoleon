@@ -45,15 +45,20 @@ function drawNPCMessage(npcName, msg, boxColor, txtColor) {
 ///@param index The index of the slot.
 ///@param isHotbarSlot State if the slot should be rendered as a hotbar slot (Places border around used hotbar slots).
 function drawInvSlot(item, xx, yy, index, isHotbarSlot, amount) {
-	if(index == global.equippedItem && isHotbarSlot) draw_sprite(spr_equippedSlot, 0, xx,yy);
-		else draw_sprite(spr_invSlot, 0, xx, yy);
+	var scl = 1;
+	if(!obj_player.invOpen)
+		scl = 0.5;
+	if(index == global.equippedItem && isHotbarSlot) 
+		draw_sprite_ext(spr_equippedSlot, 0, xx,yy, scl, scl, 0, c_white, 1);
+	else 
+		draw_sprite_ext(spr_invSlot, 0, xx, yy, scl, scl, 0, c_white, 1);
 	//If the item in the slot is not null, then draw it.
 	if(item != -1) 
-		draw_sprite(item, 0, xx, yy);
+		draw_sprite_ext(item, 0, xx, yy, scl, scl, 0, c_white, 1);
 	if(amount > 1) {
 		draw_set_color(c_white)
 		draw_set_halign(fa_center)
-		draw_text_transformed(xx+110, yy+110, string(amount), 1, 1, 0);
+		draw_text_transformed(xx+110*scl, yy+110*scl, string(amount), 1, 1, 0);
 	}
 }
 
@@ -249,7 +254,7 @@ function pointInRectangle(px, py, x1, y1, x2, y2) {
 //Returns sequence instance
 function placeSequenceAnimation(xx, yy, sequence) {
 	if(!layer_exists("Animations"))
-		layer_create(-999, "Animations");
-	var inst = layer_sequence_create("Animations", xx, yy, sequence);
-	return inst;
+		layer_create(-9999, "Animations");
+	
+	return layer_sequence_create("Animations", xx, yy, sequence);
 }
