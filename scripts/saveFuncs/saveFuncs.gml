@@ -166,6 +166,8 @@ function saveRoom() {
 	
 function loadRoom() {
 	var roomStruct = 0;
+	if(!variable_struct_exists(global.levelData, room_get_name(room)))
+		return;
 	roomStruct = variable_struct_get(global.levelData, room_get_name(room));
 		
 	//Cancel if roomStruct is not a struct

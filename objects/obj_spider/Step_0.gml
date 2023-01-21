@@ -2,7 +2,6 @@ var distToPlayer = distance_to_point(obj_player.x, obj_player.y);
 if(timeSinceFoundPlayer < room_speed*5)
 	timeSinceFoundPlayer++;
 else {
-	//Retreat to spawn location if didnt find player in 5 sec period
 	timeSinceFoundPlayer = 0;
 	resetPath(spawnLocX, spawnLocY);
 	return;
@@ -85,8 +84,17 @@ if(path_index == -1){
 x = clamp(x, 0, room_width);
 y = clamp(y, 0, room_height);
 
-//Death
+//Spider death
 if(hp <= 0) {
 	instance_destroy();
 	global.xp += xpDrop;
+	for(var i=0; i<array_length(global.activeQuests); i++) {
+		var quest = global.activeQuests[i];
+		if(quest.questName != "Spider Slayer") 
+			return;
+		if(quest.progress < 1) {
+			quest.kills++;
+			quest.progress = quest.kills/quest.maxKills;
+		}
+	}
 }

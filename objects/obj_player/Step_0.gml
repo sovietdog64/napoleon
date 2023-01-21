@@ -156,9 +156,10 @@ global.levelUpThreshold = 480;
 }
 
 
-{//Collision
+//Collision
+{
 	{//Horizontal
-		if(!place_free(x+hsp, y)) {
+		if(!place_free(x+hsp, y) && hsp != 0) {
 			while(place_free(x, y)) {
 				x += sign(hsp);
 			}
@@ -171,8 +172,7 @@ global.levelUpThreshold = 480;
 	}
 	
 	{//Vertical
-		if(!place_free(x, y+vsp)) {
-			y = round(y)
+		if(!place_free(x, y+vsp) && vsp != 0) {
 			while(place_free(x, y)) {
 				y += sign(vsp);
 			}
@@ -193,6 +193,7 @@ global.levelUpThreshold = 480;
 			if(enem != noone) {
 				global.hp--;
 				isHurt = true;
+				lungeForward = false;
 				hurtCooldown = room_speed;
 				var dir = point_direction(x, y, enem.x, enem.y)-180;
 				hsp = (25*dcos(dir));

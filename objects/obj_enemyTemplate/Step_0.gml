@@ -52,9 +52,10 @@ var distToPlayer = distanceBetweenPoints(x, y, obj_player.x, obj_player.y);
 		vsp = 0;
 }
 
-{//Collision
+//Collision
+{
 	{//Horizontal
-		if(!place_free(x+hsp, y)) {
+		if(!place_free(x+hsp, y) && hsp != 0) {
 			while(place_free(x, y)) {
 				x += sign(hsp);
 			}
@@ -67,7 +68,7 @@ var distToPlayer = distanceBetweenPoints(x, y, obj_player.x, obj_player.y);
 	}
 	
 	{//Vertical
-		if(!place_free(x, y+vsp)) {
+		if(!place_free(x, y+vsp) && vsp != 0) {
 			while(place_free(x, y)) {
 				y += sign(vsp);
 			}

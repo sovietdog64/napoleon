@@ -1,8 +1,11 @@
 {
   "resourceType": "GMObject",
   "resourceVersion": "1.0",
-  "name": "obj_setupPathway",
-  "spriteId": null,
+  "name": "obj_bench",
+  "spriteId": {
+    "name": "spr_benchColonial_1",
+    "path": "sprites/spr_benchColonial_1/spr_benchColonial_1.yy",
+  },
   "solid": false,
   "visible": true,
   "managed": true,
@@ -22,12 +25,12 @@
   "physicsKinematic": false,
   "physicsShapePoints": [],
   "eventList": [
-    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","isDnD":false,"eventNum":0,"eventType":0,"collisionObjectId":null,},
+    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","isDnD":false,"eventNum":0,"eventType":8,"collisionObjectId":null,},
   ],
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Enemies",
-    "path": "folders/Objects/Characters/Enemies.yy",
+    "name": "Interactables",
+    "path": "folders/Objects/Interactables.yy",
   },
 }
