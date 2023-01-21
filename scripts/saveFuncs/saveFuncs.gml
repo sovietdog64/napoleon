@@ -10,12 +10,8 @@ function saveRoom() {
 		NPCs : array_create(0),
 		playerX : 0,
 		playerY : 0,
-		cameraX : 0,
-		cameraY : 0,
 		spawnX : 0,
 		spawnY : 0,
-		startX : 0,
-		startY : 0,
 	}
 	roomStruct.spawnX = global.spawnX;
 	roomStruct.spawnY = global.spawnY;
@@ -24,12 +20,6 @@ function saveRoom() {
 	if(instance_exists(obj_player)) {
 		roomStruct.playerX = obj_player.x;
 		roomStruct.playerY = obj_player.y;
-	}
-	
-	//Camera
-	if(instance_exists(obj_camera)) {
-		roomStruct.cameraX = obj_camera.x;
-		roomStruct.cameraY = obj_camera.y;
 	}
 	
 	//Get data from all saveable objects
@@ -171,39 +161,36 @@ function saveRoom() {
 	}
 	
 	//Store room struct in global.levelData
-	if(room == rm_entrance) 
-		global.levelData.entrance = roomStruct;
-	else if(room == rm_level1) 
-		global.levelData.level1 = roomStruct;
-	else if(room == rm_level2) 
-		global.levelData.level2 = roomStruct;
+	variable_struct_set(global.levelData, room_get_name(room), roomStruct);
 }
 	
 function loadRoom() {
 	var roomStruct = 0;
-	if(room == rm_entrance)
-		roomStruct = global.levelData.entrance;
-	else if(room == rm_level1)
-		roomStruct = global.levelData.level1;
+	roomStruct = variable_struct_get(global.levelData, room_get_name(room));
+	//if(room == rm_entrance)
+	//	roomStruct = global.levelData.entrance;
+	//else if(room == rm_level1)
+	//	roomStruct = global.levelData.level1;
 	
-	else if(room == rm_level2) 
-		roomStruct = global.levelData.level2;
+	//else if(room == rm_level2) 
+	//	roomStruct = global.levelData.level2;
 		
 	//Cancel if roomStruct is not a struct
 	if(!is_struct(roomStruct)) return;
 	
 	global.spawnX = roomStruct.spawnX;
 	global.spawnY = roomStruct.spawnY;
-	//Camera
-	if(instance_exists(obj_camera)) {
-		obj_camera.x = roomStruct.cameraX;
-		obj_camera.y = roomStruct.cameraY;
-	}
 	
 	//Player
 	if(instance_exists(obj_player)) {
 		obj_player.x = roomStruct.playerX;
 		obj_player.y = roomStruct.playerY;
+	}
+	
+	//Camera
+	if(instance_exists(obj_camera)) {
+		obj_camera.targX = roomStruct.playerX;
+		obj_camera.targY = roomStruct.playerY;
 	}
 	
 	//Get rid of all saveable instances and replace them with the ones in the game save.

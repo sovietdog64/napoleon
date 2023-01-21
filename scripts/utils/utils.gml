@@ -132,7 +132,7 @@ function sequenceGetName(sequenceId) {
 	}
 	
 	function isFirearm(item) {
-		return isItem(item) && variable_struct_exists(item, "firearm");
+		return isItem(item) && variable_struct_exists(item, "firearm") && item.firearm;
 	}
 		
 	//Returns 1 if no more ammo for inputted firearm

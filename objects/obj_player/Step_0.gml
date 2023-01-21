@@ -103,7 +103,6 @@ global.levelUpThreshold = 480;
 				inst.followOffsetY = yy-y;
 				inst.damage = 1;
 				inst.lifeSpan = 12;
-				inst.sprite_index = spr_npc;
 				
 				lungeForward = true;
 				hsp = (xx-x)/5;
@@ -123,7 +122,13 @@ global.levelUpThreshold = 480;
 					var hasReloaded = reload(heldItem);
 					//If reloaded, do reload animation
 					if(hasReloaded) {
-						array_push(followingSequences, placeSequenceAnimation(x, y, heldItem.reloadSeq));
+						var inst = placeSequenceAnimation(x, y, heldItem.reloadSeq, true)
+						var seqStruct = 
+						{
+							sequenceElementId : inst,
+							followPlayerScale : true,
+						}
+						array_push(followingSequences, seqStruct);
 						leftAttackCooldown = heldItem.reloadDuration;
 					}
 				}
@@ -132,16 +137,20 @@ global.levelUpThreshold = 480;
 
 		//Make specific sequences follow player
 		for(var i=0; i<array_length(followingSequences); i++) {
-			var seq = followingSequences[i];
+			var seq = followingSequences[i].sequenceElementId;
 			if(!layer_sequence_exists("Animations", seq))
 				continue;
-			if(layer_sequence_is_finished(followingSequences[i])) {
-				layer_sequence_destroy(followingSequences[i]);
+			if(layer_sequence_is_finished(seq)) {
+				layer_sequence_destroy(seq);
 				array_delete(followingSequences, i, 1);
 				continue;
 			}
 			layer_sequence_x(seq, x);
 			layer_sequence_y(seq, y);
+			if(variable_struct_exists(followingSequences[i], "followPlayerScale") && followingSequences[i].followPlayerScale) {
+				layer_sequence_xscale(seq, image_xscale);
+				layer_sequence_yscale(seq, image_yscale);
+			}
 		}
 	}
 }

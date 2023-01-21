@@ -30,7 +30,7 @@ global.npcActions =
 								if(result) {
 									//TODO: Check if enough gold and complete transaction
 									if(global.level >= 5) {
-										var newMusket = new Firearm(spr_musket, spr_musketBall, spr_musketBallProj, "Musket Ball", 10, 80, musketReload, 0, 1, 150);
+										var newMusket = new Firearm(spr_musket, spr_musketBall, spr_musketBallProj, "Musket Ball", 10, 100, musketReload, 0, 1, 150);
 										var gaveItem = giveItemToPlayer(newMusket);
 										if(!gaveItem) {
 											drawNotification(obj_player.x, obj_player.y-100, "Inventory too full!", c_red, room_speed*3, 1, fa_center, 0);
@@ -107,7 +107,6 @@ global.npcActions =
 					if(npcInst.doneTalking) {
 						obj_player.inDialogue = true;
 						var result = drawPopup(camWidth()/2, camHeight()/2, "Quest", spr_spiderQ, "Kill 10 spiders?", "yes/no");
-						show_debug_message(result)
 						if(result) {
 							obj_player.inDialogue = false;
 							//Check if player has quest active/is already done with quest

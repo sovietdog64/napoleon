@@ -15,10 +15,11 @@ else if(!global.dead && isFirearm(heldItem) && leftAttackCooldown <= 0) {
 	//Behind arm
 	if(mouseDir >= 270 || mouseDir <= 90) {
 		image_xscale = 1; 
-		dist -= 20;
 		var xx = xOrigin+(dist*dcos(mouseDir));
 		var yy = (yOrigin)+(-dist*dsin(mouseDir));
-		drawSpiderLimbLeft(xOrigin, yOrigin, xx, yy, len1, len2, c_black, c_black, 4, 2);
+		//dist -= 10;
+		drawSpiderLimbLeft(xOrigin, yOrigin, xx, yy, len1, len2, c_black, c_black, 3, 1);
+		dist -= 30;
 		drawSpiderLimbLeft(xOrigin, yOrigin, xx, yy, len1, len2, c_gray, c_gray, 3, 1);
 	}	
 	else {
@@ -30,7 +31,7 @@ else if(!global.dead && isFirearm(heldItem) && leftAttackCooldown <= 0) {
 		drawLimbRight(xOrigin, yOrigin, xx, yy, len1, len2, c_gray, c_gray, 3, 1);
 	}
 	draw_self();
-	//Front arm
+	//Frint arm
 	mouseDir = point_direction(xOrigin, yOrigin, mouse_x, mouse_y);
 	if(mouseDir >= 270 || mouseDir <= 90) {
 		dist += 20;
