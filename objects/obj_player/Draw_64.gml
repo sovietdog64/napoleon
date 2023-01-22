@@ -1,18 +1,16 @@
 ///@description inv handling/player GUI
-if(instance_exists(obj_game) && obj_game.gamePaused || obj_player.inDialogue) return;
+if(instance_exists(obj_game) && global.gamePaused || obj_player.inDialogue) return;
 var cx = camera_get_view_x(view_camera[0]);
 var cy = camera_get_view_y(view_camera[0]);
-var width = camera_get_view_width(view_camera[0]);
-var height = camera_get_view_height(view_camera[0]);
 if(invOpen) {
 	draw_set_alpha(0.5);
-	draw_rectangle_color(0, 0, width, height, c_black,c_black,c_black,c_black, 0);
+	draw_rectangle_color(0, 0, RESOLUTION_W, RESOLUTION_H, c_black,c_black,c_black,c_black, 0);
 	draw_set_alpha(1);
 	
 	//Drawing inv slots & handling slot clicks
 	for(var i = 0; i < array_length(global.invItems); i++) {
-		var xx = (width*0.13)+128*i;
-		var yy = height*0.2;
+		var xx = (RESOLUTION_W*0.13)+128*i;
+		var yy = RESOLUTION_H*0.2;
 		
 		var spriteToDraw = -1;
 		var itemAmount = 0;
@@ -43,8 +41,8 @@ if(invOpen) {
 	
 	//Drawing hotbar slots when inventory is open & handling slot clicks
 	for(var i = 0; i < array_length(global.hotbarItems); i++) {
-		var xx = (width*0.13)+128*i;
-		var yy = height*0.5;
+		var xx = (RESOLUTION_W*0.13)+128*i;
+		var yy = RESOLUTION_H*0.5;
 		
 		var spriteToDraw = -1;
 		var itemAmount = 0;
@@ -68,10 +66,10 @@ if(invOpen) {
 	}
 	
 	//If an item was clicked outside of a slot, drop the item.
-	var invX = (width*0.13);
-	var invY = height*0.2;
+	var invX = (RESOLUTION_W*0.13);
+	var invY = RESOLUTION_H*0.2;
 	var hotbarX = invX;
-	var hotbarY = height*0.5;
+	var hotbarY = RESOLUTION_H*0.5;
 	if(!point_in_rectangle(mouse_x-cx, mouse_y-cy, invX, invY, invX+128*array_length(global.invItems), invY+128) &&
 		!point_in_rectangle(mouse_x-cx, mouse_y-cy, hotbarX, hotbarY, hotbarX+128*array_length(global.hotbarItems), hotbarY+128) &&
 		mouse_check_button_pressed(mb_left) && clickedItem != -1) {
@@ -99,8 +97,8 @@ if(isItem(clickedItem)) {
 //Drawing hotbar/items in use when outside of inventory
 if(!invOpen && !global.dead) {
 	for(var i = 0; i < array_length(global.hotbarItems); i++) {
-		var xx = (width*0.7)+128*i;
-		var yy = height*0.05;
+		var xx = (RESOLUTION_W*0.7)+128*i;
+		var yy = RESOLUTION_H*0.05;
 		
 		var spriteToDraw = -1;
 		var itemAmount = 0;
@@ -130,10 +128,10 @@ for(var i = 0; i < global.hp; i++) {
 if(array_length(global.activeQuests) > 0) {
 	draw_set_color(c_black);
 	draw_set_alpha(0.5);
-	var x1 = camWidth()*0.8;
-	var y1 = camHeight()*0.2;
-	var x2 = camWidth();
-	var y2 = camHeight()*0.7;
+	var x1 = RESOLUTION_W*0.8;
+	var y1 = RESOLUTION_H*0.2;
+	var x2 = RESOLUTION_W;
+	var y2 = RESOLUTION_H*0.7;
 	draw_rectangle(x1, y1, x2, y2, 0);
 	draw_set_alpha(1);
 	draw_set_font(fnt_npc);

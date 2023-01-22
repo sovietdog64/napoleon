@@ -1,4 +1,4 @@
-if(instance_exists(obj_game) && obj_game.gamePaused) return;
+if(instance_exists(obj_game) && global.gamePaused) return;
 if(!opened) sprite_index = spr_chest; else sprite_index = spr_chestOpen;
 if(place_meeting(x, y, obj_player) && !opened) {
 	for(var i=0; i<array_length(items); i++) {

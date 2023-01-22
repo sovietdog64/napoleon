@@ -14,7 +14,7 @@ else {
 				var dist = irandom(spawnRadius);
 				xx = x+(dist*dcos(angle));
 				yy = y+(-dist*dsin(angle));
-				if(place_free(xx, yy)) {
+				if(place_free(xx, yy) && collision_line(x, y, xx, yy, obj_solid, 0, 1) == noone) {
 					break;
 				}
 				//If couldn't find position for enemy in 50 loops, spawn on self

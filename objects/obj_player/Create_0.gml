@@ -25,3 +25,6 @@ safeY = y;
 
 enteredX = x;
 enteredY = y;
+
+state = PlayerStateFree;
+lastState = state;

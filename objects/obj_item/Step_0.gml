@@ -1,4 +1,4 @@
-if(instance_exists(obj_game) && obj_game.gamePaused || obj_player.invOpen) return;
+if(instance_exists(obj_game) && global.gamePaused || obj_player.invOpen) return;
 if(!isItem(item))
 	return;
 hsp *= 0.95;

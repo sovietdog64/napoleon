@@ -6,7 +6,7 @@ else {
 	resetPath(spawnLocX, spawnLocY);
 	return;
 }
-if(instance_exists(obj_game) && obj_game.gamePaused || obj_player.inDialogue || distToPlayer > detectionRange && (targX != spawnLocX && targY != spawnLocY)) {
+if(instance_exists(obj_game) && global.gamePaused || obj_player.inDialogue || distToPlayer > detectionRange && (targX != spawnLocX && targY != spawnLocY)) {
 	path_end();
 	return;
 }

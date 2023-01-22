@@ -4,7 +4,7 @@ if(inDialogue)
 if(hurtCooldown > 0)hurtCooldown--;
 if(global.dead)  
 	return;
-if(instance_exists(obj_game) && obj_game.gamePaused) 
+if(instance_exists(obj_game) && global.gamePaused) 
 	return;
 var inv = keyboard_check_pressed(ord("I"));
 //Opening/closing inventory. Handled in draw event
@@ -38,7 +38,8 @@ if(inv) {
 		}
 	}
 }
-if(instance_exists(obj_game) && obj_game.gamePaused || obj_player.invOpen) return;
+if(instance_exists(obj_game) && global.gamePaused || obj_player.invOpen || state = PlayerStateLocked)
+	return;
 var moveLeft = keyboard_check(ord("A"));
 var moveRight = keyboard_check(ord("D"));
 var horizDirection = moveRight-moveLeft;
@@ -122,7 +123,7 @@ global.levelUpThreshold = 480;
 					var hasReloaded = reload(heldItem);
 					//If reloaded, do reload animation
 					if(hasReloaded) {
-						var inst = placeSequenceAnimation(x, y, heldItem.reloadSeq, true)
+						var inst = placeSequenceAnimation(x, y, heldItem.reloadSeq)
 						var seqStruct = 
 						{
 							sequenceElementId : inst,

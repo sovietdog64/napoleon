@@ -61,29 +61,6 @@ function saveRoom() {
 		array_push(roomStruct.items, itemStruct);
 	}
 	
-	//NPCs
-	for(var i=0; i<instance_number(obj_npc); i++) {
-		var npc = instance_find(obj_npc, i);
-		var npcStruct =
-		{
-			x : npc.x,
-			y : npc.y,
-			talk : npc.talk,
-			dialogueList : npc.dialogueList,
-			dialogueIndex : npc.dialogueIndex,
-			npcName : npc.npcName,
-			optionList : npc.optionList,
-			optionReactionList : npc.optionReactionList,
-
-			canShowOptions : npc.canShowOptions,
-			optionReactionIndex : npc.optionReactionIndex,
-			currentReactionMessages : npc.currentReactionMessages,
-			reactionIndex : npc.reactionIndex,
-			optionClicked : npc.optionClicked,
-		}
-		array_push(roomStruct.NPCs, npcStruct);
-	}
-	
 	//Ships
 	for(var i=0; i<instance_number(obj_ship); i++)  {
 		var ship = instance_find(obj_ship, i);
@@ -222,35 +199,6 @@ function loadRoom() {
 		inst.canBePickedUp = savedItem.canBePickedUp;
 		inst.pickUpCoolDown = savedItem.pickUpCoolDown;
 		inst.item = tempStruct;
-	}
-	
-	//NPCs
-	if(instance_exists(obj_npc))
-		instance_destroy(obj_npc);
-	
-	for(var i=0; i<array_length(roomStruct.NPCs); i++) {
-		var savedNPC = roomStruct.NPCs[i];
-		var inst = instance_create_layer(savedNPC.x, savedNPC.y, "Interactables", obj_npc);
-		inst.x = savedNPC.x;
-		inst.y = savedNPC.y;
-		inst.talk = savedNPC.talk;
-		inst.dialogueList = savedNPC.dialogueList;
-		inst.dialogueIndex = savedNPC.dialogueIndex;
-		inst.npcName = savedNPC.npcName;
-		inst.optionList = savedNPC.optionList;
-		inst.optionReactionList = savedNPC.optionReactionList;
-
-		inst.canShowOptions = savedNPC.canShowOptions;
-		inst.optionReactionIndex = savedNPC.optionReactionIndex;
-		inst.currentReactionMessages = savedNPC.currentReactionMessages;
-		inst.reactionIndex = savedNPC.reactionIndex;
-		inst.optionClicked = savedNPC.optionClicked;
-		if(string_count("Gunsmith", inst.npcName)) {
-			inst.optionActions = global.npcActions.options.gunsmith;
-		}
-		if(inst.npcName == "Liam") {
-			inst.doNPCDrawGUIActions = global.npcActions.drawGUI.liam;
-		}
 	}
 	
 	//Ships
