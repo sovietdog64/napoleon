@@ -1,3 +1,10 @@
+if(!instance_exists(obj_player))
+	return;
+if(obj_player.state = PlayerStateLocked)  {
+	path_end();
+	return;
+}
+	
 var distToPlayer = distance_to_point(obj_player.x, obj_player.y);
 if(timeSinceFoundPlayer < room_speed*5)
 	timeSinceFoundPlayer++;
@@ -88,13 +95,5 @@ y = clamp(y, 0, room_height);
 if(hp <= 0) {
 	instance_destroy();
 	global.xp += xpDrop;
-	for(var i=0; i<array_length(global.activeQuests); i++) {
-		var quest = global.activeQuests[i];
-		if(quest.questName != "Spider Slayer") 
-			return;
-		if(quest.progress < 1) {
-			quest.kills++;
-			quest.progress = quest.kills/quest.maxKills;
-		}
-	}
+	addQuestProgress("Spider Slayer", 1);
 }

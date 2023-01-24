@@ -1,6 +1,8 @@
 /// @description Update path
 if(!instance_exists(obj_player))
 	return;
+if(obj_player.state = PlayerStateLocked) 
+	return;
 	
 var distToPlayer = distance_to_point(obj_player.x, obj_player.y);
 if(distToPlayer > detectionRange)

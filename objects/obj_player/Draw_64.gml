@@ -126,27 +126,27 @@ for(var i = 0; i < global.hp; i++) {
 
 //Drawing quest
 if(array_length(global.activeQuests) > 0) {
-	draw_set_color(c_black);
-	draw_set_alpha(0.5);
 	var x1 = RESOLUTION_W*0.8;
 	var y1 = RESOLUTION_H*0.2;
 	var x2 = RESOLUTION_W;
 	var y2 = RESOLUTION_H*0.7;
-	draw_rectangle(x1, y1, x2, y2, 0);
-	draw_set_alpha(1);
+	nineSliceBoxStretched(spr_textBoxes, x1, y1, x2, y2);
 	draw_set_font(fnt_npc);
 	draw_set_halign(fa_left);
 	draw_set_color(c_white);
+	var i = 0;
 	var quest = global.activeQuests[0];
 	draw_text_transformed(x1+20, y1+20, quest.questName, 1.5, 1.5, 0);
 	draw_text_transformed(x1+20, y1+70, quest.questDesc, 1.5, 1.5, 0);
 	var col = c_red;
-	if(quest.progress >= 0.3)
+	if(quest.progressPercentage >= 0.3)
 		col = c_yellow;
-	if(quest.progress >= 0.7)
+	if(quest.progressPercentage >= 0.7)
 		col = c_green;
 	draw_set_color(col);
-	draw_text_transformed(x1+20, y1+120, string(quest.progress*100)+"%", 1.5, 1.5, 0);
+	draw_text_transformed(x1+20, y1+120, string(quest.progressPercentage*100)+"%", 1.5, 1.5, 0);
+	if(quest.progressPercentage >= 1)
+		draw_text_transformed(x1+20, y1+150, "Go to " + quest.questGiver + "\nto get your rewards!", 1.5, 1.5, 0);
 	draw_set_alpha(1);
 }
 	

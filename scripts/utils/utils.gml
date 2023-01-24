@@ -172,3 +172,100 @@ function stringContainsNoCase(str, substr) {
 function stringContains(str, substr) {
 	return string_pos(substr, str);
 }
+	
+{//Quest funcs
+	//Creates basic quest struct. Add variables individually to the struct if you want extra features.
+	function Quest(name, desc, xpGain, maxLevel, qProgress, qMaxProgress, qGiver, itemRewards = -1, goldReward = 0) constructor {
+		questName = name;
+		questDesc = desc;
+		xpReward = xpGain;
+		maxLvl = maxLevel;
+		questItems = itemRewards;
+		gold = goldReward;
+	
+		progress = qProgress;
+		maxProgress = qMaxProgress;
+		questGiver = qGiver;
+		progressPercentage = progress/maxProgress;
+	}
+
+	//Returns 1 when assinged quest. 0 if quest is currently active, -1 if quest already completed
+	function assignQuest(questStruct) {
+		for(var i=0; i<array_length(global.activeQuests); i++) {
+			var activeQuest = global.activeQuests[i];
+			if(activeQuest.questName == questStruct.questName) {
+				return 0;
+			}
+		}
+		for(var i=0; i<array_length(global.completedQuests); i++) {
+			var completedQuest = global.completedQuests[i];
+			if(completedQuest.questName == questStruct.questName) {
+				return -1;
+			}
+		}
+		array_push(global.activeQuests, questStruct);
+		return 1;
+	}
+	
+
+	function completeQuest(nameOfQuest) {
+		var quest = getActiveQuest(nameOfQuest);
+		if(quest != 0) {
+			//Giving XP.
+			if(global.level <= quest.maxLvl) {
+				global.xp += quest.xpReward;
+			}
+			else
+				global.xp += round(quest.xpReward/5);
+			
+			//Give reward items
+			if(is_array(quest.questItems)) {
+				for(var j=0; j<array_length(quest.questItems); j++) {
+					if(isItem(quest.questItems[j]))
+						giveItemToPlayer(quest.questItems[j]);
+				}
+			}
+			
+			//TODO: Add gold reward
+			removeQuest(nameOfQuest);
+			return 1;
+		}
+		return 0;
+	}
+	
+	//Remove active quest. return 1 if successful, 0 otherwise
+	function removeQuest(nameOfQuest) {
+		for(var i=0; i<array_length(global.activeQuests); i++) {
+			if(global.activeQuests[i].questName == nameOfQuest) {
+				array_delete(global.activeQuests, i, 1);
+				return 1;
+			}
+		}
+		return 0;
+	}
+	
+	//Returns active quest searched by name. return 0 if quest not exist
+	function getActiveQuest(nameOfQuest) {
+		for(var i=0; i<array_length(global.activeQuests); i++) {
+			var quest = global.activeQuests[i];
+			if(quest.questName == nameOfQuest) {
+				return quest;
+			}
+		}
+		return 0;
+	}
+	
+	//Returns 1 if successfully added progress to quest, 0 otherwise.
+	function addQuestProgress(nameOfQuest, amount) {
+		var quest = getActiveQuest(nameOfQuest);
+		if(quest != 0) {
+			quest.progress += amount;
+			quest.progressPercentage = quest.progress/quest.maxProgress;
+			quest.progressPercentage = clamp(quest.progressPercentage, 0 ,1);
+			if(quest.progressPercentage >= 1)
+				newTextBox("You completed " + nameOfQuest + " quest!", undefined, 1);
+			return 1;
+		}
+		return 0;
+	}
+}

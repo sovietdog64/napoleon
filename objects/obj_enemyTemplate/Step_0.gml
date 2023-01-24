@@ -1,4 +1,9 @@
 if(instance_exists(obj_game) && global.gamePaused || obj_player.inDialogue) return;
+if(!instance_exists(obj_player))
+	return;
+if(obj_player.state = PlayerStateLocked) 
+	return;
+	
 var moveLeft = obj_player.x < x;
 var moveRight = obj_player.x > x;
 var vertMovement = sign(y-obj_player.y);
