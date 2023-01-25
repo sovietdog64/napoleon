@@ -1,7 +1,7 @@
 #region default enemy stuff
 hsp = 0;
 vsp = 0;
-hspWalk = random_range(2, 4);
+hspWalk = random_range(5, 6);
 vspJump = -10;
 jumpCooldown = room_speed*0.7;
 hp = 5;
@@ -40,6 +40,8 @@ mp_grid_add_instances(grid, obj_solid, 0);
 
 //hitX/hitY is x/y pos of the object or hitbox that hitting this enemy. call this function when u want to hit an enemy back
 knockBack = function(hitX, hitY, kbSpeed) {
+	hsp = 0;
+	vsp = 0;
 	var dir = point_direction(x, y, hitX, hitY)-180;
 	//Determine vector of knockback (i like using the "dist*sin-cos" thing)
 	var xSpd = kbSpeed*dcos(dir);

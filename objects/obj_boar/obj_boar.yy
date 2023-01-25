@@ -2,7 +2,10 @@
   "resourceType": "GMObject",
   "resourceVersion": "1.0",
   "name": "obj_boar",
-  "spriteId": null,
+  "spriteId": {
+    "name": "spr_boar",
+    "path": "sprites/spr_boar/spr_boar.yy",
+  },
   "solid": false,
   "visible": true,
   "managed": true,

@@ -31,6 +31,7 @@ function DialogueResponses(responseNum) {
 		#endregion gunsmith 1-3
 		
 		#region liam case 4
+		//Assigning spider slayer quest
 		case 4 : {
 			var questStruct = new Quest("Spider Slayer", "Kill 10 spiders", 30, 5, 0, 10, "Liam");
 			var success = assignQuest(questStruct);
@@ -42,6 +43,37 @@ function DialogueResponses(responseNum) {
 			}
 		}
 		#endregion liam case 4
+		
+		#region Will case 5-6
+		//If player gave 10 musket ball, make npc give tanto knife in return
+		case 5: {
+			var item = getItemFromInv(spr_musketBall, 10);
+			if(!isItem(item))
+				newTextBox("Not enough Musket Balls!");
+			else {
+				item.amount -= 10;
+				newTextBox("Thank you! You are a life saver");
+				newTextBox("You know what, here. Take this tantō knife.");
+				newTextBox("Using that is much better than punchin' away at those unearthly animals");
+				newTextBox("You: Didn't the tanto get popular in America at the 1900s?", undefined, 3);
+				newTextBox("Something seems fishy...", undefined, 3);
+				var tanto = new Item(spr_tanto, 1, 3);
+				//Attempt to give tanto to player
+				var gaveItem = giveItemToPlayer(tanto);
+				//if inv too full, draw notification and drop tanto item on ground
+				if(!gaveItem) {
+					drawNotification(obj_player.x, obj_player.y - 100, "Inventory too full!", c_red, room_speed*3, 2, fa_center, 0);
+					var inst = instance_create_layer(obj_player.x, obj_player.y, "Interactables", obj_item);
+					inst.item = tanto;
+				}
+			}
+		}
+		//If player does not give 10 musket ball, show textbox saying that npc might give something in return.
+		case 6: {
+			newTextBox("Aw man. Well, good luck on your adventures");
+			newTextBox("*This person might give something in return for the ammunition*", undefined, 3);
+		}
+		#endregion Will case 5-6
 		
 		default: show_debug_message("Unexpected dialogue response") break;
 	}

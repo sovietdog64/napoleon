@@ -133,6 +133,8 @@ global.levelUpThreshold = 480;
 						leftAttackCooldown = heldItem.reloadDuration;
 					}
 				}
+				else if(firedBullet && instance_exists(obj_camera))
+					obj_camera.screenShake(room_speed*0.2, 10);
 			}
 		}
 

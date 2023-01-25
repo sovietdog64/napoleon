@@ -1,5 +1,5 @@
-hsp = choose(-10,-5,5,10)
-vsp = choose(-10,-5,5,10);
+hsp = choose(-7,-5,5,7)
+vsp = choose(-7,-5,5,7);
 pickedUp = false;
 canBePickedUp = false;
 pickUpCoolDown = room_speed*0.3;

@@ -21,7 +21,9 @@
     {"id":{"name":"obj_solid","path":"objects/obj_solid/obj_solid.yy",},"order":2,},
     {"id":{"name":"spr_musketStick","path":"sprites/spr_musketStick/spr_musketStick.yy",},"order":4,},
     {"id":{"name":"spr_musketCartridge","path":"sprites/spr_musketCartridge/spr_musketCartridge.yy",},"order":3,},
+    {"id":{"name":"spr_tanto","path":"sprites/spr_tanto/spr_tanto.yy",},"order":0,},
     {"id":{"name":"spr_spawner","path":"sprites/spr_spawner/spr_spawner.yy",},"order":1,},
+    {"id":{"name":"spr_boar","path":"sprites/spr_boar/spr_boar.yy",},"order":1,},
     {"id":{"name":"render_utils","path":"scripts/render_utils/render_utils.yy",},"order":2,},
     {"id":{"name":"obj_camera","path":"objects/obj_camera/obj_camera.yy",},"order":2,},
     {"id":{"name":"spr_spider","path":"sprites/spr_spider/spr_spider.yy",},"order":0,},
@@ -148,6 +150,7 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Foreground","folderPath":"folders/Sprites/Tilesets/Foreground.yy","order":1,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Tile Sets","folderPath":"folders/Tile Sets.yy","order":2,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Timelines","folderPath":"folders/Timelines.yy","order":8,},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Tanto","folderPath":"folders/Sprites/Items/Tanto.yy","order":6,},
   ],
   "AudioGroups": [
     {"resourceType":"GMAudioGroup","resourceVersion":"1.3","name":"audiogroup_default","targets":-1,},

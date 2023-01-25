@@ -31,6 +31,7 @@
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"882f359b-06ab-4b61-95a8-265a9db909e3",},
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"0eb087a2-d69e-49dd-b64e-c9b115bc4fc1",},
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"d53142df-65ca-472c-a8fd-a54e2422d8a0",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"a4da07d2-ae02-4414-b17e-0d60188f34c7",},
   ],
   "sequence": {
     "resourceType": "GMSequence",
@@ -42,7 +43,7 @@
     "playbackSpeedType": 0,
     "autoRecord": true,
     "volume": 1.0,
-    "length": 3.0,
+    "length": 4.0,
     "events": {"Keyframes":[],"resourceVersion":"1.0","resourceType":"KeyframeStore<MessageEventKeyframe>",},
     "moments": {"Keyframes":[],"resourceVersion":"1.0","resourceType":"KeyframeStore<MomentsEventKeyframe>",},
     "tracks": [
@@ -50,6 +51,7 @@
             {"id":"eac69472-be6b-4a72-bfe2-339d7a2a8d47","Key":0.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"882f359b-06ab-4b61-95a8-265a9db909e3","path":"sprites/spr_textBoxes/spr_textBoxes.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
             {"id":"512f1248-90f7-4c18-8e4c-76831233a6a1","Key":1.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"0eb087a2-d69e-49dd-b64e-c9b115bc4fc1","path":"sprites/spr_textBoxes/spr_textBoxes.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
             {"id":"17d445fe-84c3-4391-b9a5-7dd2bbb1d530","Key":2.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"d53142df-65ca-472c-a8fd-a54e2422d8a0","path":"sprites/spr_textBoxes/spr_textBoxes.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
+            {"id":"3b49d7e8-7d93-4dcd-ab6f-3d6b483c4cd6","Key":3.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"a4da07d2-ae02-4414-b17e-0d60188f34c7","path":"sprites/spr_textBoxes/spr_textBoxes.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
           ],"resourceVersion":"1.0","resourceType":"KeyframeStore<SpriteFrameKeyframe>",},"trackColour":0,"inheritsTrackColour":true,"builtinName":0,"traits":0,"interpolation":1,"tracks":[],"events":[],"isCreationTrack":false,"modifiers":[],},
     ],
     "visibleRange": null,

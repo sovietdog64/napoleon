@@ -17,3 +17,7 @@ move_towards_point(xx, yy, distance_to_point(xx, yy)/5);
 x = clamp(x, 0, room_width);
 y = clamp(y, 0, room_height);
 camera_set_view_pos(view_camera[0], x, y);
+
+if(screenShakeDuration > 0) {
+	screenShakeDuration--;
+}

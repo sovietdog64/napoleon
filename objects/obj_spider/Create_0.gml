@@ -21,6 +21,19 @@ isHurt = false;
 
 timeSinceFoundPlayer = 0;
 
+//hitX/hitY is x/y pos of the object or hitbox that hitting this enemy. call this function when u want to hit an enemy back
+knockBack = function(hitX, hitY, kbSpeed) {
+	hsp = 0;
+	vsp = 0;
+	var dir = point_direction(x, y, hitX, hitY)-180;
+	//Determine vector of knockback (i like using the "dist*sin-cos" thing)
+	var xSpd = kbSpeed*dcos(dir);
+	var ySpd = -kbSpeed*dsin(dir);
+	isHurt = true;
+	hsp = xSpd;
+	vsp = ySpd;
+}
+
 #endregion default enemy stuff
 if(!layer_exists("Enemies")) {
 	layer_create(layer_get_depth("Instances")+1, "Enemies");
@@ -35,17 +48,6 @@ gridCheckHeight = 32;
 grid = mp_grid_create(0, 0, room_width/gridCheckWidth, room_height/gridCheckHeight, gridCheckWidth, gridCheckHeight);
 //Add solids to collide with
 mp_grid_add_instances(grid, obj_solid, 0);
-
-//hitX/hitY is x/y pos of the object or hitbox that hitting this enemy. call this function when u want to hit an enemy back
-knockBack = function(hitX, hitY, kbSpeed) {
-	var dir = point_direction(x, y, hitX, hitY)-180;
-	//Determine vector of knockback (i like using the "dist*sin-cos" thing)
-	var xSpd = kbSpeed*dcos(dir);
-	var ySpd = -kbSpeed*dsin(dir);
-	isHurt = true;
-	hsp = xSpd;
-	vsp = ySpd;
-}
 
 path = path_add();
 

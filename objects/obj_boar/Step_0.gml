@@ -1,4 +1,14 @@
+if(!instance_exists(obj_player))
+	return;
 var distToPlayer = distance_to_point(obj_player.x, obj_player.y);
+
+if(distToPlayer <= 300 && !lungeForward) {
+	lungeForward = true;
+	var dir = point_direction(x, y, obj_player.x, obj_player.y) + random_range(-40, 40);
+	hsp = lengthdir_x(25, dir);
+	vsp = lengthdir_y(25, dir);
+}
+
 if(timeSinceFoundPlayer < room_speed*5)
 	timeSinceFoundPlayer++;
 else {
@@ -11,7 +21,7 @@ if(instance_exists(obj_game) && global.gamePaused || obj_player.inDialogue || di
 	path_end();
 	return;
 }
-else if(path_index = -1) {
+else if(path_index == -1) {
 	timeSinceFoundPlayer = 0;
 	resetPath();
 }
@@ -53,7 +63,7 @@ timeSinceFoundPlayer = 0;
 }
 
 //Collision
-if(path_index == -1){
+if(isHurt || lungeForward || path_index == -1) {
 	{//Horizontal
 		if(!place_free(x+hsp, y) && hsp != 0) {
 			while(place_free(x, y)) {

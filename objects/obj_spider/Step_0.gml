@@ -17,7 +17,7 @@ if(instance_exists(obj_game) && global.gamePaused || obj_player.inDialogue || di
 	path_end();
 	return;
 }
-else if(path_index = -1) {
+else if(path_index == -1) {
 	timeSinceFoundPlayer = 0;
 	resetPath();
 }
@@ -59,7 +59,7 @@ timeSinceFoundPlayer = 0;
 }
 
 //Collision
-if(path_index == -1){
+if(isHurt || lungeForward || path_index == -1) {
 	{//Horizontal
 		if(!place_free(x+hsp, y) && hsp != 0) {
 			while(place_free(x, y)) {

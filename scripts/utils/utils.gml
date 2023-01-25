@@ -162,6 +162,24 @@ function sequenceGetName(sequenceId) {
 function isItem(item) {
 	return is_struct(item) && variable_struct_exists(item, "itemSpr");
 }
+	
+function getItemFromInv(itemSprite, amountNeeded = 1) {
+	for(var i=0; i<array_length(global.hotbarItems); i++) {
+		var invItem = global.hotbarItems[i];
+		if(!isItem(invItem))
+			continue;
+		if(invItem.itemSpr == itemSprite && invItem.amount >= amountNeeded) 
+			return invItem;
+	}
+	for(var i=0; i<array_length(global.invItems); i++) {
+		var invItem = global.invItems[i];
+		if(!isItem(invItem))
+			continue;
+		if(invItem.itemSpr == itemSprite && invItem.amount >= amountNeeded) 
+			return invItem;
+	}
+	return -1;
+}
 
 //Returns if string contains substring without case sensitivity
 function stringContainsNoCase(str, substr) {
@@ -259,10 +277,11 @@ function stringContains(str, substr) {
 	function addQuestProgress(nameOfQuest, amount) {
 		var quest = getActiveQuest(nameOfQuest);
 		if(quest != 0) {
+			var prevProg = copyStruct(quest).progressPercentage;
 			quest.progress += amount;
 			quest.progressPercentage = quest.progress/quest.maxProgress;
 			quest.progressPercentage = clamp(quest.progressPercentage, 0 ,1);
-			if(quest.progressPercentage >= 1)
+			if(quest.progressPercentage == 1 && prevProg != 1)
 				newTextBox("You completed " + nameOfQuest + " quest!", undefined, 1);
 			return 1;
 		}

@@ -38,6 +38,11 @@ if(ds_list_size(enemies) > 0) {
 		inst.vsp = -5;
 		inst.hp -= damage;
 		inst.knockBack(x, y, knockbackSpeed);
+		
+		//Screen shake
+		if(instance_exists(obj_camera))
+			obj_camera.screenShake(scrnShakeDur, scrnShakeLevel);
+		
 		array_push(enemiesHit, inst);
 	}
 }
