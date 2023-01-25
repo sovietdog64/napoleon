@@ -205,6 +205,25 @@ global.levelUpThreshold = 480;
 		}
 	}
 	
+{//Completeting quests
+	var nearestNPC = instance_nearest(x, y, obj_npc);
+	if(nearestNPC != noone && distance_to_point(nearestNPC.x, nearestNPC.y) <= 100) {
+		for(var i=0; i<array_length(global.activeQuests); i++) {
+			var quest = global.activeQuests[i];
+			//If quest not complete, skip
+			if(quest.progressPercentage < 1)
+				continue;
+			//If quest complete, check if quest giver is nearby
+			if(nearestNPC.npcName == quest.questGiver) {
+				//If quest giver nearby, make NPC finish quest with its custom actions.
+				nearestNPC.finishQuest = true;
+				completeQuest(quest.questName);
+				break;
+			}
+		}
+	}
+}	
+
 //Prevent from going off-screen
 x = clamp(x, 0, room_width);
 y = clamp(y, 0, room_height);

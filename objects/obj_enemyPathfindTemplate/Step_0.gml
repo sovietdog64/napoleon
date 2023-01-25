@@ -1,3 +1,10 @@
+
+//Death
+if(hp <= 0) {
+	instance_destroy();
+	global.xp += xpDrop;
+}
+
 if(!instance_exists(obj_player))
 	return;
 if(obj_player.state = PlayerStateLocked) 
@@ -89,9 +96,3 @@ if(isHurt || lungeForward || path_index == -1) {
 //Prevent from going off-screen
 x = clamp(x, 0, room_width);
 y = clamp(y, 0, room_height);
-
-//Death
-if(hp <= 0) {
-	instance_destroy();
-	global.xp += xpDrop;
-}

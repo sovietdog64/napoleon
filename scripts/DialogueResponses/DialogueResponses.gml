@@ -7,7 +7,7 @@ function DialogueResponses(responseNum) {
 			case 2: {
 				//TODO: Check if player has enough money
 				if(global.level >= 5) {
-					var gaveItem = giveItemToPlayer(new Firearm(spr_musket, spr_musketBall, spr_musketBallProj, "Musket ball", 10, 100, musketReload, 0, 1, 150));
+					var gaveItem = giveItemToPlayer(new Firearm(spr_musket, spr_musketBall, spr_musketBallProj, "Musket ball", 10, 200, musketReload, 0, 1, 150));
 					if(gaveItem) {
 						//TODO: Charge money
 						newTextBox("There you go!\nHave a nice day!");
@@ -41,7 +41,7 @@ function DialogueResponses(responseNum) {
 			else if(success == -1) {
 				newTextBox("You already completed this quest!", undefined, 2);
 			}
-		}
+		} break;
 		#endregion liam case 4
 		
 		#region Will case 5-6
@@ -51,12 +51,14 @@ function DialogueResponses(responseNum) {
 			if(!isItem(item))
 				newTextBox("Not enough Musket Balls!");
 			else {
+				obj_npcWill.disappear = true;
 				item.amount -= 10;
 				newTextBox("Thank you! You are a life saver");
-				newTextBox("You know what, here. Take this tantō knife.");
+				newTextBox("You know what, here. Take this tanto knife.");
 				newTextBox("Using that is much better than punchin' away at those unearthly animals");
-				newTextBox("You: Didn't the tanto get popular in America at the 1900s?", undefined, 3);
-				newTextBox("Something seems fishy...", undefined, 3);
+				
+				newTextBox("*Didn't the tanto get popular in America at the 1900s?*", undefined, 3);
+				newTextBox("*Something seems really fishy...*", undefined, 3);
 				var tanto = new Item(spr_tanto, 1, 3);
 				//Attempt to give tanto to player
 				var gaveItem = giveItemToPlayer(tanto);
@@ -67,12 +69,12 @@ function DialogueResponses(responseNum) {
 					inst.item = tanto;
 				}
 			}
-		}
+		} break;
 		//If player does not give 10 musket ball, show textbox saying that npc might give something in return.
 		case 6: {
 			newTextBox("Aw man. Well, good luck on your adventures");
 			newTextBox("*This person might give something in return for the ammunition*", undefined, 3);
-		}
+		} break;
 		#endregion Will case 5-6
 		
 		default: show_debug_message("Unexpected dialogue response") break;

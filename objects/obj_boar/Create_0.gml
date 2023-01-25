@@ -4,7 +4,7 @@ vsp = 0;
 hspWalk = random_range(5, 6);
 vspJump = -10;
 jumpCooldown = room_speed*0.7;
-hp = 5;
+hp = 10;
 maxHp = hp;
 
 drops = array_create(0);
@@ -13,9 +13,9 @@ lungeForward = false;
 
 detectionRange = 800;
 
-xpDrop = 5;
-if(global.level >= 5)
-	xpDrop = 1;
+xpDrop = 10;
+if(global.level >= 10)
+	xpDrop = 5;
 
 isHurt = false;
 

@@ -1,3 +1,17 @@
+//death
+if(hp <= 0) {
+	instance_destroy();
+	global.xp += xpDrop;
+	for(var i=0; i<array_length(global.activeQuests); i++) {
+		var quest = global.activeQuests[i];
+		if(quest.questName != "Spider Slayer") 
+			return;
+		if(quest.progress < 1) {
+			quest.kills++;
+			quest.progress = quest.kills/quest.maxKills;
+		}
+	}
+}
 if(instance_exists(obj_game) && global.gamePaused || obj_player.inDialogue) return;
 if(!instance_exists(obj_player))
 	return;
@@ -89,18 +103,3 @@ var distToPlayer = distanceBetweenPoints(x, y, obj_player.x, obj_player.y);
 //Prevent from going off-screen
 x = clamp(x, 0, room_width);
 y = clamp(y, 0, room_height);
-
-//Spider death
-if(hp <= 0) {
-	instance_destroy();
-	global.xp += xpDrop;
-	for(var i=0; i<array_length(global.activeQuests); i++) {
-		var quest = global.activeQuests[i];
-		if(quest.questName != "Spider Slayer") 
-			return;
-		if(quest.progress < 1) {
-			quest.kills++;
-			quest.progress = quest.kills/quest.maxKills;
-		}
-	}
-}

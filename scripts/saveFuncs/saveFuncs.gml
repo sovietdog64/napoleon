@@ -24,6 +24,34 @@ function saveRoom() {
 	
 	//Get data from all saveable objects
 	
+	//NPCs
+	for(var i=0; i<instance_number(obj_npc); i++) {
+		var npc = instance_find(obj_npc, i);
+		if(!npc.saveNPC)
+			continue;
+		var npcStruct = 
+		{
+			x : npc.x,
+			y : npc.y,
+			sprite_index : npc.sprite_index,
+			objInd : 0,
+		};
+		npcStruct.objInd = object_get_name(npc.object_index);
+		show_debug_message(npcStruct.objInd);
+		//Names of all npc variables
+		var varNames = variable_instance_get_names(npc);
+		//Add object index to struct
+		//Loop through all variables in NPC instance & add them to struct
+		for(var j=0; j<array_length(varNames); j++) {
+			var varValue = variable_instance_get(npc, varNames[j]);
+			//Cannot save methods :/ (which is why it is necessary to specify the npc object index)
+			if(!is_method(varValue)) {
+				variable_struct_set(npcStruct, varNames[j], varValue);
+			}
+		}
+		array_push(roomStruct.NPCs, npcStruct);
+	}
+	
 	//Dropped Items
 	for(var i=0; i<instance_number(obj_item); i++) {
 		var itemInst = instance_find(obj_item, i);
@@ -267,6 +295,30 @@ function loadRoom() {
 			inst.vspJump = savedEnemy.vspJump;
 			inst.drops = savedEnemy.drops;
 			inst.xpDrop = xpDrop;
+		}
+	}
+	
+	//NPCs
+	//Destroy all saveable npcs 
+	for(var i=0; i<instance_number(obj_npc); i++) {
+		var npc = instance_find(obj_npc, i);
+		if(npc.saveNPC)
+			instance_destroy(npc);
+	}
+	//Adding saveable NPCs that are in game save
+	for(var i=0; i<array_length(roomStruct.NPCs); i++) {
+		var savedNpc = roomStruct.NPCs[i];
+		if(variable_struct_exists(savedNpc, "disappear") && savedNpc.disappear)
+			continue;
+		var varNames = variable_struct_get_names(savedNpc);
+		//Create NPC instance with sepcified object type
+		var objectIndex = asset_get_index(savedNpc.objInd);
+		var inst = instance_create_layer(savedNpc.x, savedNpc.y, "Interactables", objectIndex);
+		inst.sprite_index = savedNpc.sprite_index;
+		//Loop through all saved vars and add them to new NPC instance
+		for(var j=0; j<array_length(varNames); j++) {
+			var value = variable_struct_get(savedNpc, varNames[j]);
+			variable_instance_set(inst, varNames[j], value);
 		}
 	}
 	

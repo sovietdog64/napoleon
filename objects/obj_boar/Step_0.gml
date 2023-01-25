@@ -1,3 +1,9 @@
+//Death
+if(hp <= 0) {
+	instance_destroy();
+	global.xp += xpDrop;
+}
+
 if(!instance_exists(obj_player))
 	return;
 var distToPlayer = distance_to_point(obj_player.x, obj_player.y);
@@ -65,7 +71,7 @@ timeSinceFoundPlayer = 0;
 //Collision
 if(isHurt || lungeForward || path_index == -1) {
 	{//Horizontal
-		if(!place_free(x+hsp, y) && hsp != 0) {
+		if(!place_free(x+hsp, y)) {
 			while(place_free(x, y)) {
 				x += sign(hsp);
 			}
@@ -78,7 +84,7 @@ if(isHurt || lungeForward || path_index == -1) {
 	}
 	
 	{//Vertical
-		if(!place_free(x, y+vsp) && vsp != 0) {
+		if(!place_free(x, y+vsp)) {
 			while(place_free(x, y)) {
 				y += sign(vsp);
 			}
@@ -94,9 +100,5 @@ if(isHurt || lungeForward || path_index == -1) {
 //Prevent from going off-screen
 x = clamp(x, 0, room_width);
 y = clamp(y, 0, room_height);
-
-//Death
-if(hp <= 0) {
-	instance_destroy();
-	global.xp += xpDrop;
-}
+	
+saveEnemy = false;
