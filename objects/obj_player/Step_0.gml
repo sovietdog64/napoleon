@@ -88,31 +88,18 @@ global.levelUpThreshold = 480;
 	if(isItem(heldItem)) {
 		//Using items on left press
 		if(mouse_check_button_pressed(mb_left) && leftAttackCooldown <= 0) {
-			if(heldItem.itemSpr == spr_boxingGloves) {
-				leftAttackCooldown = room_speed*0.21;
-				var dir = (point_direction(x, y, mouse_x, mouse_y));
-				//Calculate the direction of the punch hitbox
-				var xx = x + (50*dcos(dir));
-				var yy = y + (-50*dsin(dir));
-				
-				sprite_index = choose(spr_playerPunchLeft, spr_playerPunchRight);
-				//Create dmg hitbox (hitboxes are more resource efficient compared to individial enemy collision checks)
-				var inst = instance_create_layer(x+xx, y+yy, "Instances", obj_damageHitbox);
-				inst.enemyHit = false;
-				inst.instToFollow = instance_nearest(x, y, obj_player);
-				inst.followOffsetX = xx-x;
-				inst.followOffsetY = yy-y;
-				inst.damage = 1;
-				inst.lifeSpan = 12;
-				
-				lungeForward = true;
-				hsp = (xx-x)/5;
-				vsp = (yy-y)/5;
-				if(hsp < 0) {image_xscale = -1; direction = 180;}
-				else if(hsp> 0) {image_xscale = 1; direction = 0;}
+			switch(heldItem.itemSpr) {
+				case spr_boxingGloves: boxingGloveAttack(mouse_x, mouse_y, 12); break;
+				case spr_tanto: tantoAttack(mouse_x, mouse_y, 12); break;
 			}
 		}
-
+		//Right press
+		else if(mouse_check_button_pressed(mb_right) && leftAttackCooldown <= 0) {
+			switch(heldItem.itemSpr) {
+				case spr_tanto: tantoSlash(mouse_x, mouse_y, 12); break;
+			}
+		}
+		
 		//Using items when holding down left
 		if(mouse_check_button(mb_left) && leftAttackCooldown <= 0) {
 			if(isFirearm(heldItem)) {
