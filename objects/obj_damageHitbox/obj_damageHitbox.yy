@@ -3,8 +3,8 @@
   "resourceVersion": "1.0",
   "name": "obj_damageHitbox",
   "spriteId": {
-    "name": "spr_damageHitbox_1",
-    "path": "sprites/spr_damageHitbox_1/spr_damageHitbox_1.yy",
+    "name": "spr_damageHitbox",
+    "path": "sprites/spr_damageHitbox/spr_damageHitbox.yy",
   },
   "solid": false,
   "visible": true,
@@ -28,6 +28,7 @@
     {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","isDnD":false,"eventNum":0,"eventType":0,"collisionObjectId":null,},
     {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","isDnD":false,"eventNum":0,"eventType":3,"collisionObjectId":null,},
     {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","isDnD":false,"eventNum":0,"eventType":8,"collisionObjectId":null,},
+    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","isDnD":false,"eventNum":7,"eventType":7,"collisionObjectId":null,},
   ],
   "properties": [],
   "overriddenProperties": [],

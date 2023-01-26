@@ -1,6 +1,30 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
-function tantoAttack(targX, targY, hitboxDuration) {
+function boxingGloveAttack(targX, targY, hitboxDuration) {
+	leftAttackCooldown = room_speed*0.21;
+	var dir = point_direction(x, y, targX, targY);
+	//Calculate the direction of the punch hitbox
+	var xx = x + (50*dcos(dir));
+	var yy = y + (-50*dsin(dir));
+				
+	sprite_index = choose(spr_playerPunchLeft, spr_playerPunchRight);
+	//Create dmg hitbox (hitboxes are more resource efficient compared to individial enemy collision checks)
+	var inst = instance_create_layer(x+xx, y+yy, "Instances", obj_damageHitbox);
+	inst.enemyHit = false;
+	inst.instToFollow = id;
+	inst.followOffsetX = xx-x;
+	inst.followOffsetY = yy-y;
+	inst.damage = 1;
+	inst.lifeSpan = hitboxDuration;
+	inst.image_angle = dir;
+	inst.sprite_index = spr_boxingEffect;
+	
+	lungeForward = true;
+	hsp = (xx-x)/5;
+	vsp = (yy-y)/5;
+	if(hsp < 0) {image_xscale = -1; direction = 180;}
+	else if(hsp> 0) {image_xscale = 1; direction = 0;}
+}
+
+function tantoStab(targX, targY, hitboxDuration) {
 	leftAttackCooldown = room_speed*0.21;
 	var dir = point_direction(x, y, targX, targY);
 	//Calculate the direction of the punch hitbox
@@ -15,14 +39,15 @@ function tantoAttack(targX, targY, hitboxDuration) {
 	inst.followOffsetY = yy-y;
 	inst.damage = 3;
 	inst.lifeSpan = hitboxDuration;
-	inst.sprite_index = spr_npc;
+	inst.image_angle = dir;
+	inst.sprite_index = spr_tantoStab;
 	
+	lungeForward = true;
 	hsp = (xx-x)/5;
 	vsp = (yy-y)/5;
 	if(hsp < 0) {image_xscale = -1; direction = 180;}
 	else if(hsp> 0) {image_xscale = 1; direction = 0;}
 }
-
 
 function tantoSlash(targX, targY, hitboxDuration) {
 	leftAttackCooldown = room_speed*0.5;
@@ -35,8 +60,8 @@ function tantoSlash(targX, targY, hitboxDuration) {
 	var inst = instance_create_layer(x+xx, y+yy, "Instances", obj_damageHitbox);
 	inst.enemyHit = false;
 	inst.instToFollow = id;
-	inst.followOffsetX = xx-x;
-	inst.followOffsetY = yy-y;
+	inst.followOffsetX = (xx-x);
+	inst.followOffsetY = (yy-y);
 	inst.damage = 5;
 	inst.lifeSpan = hitboxDuration;
 	inst.knockbackSpeed = 40;
@@ -45,8 +70,8 @@ function tantoSlash(targX, targY, hitboxDuration) {
 	inst.sprite_index = spr_npc;
 	
 	lungeForward = true;
-	hsp = (xx-x);
-	vsp = (yy-y);
+	hsp = (xx-x)/2;
+	vsp = (yy-y)/2;
 	if(hsp < 0) {image_xscale = -1; direction = 180;}
 	else if(hsp> 0) {image_xscale = 1; direction = 0;}
 }

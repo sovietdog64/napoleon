@@ -1,11 +1,11 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "BoxingGloves",
+  "name": "Items",
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Items",
-    "path": "folders/Scripts/Items.yy",
+    "name": "Scripts",
+    "path": "folders/Scripts.yy",
   },
 }

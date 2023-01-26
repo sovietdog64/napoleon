@@ -90,7 +90,7 @@ global.levelUpThreshold = 480;
 		if(mouse_check_button_pressed(mb_left) && leftAttackCooldown <= 0) {
 			switch(heldItem.itemSpr) {
 				case spr_boxingGloves: boxingGloveAttack(mouse_x, mouse_y, 12); break;
-				case spr_tanto: tantoAttack(mouse_x, mouse_y, 12); break;
+				case spr_tanto: tantoStab(mouse_x, mouse_y, 12); break;
 			}
 		}
 		//Right press
