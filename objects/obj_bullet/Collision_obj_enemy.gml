@@ -1,3 +1,5 @@
+if(enemyDamage)
+	return;
 for(var i=0; i<array_length(enemiesCollided); i++) {
 	if(enemiesCollided[i] == other)
 		return;
