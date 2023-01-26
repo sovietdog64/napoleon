@@ -46,8 +46,7 @@ var horizDirection = moveRight-moveLeft;
 var up = keyboard_check(ord("W"));
 var down = keyboard_check(ord("S"));
 var vertDirection = down-up;
-global.level = 5;
-global.levelUpThreshold = 480;
+
 //Movement
 {
 	{//Horizontal movement
