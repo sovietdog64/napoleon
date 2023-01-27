@@ -68,3 +68,20 @@ else if(heldItem.itemSpr != spr_boxingGloves){
 else {
 	draw_self();
 }
+
+//Draw stamina bar
+if(global.stamina < global.maxStamina) {
+	var temp = image_xscale;
+	if(image_xscale < 0)
+		image_xscale *= -1;
+	var xx = x-(sprite_width/2)-5;
+	var yy = 5+y+sprite_height/2;
+	var c = c_black;
+	draw_set_color(c);
+	draw_rectangle(xx,yy, xx+sprite_width, yy+10, 0);
+	c = make_color_rgb(47, 124, 247);
+	draw_set_color(c);
+	draw_rectangle(xx+1,yy+1, (xx+sprite_width * global.stamina/global.maxStamina)-1, yy+10-1, 0);
+
+	image_xscale = temp;
+}

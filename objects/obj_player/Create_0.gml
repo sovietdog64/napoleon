@@ -7,6 +7,10 @@ inDialogue = false;//bool stating whether the player is talking with an NPC.
 invOpen = false;
 clickedItem = -1;
 
+global.minHspWalk = 8;
+
+runCooldown = 0;
+
 hurtCooldown = 0;
 
 followingSequences = array_create(0); //List of animations that follow the player.
@@ -25,6 +29,9 @@ safeY = y;
 
 enteredX = x;
 enteredY = y;
+
+global.stamina = 100;
+global.maxStamina = 100;
 
 state = PlayerStateFree;
 lastState = state;

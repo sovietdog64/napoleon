@@ -170,6 +170,22 @@ for(var i=0; i<array_length(followingSequences); i++) {
 	}
 }
 
+global.stamina = clamp(global.stamina, 0, global.maxStamina);
+
+if(runCooldown > 0)
+	runCooldown--;
+
+//Running
+if(global.stamina > 10 && keyboard_check(vk_shift) && runCooldown <= 0) {
+	global.stamina -= 0.5;
+	hspWalk = global.minHspWalk*1.5;
+}
+else {
+	if(runCooldown <= 0 && global.stamina <= 10)
+		runCooldown = room_speed*3;
+	hspWalk = global.minHspWalk;
+}
+global.stamina += 0.2;
 
 //Collision
 {
