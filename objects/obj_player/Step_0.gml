@@ -82,6 +82,11 @@ var vertDirection = down-up;
 	}
 }
 
+if(keyboard_check(ord("T")))
+	room_speed = 30;
+else 
+	room_speed = 60;
+
 {//Item usage/animations
 	leftAttackCooldown--;
 	if(isItem(heldItem)) {
@@ -107,8 +112,9 @@ var vertDirection = down-up;
 				//If mag empty, try reloading
 				if(!firedBullet) {
 					var ammoItem = getItemFromInv(heldItem.ammoItemSpr);
+					show_debug_message(ammoItem);
 					//If found ammo, place reload animation
-					if(ammoItem != 0) {
+					if(ammoItem != -1) {
 						var inst = placeSequenceAnimation(x, y, heldItem.reloadSeq);
 						var copy = copyStruct(heldItem);
 						var seqStruct =
@@ -175,17 +181,20 @@ global.stamina = clamp(global.stamina, 0, global.maxStamina);
 if(runCooldown > 0)
 	runCooldown--;
 
-//Running
-if(global.stamina > 10 && keyboard_check(vk_shift) && runCooldown <= 0) {
-	global.stamina -= 0.5;
-	hspWalk = global.minHspWalk*1.5;
+//Running/stamina
+{
+	if(global.stamina > 10 && keyboard_check(vk_shift) && runCooldown <= 0) {
+		global.stamina -= 0.6;
+		hspWalk = global.minHspWalk*1.5;
+	}
+	else {
+		if(runCooldown <= 0 && global.stamina <= 10)
+			runCooldown = room_speed*3;
+		hspWalk = global.minHspWalk;
+	}
+	global.stamina += 0.2;	
 }
-else {
-	if(runCooldown <= 0 && global.stamina <= 10)
-		runCooldown = room_speed*3;
-	hspWalk = global.minHspWalk;
-}
-global.stamina += 0.2;
+
 
 //Collision
 {
