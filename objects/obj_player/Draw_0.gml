@@ -80,11 +80,14 @@ if(global.stamina < global.maxStamina) {
 	draw_set_color(c);
 	draw_rectangle(xx,yy, xx+sprite_width, yy+10, 0);
 	c = make_color_rgb(47, 124, 247);
-	if(runCooldown > 0)
-		c = c_red;
 	var percentStamina = global.stamina/global.maxStamina;
 	if(percentStamina > 0.2 && percentStamina <= 0.4)
 		c = c_yellow;
+	if(runCooldown > 0 && keyboard_check(vk_shift))
+		c = c_red;
+		
+	if(percentStamina <= 0.2)
+		c = c_red;
 	draw_set_color(c);
 	draw_rectangle(xx+1,yy+1, (xx+sprite_width * global.stamina/global.maxStamina)-1, yy+10-1, 0);
 	
