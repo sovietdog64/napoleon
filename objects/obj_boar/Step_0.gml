@@ -75,6 +75,8 @@ if(isHurt || lungeForward || path_index == -1) {
 			while(place_free(x, y)) {
 				x += sign(hsp);
 			}
+			if(hsp == 0)
+				hsp = choose(-1,1);
 			while(!place_free(x, y)) {
 				x -= sign(hsp);
 			}

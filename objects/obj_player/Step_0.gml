@@ -46,8 +46,7 @@ var horizDirection = moveRight-moveLeft;
 var up = keyboard_check(ord("W"));
 var down = keyboard_check(ord("S"));
 var vertDirection = down-up;
-global.level = 5;
-global.levelUpThreshold = 480;
+
 //Movement
 {
 	{//Horizontal movement
@@ -83,79 +82,117 @@ global.levelUpThreshold = 480;
 	}
 }
 
+if(keyboard_check(ord("T")))
+	room_speed = 30;
+else 
+	room_speed = 60;
+
 {//Item usage/animations
 	leftAttackCooldown--;
 	if(isItem(heldItem)) {
 		//Using items on left press
 		if(mouse_check_button_pressed(mb_left) && leftAttackCooldown <= 0) {
-			if(heldItem.itemSpr == spr_boxingGloves) {
-				leftAttackCooldown = room_speed*0.21;
-				var dir = (point_direction(x, y, mouse_x, mouse_y));
-				//Calculate the direction of the punch hitbox
-				var xx = x + (50*dcos(dir));
-				var yy = y + (-50*dsin(dir));
-				
-				sprite_index = choose(spr_playerPunchLeft, spr_playerPunchRight);
-				//Create dmg hitbox (hitboxes are more resource efficient compared to individial enemy collision checks)
-				var inst = instance_create_layer(x+xx, y+yy, "Instances", obj_damageHitbox);
-				inst.enemyHit = false;
-				inst.instToFollow = instance_nearest(x, y, obj_player);
-				inst.followOffsetX = xx-x;
-				inst.followOffsetY = yy-y;
-				inst.damage = 1;
-				inst.lifeSpan = 12;
-				
-				lungeForward = true;
-				hsp = (xx-x)/5;
-				vsp = (yy-y)/5;
-				if(hsp < 0) {image_xscale = -1; direction = 180;}
-				else if(hsp> 0) {image_xscale = 1; direction = 0;}
+			switch(heldItem.itemSpr) {
+				case spr_boxingGloves: boxingGloveAttack(mouse_x, mouse_y, 12); break;
+				case spr_tanto: tantoStab(mouse_x, mouse_y, 12); break;
 			}
 		}
-
+		//Right press
+		else if(mouse_check_button_pressed(mb_right) && leftAttackCooldown <= 0) {
+			switch(heldItem.itemSpr) {
+				case spr_tanto: tantoSlash(mouse_x, mouse_y, 12); break;
+			}
+		}
+		
 		//Using items when holding down left
 		if(mouse_check_button(mb_left) && leftAttackCooldown <= 0) {
 			if(isFirearm(heldItem)) {
 				leftAttackCooldown = heldItem.cooldown;
 				var firedBullet = fireBullet(x, y, mouse_x, mouse_y, heldItem);
 				//If mag empty, try reloading
-				if(!firedBullet && mouse_check_button_pressed(mb_left)) {
-					var hasReloaded = reload(heldItem);
-					//If reloaded, do reload animation
-					if(hasReloaded) {
-						var inst = placeSequenceAnimation(x, y, heldItem.reloadSeq)
-						var seqStruct = 
+				if(!firedBullet) {
+					var ammoItem = getItemFromInv(heldItem.ammoItemSpr);
+					show_debug_message(ammoItem);
+					//If found ammo, place reload animation
+					if(ammoItem != -1) {
+						var inst = placeSequenceAnimation(x, y, heldItem.reloadSeq);
+						var copy = copyStruct(heldItem);
+						var seqStruct =
 						{
 							sequenceElementId : inst,
 							followPlayerScale : true,
+							assetIndex : copy.reloadSeq,
 						}
 						array_push(followingSequences, seqStruct);
-						leftAttackCooldown = heldItem.reloadDuration;
+						leftAttackCooldown = copy.reloadDuration;
 					}
 				}
 				else if(firedBullet && instance_exists(obj_camera))
 					obj_camera.screenShake(room_speed*0.2, 10);
 			}
 		}
+	}
+}
 
-		//Make specific sequences follow player
-		for(var i=0; i<array_length(followingSequences); i++) {
-			var seq = followingSequences[i].sequenceElementId;
+//Make specific sequences follow player
+for(var i=0; i<array_length(followingSequences); i++) {
+	var seq = followingSequences[i].sequenceElementId;
+	if(!layer_sequence_exists("Animations", seq))
+		continue;
+	//if sequence finished, destroy instance
+	if(layer_sequence_is_finished(seq)) {
+		//If holding firearm and sequence matches firearm reloading sequence, reload gun ammo
+		if(isFirearm(heldItem)) {
 			if(!layer_sequence_exists("Animations", seq))
 				continue;
-			if(layer_sequence_is_finished(seq)) {
-				layer_sequence_destroy(seq);
-				array_delete(followingSequences, i, 1);
-				continue;
-			}
-			layer_sequence_x(seq, x);
-			layer_sequence_y(seq, y);
-			if(variable_struct_exists(followingSequences[i], "followPlayerScale") && followingSequences[i].followPlayerScale) {
-				layer_sequence_xscale(seq, image_xscale);
-				layer_sequence_yscale(seq, image_yscale);
+			if(followingSequences[i].assetIndex == heldItem.reloadSeq) {
+				reload(heldItem);
 			}
 		}
+		layer_sequence_destroy(seq);
+		array_delete(followingSequences, i, 1);
+		continue;
 	}
+	var seqName = sequenceGetName(followingSequences[i].assetIndex);
+	//If sequence is a reload sequence, 
+	if(string_pos("Reload", seqName)) {
+		//If held item is fire arm and it is not matching the reloading seuqence, destroy sequence.
+		if(isFirearm(heldItem) && heldItem.reloadSeq != followingSequences[i].assetIndex) {
+			leftAttackCooldown = 0;
+			layer_sequence_destroy(seq);
+			continue;
+		} 
+		else if(!isFirearm(heldItem)){//If not holding firearm, destroy reload sequence
+			leftAttackCooldown = 0;
+			layer_sequence_destroy(seq);
+			continue;
+		}
+	}
+	layer_sequence_x(seq, x);
+	layer_sequence_y(seq, y);
+	if(variable_struct_exists(followingSequences[i], "followPlayerScale") && followingSequences[i].followPlayerScale) {
+		layer_sequence_xscale(seq, image_xscale);
+		layer_sequence_yscale(seq, image_yscale);
+	}
+}
+
+global.stamina = clamp(global.stamina, 0, global.maxStamina);
+
+if(runCooldown > 0)
+	runCooldown--;
+
+//Running/stamina
+{
+	if(global.stamina > 10 && keyboard_check(vk_shift) && runCooldown <= 0) {
+		global.stamina -= 0.6;
+		hspWalk = global.minHspWalk*1.5;
+	}
+	else {
+		if(runCooldown <= 0 && global.stamina <= 10)
+			runCooldown = room_speed*3;
+		hspWalk = global.minHspWalk;
+	}
+	global.stamina += 0.2;	
 }
 
 

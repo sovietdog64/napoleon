@@ -3,8 +3,8 @@
   "resourceVersion": "1.0",
   "name": "obj_spawner",
   "spriteId": {
-    "name": "spr_spawner_1",
-    "path": "sprites/spr_spawner_1/spr_spawner_1.yy",
+    "name": "spr_spawner",
+    "path": "sprites/spr_spawner/spr_spawner.yy",
   },
   "solid": false,
   "visible": true,

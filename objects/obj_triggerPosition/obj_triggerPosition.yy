@@ -3,8 +3,8 @@
   "resourceVersion": "1.0",
   "name": "obj_triggerPosition",
   "spriteId": {
-    "name": "spr_triggerPosition_1",
-    "path": "sprites/spr_triggerPosition_1/spr_triggerPosition_1.yy",
+    "name": "spr_triggerPosition",
+    "path": "sprites/spr_triggerPosition/spr_triggerPosition.yy",
   },
   "solid": false,
   "visible": true,
