@@ -4,7 +4,7 @@ vsp = 0;
 hspWalk = random_range(2, 4);
 vspJump = -10;
 jumpCooldown = room_speed*0.7;
-hp = 5;
+hp = 570;
 maxHp = hp;
 
 drops = array_create(0);
@@ -14,7 +14,7 @@ lungeForward = false;
 detectionRange = 800;
 
 xpDrop = 5;
-if(global.level >= 5) 
+if(global.level >= 5)
 	xpDrop = 1;
 
 isHurt = false;
@@ -41,9 +41,12 @@ if(!layer_exists("Enemies")) {
 }
 
 #region pathfinding
-gridCheckWidth = sprite_width;
+//Dimensions of grid to check (scales with sprite dimensions)
+gridCheckWidth = 128;
 
-gridCheckHeight = sprite_height;
+gridCheckHeight = 128;
+
+
 //Grid to pathfind on (Enemy collision mask must be less than size of grid cell. in this example, enemy is less than 16x16)
 grid = mp_grid_create(0, 0, room_width/gridCheckWidth, room_height/gridCheckHeight, gridCheckWidth, gridCheckHeight);
 //Add solids to collide with

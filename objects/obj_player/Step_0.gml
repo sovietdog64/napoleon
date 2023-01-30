@@ -285,9 +285,11 @@ if(instance_exists(obj_camera)) {
 
 //Death of player. Makes player invisible and 1s delay to respawn
 if(global.hp <= 0 && !global.dead) {
+	global.hp = 5;
 	global.dead = true;
-	alarm_set(0, room_speed*1);
-	image_alpha = 0;
-	saveGame();
+	global.setPosToSpawnPos = true;
+	x = enteredX;
+	y = enteredY;
+	room_goto(global.spawnRoom);
 }
 if(!instance_exists(obj_game)) instance_create_layer(0,0, "Instances", obj_game);

@@ -65,7 +65,7 @@ timeSinceFoundPlayer = 0;
 }
 
 //Collision
-if(isHurt || lungeForward || path_index == -1) {
+if(isHurt || lungeForward) {
 	{//Horizontal
 		if(!place_free(x+hsp, y) && hsp != 0) {
 			while(place_free(x, y)) {
