@@ -176,6 +176,10 @@ for(var i=0; i<array_length(followingSequences); i++) {
 	}
 }
 
+if(debug_mode)
+	global.level = 5;
+	global.levelUpThreshold = 480;
+
 global.stamina = clamp(global.stamina, 0, global.maxStamina);
 
 if(runCooldown > 0)

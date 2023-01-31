@@ -1,6 +1,7 @@
 global.gamePaused = false;
 persistent = true;
 
+global.loadedGame = false;
 
 drawPauseScreen = false;
 

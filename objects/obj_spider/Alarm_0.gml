@@ -15,7 +15,7 @@ path_delete(path);
 path = path_add();
 
 //Make path
-mp_grid_path(grid, path, x,y, targX, targY, 1);
+mp_grid_path(grid, path, x,y, targX, targY, 0);
 
 //Walk on path
 path_start(path, hspWalk, path_action_stop, true);
