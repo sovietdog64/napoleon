@@ -24,7 +24,7 @@ if(instance_exists(obj_game) && global.gamePaused || obj_player.inDialogue || di
 	path_end();
 	return;
 }
-else if(path_index = -1) {
+else if(path_index == -1) {
 	timeSinceFoundPlayer = 0;
 	resetPath();
 }
@@ -93,6 +93,11 @@ if(isHurt || lungeForward || path_index == -1) {
 		y += vsp;
 	}
 }
+
+if(x > room_width)
+	x = xprevious;
+if(y > room_height)
+	y = yprevious;
 
 //Prevent from going off-screen
 x = clamp(x, 0, room_width);

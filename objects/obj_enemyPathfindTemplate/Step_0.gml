@@ -24,7 +24,7 @@ if(instance_exists(obj_game) && global.gamePaused || obj_player.inDialogue || di
 	path_end();
 	return;
 }
-else if(path_index = -1) {
+else if(path_index == -1) {
 	timeSinceFoundPlayer = 0;
 	resetPath();
 }

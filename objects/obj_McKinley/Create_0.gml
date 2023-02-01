@@ -43,9 +43,9 @@ if(!layer_exists("Enemies")) {
 
 #region pathfinding
 //Dimensions of grid to check (scales with sprite dimensions)
-gridCheckWidth = 64;
+gridCheckWidth = sprite_width;
 
-gridCheckHeight = 64;
+gridCheckHeight = sprite_width;
 
 //Grid to pathfind on (Enemy collision mask must be less than size of grid cell. in this example, enemy is less than 16x16)
 grid = mp_grid_create(0, 0, room_width/gridCheckWidth, room_height/gridCheckHeight, gridCheckWidth, gridCheckHeight);
