@@ -2,10 +2,7 @@
   "resourceType": "GMObject",
   "resourceVersion": "1.0",
   "name": "obj_enemyPathfindTemplate",
-  "spriteId": {
-    "name": "spr_spider",
-    "path": "sprites/spr_spider/spr_spider.yy",
-  },
+  "spriteId": null,
   "solid": false,
   "visible": true,
   "managed": true,
