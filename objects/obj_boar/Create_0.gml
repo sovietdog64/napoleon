@@ -1,3 +1,4 @@
+init = true;
 #region default enemy stuff
 hsp = 0;
 vsp = 0;
@@ -54,7 +55,7 @@ knockBack = function(hitX, hitY, kbSpeed) {
 
 path = path_add();
 
-alarm[0] = 1;
+alarm_set(0, 10);
 
 targX = obj_player.x;
 targY = obj_player.y;

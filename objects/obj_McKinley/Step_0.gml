@@ -1,3 +1,5 @@
+if(init)
+	return;
 //Death
 if(hp <= 0) {
 	instance_destroy();
@@ -64,9 +66,9 @@ timeSinceFoundPlayer = 0;
 }
 
 //Collision
-{
+if(isHurt || lungeForward || path_index == -1) {
 	{//Horizontal
-		if(!place_free(x+hsp, y)) {
+		if(!place_free(x+hsp, y) && hsp != 0) {
 			while(place_free(x, y)) {
 				x += sign(hsp);
 			}
@@ -75,12 +77,11 @@ timeSinceFoundPlayer = 0;
 			}
 			hsp = 0;
 		}
-		else
-			x += hsp;
+		x += hsp;
 	}
 	
 	{//Vertical
-		if(!place_free(x, y+vsp)) {
+		if(!place_free(x, y+vsp) && vsp != 0) {
 			while(place_free(x, y)) {
 				y += sign(vsp);
 			}
@@ -89,22 +90,9 @@ timeSinceFoundPlayer = 0;
 			}
 			vsp = 0;
 		}
-		else
-			y += vsp;
-	}
-	if(!point_in_rectangle(x, y, 0,0, room_width,room_height)) {
-		show_debug_message("aeae");
+		y += vsp;
 	}
 }
-//show_debug_message(path_index);
-//var inst = instance_place(x+hsp, y+vsp, obj_solid);
-//if((hsp == 0 || vsp == 0) && inst != noone) {
-//	var dir = point_direction(x, y, inst.x, inst.y) - 180;
-//	while(!place_free(x+hsp, y+vsp)) {
-//		x += lengthdir_x(1, dir);
-//		y += lengthdir_y(1, dir);
-//	}
-//}
 
 //Prevent from going off-screen
 x = clamp(x, 0, room_width);

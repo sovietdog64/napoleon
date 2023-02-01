@@ -1,4 +1,9 @@
 /// @description Update path
+if(init) {
+	init = false;
+	//Add solids to collide with after they have been made
+	mp_grid_add_instances(grid, obj_solid, 0);
+}
 if(!instance_exists(obj_player))
 	return;
 if(obj_player.state = PlayerStateLocked) 

@@ -1,3 +1,4 @@
+init = true;
 #region default enemy stuff
 hsp = 0;
 vsp = 0;
@@ -46,12 +47,10 @@ gridCheckWidth = sprite_width;
 gridCheckHeight = sprite_height;
 //Grid to pathfind on (Enemy collision mask must be less than size of grid cell. in this example, enemy is less than 16x16)
 grid = mp_grid_create(0, 0, room_width/gridCheckWidth, room_height/gridCheckHeight, gridCheckWidth, gridCheckHeight);
-//Add solids to collide with
-mp_grid_add_instances(grid, obj_solid, 0);
 
 path = path_add();
 
-alarm[0] = 1;
+alarm_set(0, 10);
 
 targX = obj_player.x;
 targY = obj_player.y;

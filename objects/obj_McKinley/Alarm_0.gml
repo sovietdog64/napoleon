@@ -1,5 +1,9 @@
 /// @description Update path
-alarm_set(0, room_speed*0.4);
+if(init) {
+	init = false;
+	//Add solids to collide with after they have been made
+	mp_grid_add_instances(grid, obj_solid, 0);
+}
 if(!instance_exists(obj_player))
 	return;
 if(obj_player.state = PlayerStateLocked)  {
@@ -15,24 +19,12 @@ targX = obj_player.x
 targY = obj_player.y
 
 path_delete(path);
-
 path = path_add();
 
 //Make path
-var success = mp_grid_path(grid, path, x,y, targX, targY, 0);
-var len = 1;
-if(!success) {
-	x = xprevious;
-	y = yprevious;
-}
-//while(!success && len < 200) {
-//	for(var i=0; i<360; i += 45) {
-//		success = mp_grid_path(grid, path, x+lengthdir_x(len, i),y+lengthdir_x(len, i), targX, targY, 0);
-//		if(success)
-//			break;
-//	}
-//	len ++;
-//}
+mp_grid_path(grid, path, x,y, targX, targY, 0);
 
 //Walk on path
 path_start(path, hspWalk, path_action_stop, true);
+
+alarm_set(0, room_speed*0.4);

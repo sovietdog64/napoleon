@@ -1,4 +1,5 @@
-
+if(init)
+	return;
 //Death
 if(hp <= 0) {
 	instance_destroy();
