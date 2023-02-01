@@ -8,6 +8,7 @@ function boxingGloveAttack(targX, targY, hitboxDuration) {
 	sprite_index = choose(spr_playerPunchLeft, spr_playerPunchRight);
 	//Create dmg hitbox (hitboxes are more resource efficient compared to individial enemy collision checks)
 	var inst = instance_create_layer(x+xx, y+yy, "Instances", obj_damageHitbox);
+	inst.dmgSourceInst = id;
 	inst.enemyHit = false;
 	inst.instToFollow = id;
 	inst.followOffsetX = xx-x;
@@ -64,7 +65,7 @@ function tantoSlash(targX, targY, hitboxDuration) {
 	inst.followOffsetY = (yy-y);
 	inst.damage = 5;
 	inst.lifeSpan = hitboxDuration;
-	inst.knockbackSpeed = 40;
+	inst.knockbackDur = 40;
 	inst.image_xscale = 1.5;
 	inst.image_yscale = 1.5;
 	inst.sprite_index = spr_npc;
