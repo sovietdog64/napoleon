@@ -3,6 +3,7 @@ init = true;
 hsp = 0;
 vsp = 0;
 hspWalk = random_range(5, 6);
+hspWalkRegular = hspWalk;
 sprintSpd = hspWalk * 1.5;
 sprintCd = room_speed*5;
 isSprinting = false;

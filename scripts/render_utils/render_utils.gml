@@ -140,7 +140,7 @@ function camY() {return camera_get_view_y(view_camera[0]);}
 		if(amount > 1) {
 			draw_set_color(c_white)
 			draw_set_halign(fa_center)
-			draw_text_transformed(xx+110*scl, yy+110*scl, string(amount), 1, 1, 0);
+			draw_text_transformed(xx+78*scl, yy+78*scl, string(amount), 1, 1, 0);
 		}
 	}
 

@@ -2,7 +2,11 @@ attackCooldown--;
 sprintCd--;
 if(sprintCd <= 0) {
 	isSprinting = !isSprinting;
-	sprintCd = room_speed*5;
+	if(isSprinting)
+		hspWalk = sprintSpd;
+	else
+		hspWalk = hspWalkRegular;
+	sprintCd = room_speed*5
 }
 if(state == states.DEAD) {
 	path_end();
