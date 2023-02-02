@@ -2,7 +2,7 @@ init = true;
 #region default enemy stuff
 hsp = 0;
 vsp = 0;
-hspWalk = random_range(2, 4);
+hspWalk = random_range(3, 5);
 vspJump = -10;
 jumpCooldown = room_speed*0.7;
 maxHp = 5;
@@ -21,6 +21,9 @@ if(global.level >= 5)
 	xpDrop = 1;
 
 isHurt = false;
+
+maxAttackCooldown = room_speed*0.8;
+attackCooldown = maxAttackCooldown;
 
 timeSinceFoundPlayer = 0;
 
@@ -48,7 +51,9 @@ alert = false;
 detectionRange = 300;
 
 //Distance from player where enemy stops to attack
-attackDist = 70;
+attackDist = 30;
+
+deadTime = 0;
 
 path = path_add();
 

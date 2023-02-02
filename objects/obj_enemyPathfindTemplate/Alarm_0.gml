@@ -1,3 +1,5 @@
+if(state = states.DEAD)
+	return;
 alarm_set(0, room_speed*0.2);
 
 checkForPlayer(detectionRange);

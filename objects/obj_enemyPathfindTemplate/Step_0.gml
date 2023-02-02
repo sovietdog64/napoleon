@@ -1,3 +1,13 @@
+attackCooldown--;
+if(state == states.DEAD) {
+	path_end();
+	calcEntityMovement();
+	deadTime++;
+	if(deadTime > room_speed*5) {
+		instance_destroy();
+	}
+	return;
+}
 switch(state) {
 	case states.IDLE:
 		calcEntityMovement();
@@ -15,8 +25,6 @@ switch(state) {
 		calcEntityMovement();
 	break;
 	case states.DEAD:
-		calcEntityMovement();
-		global.xp += xpDrop;
-		instance_destroy();
+		
 	break;
 }
