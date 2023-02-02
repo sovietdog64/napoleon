@@ -65,7 +65,7 @@ function tantoSlash(targX, targY, hitboxDuration) {
 	inst.followOffsetY = (yy-y);
 	inst.damage = 5;
 	inst.lifeSpan = hitboxDuration;
-	inst.knockbackDur = 40;
+	inst.knockbackDur = 60;
 	inst.image_xscale = 1.5;
 	inst.image_yscale = 1.5;
 	inst.sprite_index = spr_npc;
