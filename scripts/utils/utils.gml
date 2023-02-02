@@ -288,3 +288,23 @@ function stringContains(str, substr) {
 		return 0;
 	}
 }
+
+function Point(px, py) constructor {
+	x = px;
+	y = py;
+}
+
+function raycast4Directional(distance, incrementInPixels, preciseCheck) {
+	for(var i=0; i < 361; i+=90) {
+		var len = 1;
+		while(len < distance) {
+			var xx = x+lengthdir_x(len, i);
+			var yy = y+lengthdir_y(len, i);
+			if(collision_point(xx, yy, obj_solid, preciseCheck, 1)) {
+				return 1;
+			}
+			len += incrementInPixels;
+		}
+	}
+	return undefined;
+}

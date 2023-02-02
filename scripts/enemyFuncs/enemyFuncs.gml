@@ -1,7 +1,23 @@
 function calcEntityMovement() {
-	if(!place_free(x+hsp, y+vsp)) {
+	if(!place_free(x+hsp, y+vsp) && hsp != 0 && vsp != 0) {
+		while(place_free(x, y)) {
+			x += sign(hsp);
+			y += sign(vsp);
+		}
+		while(!place_free(x, y)) {
+			x -= sign(hsp);
+			y -= sign(vsp);
+		}
 		hsp = 0;
 		vsp = 0;
+	}
+	else if(hsp == 0 || vsp == 0) {
+		var collisionPoint = raycast4Directional(sprite_width+5, 1, 0);
+		if(is_struct(collisionPoint)) {
+			var dir = point_direction(x, y, collisionPoint.x, collisionPoint.y)
+			hsp = lengthdir_x(5, dir);
+			vsp = lengthdir_y(5, dir);
+		}
 	}
 	x += hsp;
 	y += vsp;
@@ -35,12 +51,18 @@ function checkForPlayer() {
 	}
 	//If close enough to attack
 	else if (dist <= attackDist){
+		state = states.ATTACK;
 		path_end();
 	}
+		
+	return 1;
 }
 	
 function damageEntity(targetId, dmgSourceId, dmg, time) {
+	if(targetId.state == states.DEAD)
+		return;
 	with(targetId) {
+		path_end();
 		hp -= dmg;
 		var dead = is_dead();
 		
@@ -50,8 +72,8 @@ function damageEntity(targetId, dmgSourceId, dmg, time) {
 			var dis = 20;
 			
 		var dir = point_direction(dmgSourceId.x, dmgSourceId.y, x, y);
-		hsp += lengthdir_x(dis, dir);
-		vsp += lengthdir_y(dis, dir);
+		hsp = lengthdir_x(dis, dir);
+		vsp = lengthdir_y(dis, dir);
 		alert = true;
 		knockbackTime = time;
 		return dead;
@@ -74,6 +96,7 @@ function is_dead() {
 				//play death snd
 			break;
 		}
+		return 1;
 	}
 }
 

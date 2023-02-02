@@ -16,6 +16,7 @@ switch(state) {
 	break;
 	case states.DEAD:
 		calcEntityMovement();
+		global.xp += xpDrop;
 		instance_destroy();
 	break;
 }

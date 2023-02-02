@@ -234,7 +234,7 @@ if(runCooldown > 0)
 			hurtCooldown--;
 		if(hurtCooldown <= 0 && !isHurt) {
 			var enem = instance_place(x, y, obj_enemy);
-			if(enem != noone) {
+			if(enem != noone && enem.hp > 0) {
 				global.hp--;
 				isHurt = true;
 				lungeForward = false;
