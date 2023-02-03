@@ -91,3 +91,6 @@ if(global.stamina < global.maxStamina) {
 	
 	image_xscale = temp;
 }
+
+drawLimbRightSpr(spr_arm, spr_arm, x, y, mouse_x,mouse_y);
+drawSpiderLimbLeft(x+50, y+50, mouse_x, mouse_y, 30, 30, c_red, c_red, 3, 1);

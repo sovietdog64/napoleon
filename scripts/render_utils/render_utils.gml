@@ -28,6 +28,22 @@ function camY() {return camera_get_view_y(view_camera[0]);}
 		draw_set_color(color2)
 		draw_line_width(jointX, jointY, footX, footY, width2);
 	}
+	
+	function drawLimbRightSpr(segment1Spr, segment2Spr,xx, yy, targX, targY) {
+		var segment1Len = sprite_get_width(segment1Spr);
+		var segment2Len = sprite_get_width(segment2Spr);
+		var dist = distanceBetweenPoints(xx, yy, targX, targY);
+		var dir = point_direction(xx, yy, targX, targY);
+		var thighDir = darctan(dist/segment1Len);
+		thighDir -= dir;
+		var jointX = xx+(segment1Len*dsin(thighDir));
+		var jointY = yy+(-segment1Len*dcos(thighDir));
+		draw_line(xx, yy, jointX, jointY);
+		draw_sprite_ext(spr_arm, 0, xx, yy, 1, 1, point_direction(xx, yy, jointX, jointY), c_white, 1);
+		
+		var dir = point_direction(jointX, jointY, targX, targY);
+		draw_sprite_ext(spr_arm, 0, jointX, jointY, 1, 1, dir, c_white, 1);
+	}
 
 	///@function drawSpiderLimbLeft
 	//@param xx hip/shoulder x
@@ -46,8 +62,8 @@ function camY() {return camera_get_view_y(view_camera[0]);}
 		var thighDir = -darctan(dist/segment1Len);
 		thighDir -= dir;
 		thighDir += 180;
-		var jointX = x+(segment1Len*dsin(thighDir));
-		var jointY = y+(-segment1Len*dcos(thighDir));
+		var jointX = xx+(segment1Len*dsin(thighDir));
+		var jointY = yy+(-segment1Len*dcos(thighDir));
 		draw_set_color(color1)
 		draw_line_width(xx, yy, jointX, jointY, width1);
 		var sine = dsin(point_direction(jointX, jointY, targX, targY));
