@@ -2,10 +2,7 @@
   "resourceType": "GMObject",
   "resourceVersion": "1.0",
   "name": "obj_wigglePar",
-  "spriteId": {
-    "name": "spr_arm",
-    "path": "sprites/spr_arm/spr_arm.yy",
-  },
+  "spriteId": null,
   "solid": false,
   "visible": true,
   "managed": true,

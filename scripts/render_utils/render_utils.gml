@@ -66,10 +66,10 @@ function camY() {return camera_get_view_y(view_camera[0]);}
 		thighDir -= dir;
 		var jointX = xx+(segment1Len*dsin(thighDir));
 		var jointY = yy+(-segment1Len*dcos(thighDir));
-		draw_sprite_ext(spr_arm, 0, xx, yy, 1, 1, point_direction(xx, yy, jointX, jointY), c_white, 1);
+		draw_sprite_ext(segment1Spr, 0, xx, yy, 1, 1, point_direction(xx, yy, jointX, jointY), c_white, 1);
 		
 		var dir = point_direction(jointX, jointY, targX, targY);
-		draw_sprite_ext(spr_arm, 0, jointX, jointY, 1, 1, dir, c_white, 1);
+		draw_sprite_ext(segment2Spr, 0, jointX, jointY, 1, 1, dir, c_white, 1);
 	}
 	
 	function drawLimbLeftSpr(segment1Spr, segment2Spr, xx, yy, targX, targY) {
@@ -83,10 +83,10 @@ function camY() {return camera_get_view_y(view_camera[0]);}
 		thighDir += 180;
 		var jointX = xx+(segment1Len*dsin(thighDir));
 		var jointY = yy+(-segment1Len*dcos(thighDir));
-		draw_sprite_ext(spr_arm, 0, xx, yy, 1, 1, point_direction(xx, yy, jointX, jointY), c_white, 1);
+		draw_sprite_ext(segment1Spr, 0, xx, yy, 1, 1, point_direction(xx, yy, jointX, jointY), c_white, 1);
 		
 		var dir = point_direction(jointX, jointY, targX, targY);
-		draw_sprite_ext(spr_arm, 0, jointX, jointY, 1, 1, dir, c_white, 1);
+		draw_sprite_ext(segment2Spr, 0, jointX, jointY, 1, 1, dir, c_white, 1);
 	}
 }
 
