@@ -43,7 +43,7 @@ function checkForPlayer() {
 	//If not close enought o enemy and not close enough to attack
 	if((dist <= detectionRange) || alert) && dist > attackDist {
 		alert = true;
-		var foundPlayer = mp_grid_path(grid, path, x, y, obj_player.x, obj_player.y, choose(0, 1));
+		var foundPlayer = mp_grid_path(grid, path, x, y, obj_player.x, obj_player.y, 1);
 	
 		if(foundPlayer) {
 			path_start(path, hspWalk, path_action_stop, 0);
