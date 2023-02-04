@@ -112,7 +112,6 @@ else
 				//If mag empty, try reloading
 				if(!firedBullet) {
 					var ammoItem = getItemFromInv(heldItem.ammoItemSpr);
-					show_debug_message(ammoItem);
 					//If found ammo, place reload animation
 					if(ammoItem != -1) {
 						var inst = placeSequenceAnimation(x, y, heldItem.reloadSeq);

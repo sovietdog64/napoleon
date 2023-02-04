@@ -55,7 +55,7 @@ alert = false;
 detectionRange = 300;
 
 //Distance from player where enemy stops to attack
-attackDist = 30;
+attackDist = 1;
 
 deadTime = 0;
 

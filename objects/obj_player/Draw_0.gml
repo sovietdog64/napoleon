@@ -35,8 +35,8 @@ else if(!global.dead && isFirearm(heldItem) && leftAttackCooldown <= 0) {
 		drawLimbRightSpr(spr_playerArmF, spr_playerArmF, x, y, xx, yy);
 	}
 	//Drawing held item
-	xx = xOrigin+(20*dcos(mouseDir-1));
-	yy = yOrigin+(-20*dsin(mouseDir-1));
+	xx = xOrigin+lengthdir_x(20, mouseDir-1);
+	yy = yOrigin+lengthdir_y(20, mouseDir-1);
 
 	var yScale = -0.5
 	if(mouseDir >= 270 || mouseDir <= 90)

@@ -37,7 +37,6 @@ function saveRoom() {
 			objInd : 0,
 		};
 		npcStruct.objInd = object_get_name(npc.object_index);
-		show_debug_message(npcStruct.objInd);
 		//Names of all npc variables
 		var varNames = variable_instance_get_names(npc);
 		//Add object index to struct
