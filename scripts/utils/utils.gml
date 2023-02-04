@@ -34,6 +34,8 @@ function giveItemToPlayer(item) {
 }
 
 function copyStruct(struct){
+	if(!is_struct(struct))
+		return -1;
     var key, value;
     var newCopy = {};
     var keys = variable_struct_get_names(struct);
@@ -163,6 +165,17 @@ function isItem(item) {
 	return is_struct(item) && variable_struct_exists(item, "itemSpr");
 }
 	
+function purchaseItem(item, price, levelReq) {
+	//TODO:check if enough money
+	if(global.level >= levelReq) {
+		giveItemToPlayer(id.item)
+		//TODO:Take away money
+	}
+	else if(global.level <= levelReq){
+		newTextBox("$FF0000 Need level " + string(levelReq), , 2);
+	}
+}
+	
 function getItemFromInv(itemSprite, amountNeeded = 1) {
 	for(var i=0; i<array_length(global.hotbarItems); i++) {
 		var invItem = global.hotbarItems[i];
@@ -287,4 +300,24 @@ function stringContains(str, substr) {
 		}
 		return 0;
 	}
+}
+
+function Point(px, py) constructor {
+	x = px;
+	y = py;
+}
+
+function raycast4Directional(distance, incrementInPixels, preciseCheck) {
+	for(var i=0; i < 361; i+=90) {
+		var len = 1;
+		while(len < distance) {
+			var xx = x+lengthdir_x(len, i);
+			var yy = y+lengthdir_y(len, i);
+			if(collision_point(xx, yy, obj_solid, preciseCheck, 1)) {
+				return 1;
+			}
+			len += incrementInPixels;
+		}
+	}
+	return undefined;
 }

@@ -46,8 +46,8 @@ function camY() {return camera_get_view_y(view_camera[0]);}
 		var thighDir = -darctan(dist/segment1Len);
 		thighDir -= dir;
 		thighDir += 180;
-		var jointX = x+(segment1Len*dsin(thighDir));
-		var jointY = y+(-segment1Len*dcos(thighDir));
+		var jointX = xx+(segment1Len*dsin(thighDir));
+		var jointY = yy+(-segment1Len*dcos(thighDir));
 		draw_set_color(color1)
 		draw_line_width(xx, yy, jointX, jointY, width1);
 		var sine = dsin(point_direction(jointX, jointY, targX, targY));
@@ -56,6 +56,36 @@ function camY() {return camera_get_view_y(view_camera[0]);}
 		var footY = jointY+(-segment2Len*sine);	
 		draw_set_color(color2)
 		draw_line_width(jointX, jointY, footX, footY, width2)
+	}
+	
+	function drawLimbRightSpr(segment1Spr, segment2Spr,xx, yy, targX, targY) {
+		var segment1Len = sprite_get_width(segment1Spr);
+		var dist = distanceBetweenPoints(xx, yy, targX, targY);
+		var dir = point_direction(xx, yy, targX, targY);
+		var thighDir = darctan(dist/segment1Len);
+		thighDir -= dir;
+		var jointX = xx+(segment1Len*dsin(thighDir));
+		var jointY = yy+(-segment1Len*dcos(thighDir));
+		draw_sprite_ext(segment1Spr, 0, xx, yy, 1, 1, point_direction(xx, yy, jointX, jointY), c_white, 1);
+		
+		var dir = point_direction(jointX, jointY, targX, targY);
+		draw_sprite_ext(segment2Spr, 0, jointX, jointY, 1, 1, dir, c_white, 1);
+	}
+	
+	function drawLimbLeftSpr(segment1Spr, segment2Spr, xx, yy, targX, targY) {
+		var segment1Len = sprite_get_width(segment1Spr);
+		var dist = distanceBetweenPoints(xx, yy, targX, targY);
+		var dir = point_direction(xx, yy, targX, targY);
+
+		//Left leg
+		var thighDir = -darctan(dist/segment1Len);
+		thighDir -= dir;
+		thighDir += 180;
+		var jointX = xx+(segment1Len*dsin(thighDir));
+		var jointY = yy+(-segment1Len*dcos(thighDir));
+		draw_sprite_ext(segment1Spr, 0, xx, yy, 1, 1, point_direction(xx, yy, jointX, jointY), c_white, 1);
+		var dir = point_direction(jointX, jointY, targX, targY);
+		draw_sprite_ext(segment2Spr, 0, jointX, jointY, 1, 1, dir, c_white, 1);
 	}
 }
 
@@ -134,13 +164,13 @@ function camY() {return camera_get_view_y(view_camera[0]);}
 			draw_sprite_ext(spr_equippedSlot, 0, xx,yy, scl, scl, 0, c_white, 1);
 		else 
 			draw_sprite_ext(spr_invSlot, 0, xx, yy, scl, scl, 0, c_white, 1);
-		//If the item in the slot is not null, then draw it.
+		//If the slot is holding an item, draw it
 		if(item != -1) 
 			draw_sprite_ext(item, 0, xx, yy, scl, scl, 0, c_white, 1);
 		if(amount > 1) {
 			draw_set_color(c_white)
 			draw_set_halign(fa_center)
-			draw_text_transformed(xx+110*scl, yy+110*scl, string(amount), 1, 1, 0);
+			draw_text_transformed(xx+78*scl, yy+78*scl, string(amount), 1, 1, 0);
 		}
 	}
 
@@ -205,6 +235,20 @@ function camY() {return camera_get_view_y(view_camera[0]);}
 				state = PlayerStateLocked;
 			}
 		}
+	}
+		
+	function drawInteraction(imageFrame, xx, yy) {
+		if(!variable_instance_exists(id, "drawInteractionProgress"))
+			variable_instance_set(id, "drawInteractionProgress", 0);
+		if(drawInteractionProgress < 1)
+			drawInteractionProgress += 1/(room_speed*0.3);
+		draw_sprite_part(spr_interactions, imageFrame, 0,0, INTERACTION_W, INTERACTION_H*drawInteractionProgress, xx, yy);
+	}
+	
+	function resetInteractionProgress() {
+		if(!variable_instance_exists(id, "drawInteractionProgress"))
+			variable_instance_set(id, "drawInteractionProgress", 0);
+		drawInteractionProgress = 0;
 	}
 }
 

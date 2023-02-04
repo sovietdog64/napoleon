@@ -37,7 +37,6 @@ function saveRoom() {
 			objInd : 0,
 		};
 		npcStruct.objInd = object_get_name(npc.object_index);
-		show_debug_message(npcStruct.objInd);
 		//Names of all npc variables
 		var varNames = variable_instance_get_names(npc);
 		//Add object index to struct
@@ -512,8 +511,11 @@ function loadGame(fileNum = 0) {
 	global.completedQuests = global.statData.completedQuests;
 	
 	//Go to the right room in the game save
-	var loadRm = asset_get_index(global.statData.saveRm);
+	var loadRm = asset_get_index(global.statData.spawnRoom);
+	global.loadedGame = true;
 	room_goto(loadRm);
+	obj_player.x = global.statData.spawnX;
+	obj_player.y = global.statData.spawnY;
 	//Make sure save object does not save the room that is being exited
 	obj_saveLoad.skipRoomSave = true;
 	if(instance_exists(obj_player)) instance_destroy(obj_player);

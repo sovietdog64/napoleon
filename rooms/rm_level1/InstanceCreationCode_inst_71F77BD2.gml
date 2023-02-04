@@ -1,0 +1,1 @@
+item = new Firearm(spr_musket, spr_musketBall, spr_musketBallProj, "Musket Ball", 20, 200, musketReload, 0, 1, 150);

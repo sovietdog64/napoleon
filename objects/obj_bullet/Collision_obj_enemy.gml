@@ -9,5 +9,5 @@ pierce--;
 if(pierce <= 0)
 	instance_destroy();
 	
-other.hp -= damage;
+damageEntity(other, damageSourceInst, damage, 10);
 array_push(enemiesCollided, other);

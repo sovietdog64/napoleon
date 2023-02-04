@@ -1,25 +1,11 @@
-/// @description Update path
-if(!instance_exists(obj_player))
+if(state = states.DEAD)
 	return;
-if(obj_player.state = PlayerStateLocked)  {
-	path_end();
-	return;
+alarm_set(0, room_speed*0.2);
+
+checkForPlayer();
+if(global.gamePaused || obj_player.state = PlayerStateLocked) {
+	path_speed = 0;
 }
-	
-var distToPlayer = distance_to_point(obj_player.x, obj_player.y);
-if(distToPlayer > detectionRange)
-	return;
-	
-targX = obj_player.x
-targY = obj_player.y
-
-path_delete(path);
-path = path_add();
-
-//Make path
-mp_grid_path(grid, path, x,y, targX, targY, 0);
-
-//Walk on path
-path_start(path, hspWalk, path_action_stop, true);
-
-alarm_set(0, room_speed*0.4);
+else {
+	path_speed = hspWalk;
+}

@@ -42,6 +42,11 @@ if(pickUpCoolDown <= 0) {
 	pickUpCoolDown = 0;
 }
 
+lifeSpan--;
+if(lifeSpan <= 0) {
+	instance_destroy();
+}
+
 //Pick up item
 if(canBePickedUp && !pickedUp && place_meeting(x, y, obj_player)) {
 	pickedUp = true;

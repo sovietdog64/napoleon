@@ -35,3 +35,9 @@ global.maxStamina = 100;
 
 state = PlayerStateFree;
 lastState = state;
+
+if(global.loadedGame) {
+	x = global.spawnX;
+	y = global.spawnY;
+	global.loadedGame = false;
+}

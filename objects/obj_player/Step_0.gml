@@ -107,12 +107,11 @@ else
 		//Using items when holding down left
 		if(mouse_check_button(mb_left) && leftAttackCooldown <= 0) {
 			if(isFirearm(heldItem)) {
-				leftAttackCooldown = heldItem.cooldown;
+				leftAttackCooldown = heldItem.cooldown+2;
 				var firedBullet = fireBullet(x, y, mouse_x, mouse_y, heldItem);
 				//If mag empty, try reloading
 				if(!firedBullet) {
 					var ammoItem = getItemFromInv(heldItem.ammoItemSpr);
-					show_debug_message(ammoItem);
 					//If found ammo, place reload animation
 					if(ammoItem != -1) {
 						var inst = placeSequenceAnimation(x, y, heldItem.reloadSeq);
@@ -124,7 +123,7 @@ else
 							assetIndex : copy.reloadSeq,
 						}
 						array_push(followingSequences, seqStruct);
-						leftAttackCooldown = copy.reloadDuration;
+						leftAttackCooldown = copy.reloadDuration+2;
 					}
 				}
 				else if(firedBullet && instance_exists(obj_camera))
@@ -175,6 +174,10 @@ for(var i=0; i<array_length(followingSequences); i++) {
 		layer_sequence_yscale(seq, image_yscale);
 	}
 }
+
+if(debug_mode)
+	global.level = 5;
+	global.levelUpThreshold = 480;
 
 global.stamina = clamp(global.stamina, 0, global.maxStamina);
 
@@ -230,7 +233,7 @@ if(runCooldown > 0)
 			hurtCooldown--;
 		if(hurtCooldown <= 0 && !isHurt) {
 			var enem = instance_place(x, y, obj_enemy);
-			if(enem != noone) {
+			if(enem != noone && enem.hp > 0) {
 				global.hp--;
 				isHurt = true;
 				lungeForward = false;

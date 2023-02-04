@@ -1,6 +1,7 @@
 global.gamePaused = false;
 persistent = true;
 
+global.loadedGame = false;
 
 drawPauseScreen = false;
 
@@ -20,3 +21,12 @@ global.completedQuests = array_create(0);
 	
 global.textSpeed = 0.75;
 surface_resize(application_surface, RESOLUTION_W, RESOLUTION_H);
+
+enum states {
+	IDLE,
+	MOVE,
+	ATTACK,
+	DEAD,
+}
+
+global.drag = 0.9;

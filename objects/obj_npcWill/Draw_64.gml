@@ -6,6 +6,9 @@ if(!instance_exists(obj_game))
 	return;
 var inst = instance_nearest(x, y, obj_player);
 
+if(obj_player.state == PlayerStateLocked)
+	return;
+
 //Draws query box asking the player if they want to talk to the NPC.
 if(!talk && inst != noone && distance_to_point(inst.x, inst.y) <= 100) {
 	drawNPCQueryBox(npcName);
