@@ -445,8 +445,10 @@ function loadGame(fileNum = 0) {
 	
 	//Load Stats
 	//If saved room does not exist, return -1
-	if(!room_exists(asset_get_index(global.statData.saveRm)))
+	if(!room_exists(asset_get_index(global.statData.saveRm))) {
+		show_debug_message("save room not exist: " + string(global.statData.saveRm));
 		return -1;
+	}
 	global.hp = global.statData.hp;
 	global.equippedItem = global.statData.equippedItem;
 	//Inventory
