@@ -1,11 +1,18 @@
+init = true;
 #region default enemy stuff
 hsp = 0;
 vsp = 0;
-hspWalk = random_range(2, 4);
+hspWalk = random_range(5, 6);
+hspWalkRegular = hspWalk;
+sprintSpd = hspWalk * 1.5;
+sprintCd = room_speed*5;
+isSprinting = false;
 vspJump = -10;
 jumpCooldown = room_speed*0.7;
-hp = 570;
-maxHp = hp;
+maxHp = 228;
+hp = maxHp;	
+
+state = states.MOVE;
 
 drops = array_create(0);
 
@@ -18,6 +25,9 @@ if(global.level >= 5)
 	xpDrop = 1;
 
 isHurt = false;
+
+maxAttackCooldown = room_speed*0.8;
+attackCooldown = maxAttackCooldown;
 
 timeSinceFoundPlayer = 0;
 
@@ -41,39 +51,24 @@ if(!layer_exists("Enemies")) {
 }
 
 #region pathfinding
-//Dimensions of grid to check (scales with sprite dimensions)
-gridCheckWidth = 128;
+alert = false;
+detectionRange = 300;
 
-gridCheckHeight = 128;
+//Distance from player where enemy stops to attack
+attackDist = 1;
 
-
-//Grid to pathfind on (Enemy collision mask must be less than size of grid cell. in this example, enemy is less than 16x16)
-grid = mp_grid_create(0, 0, room_width/gridCheckWidth, room_height/gridCheckHeight, gridCheckWidth, gridCheckHeight);
-//Add solids to collide with
-mp_grid_add_instances(grid, obj_solid, 0);
+deadTime = 0;
 
 path = path_add();
 
-alarm[0] = 1;
+var w = ceil(room_width/sprite_width);
+var h = ceil(room_height/sprite_height);
+//Create grid fir enemy pathfinding
+grid = mp_grid_create(0, 0, w, h, sprite_width, sprite_height);
 
-targX = obj_player.x;
-targY = obj_player.y;
+//Add solids to grid
+mp_grid_add_instances(grid, obj_solid, 0);
 
-resetPath = function(targetX = obj_player.x, targetY = obj_player.y) {
-	targX = targetX;
-	targY = targetY;
-
-	path_delete(path);
-	path = path_add();
-
-	//Make path
-	mp_grid_path(grid, path, x,y, targX, targY, 0);
-
-	//Walk on path
-	path_start(path, hspWalk, path_action_stop, true);
-}
-	
-spawnLocX = x;
-spawnLocY = y;
+alarm_set(0, 10);
 
 #endregion pathfinding
