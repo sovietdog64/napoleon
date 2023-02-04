@@ -107,7 +107,7 @@ else
 		//Using items when holding down left
 		if(mouse_check_button(mb_left) && leftAttackCooldown <= 0) {
 			if(isFirearm(heldItem)) {
-				leftAttackCooldown = heldItem.cooldown;
+				leftAttackCooldown = heldItem.cooldown+2;
 				var firedBullet = fireBullet(x, y, mouse_x, mouse_y, heldItem);
 				//If mag empty, try reloading
 				if(!firedBullet) {
@@ -123,7 +123,7 @@ else
 							assetIndex : copy.reloadSeq,
 						}
 						array_push(followingSequences, seqStruct);
-						leftAttackCooldown = copy.reloadDuration;
+						leftAttackCooldown = copy.reloadDuration+2;
 					}
 				}
 				else if(firedBullet && instance_exists(obj_camera))

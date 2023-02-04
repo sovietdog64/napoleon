@@ -4,5 +4,6 @@ pickedUp = false;
 canBePickedUp = false;
 pickUpCoolDown = room_speed*0.3;
 item = 0;
+lifeSpan = room_speed*30;
 image_xscale = 0.5;
 image_yscale = 0.5;

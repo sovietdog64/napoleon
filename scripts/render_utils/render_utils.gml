@@ -236,6 +236,20 @@ function camY() {return camera_get_view_y(view_camera[0]);}
 			}
 		}
 	}
+		
+	function drawInteraction(imageFrame, xx, yy) {
+		if(!variable_instance_exists(id, "drawInteractionProgress"))
+			variable_instance_set(id, "drawInteractionProgress", 0);
+		if(drawInteractionProgress < 1)
+			drawInteractionProgress += 1/(room_speed*0.3);
+		draw_sprite_part(spr_interactions, imageFrame, 0,0, INTERACTION_W, INTERACTION_H*drawInteractionProgress, xx, yy);
+	}
+	
+	function resetInteractionProgress() {
+		if(!variable_instance_exists(id, "drawInteractionProgress"))
+			variable_instance_set(id, "drawInteractionProgress", 0);
+		drawInteractionProgress = 0;
+	}
 }
 
 function distanceBetweenPoints(x1, y1, x2, y2) {

@@ -165,6 +165,17 @@ function isItem(item) {
 	return is_struct(item) && variable_struct_exists(item, "itemSpr");
 }
 	
+function purchaseItem(item, price, levelReq) {
+	//TODO:check if enough money
+	if(global.level >= levelReq) {
+		giveItemToPlayer(id.item)
+		//TODO:Take away money
+	}
+	else if(global.level <= levelReq){
+		newTextBox("$FF0000 Need level " + string(levelReq), , 2);
+	}
+}
+	
 function getItemFromInv(itemSprite, amountNeeded = 1) {
 	for(var i=0; i<array_length(global.hotbarItems); i++) {
 		var invItem = global.hotbarItems[i];

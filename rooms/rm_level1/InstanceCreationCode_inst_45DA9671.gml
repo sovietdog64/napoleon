@@ -1,2 +1,2 @@
 npcName = "Gunsmith";
-dialogueList = [["Would you mind looking through my products?", "1:Sure", "0:No. Thanks, sir."]];
+dialogueList = ["Hello!", "Look around and see what you need."];
