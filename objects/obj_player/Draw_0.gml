@@ -11,11 +11,28 @@ if(!isItem(heldItem)) {
 else if(!global.dead && isFirearm(heldItem) && leftAttackCooldown <= 0) {
 	sprite_index = spr_playerNoHands;
 	var mouseDir = point_direction(xOrigin, yOrigin, mouse_x, mouse_y);
-	var dist = 42;
+	var dist = 32;
+	//Facing right
 	if(mouse_x >= x) {
-		var xx = xOrigin+(dist*dcos(mouseDir));
-		var yy = yOrigin+(-dist*dsin(mouseDir));
-		drawLimbLeftSpr(spr_playerA)
+		image_xscale = abs(image_xscale);
+		var xx = xOrigin+(dist*dcos(mouseDir-10));
+		var yy = yOrigin+(-dist*dsin(mouseDir-10));
+		drawLimbLeftSpr(spr_playerArmB, spr_playerArmB, x, y, xx, yy);
+		draw_self();
+		xx = (xOrigin)+lengthdir_x(dist, mouseDir);
+		yy = yOrigin+lengthdir_y(dist, mouseDir);
+		drawLimbLeftSpr(spr_playerArmF, spr_playerArmF, x, y, xx, yy);
+	}
+	//Facing left
+	else {
+		image_xscale = -abs(image_xscale);
+		var xx = xOrigin+lengthdir_x(dist, mouseDir+5);
+		var yy = yOrigin+lengthdir_y(dist, mouseDir+5);
+		drawLimbRightSpr(spr_playerArmB, spr_playerArmB, x, y, xx, yy);
+		draw_self();
+		xx = (xOrigin)+lengthdir_x(dist, mouseDir);
+		yy = yOrigin+lengthdir_y(dist, mouseDir);
+		drawLimbRightSpr(spr_playerArmF, spr_playerArmF, x, y, xx, yy);
 	}
 	//Drawing held item
 	xx = xOrigin+(20*dcos(mouseDir-1));
