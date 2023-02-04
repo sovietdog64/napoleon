@@ -70,6 +70,7 @@
     {"id":{"name":"spr_playerPunchRight","path":"sprites/spr_playerPunchRight/spr_playerPunchRight.yy",},"order":7,},
     {"id":{"name":"fnt_notif","path":"fonts/fnt_notif/fnt_notif.yy",},"order":1,},
     {"id":{"name":"obj_saveLoad","path":"objects/obj_saveLoad/obj_saveLoad.yy",},"order":0,},
+    {"id":{"name":"spr_invPanel","path":"sprites/spr_invPanel/spr_invPanel.yy",},"order":10,},
     {"id":{"name":"spr_chest","path":"sprites/spr_chest/spr_chest.yy",},"order":0,},
     {"id":{"name":"obj_triggerPosition","path":"objects/obj_triggerPosition/obj_triggerPosition.yy",},"order":3,},
     {"id":{"name":"spr_spiderQ","path":"sprites/spr_spiderQ/spr_spiderQ.yy",},"order":0,},

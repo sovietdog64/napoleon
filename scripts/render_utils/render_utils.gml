@@ -164,7 +164,7 @@ function camY() {return camera_get_view_y(view_camera[0]);}
 			draw_sprite_ext(spr_equippedSlot, 0, xx,yy, scl, scl, 0, c_white, 1);
 		else 
 			draw_sprite_ext(spr_invSlot, 0, xx, yy, scl, scl, 0, c_white, 1);
-		//If the item in the slot is not null, then draw it.
+		//If the slot is holding an item, draw it
 		if(item != -1) 
 			draw_sprite_ext(item, 0, xx, yy, scl, scl, 0, c_white, 1);
 		if(amount > 1) {

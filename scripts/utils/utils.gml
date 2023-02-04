@@ -34,6 +34,8 @@ function giveItemToPlayer(item) {
 }
 
 function copyStruct(struct){
+	if(!is_struct(struct))
+		return -1;
     var key, value;
     var newCopy = {};
     var keys = variable_struct_get_names(struct);
