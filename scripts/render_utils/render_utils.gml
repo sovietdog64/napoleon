@@ -87,6 +87,33 @@ function camY() {return camera_get_view_y(view_camera[0]);}
 		var dir = point_direction(jointX, jointY, targX, targY);
 		draw_sprite_ext(segment2Spr, 0, jointX, jointY, 1, 1, dir, c_white, 1);
 	}
+		
+	function drawFirearmRifle(gunSpr, armSegmSpr1, armSegmSpr2, xx, yy, targX, targY) {
+		var sprW = sprite_get_width(gunSpr);
+		var dir = point_direction(xx, yy, targX, targY);
+		var arm1Dist = sprW*0.15;
+		var arm2Dist = sprW*0.3;
+		if(targX > xx)  {
+			var tempX = xx+lengthdir_x(arm1Dist, dir-5);
+			var tempY = yy+lengthdir_y(arm1Dist, dir-5);
+			drawLimbLeftSpr(armSegmSpr1, armSegmSpr2, xx, yy, tempX, tempY);
+			draw_self();
+			draw_sprite_ext(gunSpr, 0, xx+lengthdir_x(30, dir), yy+lengthdir_y(30, dir), 0.5, 0.5, dir, c_white, 1);
+			tempX = xx+lengthdir_x(arm2Dist, dir);
+			tempY = yy+lengthdir_y(arm2Dist, dir);			
+			drawLimbLeftSpr(armSegmSpr1, armSegmSpr2, xx, yy, tempX, tempY);
+		}
+		else {
+			var tempX = xx+lengthdir_x(arm1Dist, dir+5);
+			var tempY = yy+lengthdir_y(arm1Dist, dir+5);
+			drawLimbRightSpr(armSegmSpr1, armSegmSpr2, xx, yy, tempX, tempY);
+			draw_self();
+			draw_sprite_ext(gunSpr, 0, xx+lengthdir_x(30, dir), yy+lengthdir_y(30, dir), 0.5, -0.5, dir, c_white, 1);
+			tempX = xx+lengthdir_x(arm2Dist, dir);
+			tempY = yy+lengthdir_y(arm2Dist, dir);			
+			drawLimbRightSpr(armSegmSpr1, armSegmSpr2, xx, yy, tempX, tempY);
+		}
+	}
 }
 
 {//USER INTERFACE

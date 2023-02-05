@@ -115,7 +115,7 @@ function sequenceGetName(sequenceId) {
 		return 0;
 	}
 	
-	function FirearmSemi(itemSprite, ammoItemSprite, projectileSprite, ammoNameStr, dmg, bulletSpeed, shootSeqIndex, reloadSeqIndex,  ammoStorageSize) constructor {
+	function FirearmSemi(itemSprite, ammoItemSprite, projectileSprite, ammoNameStr, dmg, bulletSpeed, shootDur, reloadSeqIndex,  ammoStorageSize) constructor {
 		//Sprite variables must end with "Spr" with correct capitalization in order to save correctly (i couldn't find any other way of doing this because gamemaker is a lil dum sometimes)
 		itemSpr = itemSprite;
 		firearm = true;
@@ -128,14 +128,13 @@ function sequenceGetName(sequenceId) {
 		bulletSpd = bulletSpeed;
 		//Sequence variables must end with "Seq" with correct capitalization in order to save correctly
 		reloadSeq = reloadSeqIndex;
-		shootSeq = shootSeqIndex;
 		ammoCapacity = ammoStorageSize;
 		currentAmmoAmount = ammoCapacity;
-		cooldown = getSequenceLength(shootSeqIndex)+1;
+		cooldown = shootDur;
 		reloadDuration = getSequenceLength(reloadSeqIndex)+1;
 	}
 	
-	function FirearmAuto(itemSprite, ammoItemSprite, projectileSprite, ammoNameStr, dmg, bulletSpeed, shootSeqIndex, reloadSeqIndex, ammoStorageSize) constructor {
+	function FirearmAuto(itemSprite, ammoItemSprite, projectileSprite, ammoNameStr, dmg, bulletSpeed, shootDur, reloadSeqIndex, ammoStorageSize) constructor {
 		//Sprite variables must end with "Spr" with correct capitalization in order to save correctly (i couldn't find any other way of doing this because gamemaker is a lil dum sometimes)
 		itemSpr = itemSprite;
 		firearm = true;
@@ -148,10 +147,9 @@ function sequenceGetName(sequenceId) {
 		bulletSpd = bulletSpeed;
 		//Sequence variables must end with "Seq" with correct capitalization in order to save correctly
 		reloadSeq = reloadSeqIndex;
-		shootSeq = shootSeqIndex;
 		ammoCapacity = ammoStorageSize;
 		currentAmmoAmount = ammoCapacity;
-		cooldown = getSequenceLength(shootSeqIndex)+1;
+		cooldown = shootDur;
 		reloadDuration = getSequenceLength(reloadSeqIndex)+1;
 	}
 	

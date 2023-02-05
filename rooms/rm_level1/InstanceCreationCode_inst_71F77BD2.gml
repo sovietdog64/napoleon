@@ -1,1 +1,1 @@
-item = new FirearmSemi(spr_musket, spr_musketBall, spr_musketBallProj, "Musket Ball", 20, 200, -1, musketReload, 1);
+item = new FirearmSemi(spr_musket, spr_musketBall, spr_musketBallProj, "Musket Ball", 20, 200, 0, musketReload, 1);

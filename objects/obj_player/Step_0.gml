@@ -127,20 +127,7 @@ else
 						leftAttackCooldown = copy.reloadDuration+2;
 					}
 				}
-				//Play shooting animation if there is one
-				else if(variable_struct_exists(heldItem, "shootSeq") && sequence_exists(heldItem.shootSeq)) {
-					var inst = placeSequenceAnimation(x, y, heldItem.shootSeq);
-					var copy = copyStruct(heldItem);
-					var seqStruct =
-					{
-						sequenceElementId : inst,
-						followImageScale : false,
-						followMouseDirection : true,
-						assetIndex : copy.shootSeq,
-					}
-					array_push(followingSequences, seqStruct);
-				}
-				if(firedBullet)
+				else
 					screenShake(room_speed*0.2, 10);
 			}
 		}

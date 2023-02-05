@@ -1,52 +1,10 @@
-var xOrigin = x;
-var yOrigin = y-3;
 var heldItem = global.hotbarItems[global.equippedItem];
 if(!isItem(heldItem)) {
 	draw_self();
 }
 else if(!global.dead && isFirearm(heldItem) && heldItem.currentAmmoAmount != 0) {
 	sprite_index = spr_playerNoHands;
-	var mouseDir = point_direction(xOrigin, yOrigin, mouse_x, mouse_y);
-	var dist = 32;
-	//Facing right
-	if(mouse_x >= x) {
-		image_xscale = abs(image_xscale);
-		var xx = xOrigin+(dist*dcos(mouseDir-10));
-		var yy = yOrigin+(-dist*dsin(mouseDir-10));
-		drawLimbLeftSpr(spr_playerArmB, spr_playerArmB, x, y, xx, yy);
-		draw_self();
-		xx = (xOrigin)+lengthdir_x(dist, mouseDir);
-		yy = yOrigin+lengthdir_y(dist, mouseDir);
-		drawLimbLeftSpr(spr_playerArmF, spr_playerArmF, x, y, xx, yy);
-	}
-	//Facing left
-	else {
-		image_xscale = -abs(image_xscale);
-		var xx = xOrigin+lengthdir_x(dist, mouseDir+5);
-		var yy = yOrigin+lengthdir_y(dist, mouseDir+5);
-		drawLimbRightSpr(spr_playerArmB, spr_playerArmB, x, y, xx, yy);
-		draw_self();
-		xx = (xOrigin)+lengthdir_x(dist, mouseDir);
-		yy = yOrigin+lengthdir_y(dist, mouseDir);
-		drawLimbRightSpr(spr_playerArmF, spr_playerArmF, x, y, xx, yy);
-	}
-	//Drawing held item
-	if(leftAttackCooldown <= 0) {
-		xx = xOrigin+lengthdir_x(20, mouseDir-1);
-		yy = yOrigin+lengthdir_y(20, mouseDir-1);
-
-		var yScale = -0.5
-		if(mouseDir >= 270 || mouseDir <= 90)
-			yScale *= -1;
-		draw_sprite_ext(heldItem.itemSpr, 0, xx, yy, 0.5, yScale, mouseDir, c_white, 1);
-	}
-}
-else if(!global.dead && heldItem.itemSpr == spr_musket) {
-	draw_self();
-}
-else if(heldItem.itemSpr != spr_boxingGloves){
-	sprite_index = spr_player;
-	draw_self();
+	drawFirearmRifle(spr_m16, spr_playerArmF, spr_playerArmF, x, y, mouse_x, mouse_y);
 }
 else {
 	draw_self();
@@ -76,3 +34,4 @@ if(global.stamina < global.maxStamina) {
 	
 	image_xscale = temp;
 }
+
