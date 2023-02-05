@@ -3,7 +3,6 @@
 //Returns 1 if successfully gave item. Returns 0 if inventory too full
 function giveItemToPlayer(item) {
 	//Trying to give to hotbar
-	show_debug_message(item);
 	for(var i=0; i<array_length(global.hotbarItems); i++) {
 		var hotbarItem = global.hotbarItems[i];
 		if(isItem(hotbarItem)) {

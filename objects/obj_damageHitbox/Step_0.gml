@@ -36,9 +36,7 @@ if(!enemyHit) {
 			var inst = ds_list_find_value(enemies, i);
 			damageEntity(inst, dmgSourceInst, damage, knockbackDur);
 		
-			//Screen shake
-			if(instance_exists(obj_camera))
-				obj_camera.screenShake(scrnShakeDur, scrnShakeLevel);
+			screenShake(scrnShakeDur, scrnShakeLevel);
 		
 			array_push(enemiesHit, inst);
 		}
