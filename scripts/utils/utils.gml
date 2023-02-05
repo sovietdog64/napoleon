@@ -115,10 +115,11 @@ function sequenceGetName(sequenceId) {
 		return 0;
 	}
 	
-	function Firearm(itemSprite, ammoItemSprite, projectileSprite, ammoNameStr, dmg, bulletSpeed, reloadSeqIndex, fireCooldown, ammoStorageSize, reloadCooldown) constructor {
+	function FirearmSemi(itemSprite, ammoItemSprite, projectileSprite, ammoNameStr, dmg, bulletSpeed, shootSeqIndex, reloadSeqIndex, fireCooldown, ammoStorageSize, reloadCooldown) constructor {
 		//Sprite variables must end with "Spr" with correct capitalization in order to save correctly (i couldn't find any other way of doing this because gamemaker is a lil dum sometimes)
 		itemSpr = itemSprite;
 		firearm = true;
+		fireMode = "semi"
 		amount = 1;
 		ammoItemSpr = ammoItemSprite;
 		projectileSpr = projectileSprite;
@@ -127,11 +128,19 @@ function sequenceGetName(sequenceId) {
 		bulletSpd = bulletSpeed;
 		//Sequence variables must end with "Seq" with correct capitalization in order to save correctly
 		reloadSeq = reloadSeqIndex;
+		shootSeq = shootSeqIndex;
 		cooldown = fireCooldown;
 		ammoCapacity = ammoStorageSize;
 		currentAmmoAmount = ammoCapacity;
 		reloadDuration = reloadCooldown;
 	}
+	
+	function FirearmAuto(itemSprite, ammoItemSprite, projectileSprite, ammoNameStr, dmg, bulletSpeed, shootSeqIndex, reloadSeqIndex, fireCooldown, ammoStorageSize, reloadCooldown) constructor {
+		var firearm = new FirearmSemi(itemSprite, ammoItemSprite, projectileSprite, ammoNameStr, dmg, bulletSpeed, shootSeqIndex, reloadSeqIndex, fireCooldown, ammoStorageSize, reloadCooldown); 
+		firearm.fireMode = "auto";
+	}
+	
+	
 	
 	function isFirearm(item) {
 		return isItem(item) && variable_struct_exists(item, "firearm") && item.firearm;
@@ -200,7 +209,7 @@ function stringContainsNoCase(str, substr) {
 }
 
 //Returns if string contains substring WITH case sensitivity
-function stringContains(str, substr) {
+function stringContains(substr, str) {
 	return string_pos(substr, str);
 }
 	
@@ -320,4 +329,30 @@ function raycast4Directional(distance, incrementInPixels, preciseCheck) {
 		}
 	}
 	return undefined;
+}
+	
+function getVarAssetName(varName, varValue) {
+	if (stringContains("Spr", varName))
+		return sprite_get_name(varValue);
+		
+	if (stringContains("Seq", varName))
+		return sequenceGetName(varValue); 
+		
+	if (stringContains("Obj", varName))
+		return object_get_name(varValue);
+		
+	if (stringContains("Rm", varName) || stringContains("Room", varName))
+		return room_get_name(varValue);
+	return 0;
+}
+
+function instSetVars(inst, varStruct) {
+	var keys = variable_struct_get_names(varStruct);
+	for(var i=0; i<array_length(keys); i++) {
+		var key = keys[i], value = variable_struct_get(varStruct, key);
+		if(is_string(value))
+			if(asset_get_type(value) != asset_unknown)
+				value = asset_get_index(value);
+		variable_instance_set(inst, key, value);
+	}
 }

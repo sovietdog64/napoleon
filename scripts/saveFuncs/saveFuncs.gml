@@ -64,12 +64,9 @@ function saveRoom() {
 		    for (var j = array_length(keys)-1; j >= 0; --j) {
 		        key = keys[j];
 		        value = variable_struct_get(instItemStruct, key);
-				if(string_last_pos("Spr", key)) {
-					value = sprite_get_name(value);
-				}
-				else if(string_last_pos("Seq", key)) {
-					value = sequenceGetName(value);
-				}
+				var assetName = getVarAssetName(key, value);
+				if(assetName != 0)
+					value = assetName;
 				//TODO: may add more asset types if necessary
 		        variable_struct_set(tempStruct, key, value)
 		    }
@@ -88,42 +85,28 @@ function saveRoom() {
 		array_push(roomStruct.items, itemStruct);
 	}
 	
-	//Ships
-	for(var i=0; i<instance_number(obj_ship); i++)  {
-		var ship = instance_find(obj_ship, i);
-		var shipStruct =
-		{
-			x : ship.x,
-			y : ship.y,
-			hasSetSpawnPoint : ship.hasSetSpawnPoint,
-		}
-		array_push(roomStruct.ships, shipStruct);
-	}
-	
 	//Enemies (ones that should be saved.)
-	for(var i=0; i<array_length(global.allSaveableEnemyObjects); i++) {
-		var enemyNum = instance_number(global.allSaveableEnemyObjects[i]);
-		var enemyObjInstances = array_create(0);
-		//Adding all instances of enemy obj to a temp variable
-		for(var j=0; j<enemyNum; j++) {
-			var enemy = instance_find(global.allSaveableEnemyObjects[i], j);
-			var enemyStruct = 
-			{
-				x : enemy.x,
-				y : enemy.y,
-				hp : enemy.hp,
-				maxHp : enemy.maxHp,
-				hsp : enemy.hsp,
-				vsp : enemy.vsp,
-				hspWalk : enemy.hspWalk,
-				vspJump : enemy.vspJump,
-				drops : enemy.drops,
-				xpDrop : xpDrop,
-			}
-			array_push(enemyObjInstances, enemyStruct);
+	for(var i=0; i<instance_number(obj_enemy); i++) {
+		var enemy = instance_find(obj_enemy, i);
+		if(!variable_instance_exists(enemy, "shouldSave") || !enemy.shouldSave)
+			continue;
+		if(!variable_instance_exists(enemy, "saveVars") || !enemy.saveVars)
+			continue;
+		//Store all instance variables in struct
+		var struct = {};
+		var keys = variable_instance_get_names(enemy);
+		for(var j=0; j<array_length(keys); j++) {
+			var key = keys[j], value = variable_instance_get(enemy, key);
+			var assetName = getVarAssetName(key, value);
+			if(assetName != 0)
+				value = assetName;
+			variable_struct_set(struct, key, value);
 		}
-		//Add the whole array of enemy object instances into one index of array of enemies in the room.
-		array_push(roomStruct.enemies, enemyObjInstances);
+		variable_struct_set(struct, "x", enemy.x);
+		variable_struct_set(struct, "y", enemy.y);
+		variable_struct_set(struct, "objIndex", object_get_name(enemy.object_index));
+		//Add enemy to room save
+		array_push(roomStruct.enemies, struct);
 	}
 	
 	//Chests
@@ -142,12 +125,9 @@ function saveRoom() {
 			    for (var l = array_length(keys)-1; l >= 0; --l) {
 			        key = keys[l];
 			        value = variable_struct_get(itemStruct, key);
-					if(string_last_pos("Spr", key)) {
-						value = sprite_get_name(value);
-					}
-					else if(string_last_pos("Seq", key)) {
-						value = sequenceGetName(value);
-					}
+					var assetName = getVarAssetName(key, value);
+					if(assetName != 0)
+						value = assetName;
 					//TODO: may add more asset types if necessary
 			        variable_struct_set(tempStruct, key, value)
 			    }
@@ -228,17 +208,6 @@ function loadRoom() {
 		inst.item = tempStruct;
 	}
 	
-	//Ships
-	if(instance_exists(obj_ship))
-		instance_destroy(obj_ship);
-	
-	for(var i=0; i<array_length(roomStruct.ships); i++) {
-		var savedShip = roomStruct.ships[i];
-		var inst = instance_create_layer(savedShip.x, savedShip.y, "Instances", obj_ship);
-		inst.x = savedShip.x;
-		inst.y = savedShip.y;
-		inst.hasSetSpawnPoint = savedShip.hasSetSpawnPoint;
-	}
 	
 	//Chests
 	if(instance_exists(obj_chest))
@@ -278,23 +247,17 @@ function loadRoom() {
 	}
 		
 	//Enemies
-	for(var i=0; i<array_length(global.allSaveableEnemyObjects); i++) {
-		if(instance_exists(global.allSaveableEnemyObjects[i]))
-			instance_destroy(global.allSaveableEnemyObjects[i]);
-		for(var j=0; j<array_length(roomStruct.enemies); j++) {
-			var savedEnemy = roomStruct.enemies[i][j];
-			var inst = instance_create_layer(savedEnemy.x, savedEnemy.y, "Enemies", global.allSaveableEnemyObjects[i], savedEnemy);
-			inst.x = savedEnemy.x;
-			inst.y = savedEnemy.y;
-			inst.hp = savedEnemy.hp;
-			inst.maxHp = savedEnemy.maxHp;
-			inst.hsp = savedEnemy.hsp;
-			inst.vsp = savedEnemy.vsp;
-			inst.hspWalk = savedEnemy.hspWalk;
-			inst.vspJump = savedEnemy.vspJump;
-			inst.drops = savedEnemy.drops;
-			inst.xpDrop = xpDrop;
-		}
+	for(var i=0; i<instance_number(obj_enemy); i++) {
+		var enemy = instance_find(obj_enemy, i);
+		if(!variable_instance_exists(enemy, "shouldSave") || !enemy.shouldSave)
+			continue;
+		instance_destroy(enemy);
+	}
+		
+	for(var i=0; i<array_length(roomStruct.enemies); i++) {
+		var saved = roomStruct.enemies[i];
+		var inst = instance_create_layer(saved.x, saved.y, "Enemies", asset_get_index(saved.objIndex));
+		instSetVars(inst, saved);
 	}
 	
 	//NPCs
