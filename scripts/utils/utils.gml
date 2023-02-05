@@ -13,7 +13,7 @@ function giveItemToPlayer(item) {
 			else 
 				continue;
 		}
-		global.hotbarItems[i] = item;
+		global.hotbarItems[i] = copyStruct(item);
 		return 1;
 	}
 	//Trying to give to inventory
