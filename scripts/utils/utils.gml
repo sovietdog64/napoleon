@@ -3,6 +3,7 @@
 //Returns 1 if successfully gave item. Returns 0 if inventory too full
 function giveItemToPlayer(item) {
 	//Trying to give to hotbar
+	show_debug_message(item);
 	for(var i=0; i<array_length(global.hotbarItems); i++) {
 		var hotbarItem = global.hotbarItems[i];
 		if(isItem(hotbarItem)) {
@@ -68,17 +69,17 @@ function sequenceGetName(sequenceId) {
 
 {//Fire arm
 	function fireBullet(shooterX, shooterY, targX, targY, firearm) {
-							if(firearm.currentAmmoAmount <= 0) {
-								return 0;
-							}
-							var bullet = instance_create_layer(shooterX, shooterY, "Instances", obj_bullet);
-							bullet.sprite_index = firearm.projectileSpr;
-							bullet.direction = point_direction(shooterX, shooterY, targX, targY);
-							bullet.spd = firearm.bulletSpd;
-							bullet.damage = firearm.damage;
-							firearm.currentAmmoAmount--;
-							return 1;
-						}
+		if(firearm.currentAmmoAmount <= 0) {
+			return 0;
+		}
+		var bullet = instance_create_layer(shooterX, shooterY, "Instances", obj_bullet);
+		bullet.sprite_index = firearm.projectileSpr;
+		bullet.direction = point_direction(shooterX, shooterY, targX, targY);
+		bullet.spd = firearm.bulletSpd;
+		bullet.damage = firearm.damage;
+		firearm.currentAmmoAmount--;
+		return 1;
+	}
 	//Returns 1 if reloaded, 0 if no more ammo left completely
 	function reload(firearm) {
 		//Finding ammo in hotbar
@@ -115,7 +116,7 @@ function sequenceGetName(sequenceId) {
 		return 0;
 	}
 	
-	function FirearmSemi(itemSprite, ammoItemSprite, projectileSprite, ammoNameStr, dmg, bulletSpeed, shootSeqIndex, reloadSeqIndex, fireCooldown, ammoStorageSize, reloadCooldown) constructor {
+	function FirearmSemi(itemSprite, ammoItemSprite, projectileSprite, ammoNameStr, dmg, bulletSpeed, shootSeqIndex, reloadSeqIndex,  ammoStorageSize) constructor {
 		//Sprite variables must end with "Spr" with correct capitalization in order to save correctly (i couldn't find any other way of doing this because gamemaker is a lil dum sometimes)
 		itemSpr = itemSprite;
 		firearm = true;
@@ -129,15 +130,30 @@ function sequenceGetName(sequenceId) {
 		//Sequence variables must end with "Seq" with correct capitalization in order to save correctly
 		reloadSeq = reloadSeqIndex;
 		shootSeq = shootSeqIndex;
-		cooldown = fireCooldown;
 		ammoCapacity = ammoStorageSize;
 		currentAmmoAmount = ammoCapacity;
-		reloadDuration = reloadCooldown;
+		cooldown = getSequenceLength(shootSeqIndex)+1;
+		reloadDuration = getSequenceLength(reloadSeqIndex)+1;
 	}
 	
-	function FirearmAuto(itemSprite, ammoItemSprite, projectileSprite, ammoNameStr, dmg, bulletSpeed, shootSeqIndex, reloadSeqIndex, fireCooldown, ammoStorageSize, reloadCooldown) constructor {
-		var firearm = new FirearmSemi(itemSprite, ammoItemSprite, projectileSprite, ammoNameStr, dmg, bulletSpeed, shootSeqIndex, reloadSeqIndex, fireCooldown, ammoStorageSize, reloadCooldown); 
-		firearm.fireMode = "auto";
+	function FirearmAuto(itemSprite, ammoItemSprite, projectileSprite, ammoNameStr, dmg, bulletSpeed, shootSeqIndex, reloadSeqIndex, ammoStorageSize) constructor {
+		//Sprite variables must end with "Spr" with correct capitalization in order to save correctly (i couldn't find any other way of doing this because gamemaker is a lil dum sometimes)
+		itemSpr = itemSprite;
+		firearm = true;
+		fireMode = "auto";
+		amount = 1;
+		ammoItemSpr = ammoItemSprite;
+		projectileSpr = projectileSprite;
+		ammoName = ammoNameStr;
+		damage = dmg;
+		bulletSpd = bulletSpeed;
+		//Sequence variables must end with "Seq" with correct capitalization in order to save correctly
+		reloadSeq = reloadSeqIndex;
+		shootSeq = shootSeqIndex;
+		ammoCapacity = ammoStorageSize;
+		currentAmmoAmount = ammoCapacity;
+		cooldown = getSequenceLength(shootSeqIndex)+1;
+		reloadDuration = getSequenceLength(reloadSeqIndex)+1;
 	}
 	
 	
@@ -354,5 +370,21 @@ function instSetVars(inst, varStruct) {
 			if(asset_get_type(value) != asset_unknown)
 				value = asset_get_index(value);
 		variable_instance_set(inst, key, value);
+	}
+}
+
+function getSequenceLength(sequenceAssetID) {
+	if(!sequence_exists(sequenceAssetID))
+		return -1;
+	return sequence_get(sequenceAssetID).length;
+}
+	
+function screenShake(duration, screenShakeLevel) {
+	if(instance_exists(obj_camera)) {
+		with(obj_camera) {
+			screenShakeDuration = duration;
+			screenShakeLvl = screenShakeLevel;
+			alarm_set(0, 1);
+		}
 	}
 }

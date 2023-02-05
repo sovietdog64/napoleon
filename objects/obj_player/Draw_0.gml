@@ -1,7 +1,3 @@
-//Limb segment lengths
-var len1 = 20;
-var len2 = 30;
-
 var xOrigin = x;
 var yOrigin = y-3;
 var heldItem = global.hotbarItems[global.equippedItem];

@@ -107,7 +107,7 @@ else
 		//Using items when holding down left
 		if(mouse_check_button(mb_left) && leftAttackCooldown <= 0) {
 			if(isFirearm(heldItem)) {
-				leftAttackCooldown = heldItem.cooldown+2;
+				leftAttackCooldown = heldItem.cooldown;
 				var firedBullet = fireBullet(x, y, mouse_x, mouse_y, heldItem);
 				//If mag empty, try reloading
 				if(!firedBullet) {
@@ -119,15 +119,29 @@ else
 						var seqStruct =
 						{
 							sequenceElementId : inst,
-							followPlayerScale : true,
+							followImageScale : true,
+							followMouseDirection : false,
 							assetIndex : copy.reloadSeq,
 						}
 						array_push(followingSequences, seqStruct);
 						leftAttackCooldown = copy.reloadDuration+2;
 					}
 				}
-				else if(firedBullet && instance_exists(obj_camera))
-					obj_camera.screenShake(room_speed*0.2, 10);
+				//Play shooting animation if there is one
+				else if(variable_struct_exists(heldItem, "shootSeq") && sequence_exists(heldItem.shootSeq)) {
+					var inst = placeSequenceAnimation(x, y, heldItem.shootSeq);
+					var copy = copyStruct(heldItem);
+					var seqStruct =
+					{
+						sequenceElementId : inst,
+						followImageScale : true,
+						followMouseDirection : true,
+						assetIndex : copy.shootSeq,
+					}
+					array_push(followingSequences, seqStruct);
+				}
+				if(firedBullet)
+					screenShake(room_speed*0.2, 10);
 			}
 		}
 	}
@@ -136,6 +150,7 @@ else
 //Make specific sequences follow player
 for(var i=0; i<array_length(followingSequences); i++) {
 	var seq = followingSequences[i].sequenceElementId;
+	var struct = followingSequences[i];
 	if(!layer_sequence_exists("Animations", seq))
 		continue;
 	//if sequence finished, destroy instance
@@ -144,7 +159,7 @@ for(var i=0; i<array_length(followingSequences); i++) {
 		if(isFirearm(heldItem)) {
 			if(!layer_sequence_exists("Animations", seq))
 				continue;
-			if(followingSequences[i].assetIndex == heldItem.reloadSeq) {
+			if(struct.assetIndex == heldItem.reloadSeq) {
 				reload(heldItem);
 			}
 		}
@@ -152,11 +167,11 @@ for(var i=0; i<array_length(followingSequences); i++) {
 		array_delete(followingSequences, i, 1);
 		continue;
 	}
-	var seqName = sequenceGetName(followingSequences[i].assetIndex);
+	var seqName = sequenceGetName(struct.assetIndex);
 	//If sequence is a reload sequence, 
 	if(string_pos("Reload", seqName)) {
 		//If held item is fire arm and it is not matching the reloading seuqence, destroy sequence.
-		if(isFirearm(heldItem) && heldItem.reloadSeq != followingSequences[i].assetIndex) {
+		if(isFirearm(heldItem) && heldItem.reloadSeq != struct.assetIndex) {
 			leftAttackCooldown = 0;
 			layer_sequence_destroy(seq);
 			continue;
@@ -169,15 +184,20 @@ for(var i=0; i<array_length(followingSequences); i++) {
 	}
 	layer_sequence_x(seq, x);
 	layer_sequence_y(seq, y);
-	if(variable_struct_exists(followingSequences[i], "followPlayerScale") && followingSequences[i].followPlayerScale) {
+	//Make sequence copy image scale/direction of mouse if specified to do so
+	if(variable_struct_exists(struct, "followImageScale") && struct.followImageScale) {
 		layer_sequence_xscale(seq, image_xscale);
 		layer_sequence_yscale(seq, image_yscale);
 	}
+	if(variable_struct_exists(struct, "followMouseDirection") && struct.followMouseDirection)
+		layer_sequence_angle(seq, point_direction(x, y, mouse_x, mouse_y)-180);
+	
 }
 
-if(debug_mode)
+if(debug_mode) {
 	global.level = 5;
 	global.levelUpThreshold = 480;
+}
 
 global.stamina = clamp(global.stamina, 0, global.maxStamina);
 
@@ -227,7 +247,7 @@ if(runCooldown > 0)
 		y += vsp;
 	}
 }
-	
+
 {//Enemy collision
 		if(hurtCooldown > 0) 
 			hurtCooldown--;

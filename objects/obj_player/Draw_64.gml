@@ -131,6 +131,7 @@ if(!invOpen && !global.dead) {
 	}
 }
 
+//Health, quest, and crosshair/amount of ammo
 if(!invOpen) {
 	//Drawing health
 	for(var i = 0; i < global.hp; i++) {
@@ -182,8 +183,6 @@ if(!invOpen) {
 			if(heldItem.currentAmmoAmount <= 0)
 				draw_set_color(c_red);
 			var strToDraw = heldItem.ammoName + ": " + string(heldItem.currentAmmoAmount);
-			if(leftAttackCooldown > 0)
-				strToDraw = "...";
 		
 			draw_text_transformed(mouseX, mouseY-80, strToDraw, 1, 1, 0);
 		}

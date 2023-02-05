@@ -5,7 +5,7 @@ vsp = 0;
 hspWalk = 7;
 vspJump = -10;
 jumpCooldown = room_speed*0.7;
-maxHp = 5;
+maxHp = 200;
 hp = maxHp;	
 
 state = states.MOVE;
