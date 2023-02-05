@@ -134,7 +134,7 @@ else
 					var seqStruct =
 					{
 						sequenceElementId : inst,
-						followImageScale : true,
+						followImageScale : false,
 						followMouseDirection : true,
 						assetIndex : copy.shootSeq,
 					}
@@ -190,8 +190,7 @@ for(var i=0; i<array_length(followingSequences); i++) {
 		layer_sequence_yscale(seq, image_yscale);
 	}
 	if(variable_struct_exists(struct, "followMouseDirection") && struct.followMouseDirection)
-		layer_sequence_angle(seq, point_direction(x, y, mouse_x, mouse_y)-180);
-	
+		layer_sequence_angle(seq, point_direction(x, y, mouse_x, mouse_y));
 }
 
 if(debug_mode) {

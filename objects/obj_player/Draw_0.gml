@@ -4,7 +4,7 @@ var heldItem = global.hotbarItems[global.equippedItem];
 if(!isItem(heldItem)) {
 	draw_self();
 }
-else if(!global.dead && isFirearm(heldItem) && leftAttackCooldown <= 0) {
+else if(!global.dead && isFirearm(heldItem) && heldItem.currentAmmoAmount != 0) {
 	sprite_index = spr_playerNoHands;
 	var mouseDir = point_direction(xOrigin, yOrigin, mouse_x, mouse_y);
 	var dist = 32;
@@ -31,13 +31,15 @@ else if(!global.dead && isFirearm(heldItem) && leftAttackCooldown <= 0) {
 		drawLimbRightSpr(spr_playerArmF, spr_playerArmF, x, y, xx, yy);
 	}
 	//Drawing held item
-	xx = xOrigin+lengthdir_x(20, mouseDir-1);
-	yy = yOrigin+lengthdir_y(20, mouseDir-1);
+	if(leftAttackCooldown <= 0) {
+		xx = xOrigin+lengthdir_x(20, mouseDir-1);
+		yy = yOrigin+lengthdir_y(20, mouseDir-1);
 
-	var yScale = -0.5
-	if(mouseDir >= 270 || mouseDir <= 90)
-		yScale *= -1;
-	draw_sprite_ext(heldItem.itemSpr, 0, xx, yy, 0.5, yScale, mouseDir, c_white, 1);
+		var yScale = -0.5
+		if(mouseDir >= 270 || mouseDir <= 90)
+			yScale *= -1;
+		draw_sprite_ext(heldItem.itemSpr, 0, xx, yy, 0.5, yScale, mouseDir, c_white, 1);
+	}
 }
 else if(!global.dead && heldItem.itemSpr == spr_musket) {
 	draw_self();
