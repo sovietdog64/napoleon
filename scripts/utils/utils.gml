@@ -115,7 +115,7 @@ function sequenceGetName(sequenceId) {
 		return 0;
 	}
 	
-	function FirearmSemi(itemSprite, ammoItemSprite, projectileSprite, ammoNameStr, dmg, bulletSpeed, shootDur, reloadSeqIndex,  ammoStorageSize) constructor {
+	function FirearmSemi(itemSprite, ammoItemSprite, projectileSprite, ammoNameStr, dmg, bulletSpeed, shootDur, reloadSeqIndex,  ammoStorageSize, magSprite = -1, noMagSprite = -1) constructor {
 		//Sprite variables must end with "Spr" with correct capitalization in order to save correctly (i couldn't find any other way of doing this because gamemaker is a lil dum sometimes)
 		itemSpr = itemSprite;
 		firearm = true;
@@ -132,9 +132,11 @@ function sequenceGetName(sequenceId) {
 		currentAmmoAmount = ammoCapacity;
 		cooldown = shootDur;
 		reloadDuration = getSequenceLength(reloadSeqIndex)+1;
+		magSpr = magSprite;
+		noMagSpr = noMagSprite;
 	}
 	
-	function FirearmAuto(itemSprite, ammoItemSprite, projectileSprite, ammoNameStr, dmg, bulletSpeed, shootDur, reloadSeqIndex, ammoStorageSize) constructor {
+	function FirearmAuto(itemSprite, ammoItemSprite, projectileSprite, ammoNameStr, dmg, bulletSpeed, shootDur, reloadSeqIndex, ammoStorageSize, magSprite = -1, noMagSprite = -1) constructor {
 		//Sprite variables must end with "Spr" with correct capitalization in order to save correctly (i couldn't find any other way of doing this because gamemaker is a lil dum sometimes)
 		itemSpr = itemSprite;
 		firearm = true;
@@ -151,6 +153,8 @@ function sequenceGetName(sequenceId) {
 		currentAmmoAmount = ammoCapacity;
 		cooldown = shootDur;
 		reloadDuration = getSequenceLength(reloadSeqIndex)+1;
+		magSpr = magSprite;
+		noMagSpr = noMagSprite;
 	}
 	
 	
@@ -384,4 +388,11 @@ function screenShake(duration, screenShakeLevel) {
 			alarm_set(0, 1);
 		}
 	}
+}
+	
+function dropItem(item, xx, yy) {
+	if(!isItem(item))
+		return 0;
+	var inst = instance_create_layer(xx, yy, "Interactables", obj_item);
+	inst.item = item;
 }

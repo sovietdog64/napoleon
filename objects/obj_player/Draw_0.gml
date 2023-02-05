@@ -4,7 +4,7 @@ if(!isItem(heldItem)) {
 }
 else if(!global.dead && isFirearm(heldItem) && heldItem.currentAmmoAmount != 0) {
 	sprite_index = spr_playerNoHands;
-	drawFirearmRifle(spr_m16, spr_playerArmF, spr_playerArmF, x, y, mouse_x, mouse_y);
+	drawFirearmRifle(heldItem.itemSpr, spr_playerArmF, spr_playerArmF, x, y, mouse_x, mouse_y);
 }
 else {
 	draw_self();
