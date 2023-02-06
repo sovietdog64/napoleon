@@ -21,7 +21,6 @@ isHurt = false;
 
 if(!variable_global_exists("hp"))global.hp = 5;//health
 if(!variable_global_exists("dead"))global.dead = false;
-sprite_index = spr_player;
 leftAttackCooldown = 0;
 
 enteredX = x;
@@ -48,3 +47,14 @@ knockBack = function(damageX, damageY, kbLevel) {
 	hsp = (kbLevel*dcos(dir));
 	vsp = (-kbLevel*dsin(dir));
 }
+
+//Vars for limb positions
+shoulderB = new Point(x, y)
+handB = new Point(x+10, y+10);
+shoulderF = new Point(x, y);
+handF = new Point(x+10, y+10);
+
+handProgress = 0;
+handDir = 3;
+
+itemAnimation = itemAnimations.NONE;

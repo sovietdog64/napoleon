@@ -11,3 +11,4 @@ if(hp == 0)
 	var barLength = (sprite_width)*(hp/maxHp)-1;
 	draw_rectangle(xx+1, yy+1, xx+barLength, yy2-1, 0);
 }
+	

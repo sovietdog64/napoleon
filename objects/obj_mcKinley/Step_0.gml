@@ -1,3 +1,4 @@
+#region attacks/actions
 attackCooldown--;
 if(state == states.DEAD) {
 	path_end();
@@ -48,13 +49,13 @@ if(attackState == attackStates.MELEE && attackCooldown <= 0) {
 	inst.instToFollow = id;
 	inst.dmgSourceInst = id;
 	var dir = point_direction(x, y, obj_player.x, obj_player.y);
-	inst.followOffsetX = lengthdir_x(sprite_width/2, dir);
-	inst.followOffsetY = lengthdir_y(sprite_width/2, dir);
+	inst.followOffsetX = lengthdir_x(sprite_width, dir);
+	inst.followOffsetY = lengthdir_y(sprite_width, dir);
 	inst.sprite_index = spr_npc;
 }
 else if(attackState == attackStates.SHOOT && shootCooldown <= 0) {
 	shootCooldown = itemDrops[0].cooldown;
-	var firedBullet = fireBullet(x, y, obj_player.x, obj_player.y, itemDrops[0], 30);
+	var firedBullet = fireBullet(x, y, obj_player.x, obj_player.y, itemDrops[0], true, 30);
 	if(!firedBullet) {
 		var inst = placeSequenceAnimation(x, y, itemDrops[0].reloadSeq);
 		array_push(followingSequences, inst);
@@ -81,3 +82,12 @@ for(var i=0; i<array_length(followingSequences); i++) {
 	layer_sequence_x(seq, x);
 	layer_sequence_y(seq, y);
 }
+#endregion attacks/actions
+
+#region animations
+//Facing direction
+if(state != states.DEAD) {
+	image_xscale = sign(obj_player.x - x);
+	image_xscale = clamp(image_xscale, -1, 1);
+}
+#endregion animations

@@ -67,11 +67,12 @@ function sequenceGetName(sequenceId) {
 }
 
 {//Fire arm
-	function fireBullet(shooterX, shooterY, targX, targY, firearm, inaccuracy = 0) {
+	function fireBullet(shooterX, shooterY, targX, targY, firearm, enemyHit = false, inaccuracy = 0) {
 		if(firearm.currentAmmoAmount <= 0) {
 			return 0;
 		}
 		var bullet = instance_create_layer(shooterX, shooterY, "Instances", obj_bullet);
+		bullet.enemyDamage = enemyHit;
 		bullet.sprite_index = firearm.projectileSpr;
 		bullet.direction = point_direction(shooterX, shooterY, targX, targY)+random(inaccuracy);
 		bullet.spd = firearm.bulletSpd;
@@ -115,9 +116,10 @@ function sequenceGetName(sequenceId) {
 		return 0;
 	}
 	
-	function FirearmSemi(itemSprite, ammoItemSprite, projectileSprite, ammoNameStr, dmg, bulletSpeed, shootDur, reloadSeqIndex,  ammoStorageSize, magSprite = -1, noMagSprite = -1) constructor {
+	function FirearmSemi(gunTypeEnum, itemSprite, ammoItemSprite, projectileSprite, ammoNameStr, dmg, bulletSpeed, shootDur, reloadSeqIndex,  magSize, magSprite = -1, noMagSprite = -1) constructor {
 		//Sprite variables must end with "Spr" with correct capitalization in order to save correctly (i couldn't find any other way of doing this because gamemaker is a lil dum sometimes)
 		itemSpr = itemSprite;
+		gunType = gunTypeEnum;
 		firearm = true;
 		fireMode = "semi"
 		amount = 1;
@@ -128,7 +130,7 @@ function sequenceGetName(sequenceId) {
 		bulletSpd = bulletSpeed;
 		//Sequence variables must end with "Seq" with correct capitalization in order to save correctly
 		reloadSeq = reloadSeqIndex;
-		ammoCapacity = ammoStorageSize;
+		ammoCapacity = magSize;
 		currentAmmoAmount = ammoCapacity;
 		cooldown = shootDur;
 		reloadDuration = getSequenceLength(reloadSeqIndex)+1;
@@ -136,20 +138,21 @@ function sequenceGetName(sequenceId) {
 		noMagSpr = noMagSprite;
 	}
 	
-	function FirearmAuto(itemSprite, ammoItemSprite, projectileSprite, ammoNameStr, dmg, bulletSpeed, shootDur, reloadSeqIndex, ammoStorageSize, magSprite = -1, noMagSprite = -1) constructor {
+	function FirearmAuto(gunTypeEnum, itemSprite, ammoItemSprite, projectileSprite, ammoNameStr, dmg, bulletSpeed, shootDur, reloadSeqIndex, magSize, magSprite = -1, noMagSprite = -1) constructor {
 		//Sprite variables must end with "Spr" with correct capitalization in order to save correctly (i couldn't find any other way of doing this because gamemaker is a lil dum sometimes)
 		itemSpr = itemSprite;
+		gunType = gunTypeEnum;
 		firearm = true;
 		fireMode = "auto";
 		amount = 1;
 		ammoItemSpr = ammoItemSprite;
 		projectileSpr = projectileSprite;
 		ammoName = ammoNameStr;
-		damage = dmg;
+		damage = dmg;	
 		bulletSpd = bulletSpeed;
 		//Sequence variables must end with "Seq" with correct capitalization in order to save correctly
 		reloadSeq = reloadSeqIndex;
-		ammoCapacity = ammoStorageSize;
+		ammoCapacity = magSize;
 		currentAmmoAmount = ammoCapacity;
 		cooldown = shootDur;
 		reloadDuration = getSequenceLength(reloadSeqIndex)+1;

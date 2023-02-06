@@ -88,6 +88,40 @@ function camY() {return camera_get_view_y(view_camera[0]);}
 		draw_sprite_ext(segment2Spr, 0, jointX, jointY, 1, 1, dir, c_white, 1);
 	}
 		
+	//Put in draw function
+	function drawWalkingArms(heldItemSprite) {
+		if(image_xscale > 0) {
+			drawLimbLeftSpr(spr_playerArmB, spr_playerArmB, shoulderB.x, shoulderB.y, handB.x, handB.y);
+			draw_self();
+			drawLimbLeftSpr(spr_playerArmF, spr_playerArmF, shoulderF.x, shoulderF.y, handF.x, handF.y);
+		}
+		else {
+			drawLimbRightSpr(spr_playerArmB, spr_playerArmB, shoulderB.x, shoulderB.y, handB.x, handB.y);
+			draw_self();
+			drawLimbRightSpr(spr_playerArmF, spr_playerArmF, shoulderF.x, shoulderF.y, handF.x, handF.y);
+		}
+		if(isItem(heldItemSprite)) 
+			draw_sprite_ext(global.heldItem.itemSpr, 0, handF.x, handF.y, 0.2, 0.2, 0, c_white, 1);
+	}
+		
+	function doWalkingArmMovements() {
+		if(abs(x - xprevious) > 0 || abs(y - yprevious) > 0) {
+			handProgress += handDir;
+			if(abs(handProgress) >= 20) {
+				handDir *= -1;
+			}
+		}
+		else {
+			handProgress += sign(-handProgress)
+		}
+		var offset = (abs(sprite_width)/3);
+		handB.x = shoulderB.x+handProgress+offset*image_xscale;
+		handB.y = shoulderB.y+((-0.01*power(handProgress, 2))+offset);
+
+		handF.x = shoulderF.x+(-handProgress)+2*image_xscale;
+		handF.y = shoulderF.y+((-0.01*power(-handProgress, 2))+offset);
+	}
+	
 	function drawFirearmRifle(gunSpr, armSegmSpr1, armSegmSpr2, xx, yy, targX, targY) {
 		var sprW = sprite_get_width(gunSpr);
 		var dir = point_direction(xx, yy, targX, targY);

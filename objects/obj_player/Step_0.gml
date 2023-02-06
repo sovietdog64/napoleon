@@ -1,7 +1,7 @@
-var heldItem = global.hotbarItems[global.equippedItem];
 if(inDialogue) 
 	return;
-if(hurtCooldown > 0)hurtCooldown--;
+if(hurtCooldown > 0)
+	hurtCooldown--;
 if(global.dead)  
 	return;
 if(instance_exists(obj_game) && global.gamePaused) 
@@ -89,34 +89,34 @@ else
 
 {//Item usage/animations
 	leftAttackCooldown--;
-	if(isItem(heldItem)) {
+	if(isItem(global.heldItem)) {
 		//Using items on left press
 		if(mouse_check_button_pressed(mb_left) && leftAttackCooldown <= 0) {
-			switch(heldItem.itemSpr) {
+			switch(global.heldItem.itemSpr) {
 				case spr_boxingGloves: boxingGloveAttack(mouse_x, mouse_y, 12); break;
 				case spr_tanto: tantoStab(mouse_x, mouse_y, 12); break;
 			}
 		}
 		//Right press
 		else if(mouse_check_button_pressed(mb_right) && leftAttackCooldown <= 0) {
-			switch(heldItem.itemSpr) {
+			switch(global.heldItem.itemSpr) {
 				case spr_tanto: tantoSlash(mouse_x, mouse_y, 12); break;
 			}
 		}
 		
 		//Using items when holding down left
 		if(mouse_check_button(mb_left) && leftAttackCooldown <= 0) {
-			if(isFirearm(heldItem)) {
-				leftAttackCooldown = heldItem.cooldown;
+			if(isFirearm(global.heldItem)) {
+				leftAttackCooldown = global.heldItem.cooldown;
 				attackState = attackStates.SHOOT;
-				var firedBullet = fireBullet(x, y, mouse_x, mouse_y, heldItem);
+				var firedBullet = fireBullet(x, y, mouse_x, mouse_y, global.heldItem);
 				//If mag empty, try reloading
 				if(!firedBullet) {
-					var ammoItem = getItemFromInv(heldItem.ammoItemSpr);
+					var ammoItem = getItemFromInv(global.heldItem.ammoItemSpr);
 					//If found ammo, place reload animation
 					if(ammoItem != -1) {
-						var inst = placeSequenceAnimation(x, y, heldItem.reloadSeq);
-						var copy = copyStruct(heldItem);
+						var inst = placeSequenceAnimation(x, y, global.heldItem.reloadSeq);
+						var copy = copyStruct(global.heldItem);
 						var seqStruct =
 						{
 							sequenceElementId : inst,
@@ -147,11 +147,11 @@ for(var i=0; i<array_length(followingSequences); i++) {
 	//if sequence finished, destroy instance
 	if(layer_sequence_is_finished(seq)) {
 		//If holding firearm and sequence matches firearm reloading sequence, reload gun ammo
-		if(isFirearm(heldItem)) {
+		if(isFirearm(global.heldItem)) {
 			if(!layer_sequence_exists("Animations", seq))
 				continue;
-			if(struct.assetIndex == heldItem.reloadSeq) {
-				reload(heldItem);
+			if(struct.assetIndex == global.heldItem.reloadSeq) {
+				reload(global.heldItem);
 			}
 		}
 		layer_sequence_destroy(seq);
@@ -162,13 +162,13 @@ for(var i=0; i<array_length(followingSequences); i++) {
 	//If sequence is a reload sequence, 
 	if(string_pos("Reload", seqName)) {
 		//If held item is fire arm and it is not matching the reloading seuqence, destroy sequence.
-		if(isFirearm(heldItem) && heldItem.reloadSeq != struct.assetIndex) {
+		if(isFirearm(global.heldItem) && global.heldItem.reloadSeq != struct.assetIndex) {
 			leftAttackCooldown = 0;
 			layer_sequence_destroy(seq);
 			attackState = attackStates.NONE;
 			continue;
 		} 
-		else if(!isFirearm(heldItem)){//If not holding firearm, destroy reload sequence
+		else if(!isFirearm(global.heldItem)){//If not holding firearm, destroy reload sequence
 			leftAttackCooldown = 0;
 			layer_sequence_destroy(seq);
 			attackState = attackStates.NONE;
@@ -283,7 +283,7 @@ y = clamp(y, 0, room_height);
 //Move camera towards mouse when holding firearm
 //If not firearm, center cam on player
 if(instance_exists(obj_camera)) {
-	if(isFirearm(heldItem)) {
+	if(isFirearm(global.heldItem)) {
 		var mouseDir = point_direction(x, y, mouse_x, mouse_y)
 		var mouseDist = distance_to_point(mouse_x, mouse_y);
 		mouseDist = clamp(mouseDist, 0, 100);
@@ -308,3 +308,27 @@ if(global.hp <= 0 && !global.dead) {
 	room_goto(global.spawnRoom);
 }
 if(!instance_exists(obj_game)) instance_create_layer(0,0, "Instances", obj_game);
+
+#region animations
+shoulderB.x = x-5*image_xscale;
+shoulderB.y = y-4;
+shoulderF.x = x-5*image_xscale;
+shoulderF.y = y-4;
+
+//Handling which animation to do
+if(!isFirearm(global.heldItem)) {
+	itemAnimation = itemAnimations.NONE;
+}
+else {
+	itemAnimation = itemAnimations.GUN;
+}
+switch(itemAnimation) {
+	case itemAnimations.NONE:
+		doWalkingArmMovements();
+	break;
+	case itemAnimations.PUNCHING: {
+		
+	}
+}
+
+#endregion animations

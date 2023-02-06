@@ -1,3 +1,4 @@
+global.heldItem = global.hotbarItems[global.equippedItem];
 //Removing items that have an amount of 0 in inventory
 for(var i=0; i<array_length(global.hotbarItems); i++) {
 	var item = global.hotbarItems[i];

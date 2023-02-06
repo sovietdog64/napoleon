@@ -21,6 +21,7 @@ global.completedQuests = array_create(0);
 	
 global.textSpeed = 0.75;
 surface_resize(application_surface, RESOLUTION_W, RESOLUTION_H);
+global.heldItem = global.hotbarItems[global.equippedItem];
 
 enum states {
 	IDLE,
@@ -34,6 +35,23 @@ enum attackStates {
 	RELOAD,
 	MELEE,
 	NONE,
+}
+
+enum gunTypes {
+	PISTOL,
+	RIFLE,
+	REVOLVER,
+	SHOTGUN,
+	SNIPER,
+}
+
+enum itemAnimations {
+	NONE,
+	PUNCHING,
+	GUN,
+	SWORD,
+	KNIFE_STAB,
+	DAGGER,
 }
 
 global.drag = 0.9;

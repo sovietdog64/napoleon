@@ -5,7 +5,7 @@ vsp = 0;
 hspWalk = 7;
 vspJump = -10;
 jumpCooldown = room_speed*0.7;
-maxHp = 200;
+maxHp = 100;
 hp = maxHp;	
 
 state = states.MOVE;
@@ -20,7 +20,7 @@ detectionRange = 800;
 
 xpDrop = 5;
 
-itemDrops = [new FirearmAuto(spr_m16, spr_556x45mm, spr_556x45Proj, "5.56x45mm", 10, 250, 8,  m16Reload, 30, spr_m16Mag, spr_m16Empty), new Item(spr_556x45mm, 60, 10)];
+itemDrops = [new FirearmAuto(gunTypes.RIFLE, spr_m16, spr_556x45mm, spr_556x45Proj, "5.56x45mm", 10, 250, 8,  m16Reload, 30, spr_m16Mag, spr_m16Empty), new Item(spr_556x45mm, 60, 10)];
 
 if(global.level >= 5)
 	xpDrop = 1;
@@ -76,3 +76,4 @@ alarm_set(0, 10);
 #endregion pathfinding
 
 followingSequences = array_create(0);
+
