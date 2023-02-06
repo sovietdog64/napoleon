@@ -29,6 +29,13 @@ enum states {
 	DEAD,
 }
 
+enum attackStates {
+	SHOOT,
+	RELOAD,
+	MELEE,
+	NONE,
+}
+
 global.drag = 0.9;
 global.savingGame = false;
 global.loadingGame = false;

@@ -108,6 +108,7 @@ else
 		if(mouse_check_button(mb_left) && leftAttackCooldown <= 0) {
 			if(isFirearm(heldItem)) {
 				leftAttackCooldown = heldItem.cooldown;
+				attackState = attackStates.SHOOT;
 				var firedBullet = fireBullet(x, y, mouse_x, mouse_y, heldItem);
 				//If mag empty, try reloading
 				if(!firedBullet) {
@@ -125,6 +126,7 @@ else
 						}
 						array_push(followingSequences, seqStruct);
 						leftAttackCooldown = copy.reloadDuration+2;
+						attackState = attackStates.RELOAD;
 					}
 				}
 				else
@@ -133,7 +135,9 @@ else
 		}
 	}
 }
-
+if(leftAttackCooldown <= 0)
+	attackState = attackStates.NONE;
+show_debug_message(attackState)
 //Make specific sequences follow player
 for(var i=0; i<array_length(followingSequences); i++) {
 	var seq = followingSequences[i].sequenceElementId;
@@ -161,11 +165,13 @@ for(var i=0; i<array_length(followingSequences); i++) {
 		if(isFirearm(heldItem) && heldItem.reloadSeq != struct.assetIndex) {
 			leftAttackCooldown = 0;
 			layer_sequence_destroy(seq);
+			attackState = attackStates.NONE;
 			continue;
 		} 
 		else if(!isFirearm(heldItem)){//If not holding firearm, destroy reload sequence
 			leftAttackCooldown = 0;
 			layer_sequence_destroy(seq);
+			attackState = attackStates.NONE;
 			continue;
 		}
 	}
@@ -203,7 +209,6 @@ if(runCooldown > 0)
 	}
 	global.stamina += 0.2;	
 }
-
 
 //Collision
 {

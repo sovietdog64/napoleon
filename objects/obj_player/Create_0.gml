@@ -31,6 +31,7 @@ global.stamina = 100;
 global.maxStamina = 100;
 
 state = PlayerStateFree;
+attackState = attackStates.NONE;
 lastState = state;
 
 if(global.loadedGame) {

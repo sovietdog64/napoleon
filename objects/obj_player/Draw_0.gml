@@ -2,7 +2,7 @@ var heldItem = global.hotbarItems[global.equippedItem];
 if(!isItem(heldItem)) {
 	draw_self();
 }
-else if(!global.dead && isFirearm(heldItem) && heldItem.currentAmmoAmount != 0) {
+else if(!global.dead && isFirearm(heldItem) && attackState != attackStates.RELOAD) {
 	sprite_index = spr_playerNoHands;
 	drawFirearmRifle(heldItem.itemSpr, spr_playerArmF, spr_playerArmF, x, y, mouse_x, mouse_y);
 }

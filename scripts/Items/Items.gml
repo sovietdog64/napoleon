@@ -1,5 +1,6 @@
 function boxingGloveAttack(targX, targY, hitboxDuration) {
 	leftAttackCooldown = room_speed*0.21;
+	attackState = attackStates.MELEE;
 	var dir = point_direction(x, y, targX, targY);
 	//Calculate the direction of the punch hitbox
 	var xx = x + (50*dcos(dir));
@@ -27,6 +28,7 @@ function boxingGloveAttack(targX, targY, hitboxDuration) {
 
 function tantoStab(targX, targY, hitboxDuration) {
 	leftAttackCooldown = room_speed*0.21;
+	attackState = attackStates.MELEE;
 	var dir = point_direction(x, y, targX, targY);
 	//Calculate the direction of the punch hitbox
 	var xx = x + (50*dcos(dir));
@@ -52,6 +54,7 @@ function tantoStab(targX, targY, hitboxDuration) {
 
 function tantoSlash(targX, targY, hitboxDuration) {
 	leftAttackCooldown = room_speed*0.5;
+	attackState = attackStates.MELEE;
 	var dir = point_direction(x, y, targX, targY);
 	//Calculate the direction of the punch hitbox
 	var xx = x + (50*dcos(dir));
