@@ -67,13 +67,13 @@ function sequenceGetName(sequenceId) {
 }
 
 {//Fire arm
-	function fireBullet(shooterX, shooterY, targX, targY, firearm) {
+	function fireBullet(shooterX, shooterY, targX, targY, firearm, inaccuracy = 0) {
 		if(firearm.currentAmmoAmount <= 0) {
 			return 0;
 		}
 		var bullet = instance_create_layer(shooterX, shooterY, "Instances", obj_bullet);
 		bullet.sprite_index = firearm.projectileSpr;
-		bullet.direction = point_direction(shooterX, shooterY, targX, targY);
+		bullet.direction = point_direction(shooterX, shooterY, targX, targY)+random(inaccuracy);
 		bullet.spd = firearm.bulletSpd;
 		bullet.damage = firearm.damage;
 		firearm.currentAmmoAmount--;

@@ -29,7 +29,7 @@ isHurt = false;
 
 maxAttackCooldown = room_speed*1.2;
 attackCooldown = maxAttackCooldown;
-shootCooldown = room_speed*10;
+shootCooldown = itemDrops[0].cooldown;
 
 timeSinceFoundPlayer = 0;
 
@@ -57,7 +57,7 @@ alert = false;
 detectionRange = 300;
 
 //Distance from player where enemy stops to attack
-attackDist = 50;
+attackDist = sprite_width;
 
 deadTime = 0;
 
@@ -74,3 +74,5 @@ mp_grid_add_instances(grid, obj_solid, 0);
 alarm_set(0, 10);
 
 #endregion pathfinding
+
+followingSequences = array_create(0);

@@ -23,35 +23,61 @@ switch(state) {
 	break;
 	case states.ATTACK:
 		calcEntityMovement();
-		if(distance_to_object(obj_player) <= sprite_width)
-			attackState = attackStates.MELEE;
-		if(attackState == attackStates.MELEE && attackCooldown <= 0) {
-			attackCooldown = maxAttackCooldown;
-			var inst = instance_create_layer(x, y, layer, obj_damageHitbox);
-			inst.enemyHit = true;
-			inst.instToFollow = id;
-			inst.dmgSourceInst = id;
-			var dir = point_direction(x, y, obj_player.x, obj_player.y);
-			inst.followOffsetX = lengthdir_x(sprite_width/2, dir);
-			inst.followOffsetY = lengthdir_y(sprite_width/2, dir);
-			inst.sprite_index = spr_npc;
-		}
 	break;
 	case states.DEAD:
 		
 	break;
 }
+//Handle attacking states
+var dist = distance_to_object(obj_player);
+if(dist <= attackDist) {
+	attackState = attackStates.MELEE;
+	shootCooldown = room_speed*3;
+}
+else if(dist <= 800 && dist > attackDist)
+	attackState = attackStates.SHOOT;
+else if(dist > 800)
+	attackState = attackStates.NONE;
 
-//Toggling attack mode from shooting and none
-if(shootCooldown > 0)
-	shootCooldown--;
-else if (shootCooldown <= 0){
-	if(attackState == attackStates.SHOOT) {
+shootCooldown--;
+
+if(attackState == attackStates.MELEE && attackCooldown <= 0) {
+	attackCooldown = maxAttackCooldown;
+	var inst = instance_create_layer(x, y, layer, obj_damageHitbox);
+	inst.enemyHit = true;
+	inst.instToFollow = id;
+	inst.dmgSourceInst = id;
+	var dir = point_direction(x, y, obj_player.x, obj_player.y);
+	inst.followOffsetX = lengthdir_x(sprite_width/2, dir);
+	inst.followOffsetY = lengthdir_y(sprite_width/2, dir);
+	inst.sprite_index = spr_npc;
+}
+else if(attackState == attackStates.SHOOT && shootCooldown <= 0) {
+	shootCooldown = itemDrops[0].cooldown;
+	var firedBullet = fireBullet(x, y, obj_player.x, obj_player.y, itemDrops[0], 30);
+	if(!firedBullet) {
+		var inst = placeSequenceAnimation(x, y, itemDrops[0].reloadSeq);
+		array_push(followingSequences, inst);
+		shootCooldown = itemDrops[0].reloadDuration+2;
+		attackState = attackStates.RELOAD;
+	}
+}
+
+
+show_debug_message(shootCooldown);
+
+for(var i=0; i<array_length(followingSequences); i++) {
+	var seq = followingSequences[i]
+	if(!layer_sequence_exists("Animations", seq)) {
+		array_delete(followingSequences, i, 1);
+		continue;
+	}
+	if(layer_sequence_is_finished(seq)) {
+		layer_sequence_destroy(seq);
+		itemDrops[0].currentAmmoAmount = 30;
 		attackState = attackStates.NONE;
-		shootCooldown = room_speed*10;
+		continue;
 	}
-	else {
-		attackState = attackStates.SHOOT;
-		shootCooldown = room_speed*5;
-	}
+	layer_sequence_x(seq, x);
+	layer_sequence_y(seq, y);
 }

@@ -137,7 +137,7 @@ else
 }
 if(leftAttackCooldown <= 0)
 	attackState = attackStates.NONE;
-show_debug_message(attackState)
+
 //Make specific sequences follow player
 for(var i=0; i<array_length(followingSequences); i++) {
 	var seq = followingSequences[i].sequenceElementId;

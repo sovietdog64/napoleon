@@ -28,6 +28,9 @@ damageEnemy = function(enemy) {
 }
 
 damagePlayer = function() {
+	if(obj_player.hurtCooldown > 0)
+		return;
 	global.hp--;
+	obj_player.hurtCooldown = room_speed;
 	instance_destroy();
 }
