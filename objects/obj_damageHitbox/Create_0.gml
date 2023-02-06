@@ -10,3 +10,4 @@ knockbackDur = 20; //duration of knockback
 enemiesHit = array_create(0)//List of enemies that were hit (used to prevent double-hitting, and to hit enemies that walk into the hitbox)
 scrnShakeLevel = 5;
 scrnShakeDur = room_speed*0.1;
+dontHit = false;

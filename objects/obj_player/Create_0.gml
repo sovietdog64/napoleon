@@ -39,3 +39,12 @@ if(global.loadedGame) {
 	y = global.spawnY;
 	global.loadedGame = false;
 }
+
+knockBack = function(damageX, damageY, kbLevel) {
+	isHurt = true;
+	lungeForward = false;
+	hurtCooldown = room_speed;
+	var dir = point_direction(x, y, damageX, damageY)-180;
+	hsp = (kbLevel*dcos(dir));
+	vsp = (-kbLevel*dsin(dir));
+}

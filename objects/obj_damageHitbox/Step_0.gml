@@ -17,7 +17,7 @@ if(instToFollow != noone) {
 }	
 
 //Enemies
-if(!enemyHit) {
+if(!enemyHit && !dontHit) {
 	var enemies = ds_list_create();
 	instance_place_list(x, y, obj_enemy, enemies, 0);
 	if(ds_list_size(enemies) > 0) {
@@ -40,5 +40,12 @@ if(!enemyHit) {
 		
 			array_push(enemiesHit, inst);
 		}
+	}
+}
+else if (enemyHit){
+	if(place_meeting(x, y, obj_player) && !dontHit) {
+		dontHit = true;
+		global.hp--;
+		obj_player.knockBack(x, y, knockbackDur);
 	}
 }

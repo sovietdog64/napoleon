@@ -10,6 +10,8 @@ hp = maxHp;
 
 state = states.MOVE;
 
+attackState = attackStates.NONE;
+
 drops = array_create(0);
 
 lungeForward = false;
@@ -25,8 +27,9 @@ if(global.level >= 5)
 
 isHurt = false;
 
-maxAttackCooldown = room_speed*0.8;
+maxAttackCooldown = room_speed*1.2;
 attackCooldown = maxAttackCooldown;
+shootCooldown = room_speed*10;
 
 timeSinceFoundPlayer = 0;
 
@@ -54,7 +57,7 @@ alert = false;
 detectionRange = 300;
 
 //Distance from player where enemy stops to attack
-attackDist = 30;
+attackDist = 50;
 
 deadTime = 0;
 

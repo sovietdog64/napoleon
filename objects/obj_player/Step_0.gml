@@ -246,12 +246,13 @@ if(runCooldown > 0)
 			var enem = instance_place(x, y, obj_enemy);
 			if(enem != noone && enem.hp > 0) {
 				global.hp--;
-				isHurt = true;
-				lungeForward = false;
-				hurtCooldown = room_speed;
-				var dir = point_direction(x, y, enem.x, enem.y)-180;
-				hsp = (25*dcos(dir));
-				vsp = (-25*dsin(dir));
+				knockBack(enem.x, enem.y, 25);
+				//isHurt = true;
+				//lungeForward = false;
+				//hurtCooldown = room_speed;
+				//var dir = point_direction(x, y, enem.x, enem.y)-180;
+				//hsp = (25*dcos(dir));
+				//vsp = (-25*dsin(dir));
 			}
 		}
 	}
