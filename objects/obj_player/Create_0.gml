@@ -24,9 +24,6 @@ if(!variable_global_exists("dead"))global.dead = false;
 sprite_index = spr_player;
 leftAttackCooldown = 0;
 
-safeX = x;
-safeY = y;
-
 enteredX = x;
 enteredY = y;
 

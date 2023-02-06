@@ -296,9 +296,9 @@ if(instance_exists(obj_camera)) {
 if(global.hp <= 0 && !global.dead) {
 	global.hp = 5;
 	global.dead = true;
-	global.setPosToSpawnPos = true;
 	x = enteredX;
 	y = enteredY;
+	global.setPosToSpawnPos = true;
 	room_goto(global.spawnRoom);
 }
 if(!instance_exists(obj_game)) instance_create_layer(0,0, "Instances", obj_game);

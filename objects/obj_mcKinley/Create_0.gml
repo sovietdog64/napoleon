@@ -18,7 +18,7 @@ detectionRange = 800;
 
 xpDrop = 5;
 
-itemDrops = [new FirearmAuto(spr_m16, spr_556x45mm, spr_556x45Proj, "", 10, 250, 8,  m16Reload, 30, spr_m16Mag, spr_m16Empty), new Item(spr_556x45mm, 60, 10)];
+itemDrops = [new FirearmAuto(spr_m16, spr_556x45mm, spr_556x45Proj, "5.56x45mm", 10, 250, 8,  m16Reload, 30, spr_m16Mag, spr_m16Empty), new Item(spr_556x45mm, 60, 10)];
 
 if(global.level >= 5)
 	xpDrop = 1;

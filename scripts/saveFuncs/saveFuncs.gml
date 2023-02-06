@@ -20,6 +20,10 @@ function saveRoom() {
 	if(instance_exists(obj_player)) {
 		roomStruct.playerX = obj_player.x;
 		roomStruct.playerY = obj_player.y;
+		if(global.savingGame) {
+			roomStruct.playerX = obj_player.enteredX;
+			roomStruct.playerY = obj_player.enteredY;
+		}
 	}
 	
 	//Get data from all saveable objects
@@ -160,16 +164,28 @@ function loadRoom() {
 	global.spawnX = roomStruct.spawnX;
 	global.spawnY = roomStruct.spawnY;
 	
+	var updateCameraTarg = false;
+	
 	//Player
 	if(instance_exists(obj_player)) {
 		obj_player.x = roomStruct.playerX;
 		obj_player.y = roomStruct.playerY;
+		if(global.setPosToSpawnPos || global.loadingGame){
+			obj_player.x = global.spawnX;
+			obj_player.y = global.spawnY;
+			global.setPosToSpawnPos = false;
+			updateCameraTarg = true;
+		}
 	}
 	
 	//Camera
 	if(instance_exists(obj_camera)) {
 		obj_camera.targX = roomStruct.playerX;
 		obj_camera.targY = roomStruct.playerY;
+		if(updateCameraTarg){
+			obj_camera.targX = global.spawnX;
+			obj_camera.targY = global.spawnY;
+		}
 	}
 	
 	//Get rid of all saveable instances and replace them with the ones in the game save.
@@ -284,12 +300,11 @@ function loadRoom() {
 		}
 	}
 	
-	if(instance_exists(obj_player)) instance_destroy(obj_player);
-	instance_create_layer(roomStruct.playerX, roomStruct.playerY, "Instances", obj_player);
 }
 
 //Saving game to file
 function saveGame(fileNum = 0) {
+	global.savingGame = true;
 	var saveArray = array_create(0);
 	
 	//Save current room
@@ -327,11 +342,10 @@ function saveGame(fileNum = 0) {
 		    for (var j = array_length(keys)-1; j >= 0; --j) {
 		        key = keys[j];
 		        value = variable_struct_get(itemStruct, key);
-				if(string_last_pos("Spr", key)) {
-					value = sprite_get_name(value);
-				}
-				else if(string_last_pos("Seq", key)) {
-					value = sequenceGetName(value);
+				if(is_numeric(value)) {
+					var assetName = getVarAssetName(key, value);
+					if(assetName != 0)
+						value = assetName;
 				}
 				//TODO: may add more asset types if necessary
 		        variable_struct_set(tempStruct, key, value)
@@ -355,11 +369,10 @@ function saveGame(fileNum = 0) {
 		    for (var j = array_length(keys)-1; j >= 0; --j) {
 		        key = keys[j];
 		        value = variable_struct_get(itemStruct, key);
-				if(string_last_pos("Spr", key)) {
-					value = sprite_get_name(value);
-				}
-				else if(string_last_pos("Seq", key)) {
-					value = sequenceGetName(value);
+				if(is_numeric(value)) {
+					var assetName = getVarAssetName(key, value);
+					if(assetName != 0)
+						value = assetName;
 				}
 				//TODO: may add more asset types if necessary
 		        variable_struct_set(tempStruct, key, value)
@@ -386,10 +399,12 @@ function saveGame(fileNum = 0) {
 	buffer_write(buf, buffer_string, json);
 	buffer_save(buf, fileName);
 	buffer_delete(buf);
+	global.savingGame = false;
 }
 
 //Loading game from file
 function loadGame(fileNum = 0) {
+	global.loadingGame = true;
 	//Load saved data
 	var fileName = "saveData" + string(fileNum) + ".sav";
 	if(!file_exists(fileName)) return;
@@ -476,13 +491,12 @@ function loadGame(fileNum = 0) {
 	//Go to the right room in the game save
 	var loadRm = asset_get_index(global.statData.spawnRoom);
 	global.loadedGame = true;
+	global.setPosToSpawnPos = true;
 	room_goto(loadRm);
 	obj_player.x = global.statData.spawnX;
 	obj_player.y = global.statData.spawnY;
 	//Make sure save object does not save the room that is being exited
 	obj_saveLoad.skipRoomSave = true;
-	if(instance_exists(obj_player)) instance_destroy(obj_player);
-	instance_create_layer(global.statData.saveX, global.statData.saveY, "Instances", obj_player);
 	
-	loadRoom();
+	global.loadingGame = false;
 }
