@@ -31,7 +31,7 @@ function DialogueResponses(responseNum) {
 				
 				newTextBox("*Didn't the tanto get popular in America at the 1900s?*", undefined, 3);
 				newTextBox("*Something seems really fishy...*", undefined, 3);
-				var tanto = new Item(spr_tanto, 1, 3);
+				var tanto = new Item(spr_tanto, 1, 3, itemAnimations.KNIFE_STAB);
 				//Attempt to give tanto to player
 				var gaveItem = giveItemToPlayer(tanto);
 				//if inv too full, draw notification and drop tanto item on ground

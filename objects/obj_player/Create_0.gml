@@ -7,7 +7,7 @@ inDialogue = false;//bool stating whether the player is talking with an NPC.
 invOpen = false;
 clickedItem = -1;
 
-global.minHspWalk = 8;
+minHspWalk = 8;
 
 runCooldown = 0;
 
@@ -55,6 +55,6 @@ shoulderF = new Point(x, y);
 handF = new Point(x+10, y+10);
 
 handProgress = 0;
-handDir = 3;
+handDir = 2;
 
-itemAnimation = itemAnimations.NONE;
+animType = itemAnimations.NONE;

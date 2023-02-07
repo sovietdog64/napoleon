@@ -48,10 +48,11 @@ function copyStruct(struct){
     return newCopy;
 }
 
-function Item(itemSprite, itemAmount, dmg) constructor {
+function Item(itemSprite, itemAmount, dmg, animationTypeEnum = itemAnimations.NONE) constructor {
 	itemSpr = itemSprite;
 	amount = itemAmount;
 	damage = dmg;
+	animationType = animationTypeEnum;
 }
 
 function sequenceGetName(sequenceId) {
@@ -116,7 +117,7 @@ function sequenceGetName(sequenceId) {
 		return 0;
 	}
 	
-	function FirearmSemi(gunTypeEnum, itemSprite, ammoItemSprite, projectileSprite, ammoNameStr, dmg, bulletSpeed, shootDur, reloadSeqIndex,  magSize, magSprite = -1, noMagSprite = -1) constructor {
+	function FirearmSemi(gunTypeEnum, itemSprite, ammoItemSprite, projectileSprite, ammoNameStr, dmg, bulletSpeed, shootDur, reloadSeqIndex,  magSize, magSprite = -1, noMagSprite = -1, animationTypeEnum = itemAnimations.GUN) constructor {
 		//Sprite variables must end with "Spr" with correct capitalization in order to save correctly (i couldn't find any other way of doing this because gamemaker is a lil dum sometimes)
 		itemSpr = itemSprite;
 		gunType = gunTypeEnum;
@@ -136,9 +137,10 @@ function sequenceGetName(sequenceId) {
 		reloadDuration = getSequenceLength(reloadSeqIndex)+1;
 		magSpr = magSprite;
 		noMagSpr = noMagSprite;
+		animationType = animationTypeEnum;
 	}
 	
-	function FirearmAuto(gunTypeEnum, itemSprite, ammoItemSprite, projectileSprite, ammoNameStr, dmg, bulletSpeed, shootDur, reloadSeqIndex, magSize, magSprite = -1, noMagSprite = -1) constructor {
+	function FirearmAuto(gunTypeEnum, itemSprite, ammoItemSprite, projectileSprite, ammoNameStr, dmg, bulletSpeed, shootDur, reloadSeqIndex, magSize, magSprite = -1, noMagSprite = -1, animationTypeEnum = itemAnimations.GUN) constructor {
 		//Sprite variables must end with "Spr" with correct capitalization in order to save correctly (i couldn't find any other way of doing this because gamemaker is a lil dum sometimes)
 		itemSpr = itemSprite;
 		gunType = gunTypeEnum;
@@ -158,6 +160,7 @@ function sequenceGetName(sequenceId) {
 		reloadDuration = getSequenceLength(reloadSeqIndex)+1;
 		magSpr = magSprite;
 		noMagSpr = noMagSprite;
+		animationType = animationTypeEnum;
 	}
 	
 	

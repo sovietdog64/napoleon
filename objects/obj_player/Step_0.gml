@@ -200,12 +200,12 @@ if(runCooldown > 0)
 {
 	if(global.stamina > 10 && keyboard_check(vk_shift) && runCooldown <= 0) {
 		global.stamina -= 0.6;
-		hspWalk = global.minHspWalk*1.5;
+		hspWalk = minHspWalk*1.5;
 	}
 	else {
 		if(runCooldown <= 0 && global.stamina <= 10)
 			runCooldown = room_speed*3;
-		hspWalk = global.minHspWalk;
+		hspWalk = minHspWalk;
 	}
 	global.stamina += 0.2;	
 }
@@ -316,19 +316,34 @@ shoulderF.x = x-5*image_xscale;
 shoulderF.y = y-4;
 
 //Handling which animation to do
-if(!isFirearm(global.heldItem)) {
-	itemAnimation = itemAnimations.NONE;
+if(variable_struct_exists(global.heldItem, "animationType")) {
+	animType = global.heldItem.animationType;
 }
 else {
-	itemAnimation = itemAnimations.GUN;
+	if(isFirearm(global.heldItem)) {
+		variable_struct_set(global.heldItem, "animationType", itemAnimations.GUN);
+		animType = itemAnimations.GUN;
+	}
+	else
+		animType = itemAnimations.NONE;
 }
-switch(itemAnimation) {
+switch(animType) {
 	case itemAnimations.NONE:
 		doWalkingArmMovements();
 	break;
 	case itemAnimations.PUNCHING: {
-		
+		//Fists up. Idle.
+		if(leftAttackCooldown <= 0) {
+			holdFistsUp(mouse_x, mouse_y);
+		}
+		else {
+			doPunchingMovements(mouse_x, mouse_y);
+		}
 	}
 }
+//if(isItem(global.heldItem) && global.heldItem.itemSpr == spr_boxingGloves)
+//	variable_struct_set(global.heldItem, "animationType", itemAnimations.PUNCHING);
+//else if(isItem(global.heldItem) && global.heldItem.itemSpr == spr_tanto)
+//	variable_struct_set(global.heldItem, "animationType", itemAnimations.KNIFE_STAB);
 
 #endregion animations

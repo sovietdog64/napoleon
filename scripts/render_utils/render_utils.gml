@@ -58,7 +58,7 @@ function camY() {return camera_get_view_y(view_camera[0]);}
 		draw_line_width(jointX, jointY, footX, footY, width2)
 	}
 	
-	function drawLimbRightSpr(segment1Spr, segment2Spr,xx, yy, targX, targY) {
+	function drawLimbRightSpr(segment1Spr, segment2Spr, xx, yy, targX, targY) {
 		var segment1Len = sprite_get_width(segment1Spr);
 		var dist = distanceBetweenPoints(xx, yy, targX, targY);
 		var dir = point_direction(xx, yy, targX, targY);
@@ -70,6 +70,7 @@ function camY() {return camera_get_view_y(view_camera[0]);}
 		
 		var dir = point_direction(jointX, jointY, targX, targY);
 		draw_sprite_ext(segment2Spr, 0, jointX, jointY, 1, 1, dir, c_white, 1);
+		return new Point(jointX, jointY);
 	}
 	
 	function drawLimbLeftSpr(segment1Spr, segment2Spr, xx, yy, targX, targY) {
@@ -86,67 +87,145 @@ function camY() {return camera_get_view_y(view_camera[0]);}
 		draw_sprite_ext(segment1Spr, 0, xx, yy, 1, 1, point_direction(xx, yy, jointX, jointY), c_white, 1);
 		var dir = point_direction(jointX, jointY, targX, targY);
 		draw_sprite_ext(segment2Spr, 0, jointX, jointY, 1, 1, dir, c_white, 1);
-	}
-		
-	//Put in draw function
-	function drawWalkingArms(heldItemSprite) {
-		if(image_xscale > 0) {
-			drawLimbLeftSpr(spr_playerArmB, spr_playerArmB, shoulderB.x, shoulderB.y, handB.x, handB.y);
-			draw_self();
-			drawLimbLeftSpr(spr_playerArmF, spr_playerArmF, shoulderF.x, shoulderF.y, handF.x, handF.y);
-		}
-		else {
-			drawLimbRightSpr(spr_playerArmB, spr_playerArmB, shoulderB.x, shoulderB.y, handB.x, handB.y);
-			draw_self();
-			drawLimbRightSpr(spr_playerArmF, spr_playerArmF, shoulderF.x, shoulderF.y, handF.x, handF.y);
-		}
-		if(isItem(heldItemSprite)) 
-			draw_sprite_ext(global.heldItem.itemSpr, 0, handF.x, handF.y, 0.2, 0.2, 0, c_white, 1);
-	}
-		
-	function doWalkingArmMovements() {
-		if(abs(x - xprevious) > 0 || abs(y - yprevious) > 0) {
-			handProgress += handDir;
-			if(abs(handProgress) >= 20) {
-				handDir *= -1;
-			}
-		}
-		else {
-			handProgress += sign(-handProgress)
-		}
-		var offset = (abs(sprite_width)/3);
-		handB.x = shoulderB.x+handProgress+offset*image_xscale;
-		handB.y = shoulderB.y+((-0.01*power(handProgress, 2))+offset);
-
-		handF.x = shoulderF.x+(-handProgress)+2*image_xscale;
-		handF.y = shoulderF.y+((-0.01*power(-handProgress, 2))+offset);
+		return new Point(jointX, jointY);
 	}
 	
-	function drawFirearmRifle(gunSpr, armSegmSpr1, armSegmSpr2, xx, yy, targX, targY) {
-		var sprW = sprite_get_width(gunSpr);
-		var dir = point_direction(xx, yy, targX, targY);
-		var arm1Dist = sprW*0.15;
-		var arm2Dist = sprW*0.3;
-		if(targX > xx)  {
-			var tempX = xx+lengthdir_x(arm1Dist, dir-5);
-			var tempY = yy+lengthdir_y(arm1Dist, dir-5);
-			drawLimbLeftSpr(armSegmSpr1, armSegmSpr2, xx, yy, tempX, tempY);
-			draw_self();
-			draw_sprite_ext(gunSpr, 0, xx+lengthdir_x(30, dir), yy+lengthdir_y(30, dir), 0.5, 0.5, dir, c_white, 1);
-			tempX = xx+lengthdir_x(arm2Dist, dir);
-			tempY = yy+lengthdir_y(arm2Dist, dir);			
-			drawLimbLeftSpr(armSegmSpr1, armSegmSpr2, xx, yy, tempX, tempY);
+	{//Animations
+		function doWalkingArmMovements() {
+			//Scale animation speed with walk speed
+			handDir = hspWalk / 3 * sign(handDir);
+			//Do animation of moving
+			if(abs(x - xprevious) > 0 || abs(y - yprevious) > 0) {
+				handProgress += handDir;
+				if(abs(handProgress) >= 20) {
+					handDir *= -1;
+				}
+			}
+			//Return to default arm positions smoothly if not moving.
+			else {
+				handProgress += sign(-handProgress)
+			}
+			//Calculating movements with parabola equation (i finally found a use for math i learned at school)
+			var offset = (abs(sprite_width)/3);
+			handB.x = shoulderB.x+handProgress+offset*image_xscale;
+			handB.y = shoulderB.y+((-0.01*power(handProgress, 2))+offset);
+
+			handF.x = shoulderF.x+(-handProgress)+2*image_xscale;
+			handF.y = shoulderF.y+((-0.01*power(-handProgress, 2))+offset);
 		}
-		else {
-			var tempX = xx+lengthdir_x(arm1Dist, dir+5);
-			var tempY = yy+lengthdir_y(arm1Dist, dir+5);
-			drawLimbRightSpr(armSegmSpr1, armSegmSpr2, xx, yy, tempX, tempY);
-			draw_self();
-			draw_sprite_ext(gunSpr, 0, xx+lengthdir_x(30, dir), yy+lengthdir_y(30, dir), 0.5, -0.5, dir, c_white, 1);
-			tempX = xx+lengthdir_x(arm2Dist, dir);
-			tempY = yy+lengthdir_y(arm2Dist, dir);			
-			drawLimbRightSpr(armSegmSpr1, armSegmSpr2, xx, yy, tempX, tempY);
+	
+		function drawWalkingArms(armSprBehind, armSprFront, itemToDraw = -1) {
+			if(image_xscale > 0) {
+				drawLimbLeftSpr(armSprBehind, armSprBehind, shoulderB.x, shoulderB.y, handB.x, handB.y);
+				draw_self();
+				drawLimbLeftSpr(armSprFront, armSprFront, shoulderF.x, shoulderF.y, handF.x, handF.y);
+			}
+			else {
+				drawLimbRightSpr(armSprBehind, armSprBehind, shoulderB.x, shoulderB.y, handB.x, handB.y);
+				draw_self();
+				drawLimbRightSpr(armSprFront, armSprFront, shoulderF.x, shoulderF.y, handF.x, handF.y);
+			}
+			if(isItem(itemToDraw)) 
+				draw_sprite_ext(itemToDraw.itemSpr, 0, handF.x, handF.y, 0.2, 0.2, 0, c_white, 1);
+			else if(is_numeric(itemToDraw) && itemToDraw != -1) {
+				try{draw_sprite_ext(itemToDraw, 0, handF.x, handF.y, 0.2, 0.2, 0, c_white, 1);}
+					catch(err) {}
+			}
 		}
+	
+		function holdFistsUp(targX, targY) {
+			handProgress = 1;
+			var stretchDist = abs(sprite_width)*0.25;
+			var dir = point_direction(x, y, targX, targY);
+			handB.x = x+lengthdir_x(stretchDist, dir);
+			handB.y = y+lengthdir_y(stretchDist, dir);
+			handF.x = x+lengthdir_x(stretchDist-10, dir);
+			handF.y = y+lengthdir_y(stretchDist-10, dir);
+			var dirFacing = sign(mouse_x-x);
+			if(dirFacing == 0)
+				dirFacing = 1;
+			image_xscale = abs(image_xscale) * dirFacing;
+		}
+		
+		function doPunchingMovements(targX, targY) {
+			handDir = 3 * sign(handDir) * (sprite_width/64);
+			handProgress += handDir
+			var maxLen = 30 * (sprite_width/64);
+			if(abs(handProgress) > maxLen || handProgress <= 0) {
+				handDir *= -1;
+				if(handProgress <= 0)
+					handProgress = 1;
+			}
+			//use logarithmic graph to have smooth & fast punching movement
+			var stretchDist = 30*log10(handProgress);
+			var dir = point_direction(x, y, targX, targY);
+			if(choose(0, 1) == 0) {
+				handB.x = x+lengthdir_x(stretchDist, dir);
+				handB.y = y+lengthdir_y(stretchDist, dir);
+			}
+			else {
+				handF.x = x+lengthdir_x(stretchDist, dir);
+				handF.y = y+lengthdir_y(stretchDist, dir);
+			}
+		}
+		
+		function drawFistsUp(armSprBehind, armSprFront, spriteOnHands = spr_boxingGlove) {
+			var shouldDrawSprite = is_numeric(spriteOnHands) && spriteOnHands != -1;
+			if(handB.x > x) {
+				var jointPnt = drawLimbLeftSpr(armSprBehind, armSprBehind, shoulderB.x, shoulderB.y, handB.x, handB.y);
+				if(shouldDrawSprite) {
+					var dir = point_direction(jointPnt.x, jointPnt.y, handB.x, handB.y);
+					draw_sprite_ext(spriteOnHands, 0, handB.x, handB.y, 1, 1, dir, c_white, 1);
+				}
+				draw_self();
+				jointPnt = drawLimbLeftSpr(armSprFront, armSprFront, shoulderF.x, shoulderF.y, handF.x, handF.y);
+				if(shouldDrawSprite) {
+					var dir = point_direction(jointPnt.x, jointPnt.y, handF.x, handF.y);
+					draw_sprite_ext(spriteOnHands, 0, handF.x, handF.y, 1, 1, dir, c_white, 1);
+				}
+			}
+			else {
+				var jointPnt = drawLimbRightSpr(armSprBehind, armSprBehind, shoulderB.x, shoulderB.y, handB.x, handB.y);
+				if(shouldDrawSprite) {
+					var dir = point_direction(jointPnt.x, jointPnt.y, handB.x, handB.y);
+					draw_sprite_ext(spriteOnHands, 0, handB.x, handB.y, 1, 1, dir, c_white, 1);
+				}
+				draw_self();
+				jointPnt = drawLimbRightSpr(armSprFront, armSprFront, shoulderF.x, shoulderF.y, handF.x, handF.y);
+				if(shouldDrawSprite) {
+					var dir = point_direction(jointPnt.x, jointPnt.y, handB.x, handB.y);
+					draw_sprite_ext(spriteOnHands, 0, handF.x, handF.y, 1, 1, dir, c_white, 1);
+				}
+			}
+		}
+		
+		function drawFirearmRifle(gunSpr, armSegmSpr1, armSegmSpr2, xx, yy, targX, targY) {
+			var sprW = sprite_get_width(gunSpr);
+			var dir = point_direction(xx, yy, targX, targY);
+			var arm1Dist = sprW*0.15;
+			var arm2Dist = sprW*0.3;
+			if(targX > xx)  {
+				var tempX = xx+lengthdir_x(arm1Dist, dir-5);
+				var tempY = yy+lengthdir_y(arm1Dist, dir-5);
+				drawLimbLeftSpr(armSegmSpr1, armSegmSpr2, xx, yy, tempX, tempY);
+				draw_self();
+				draw_sprite_ext(gunSpr, 0, xx+lengthdir_x(30, dir), yy+lengthdir_y(30, dir), 0.5, 0.5, dir, c_white, 1);
+				tempX = xx+lengthdir_x(arm2Dist, dir);
+				tempY = yy+lengthdir_y(arm2Dist, dir);			
+				drawLimbLeftSpr(armSegmSpr1, armSegmSpr2, xx, yy, tempX, tempY);
+			}
+			else {
+				var tempX = xx+lengthdir_x(arm1Dist, dir+5);
+				var tempY = yy+lengthdir_y(arm1Dist, dir+5);
+				drawLimbRightSpr(armSegmSpr1, armSegmSpr2, xx, yy, tempX, tempY);
+				draw_self();
+				draw_sprite_ext(gunSpr, 0, xx+lengthdir_x(30, dir), yy+lengthdir_y(30, dir), 0.5, -0.5, dir, c_white, 1);
+				tempX = xx+lengthdir_x(arm2Dist, dir);
+				tempY = yy+lengthdir_y(arm2Dist, dir);			
+				drawLimbRightSpr(armSegmSpr1, armSegmSpr2, xx, yy, tempX, tempY);
+			}
+		}
+	
 	}
 }
 

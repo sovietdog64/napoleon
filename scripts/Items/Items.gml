@@ -1,12 +1,11 @@
 function boxingGloveAttack(targX, targY, hitboxDuration) {
 	leftAttackCooldown = room_speed*0.21;
+	handProgress = 1;
 	attackState = attackStates.MELEE;
 	var dir = point_direction(x, y, targX, targY);
 	//Calculate the direction of the punch hitbox
 	var xx = x + (50*dcos(dir));
 	var yy = y + (-50*dsin(dir));
-				
-	sprite_index = choose(spr_playerPunchLeft, spr_playerPunchRight);
 	//Create dmg hitbox (hitboxes are more resource efficient compared to individial enemy collision checks)
 	var inst = instance_create_layer(x+xx, y+yy, "Instances", obj_damageHitbox);
 	inst.dmgSourceInst = id;
@@ -28,6 +27,7 @@ function boxingGloveAttack(targX, targY, hitboxDuration) {
 
 function tantoStab(targX, targY, hitboxDuration) {
 	leftAttackCooldown = room_speed*0.21;
+	handProgress = 1;
 	attackState = attackStates.MELEE;
 	var dir = point_direction(x, y, targX, targY);
 	//Calculate the direction of the punch hitbox
@@ -54,6 +54,7 @@ function tantoStab(targX, targY, hitboxDuration) {
 
 function tantoSlash(targX, targY, hitboxDuration) {
 	leftAttackCooldown = room_speed*0.5;
+	handProgress = 1;
 	attackState = attackStates.MELEE;
 	var dir = point_direction(x, y, targX, targY);
 	//Calculate the direction of the punch hitbox
