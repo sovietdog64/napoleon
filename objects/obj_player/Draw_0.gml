@@ -19,7 +19,10 @@ if(isItem(global.heldItem)) {
 		case itemAnimations.PUNCHING:
 			drawFistsUp(spr_playerArmB, spr_playerArmF);
 		break;
-		default: show_debug_message("unidentified animation") break;
+		case itemAnimations.KNIFE_STAB: {
+			drawHoldingKnife(spr_playerArmB, spr_playerArmF, global.heldItem.itemSpr, leftAttackCooldown > 0, mouse_x, mouse_y);
+		} break;
+		default: show_debug_message("unidentified animation. forgot break statement? forgot to include code for an animation?") break;
 	}
 }
 else {

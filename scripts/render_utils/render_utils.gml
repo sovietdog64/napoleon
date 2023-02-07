@@ -91,6 +91,55 @@ function camY() {return camera_get_view_y(view_camera[0]);}
 	}
 	
 	{//Animations
+		function doStabMovement(targX, targY) {
+			//Progressing through "animation frames"
+			handDir = 3 * sign(handDir) * (sprite_width/64);
+			handProgress += handDir;
+			var maxLen = 30 * (sprite_width/64);
+			if(abs(handProgress) > maxLen || handProgress <= 0) {
+				handDir *= -1;
+				if(handProgress <= 0)
+					handProgress = 1;
+			}
+			//another log graph for stabby movement, except its only one hand
+			var stretchDist = 30*log10(handProgress);
+			var dir = point_direction(x, y, targX, targY);
+			handF.x = x+lengthdir_x(stretchDist, dir);
+			handF.y = y+lengthdir_y(stretchDist, dir);
+			var stretchDist2 = abs(sprite_width)*0.2;
+			var dir2 = point_direction(x, y, targX, targY);
+			handB.x = x+lengthdir_x(stretchDist2, dir2);
+			handB.y = y+lengthdir_y(stretchDist2, dir2);
+		}
+			
+		function drawArms(armBehindSpr, armFrontSpr) {
+			if(image_xscale > 0) {
+				drawLimbLeftSpr(armBehindSpr, armBehindSpr, shoulderB.x, shoulderB.y, handB.x, handB.y);
+				draw_self();
+				drawLimbLeftSpr(armFrontSpr, armFrontSpr, shoulderF.x, shoulderF.y, handF.x, handF.y);
+			}
+			else {
+				drawLimbRightSpr(armBehindSpr, armBehindSpr, shoulderB.x, shoulderB.y, handB.x, handB.y);
+				draw_self();
+				drawLimbRightSpr(armFrontSpr, armFrontSpr, shoulderF.x, shoulderF.y, handF.x, handF.y);
+			}
+		}
+		
+		function drawHoldingKnife(armBehindSpr, armFrontSpr, knifeSpr, stabbingBool, targX, targY) {
+			drawArms(armBehindSpr, armFrontSpr);
+			//Drawing knife
+			var xScale = 0.2 * sign(image_xscale);
+			var dir;
+			if(stabbingBool) {
+				dir = point_direction(x, y, targX, targY);
+				draw_sprite_ext(knifeSpr, 0, handF.x, handF.y, 0.2, 0.2, dir, c_white, 1);
+			}
+			else {
+				dir = 0;
+				draw_sprite_ext(knifeSpr, 0, handF.x, handF.y, xScale, 0.2, dir, c_white, 1);
+			}
+		}
+		
 		function doWalkingArmMovements() {
 			//Scale animation speed with walk speed
 			handDir = hspWalk / 3 * sign(handDir);
@@ -105,28 +154,21 @@ function camY() {return camera_get_view_y(view_camera[0]);}
 			else {
 				handProgress += sign(-handProgress)
 			}
-			//Calculating movements with parabola equation (i finally found a use for math i learned at school)
+			handProgress = clamp(handProgress, -20, 20);
+;			//Calculating movements with parabola equation (i finally found a use for math i learned at school)
 			var offset = (abs(sprite_width)/3);
 			handB.x = shoulderB.x+handProgress+offset*image_xscale;
 			handB.y = shoulderB.y+((-0.01*power(handProgress, 2))+offset);
-
+			
 			handF.x = shoulderF.x+(-handProgress)+2*image_xscale;
 			handF.y = shoulderF.y+((-0.01*power(-handProgress, 2))+offset);
 		}
 	
-		function drawWalkingArms(armSprBehind, armSprFront, itemToDraw = -1) {
-			if(image_xscale > 0) {
-				drawLimbLeftSpr(armSprBehind, armSprBehind, shoulderB.x, shoulderB.y, handB.x, handB.y);
-				draw_self();
-				drawLimbLeftSpr(armSprFront, armSprFront, shoulderF.x, shoulderF.y, handF.x, handF.y);
-			}
-			else {
-				drawLimbRightSpr(armSprBehind, armSprBehind, shoulderB.x, shoulderB.y, handB.x, handB.y);
-				draw_self();
-				drawLimbRightSpr(armSprFront, armSprFront, shoulderF.x, shoulderF.y, handF.x, handF.y);
-			}
+		function drawWalkingArms(armBehindSpr, armFrontSpr, itemToDraw = -1) {
+			drawArms(armBehindSpr, armFrontSpr);
+			var xScale = 0.2 * sign(image_xscale);
 			if(isItem(itemToDraw)) 
-				draw_sprite_ext(itemToDraw.itemSpr, 0, handF.x, handF.y, 0.2, 0.2, 0, c_white, 1);
+				draw_sprite_ext(itemToDraw.itemSpr, 0, handF.x, handF.y, xScale, 0.2, 0, c_white, 1);
 			else if(is_numeric(itemToDraw) && itemToDraw != -1) {
 				try{draw_sprite_ext(itemToDraw, 0, handF.x, handF.y, 0.2, 0.2, 0, c_white, 1);}
 					catch(err) {}

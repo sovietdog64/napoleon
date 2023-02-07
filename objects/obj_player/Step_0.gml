@@ -339,6 +339,12 @@ switch(animType) {
 		else {
 			doPunchingMovements(mouse_x, mouse_y);
 		}
+	} break;
+	case itemAnimations.KNIFE_STAB: {
+		if(leftAttackCooldown <= 0)
+			doWalkingArmMovements();
+		else
+			doStabMovement(mouse_x, mouse_y);
 	}
 }
 
