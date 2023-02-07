@@ -134,8 +134,10 @@ function camY() {return camera_get_view_y(view_camera[0]);}
 		}
 	
 		function holdFistsUp(targX, targY) {
+			if(variable_instance_exists(id, "punchingArm"))
+				punchingArm = -1;
 			handProgress = 1;
-			var stretchDist = abs(sprite_width)*0.25;
+			var stretchDist = abs(sprite_width)*0.3;
 			var dir = point_direction(x, y, targX, targY);
 			handB.x = x+lengthdir_x(stretchDist, dir);
 			handB.y = y+lengthdir_y(stretchDist, dir);
@@ -150,6 +152,11 @@ function camY() {return camera_get_view_y(view_camera[0]);}
 		function doPunchingMovements(targX, targY) {
 			handDir = 3 * sign(handDir) * (sprite_width/64);
 			handProgress += handDir
+			if(!variable_instance_exists(id, "punchingArm"))
+				variable_instance_set(id, "punchingArm", -1);
+				
+			if(punchingArm == -1)
+				punchingArm = choose(0, 1);
 			var maxLen = 30 * (sprite_width/64);
 			if(abs(handProgress) > maxLen || handProgress <= 0) {
 				handDir *= -1;
@@ -159,13 +166,21 @@ function camY() {return camera_get_view_y(view_camera[0]);}
 			//use logarithmic graph to have smooth & fast punching movement
 			var stretchDist = 30*log10(handProgress);
 			var dir = point_direction(x, y, targX, targY);
-			if(choose(0, 1) == 0) {
+			if(punchingArm == 0) {
 				handB.x = x+lengthdir_x(stretchDist, dir);
 				handB.y = y+lengthdir_y(stretchDist, dir);
+				var stretchDist2 = abs(sprite_width)*0.2;
+				var dir2 = point_direction(x, y, targX, targY);
+				handF.x = x+lengthdir_x(stretchDist2, dir2);
+				handF.y = y+lengthdir_y(stretchDist2, dir2);
 			}
-			else {
+			else if (punchingArm == 1){
 				handF.x = x+lengthdir_x(stretchDist, dir);
 				handF.y = y+lengthdir_y(stretchDist, dir);
+				var stretchDist2 = abs(sprite_width)*0.2;
+				var dir2 = point_direction(x, y, targX, targY);
+				handB.x = x+lengthdir_x(stretchDist2, dir2);
+				handB.y = y+lengthdir_y(stretchDist2, dir2);
 			}
 		}
 		

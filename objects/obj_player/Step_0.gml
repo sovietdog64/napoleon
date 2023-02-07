@@ -341,6 +341,7 @@ switch(animType) {
 		}
 	}
 }
+
 //if(isItem(global.heldItem) && global.heldItem.itemSpr == spr_boxingGloves)
 //	variable_struct_set(global.heldItem, "animationType", itemAnimations.PUNCHING);
 //else if(isItem(global.heldItem) && global.heldItem.itemSpr == spr_tanto)
