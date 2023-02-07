@@ -5,12 +5,12 @@ vsp = 0;
 hspWalk = 7;
 vspJump = -10;
 jumpCooldown = room_speed*0.7;
-maxHp = 100;
+maxHp = 150;
 hp = maxHp;	
 
-state = states.MOVE;
+noCollideDmg = true;
 
-attackState = attackStates.NONE;
+state = states.MOVE;
 
 drops = array_create(0);
 
@@ -19,17 +19,13 @@ lungeForward = false;
 detectionRange = 800;
 
 xpDrop = 5;
-
-itemDrops = [new FirearmAuto(gunTypes.RIFLE, spr_m16, spr_556x45mm, spr_556x45Proj, "5.56x45mm", 10, 250, 8,  m16Reload, 30, spr_m16Mag, spr_m16Empty), new Item(spr_556x45mm, 60, 10)];
-
 if(global.level >= 5)
 	xpDrop = 1;
 
 isHurt = false;
 
-maxAttackCooldown = room_speed*1.2;
+maxAttackCooldown = room_speed*0.8;
 attackCooldown = maxAttackCooldown;
-shootCooldown = itemDrops[0].cooldown;
 
 timeSinceFoundPlayer = 0;
 
@@ -57,7 +53,7 @@ alert = false;
 detectionRange = 300;
 
 //Distance from player where enemy stops to attack
-attackDist = sprite_width;
+attackDist = sprite_width*0.7;
 
 deadTime = 0;
 
@@ -74,6 +70,3 @@ mp_grid_add_instances(grid, obj_solid, 0);
 alarm_set(0, 10);
 
 #endregion pathfinding
-
-followingSequences = array_create(0);
-

@@ -244,7 +244,8 @@ if(runCooldown > 0)
 			hurtCooldown--;
 		if(hurtCooldown <= 0 && !isHurt) {
 			var enem = instance_place(x, y, obj_enemy);
-			if(enem != noone && enem.hp > 0) {
+			var noCollide = variable_instance_exists(enem, "noCollideDmg") && enem.noCollideDmg;
+			if(!noCollide && enem != noone && enem.hp > 0) {
 				global.hp--;
 				knockBack(enem.x, enem.y, 25);
 				//isHurt = true;

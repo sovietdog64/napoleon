@@ -195,7 +195,7 @@ function camY() {return camera_get_view_y(view_camera[0]);}
 			//Do animation of moving
 			if(abs(x - xprevious) > 0 || abs(y - yprevious) > 0) {
 				handProgress += handDir;
-				if(abs(handProgress) >= 20) {
+				if(abs(handProgress) >= 17) {
 					handDir *= -1;
 				}
 			}

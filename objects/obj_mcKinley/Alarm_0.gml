@@ -1,6 +1,6 @@
-if(state == states.DEAD)
+if(state = states.DEAD)
 	return;
-alarm_set(0, room_speed*0.1);
+alarm_set(0, room_speed*0.2);
 
 checkForPlayer();
 if(global.gamePaused || obj_player.state = PlayerStateLocked) {
