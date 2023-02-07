@@ -125,6 +125,55 @@ function camY() {return camera_get_view_y(view_camera[0]);}
 			}
 		}
 		
+		function drawLegs(legBehindSpr, legFrontSpr) {
+			if(image_xscale > 0) {
+				drawLimbRightSpr(legBehindSpr, legBehindSpr, hipB.x, hipB.y, footB.x, footB.y);
+				drawLimbRightSpr(legBehindSpr, legBehindSpr, hipF.x, hipF.y, footF.x, footF.y);
+				draw_self();
+			}
+			else {
+				drawLimbLeftSpr(legBehindSpr, legBehindSpr, hipB.x, hipB.y, footB.x, footB.y);
+				drawLimbLeftSpr(legBehindSpr, legBehindSpr, hipF.x, hipF.y, footF.x, footF.y);
+				draw_self();
+			}
+		}
+		
+		function doWalkingLegMovements() {
+			var factor = abs(sprite_width/64);
+			footDir = abs(footDir) * sign(image_xscale);
+			footDir = (hspWalk/3) * sign(footDir) * 0.08;
+			bOrigin = new Point(hipB.x, hipB.y+25*factor);
+			fOrigin = new Point(hipF.x, hipF.y+25*factor);
+			var changeInPos = abs(x - xprevious) + abs(y - yprevious);
+			if(changeInPos > 0) {
+				footProgress += footDir;
+				if(abs(footProgress) >= 2*pi) {
+					footProgress = 0;
+				}
+				footB.x = bOrigin.x;
+				footB.y = bOrigin.y;
+				footF.x = fOrigin.x;
+				footF.y = fOrigin.y;
+				var radius = 8 * factor
+				footB.x += radius*cos(footProgress);
+				footB.y += radius*sin(footProgress);
+			
+				footF.x += radius*cos(footProgress-pi);
+				footF.y += radius*sin(footProgress-pi);
+			}
+			else {
+				var bDist= distanceBetweenPoints(footB.x, footB.y, bOrigin.x, bOrigin.y)/2;
+				var bDir = point_direction(footB.x, footB.y, bOrigin.x, bOrigin.y)
+				footB.x += lengthdir_x(bDist, bDir);
+				footB.y += lengthdir_y(bDist, bDir);
+				
+				var fDist= distanceBetweenPoints(footF.x, footF.y, fOrigin.x, fOrigin.y)/10;
+				var fDir = point_direction(footF.x, footF.y, fOrigin.x, fOrigin.y)
+				footF.x += lengthdir_x(fDist, fDir);
+				footF.y += lengthdir_y(fDist, fDir);
+			}
+		}
+		
 		function drawHoldingKnife(armBehindSpr, armFrontSpr, knifeSpr, stabbingBool, targX, targY) {
 			drawArms(armBehindSpr, armFrontSpr);
 			//Drawing knife
@@ -142,7 +191,7 @@ function camY() {return camera_get_view_y(view_camera[0]);}
 		
 		function doWalkingArmMovements() {
 			//Scale animation speed with walk speed
-			handDir = hspWalk / 3 * sign(handDir);
+			handDir = hspWalk / 5 * sign(handDir);
 			//Do animation of moving
 			if(abs(x - xprevious) > 0 || abs(y - yprevious) > 0) {
 				handProgress += handDir;

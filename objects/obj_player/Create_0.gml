@@ -57,4 +57,13 @@ handF = new Point(x+10, y+10);
 handProgress = 0;
 handDir = 2;
 
+footProgress = 0;
+footDir = 2;
+
+//Legs
+hipB = new Point(x-10, y-10);
+footB = new Point(hipB.x, y+20);
+hipF = new Point(x+10, y+10);
+footF = new Point(hipF.x, y+20);
+
 animType = itemAnimations.NONE;

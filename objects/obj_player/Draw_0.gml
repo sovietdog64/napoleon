@@ -1,4 +1,5 @@
 draw_self();
+drawLegs(spr_playerLegB, spr_playerLegF);
 if(isItem(global.heldItem)) {
 	switch(animType) {
 		case itemAnimations.NONE:{
@@ -16,15 +17,16 @@ if(isItem(global.heldItem)) {
 				break;
 			}
 		} break;
-		case itemAnimations.PUNCHING:
+		case itemAnimations.PUNCHING: {
 			drawFistsUp(spr_playerArmB, spr_playerArmF);
+		}
 		break;
 		case itemAnimations.KNIFE_STAB: {
 			drawHoldingKnife(spr_playerArmB, spr_playerArmF, global.heldItem.itemSpr, leftAttackCooldown > 0, mouse_x, mouse_y);
 		} break;
-		default: show_debug_message("unidentified animation. forgot break statement? forgot to include code for an animation?") break;
 	}
 }
 else {
+	drawLegs(spr_playerLegB, spr_playerLegF);
 	drawWalkingArms(spr_playerArmB, spr_playerArmF);
 }

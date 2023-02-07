@@ -315,6 +315,7 @@ shoulderB.y = y-4;
 shoulderF.x = x-5*image_xscale;
 shoulderF.y = y-4;
 
+
 //Handling which animation to do
 if(variable_struct_exists(global.heldItem, "animationType")) {
 	animType = global.heldItem.animationType;
@@ -347,6 +348,12 @@ switch(animType) {
 			doStabMovement(mouse_x, mouse_y);
 	}
 }
+hipB.x = x-13*sign(image_xscale);
+hipB.y = y+10;
+	
+hipF.x = x+2*sign(image_xscale);
+hipF.y = y+10;
+doWalkingLegMovements();
 
 //if(isItem(global.heldItem) && global.heldItem.itemSpr == spr_boxingGloves)
 //	variable_struct_set(global.heldItem, "animationType", itemAnimations.PUNCHING);
