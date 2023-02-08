@@ -29,7 +29,7 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Game_control",
-    "path": "folders/Objects/Game_control.yy",
+    "name": "Save_System",
+    "path": "folders/Objects/Game_control/Save_System.yy",
   },
 }

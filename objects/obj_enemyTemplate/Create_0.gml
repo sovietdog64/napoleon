@@ -6,8 +6,6 @@ jumpCooldown = room_speed*0.7;
 hp = 5;
 maxHp = hp;
 
-drops = array_create(0);
-
 lungeForward = false;
 
 xpDrop = 5;

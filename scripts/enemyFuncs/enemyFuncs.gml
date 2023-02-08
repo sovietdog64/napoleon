@@ -96,6 +96,13 @@ function is_dead() {
 				//play death snd
 			break;
 		}
+		if(variable_instance_exists(id, "xpDrop"))
+			global.xp += xpDrop;
+		if(variable_instance_exists(id, "itemDrops")) {
+			for(var i=0; i<array_length(itemDrops); i++) {
+				dropItem(itemDrops[i], x, y);
+			}
+		}
 		return 1;
 	}
 }

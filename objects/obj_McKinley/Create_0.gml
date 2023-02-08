@@ -2,25 +2,28 @@ init = true;
 #region default enemy stuff
 hsp = 0;
 vsp = 0;
-hspWalk = random_range(5, 6);
-hspWalkRegular = hspWalk;
-sprintSpd = hspWalk * 1.5;
-sprintCd = room_speed*5;
-isSprinting = false;
+hspWalk = 7;
 vspJump = -10;
 jumpCooldown = room_speed*0.7;
-maxHp = 228;
+maxHp = 150;
 hp = maxHp;	
+
+noCollideDmg = true;
 
 state = states.MOVE;
 
-drops = array_create(0);
-
 lungeForward = false;
 
-detectionRange = 800;
+detectionRange = 600;
 
 xpDrop = 5;
+
+itemDrops = [new FirearmAuto(gunTypes.RIFLE, spr_m16, spr_556x45mm, spr_556x45Proj, "5.56x45mm", 10, 250, 8, m16Reload, 30, spr_m16Mag, spr_m16Empty), new Item(spr_556x45mm, 120, 10)];
+
+knife = new Item(spr_knife, 1, 1, itemAnimations.KNIFE_STAB);
+
+equipped = knife;
+
 if(global.level >= 5)
 	xpDrop = 1;
 
@@ -55,7 +58,7 @@ alert = false;
 detectionRange = 300;
 
 //Distance from player where enemy stops to attack
-attackDist = 1;
+attackDist = sprite_width;
 
 deadTime = 0;
 

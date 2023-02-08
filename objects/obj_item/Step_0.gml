@@ -50,19 +50,8 @@ if(lifeSpan <= 0) {
 //Pick up item
 if(canBePickedUp && !pickedUp && place_meeting(x, y, obj_player)) {
 	pickedUp = true;
-	var pickedUpItem = false;
-	for(var i=0; i<array_length(global.hotbarItems); i++) {
-		if(isItem(global.hotbarItems[i])) 
-			continue;
-		global.hotbarItems[i] = item;
-		pickedUpItem = true;
+	if(giveItemToPlayer(item))
 		instance_destroy();
-		return;
-	}
-	for(var i=0; i<array_length(global.invItems); i++) {
-		if(isItem(global.invItems[i])) continue;
-		global.invItems[i] = sprite_index;
-		instance_destroy();
-		break;
-	}
+	else
+		pickedUp = false;
 }

@@ -1,7 +1,7 @@
-var heldItem = global.hotbarItems[global.equippedItem];
 if(inDialogue) 
 	return;
-if(hurtCooldown > 0)hurtCooldown--;
+if(hurtCooldown > 0)
+	hurtCooldown--;
 if(global.dead)  
 	return;
 if(instance_exists(obj_game) && global.gamePaused) 
@@ -89,95 +89,107 @@ else
 
 {//Item usage/animations
 	leftAttackCooldown--;
-	if(isItem(heldItem)) {
+	if(isItem(global.heldItem)) {
 		//Using items on left press
 		if(mouse_check_button_pressed(mb_left) && leftAttackCooldown <= 0) {
-			switch(heldItem.itemSpr) {
+			switch(global.heldItem.itemSpr) {
 				case spr_boxingGloves: boxingGloveAttack(mouse_x, mouse_y, 12); break;
 				case spr_tanto: tantoStab(mouse_x, mouse_y, 12); break;
 			}
 		}
 		//Right press
 		else if(mouse_check_button_pressed(mb_right) && leftAttackCooldown <= 0) {
-			switch(heldItem.itemSpr) {
+			switch(global.heldItem.itemSpr) {
 				case spr_tanto: tantoSlash(mouse_x, mouse_y, 12); break;
 			}
 		}
 		
 		//Using items when holding down left
 		if(mouse_check_button(mb_left) && leftAttackCooldown <= 0) {
-			if(isFirearm(heldItem)) {
-				leftAttackCooldown = heldItem.cooldown+2;
-				var firedBullet = fireBullet(x, y, mouse_x, mouse_y, heldItem);
+			if(isFirearm(global.heldItem)) {
+				leftAttackCooldown = global.heldItem.cooldown;
+				attackState = attackStates.SHOOT;
+				var firedBullet = fireBullet(x, y, mouse_x, mouse_y, global.heldItem);
 				//If mag empty, try reloading
 				if(!firedBullet) {
-					var ammoItem = getItemFromInv(heldItem.ammoItemSpr);
+					var ammoItem = getItemFromInv(global.heldItem.ammoItemSpr);
 					//If found ammo, place reload animation
 					if(ammoItem != -1) {
-						var inst = placeSequenceAnimation(x, y, heldItem.reloadSeq);
-						var copy = copyStruct(heldItem);
+						var inst = placeSequenceAnimation(x, y, global.heldItem.reloadSeq);
+						var copy = copyStruct(global.heldItem);
 						var seqStruct =
 						{
 							sequenceElementId : inst,
-							followPlayerScale : true,
+							followImageScale : true,
+							followMouseDirection : false,
 							assetIndex : copy.reloadSeq,
 						}
 						array_push(followingSequences, seqStruct);
 						leftAttackCooldown = copy.reloadDuration+2;
+						attackState = attackStates.RELOAD;
 					}
 				}
-				else if(firedBullet && instance_exists(obj_camera))
-					obj_camera.screenShake(room_speed*0.2, 10);
+				else
+					screenShake(room_speed*0.2, 10);
 			}
 		}
 	}
 }
+if(leftAttackCooldown <= 0)
+	attackState = attackStates.NONE;
 
 //Make specific sequences follow player
 for(var i=0; i<array_length(followingSequences); i++) {
 	var seq = followingSequences[i].sequenceElementId;
+	var struct = followingSequences[i];
 	if(!layer_sequence_exists("Animations", seq))
 		continue;
 	//if sequence finished, destroy instance
 	if(layer_sequence_is_finished(seq)) {
 		//If holding firearm and sequence matches firearm reloading sequence, reload gun ammo
-		if(isFirearm(heldItem)) {
+		if(isFirearm(global.heldItem)) {
 			if(!layer_sequence_exists("Animations", seq))
 				continue;
-			if(followingSequences[i].assetIndex == heldItem.reloadSeq) {
-				reload(heldItem);
+			if(struct.assetIndex == global.heldItem.reloadSeq) {
+				reload(global.heldItem);
 			}
 		}
 		layer_sequence_destroy(seq);
 		array_delete(followingSequences, i, 1);
 		continue;
 	}
-	var seqName = sequenceGetName(followingSequences[i].assetIndex);
+	var seqName = sequenceGetName(struct.assetIndex);
 	//If sequence is a reload sequence, 
 	if(string_pos("Reload", seqName)) {
 		//If held item is fire arm and it is not matching the reloading seuqence, destroy sequence.
-		if(isFirearm(heldItem) && heldItem.reloadSeq != followingSequences[i].assetIndex) {
+		if(isFirearm(global.heldItem) && global.heldItem.reloadSeq != struct.assetIndex) {
 			leftAttackCooldown = 0;
 			layer_sequence_destroy(seq);
+			attackState = attackStates.NONE;
 			continue;
 		} 
-		else if(!isFirearm(heldItem)){//If not holding firearm, destroy reload sequence
+		else if(!isFirearm(global.heldItem)){//If not holding firearm, destroy reload sequence
 			leftAttackCooldown = 0;
 			layer_sequence_destroy(seq);
+			attackState = attackStates.NONE;
 			continue;
 		}
 	}
 	layer_sequence_x(seq, x);
 	layer_sequence_y(seq, y);
-	if(variable_struct_exists(followingSequences[i], "followPlayerScale") && followingSequences[i].followPlayerScale) {
+	//Make sequence copy image scale/direction of mouse if specified to do so
+	if(variable_struct_exists(struct, "followImageScale") && struct.followImageScale) {
 		layer_sequence_xscale(seq, image_xscale);
 		layer_sequence_yscale(seq, image_yscale);
 	}
+	if(variable_struct_exists(struct, "followMouseDirection") && struct.followMouseDirection)
+		layer_sequence_angle(seq, point_direction(x, y, mouse_x, mouse_y));
 }
 
-if(debug_mode)
+if(debug_mode) {
 	global.level = 5;
 	global.levelUpThreshold = 480;
+}
 
 global.stamina = clamp(global.stamina, 0, global.maxStamina);
 
@@ -188,16 +200,15 @@ if(runCooldown > 0)
 {
 	if(global.stamina > 10 && keyboard_check(vk_shift) && runCooldown <= 0) {
 		global.stamina -= 0.6;
-		hspWalk = global.minHspWalk*1.5;
+		hspWalk = minHspWalk*1.5;
 	}
 	else {
 		if(runCooldown <= 0 && global.stamina <= 10)
 			runCooldown = room_speed*3;
-		hspWalk = global.minHspWalk;
+		hspWalk = minHspWalk;
 	}
 	global.stamina += 0.2;	
 }
-
 
 //Collision
 {
@@ -227,20 +238,22 @@ if(runCooldown > 0)
 		y += vsp;
 	}
 }
-	
+
 {//Enemy collision
 		if(hurtCooldown > 0) 
 			hurtCooldown--;
 		if(hurtCooldown <= 0 && !isHurt) {
 			var enem = instance_place(x, y, obj_enemy);
-			if(enem != noone && enem.hp > 0) {
+			var noCollide = variable_instance_exists(enem, "noCollideDmg") && enem.noCollideDmg;
+			if(!noCollide && enem != noone && enem.hp > 0) {
 				global.hp--;
-				isHurt = true;
-				lungeForward = false;
-				hurtCooldown = room_speed;
-				var dir = point_direction(x, y, enem.x, enem.y)-180;
-				hsp = (25*dcos(dir));
-				vsp = (-25*dsin(dir));
+				knockBack(enem.x, enem.y, 25);
+				//isHurt = true;
+				//lungeForward = false;
+				//hurtCooldown = room_speed;
+				//var dir = point_direction(x, y, enem.x, enem.y)-180;
+				//hsp = (25*dcos(dir));
+				//vsp = (-25*dsin(dir));
 			}
 		}
 	}
@@ -271,7 +284,7 @@ y = clamp(y, 0, room_height);
 //Move camera towards mouse when holding firearm
 //If not firearm, center cam on player
 if(instance_exists(obj_camera)) {
-	if(isFirearm(heldItem)) {
+	if(isFirearm(global.heldItem)) {
 		var mouseDir = point_direction(x, y, mouse_x, mouse_y)
 		var mouseDist = distance_to_point(mouse_x, mouse_y);
 		mouseDist = clamp(mouseDist, 0, 100);
@@ -290,9 +303,62 @@ if(instance_exists(obj_camera)) {
 if(global.hp <= 0 && !global.dead) {
 	global.hp = 5;
 	global.dead = true;
-	global.setPosToSpawnPos = true;
 	x = enteredX;
 	y = enteredY;
+	global.setPosToSpawnPos = true;
 	room_goto(global.spawnRoom);
 }
 if(!instance_exists(obj_game)) instance_create_layer(0,0, "Instances", obj_game);
+
+#region animations
+shoulderB.x = x-5*image_xscale;
+shoulderB.y = y-4;
+shoulderF.x = x-5*image_xscale;
+shoulderF.y = y-4;
+
+
+//Handling which animation to do
+if(variable_struct_exists(global.heldItem, "animationType")) {
+	animType = global.heldItem.animationType;
+}
+else {
+	if(isFirearm(global.heldItem)) {
+		variable_struct_set(global.heldItem, "animationType", itemAnimations.GUN);
+		animType = itemAnimations.GUN;
+	}
+	else
+		animType = itemAnimations.NONE;
+}
+switch(animType) {
+	case itemAnimations.NONE:
+		doWalkingArmMovements();
+	break;
+	case itemAnimations.PUNCHING: {
+		//Fists up. Idle.
+		if(leftAttackCooldown <= 0) {
+			holdFistsUp(mouse_x, mouse_y);
+		}
+		else {
+			doPunchingMovements(mouse_x, mouse_y);
+		}
+	} break;
+	case itemAnimations.KNIFE_STAB: {
+		if(leftAttackCooldown <= 0)
+			doWalkingArmMovements();
+		else
+			doStabMovement(mouse_x, mouse_y);
+	}
+}
+hipB.x = x-13*sign(image_xscale);
+hipB.y = y+10;
+	
+hipF.x = x+2*sign(image_xscale);
+hipF.y = y+10;
+doWalkingLegMovements();
+
+//if(isItem(global.heldItem) && global.heldItem.itemSpr == spr_boxingGloves)
+//	variable_struct_set(global.heldItem, "animationType", itemAnimations.PUNCHING);
+//else if(isItem(global.heldItem) && global.heldItem.itemSpr == spr_tanto)
+//	variable_struct_set(global.heldItem, "animationType", itemAnimations.KNIFE_STAB);
+
+#endregion animations

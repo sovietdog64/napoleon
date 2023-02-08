@@ -13,7 +13,7 @@ function giveItemToPlayer(item) {
 			else 
 				continue;
 		}
-		global.hotbarItems[i] = item;
+		global.hotbarItems[i] = copyStruct(item);
 		return 1;
 	}
 	//Trying to give to inventory
@@ -48,10 +48,11 @@ function copyStruct(struct){
     return newCopy;
 }
 
-function Item(itemSprite, itemAmount, dmg) constructor {
+function Item(itemSprite, itemAmount, dmg, animationTypeEnum = itemAnimations.NONE) constructor {
 	itemSpr = itemSprite;
 	amount = itemAmount;
 	damage = dmg;
+	animationType = animationTypeEnum;
 }
 
 function sequenceGetName(sequenceId) {
@@ -67,18 +68,19 @@ function sequenceGetName(sequenceId) {
 }
 
 {//Fire arm
-	function fireBullet(shooterX, shooterY, targX, targY, firearm) {
-							if(firearm.currentAmmoAmount <= 0) {
-								return 0;
-							}
-							var bullet = instance_create_layer(shooterX, shooterY, "Instances", obj_bullet);
-							bullet.sprite_index = firearm.projectileSpr;
-							bullet.direction = point_direction(shooterX, shooterY, targX, targY);
-							bullet.spd = firearm.bulletSpd;
-							bullet.damage = firearm.damage;
-							firearm.currentAmmoAmount--;
-							return 1;
-						}
+	function fireBullet(shooterX, shooterY, targX, targY, firearm, enemyHit = false, inaccuracy = 0) {
+		if(firearm.currentAmmoAmount <= 0) {
+			return 0;
+		}
+		var bullet = instance_create_layer(shooterX, shooterY, "Instances", obj_bullet);
+		bullet.enemyDamage = enemyHit;
+		bullet.sprite_index = firearm.projectileSpr;
+		bullet.direction = point_direction(shooterX, shooterY, targX, targY)+random(inaccuracy);
+		bullet.spd = firearm.bulletSpd;
+		bullet.damage = firearm.damage;
+		firearm.currentAmmoAmount--;
+		return 1;
+	}
 	//Returns 1 if reloaded, 0 if no more ammo left completely
 	function reload(firearm) {
 		//Finding ammo in hotbar
@@ -115,10 +117,12 @@ function sequenceGetName(sequenceId) {
 		return 0;
 	}
 	
-	function Firearm(itemSprite, ammoItemSprite, projectileSprite, ammoNameStr, dmg, bulletSpeed, reloadSeqIndex, fireCooldown, ammoStorageSize, reloadCooldown) constructor {
+	function FirearmSemi(gunTypeEnum, itemSprite, ammoItemSprite, projectileSprite, ammoNameStr, dmg, bulletSpeed, shootDur, reloadSeqIndex,  magSize, magSprite = -1, noMagSprite = -1, animationTypeEnum = itemAnimations.GUN) constructor {
 		//Sprite variables must end with "Spr" with correct capitalization in order to save correctly (i couldn't find any other way of doing this because gamemaker is a lil dum sometimes)
 		itemSpr = itemSprite;
+		gunType = gunTypeEnum;
 		firearm = true;
+		fireMode = "semi"
 		amount = 1;
 		ammoItemSpr = ammoItemSprite;
 		projectileSpr = projectileSprite;
@@ -127,11 +131,39 @@ function sequenceGetName(sequenceId) {
 		bulletSpd = bulletSpeed;
 		//Sequence variables must end with "Seq" with correct capitalization in order to save correctly
 		reloadSeq = reloadSeqIndex;
-		cooldown = fireCooldown;
-		ammoCapacity = ammoStorageSize;
+		ammoCapacity = magSize;
 		currentAmmoAmount = ammoCapacity;
-		reloadDuration = reloadCooldown;
+		cooldown = shootDur;
+		reloadDuration = getSequenceLength(reloadSeqIndex)+1;
+		magSpr = magSprite;
+		noMagSpr = noMagSprite;
+		animationType = animationTypeEnum;
 	}
+	
+	function FirearmAuto(gunTypeEnum, itemSprite, ammoItemSprite, projectileSprite, ammoNameStr, dmg, bulletSpeed, shootDur, reloadSeqIndex, magSize, magSprite = -1, noMagSprite = -1, animationTypeEnum = itemAnimations.GUN) constructor {
+		//Sprite variables must end with "Spr" with correct capitalization in order to save correctly (i couldn't find any other way of doing this because gamemaker is a lil dum sometimes)
+		itemSpr = itemSprite;
+		gunType = gunTypeEnum;
+		firearm = true;
+		fireMode = "auto";
+		amount = 1;
+		ammoItemSpr = ammoItemSprite;
+		projectileSpr = projectileSprite;
+		ammoName = ammoNameStr;
+		damage = dmg;	
+		bulletSpd = bulletSpeed;
+		//Sequence variables must end with "Seq" with correct capitalization in order to save correctly
+		reloadSeq = reloadSeqIndex;
+		ammoCapacity = magSize;
+		currentAmmoAmount = ammoCapacity;
+		cooldown = shootDur;
+		reloadDuration = getSequenceLength(reloadSeqIndex)+1;
+		magSpr = magSprite;
+		noMagSpr = noMagSprite;
+		animationType = animationTypeEnum;
+	}
+	
+	
 	
 	function isFirearm(item) {
 		return isItem(item) && variable_struct_exists(item, "firearm") && item.firearm;
@@ -200,7 +232,7 @@ function stringContainsNoCase(str, substr) {
 }
 
 //Returns if string contains substring WITH case sensitivity
-function stringContains(str, substr) {
+function stringContains(substr, str) {
 	return string_pos(substr, str);
 }
 	
@@ -320,4 +352,53 @@ function raycast4Directional(distance, incrementInPixels, preciseCheck) {
 		}
 	}
 	return undefined;
+}
+	
+function getVarAssetName(varName, varValue) {
+	if (stringContains("Spr", varName))
+		return sprite_get_name(varValue);
+		
+	if (stringContains("Seq", varName))
+		return sequenceGetName(varValue); 
+		
+	if (stringContains("Obj", varName))
+		return object_get_name(varValue);
+		
+	if (stringContains("Rm", varName) || stringContains("Room", varName))
+		return room_get_name(varValue);
+	return 0;
+}
+
+function instSetVars(inst, varStruct) {
+	var keys = variable_struct_get_names(varStruct);
+	for(var i=0; i<array_length(keys); i++) {
+		var key = keys[i], value = variable_struct_get(varStruct, key);
+		if(is_string(value))
+			if(asset_get_type(value) != asset_unknown)
+				value = asset_get_index(value);
+		variable_instance_set(inst, key, value);
+	}
+}
+
+function getSequenceLength(sequenceAssetID) {
+	if(!sequence_exists(sequenceAssetID))
+		return -1;
+	return sequence_get(sequenceAssetID).length;
+}
+	
+function screenShake(duration, screenShakeLevel) {
+	if(instance_exists(obj_camera)) {
+		with(obj_camera) {
+			screenShakeDuration = duration;
+			screenShakeLvl = screenShakeLevel;
+			alarm_set(0, 1);
+		}
+	}
+}
+	
+function dropItem(item, xx, yy) {
+	if(!isItem(item))
+		return 0;
+	var inst = instance_create_layer(xx, yy, "Interactables", obj_item);
+	inst.item = item;
 }

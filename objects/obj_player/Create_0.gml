@@ -7,7 +7,9 @@ inDialogue = false;//bool stating whether the player is talking with an NPC.
 invOpen = false;
 clickedItem = -1;
 
-global.minHspWalk = 8;
+maxHurtCooldown = room_speed;
+
+minHspWalk = 8;
 
 runCooldown = 0;
 
@@ -21,11 +23,7 @@ isHurt = false;
 
 if(!variable_global_exists("hp"))global.hp = 5;//health
 if(!variable_global_exists("dead"))global.dead = false;
-sprite_index = spr_player;
 leftAttackCooldown = 0;
-
-safeX = x;
-safeY = y;
 
 enteredX = x;
 enteredY = y;
@@ -34,6 +32,7 @@ global.stamina = 100;
 global.maxStamina = 100;
 
 state = PlayerStateFree;
+attackState = attackStates.NONE;
 lastState = state;
 
 if(global.loadedGame) {
@@ -41,3 +40,32 @@ if(global.loadedGame) {
 	y = global.spawnY;
 	global.loadedGame = false;
 }
+
+knockBack = function(damageX, damageY, kbLevel) {
+	isHurt = true;
+	lungeForward = false;
+	hurtCooldown = maxHurtCooldown;
+	var dir = point_direction(x, y, damageX, damageY)-180;
+	hsp = (kbLevel*dcos(dir));
+	vsp = (-kbLevel*dsin(dir));
+}
+
+//Vars for limb positions
+shoulderB = new Point(x, y)
+handB = new Point(x+10, y+10);
+shoulderF = new Point(x, y);
+handF = new Point(x+10, y+10);
+
+handProgress = 0;
+handDir = 2;
+
+footProgress = 0;
+footDir = 2;
+
+//Legs
+hipB = new Point(x-10, y-10);
+footB = new Point(hipB.x, y+20);
+hipF = new Point(x+10, y+10);
+footF = new Point(hipF.x, y+20);
+
+animType = itemAnimations.NONE;

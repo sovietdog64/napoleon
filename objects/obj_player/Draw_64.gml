@@ -131,6 +131,7 @@ if(!invOpen && !global.dead) {
 	}
 }
 
+//Health, quest, and crosshair/amount of ammo
 if(!invOpen) {
 	//Drawing health
 	for(var i = 0; i < global.hp; i++) {
@@ -164,12 +165,11 @@ if(!invOpen) {
 	}
 		
 	//Drawing crosshair & amount of ammo 
-	var heldItem = global.hotbarItems[global.equippedItem];
-	if(isFirearm(heldItem)) {
+	if(isFirearm(global.heldItem)) {
 		var mouseX = device_mouse_x_to_gui(0);
 		var mouseY = device_mouse_y_to_gui(0);
 		draw_sprite(spr_crosshair, 0, mouseX, mouseY);
-		if(isFirearm(heldItem) && noAmmo(heldItem)) {
+		if(isFirearm(global.heldItem) && noAmmo(global.heldItem)) {
 			draw_set_color(c_red);
 			draw_set_halign(fa_center);
 			draw_set_font(fnt_notif);
@@ -179,11 +179,9 @@ if(!invOpen) {
 		else {
 			draw_set_halign(fa_center);
 			draw_set_color(c_yellow);
-			if(heldItem.currentAmmoAmount <= 0)
+			if(global.heldItem.currentAmmoAmount <= 0)
 				draw_set_color(c_red);
-			var strToDraw = heldItem.ammoName + ": " + string(heldItem.currentAmmoAmount);
-			if(leftAttackCooldown > 0)
-				strToDraw = "...";
+			var strToDraw = global.heldItem.ammoName + ": " + string(global.heldItem.currentAmmoAmount);
 		
 			draw_text_transformed(mouseX, mouseY-80, strToDraw, 1, 1, 0);
 		}
