@@ -3,8 +3,8 @@
   "resourceVersion": "1.0",
   "name": "obj_McKinley",
   "spriteId": {
-    "name": "spr_theRealMckinley",
-    "path": "sprites/spr_theRealMckinley/spr_theRealMckinley.yy",
+    "name": "spr_McKinley",
+    "path": "sprites/spr_McKinley/spr_McKinley.yy",
   },
   "solid": false,
   "visible": true,
