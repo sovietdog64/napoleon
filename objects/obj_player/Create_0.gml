@@ -7,6 +7,8 @@ inDialogue = false;//bool stating whether the player is talking with an NPC.
 invOpen = false;
 clickedItem = -1;
 
+maxHurtCooldown = room_speed;
+
 minHspWalk = 8;
 
 runCooldown = 0;
@@ -42,7 +44,7 @@ if(global.loadedGame) {
 knockBack = function(damageX, damageY, kbLevel) {
 	isHurt = true;
 	lungeForward = false;
-	hurtCooldown = room_speed;
+	hurtCooldown = maxHurtCooldown;
 	var dir = point_direction(x, y, damageX, damageY)-180;
 	hsp = (kbLevel*dcos(dir));
 	vsp = (-kbLevel*dsin(dir));

@@ -31,6 +31,6 @@ damagePlayer = function() {
 	if(obj_player.hurtCooldown > 0)
 		return;
 	global.hp--;
-	obj_player.hurtCooldown = room_speed;
+	obj_player.hurtCooldown = obj_player.maxHurtCooldown;
 	instance_destroy();
 }

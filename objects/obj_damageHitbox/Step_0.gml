@@ -1,8 +1,12 @@
 ///@description Enemy/player collisions
 //Deleting object if didn't collide within life span
 if(!lifeSpanSameAsInst) {
-	if(lifeSpan > 0)lifeSpan--;
-	else instance_destroy();
+	if(lifeSpan > 0)
+		lifeSpan--;
+	else {
+		instance_destroy();
+		return;
+	}
 }
 else {
 	if(!instance_exists(instToFollow)) {
@@ -43,8 +47,9 @@ if(!enemyHit && !dontHit) {
 	}
 }
 else if (enemyHit){
-	if(place_meeting(x, y, obj_player) && !dontHit) {
+	if(place_meeting(x, y, obj_player) && !dontHit && obj_player.hurtCooldown <= 0) {
 		dontHit = true;
+		obj_player.hurtCooldown = obj_player.maxHurtCooldown;
 		global.hp--;
 		obj_player.knockBack(x, y, knockbackDur);
 	}

@@ -72,6 +72,7 @@
     {"id":{"name":"spr_ground","path":"sprites/spr_ground/spr_ground.yy",},"order":0,},
     {"id":{"name":"obj_npc","path":"objects/obj_npc/obj_npc.yy",},"order":0,},
     {"id":{"name":"spr_playerLegB","path":"sprites/spr_playerLegB/spr_playerLegB.yy",},"order":12,},
+    {"id":{"name":"spr_knife","path":"sprites/spr_knife/spr_knife.yy",},"order":11,},
     {"id":{"name":"spr_theRealMckinley","path":"sprites/spr_theRealMckinley/spr_theRealMckinley.yy",},"order":3,},
     {"id":{"name":"spr_shopItem","path":"sprites/spr_shopItem/spr_shopItem.yy",},"order":9,},
     {"id":{"name":"obj_McKinley","path":"objects/obj_McKinley/obj_McKinley.yy",},"order":13,},

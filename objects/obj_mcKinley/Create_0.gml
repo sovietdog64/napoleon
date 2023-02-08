@@ -12,13 +12,18 @@ noCollideDmg = true;
 
 state = states.MOVE;
 
-drops = array_create(0);
-
 lungeForward = false;
 
-detectionRange = 800;
+detectionRange = 600;
 
 xpDrop = 5;
+
+itemDrops = [new FirearmAuto(gunTypes.RIFLE, spr_m16, spr_556x45mm, spr_556x45Proj, "5.56x45mm", 10, 250, 8, m16Reload, 30, spr_m16Mag, spr_m16Empty), new Item(spr_556x45mm, 120, 10)];
+
+knife = new Item(spr_knife, 1, 1, itemAnimations.KNIFE_STAB);
+
+equipped = knife;
+
 if(global.level >= 5)
 	xpDrop = 1;
 
@@ -53,7 +58,7 @@ alert = false;
 detectionRange = 300;
 
 //Distance from player where enemy stops to attack
-attackDist = sprite_width*0.7;
+attackDist = sprite_width;
 
 deadTime = 0;
 

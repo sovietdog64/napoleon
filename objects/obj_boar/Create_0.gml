@@ -10,8 +10,6 @@ hp = maxHp;
 
 state = states.MOVE;
 
-drops = array_create(0);
-
 lungeForward = false;
 
 detectionRange = 800;
