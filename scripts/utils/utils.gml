@@ -402,3 +402,9 @@ function dropItem(item, xx, yy) {
 	var inst = instance_create_layer(xx, yy, "Interactables", obj_item);
 	inst.item = item;
 }
+	
+function distanceToRectangle(px, py, x1, y1, x2, y2) {
+	var dx = max(x1 - px, 0, px - x2);
+	var dy = max(y1 - py, 0, py - y2);
+	return sqrt(dx*dx + dy*dy);
+}

@@ -4,9 +4,9 @@ function cellular_automata_map(_width, _height, _spawnChance, _createLimit, _des
 	spawnChance = _spawnChance;
 	createLimit = _createLimit;
 	destroyLimit = _destroyLimit;
-
+	
 	map = [[]];
-
+	
 	//Create & randomize map
 	for(var col = width-1; col >= 0; col--) {
 		for(var row = height-1; row >= 0; row--) {
