@@ -3,10 +3,12 @@ if(room == rm_init)
 layerId = layer_get_id("Ground");
 
 randomize();
-grassMap = new cellular_automata_map(CHUNK_W, CHUNK_H, 0.7, 5, 5);
+grassMap = new cellular_automata_map(CHUNK_W, CHUNK_H, 1, 0, 0);
 grassMap.iterate(1);
 waterMap = new cellular_automata_map(CHUNK_W, CHUNK_H, 0.7, 5, 3);
 waterMap.iterate(10);
+yellowFilter = new cellular_automata_map(CHUNK_W, CHUNK_H, 0.7, 5, 5)
+yellowFilter.iterate(10);
 generate(0, 0);
 
 //Updating chunk grid
@@ -17,7 +19,6 @@ var counth = room_width div h;
 
 chunkGrid = ds_grid_create(countw, counth);
 
-//Updating chunk grid
 for(var col=0; col<ds_grid_width(chunkGrid); col++) {
 	for(var row=0; row<ds_grid_height(chunkGrid); row++) {
 		var xx1 = col*w;
@@ -39,5 +40,3 @@ for(var col=0; col<ds_grid_width(chunkGrid); col++) {
 					})
 	}
 }
-
-//spawnTiles(waterMap, spr_water, 2, 0, 0)

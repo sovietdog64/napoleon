@@ -81,11 +81,19 @@ function spawnTiles(terrainMap, sprite, spriteOrder, startX, startY, object = -1
 }
 
 function generate(startX, startY) {
+	randomize();
+	grassMap = new cellular_automata_map(CHUNK_W, CHUNK_H, 1, 0, 0);
+	grassMap.iterate(1);
+	waterMap = new cellular_automata_map(CHUNK_W, CHUNK_H, 0.7, 5, 3);
+	waterMap.iterate(5);
+	yellowFilter = new cellular_automata_map(CHUNK_W, CHUNK_H, 0.7, 5, 5)
+	yellowFilter.iterate(5);
 	spawnTiles(grassMap, [spr_grass, spr_grass2, spr_grass3, spr_grass4], 1, startX, startY, , false, true);
-	spawnTiles(waterMap, spr_water, 2, startX, startY, , true, false);
+	spawnTiles(yellowFilter, [spr_yellow, spr_brown], 2, startX, startY, , true, false);
+	spawnTiles(waterMap, spr_water, 3, startX, startY, , true, false);
 }
 
-layerId = layer_get_id("Ground");
+layerId = layer_get_id("GrosDund");
 
 generatedX = 0;
 generatedY = 0;
@@ -93,7 +101,7 @@ generatedY = 0;
 
 //Updating chunk grid
 chunkGrid = ds_grid_create(1, 1);
-//Updating chunk grid
+
 for(var col=0; col<ds_grid_width(chunkGrid); col++) {
 	for(var row=0; row<ds_grid_height(chunkGrid); row++) {
 		var xx1 = col*PX_CHUNK_W;

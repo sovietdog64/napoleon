@@ -13,7 +13,6 @@ for(var col=0; col<ds_grid_width(chunkGrid); col++) {
 }
 
 var reachingEndOfRoom = rectangle_in_rectangle(CAMX,CAMY, CAMX2+10,CAMY2+10, 0,0, room_width, room_height);
-show_debug_message(reachingEndOfRoom)
 if(reachingEndOfRoom != 1) {
 	room_width += PX_CHUNK_W;
 	room_height += PX_CHUNK_H;
