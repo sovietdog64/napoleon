@@ -1,4 +1,4 @@
-function spawnTiles(terrainMap, sprite, spriteOrder, startX, startY, object = -1, invertPlacement = false, isBaseTile = false) {
+function spawnTiles(terrainMap, sprite, spriteOrder, startX, startY, object = -1, invertPlacement = false, isBaseTile = false, randomizeAngle = true) {
 	var genX = startX;
 	var genY = startY;
 	var spriteToDraw = sprite;
@@ -15,7 +15,8 @@ function spawnTiles(terrainMap, sprite, spriteOrder, startX, startY, object = -1
 					genX = col*spacing + startX;
 					genY = row*spacing + startY;
 					var spr = layer_sprite_create(lay, genX, genY, spriteToDraw);
-					layer_sprite_angle(spr, choose(0, 90, 180, 270));
+					if(randomizeAngle)
+						layer_sprite_angle(spr, choose(0, 90, 180, 270));
 					if(object != -1) {
 						if(is_array(object)) {
 							var index = irandom(array_length(object)-1);
@@ -30,7 +31,8 @@ function spawnTiles(terrainMap, sprite, spriteOrder, startX, startY, object = -1
 					genY = row*spacing + startY;
 					spriteToDraw = sprite[irandom_range(1,array_length(sprite)-1)];
 					var spr = layer_sprite_create(lay, genX, genY, spriteToDraw);
-					layer_sprite_angle(spr, choose(0, 90, 180, 270));
+					if(randomizeAngle)
+						layer_sprite_angle(spr, choose(0, 90, 180, 270));
 					if(object != -1) {
 						if(is_array(object)) {
 							var index = irandom(array_length(object)-1);
@@ -46,7 +48,8 @@ function spawnTiles(terrainMap, sprite, spriteOrder, startX, startY, object = -1
 					genX = col*spacing + startX;
 					genY = row*spacing + startY;
 					var spr = layer_sprite_create(lay, genX, genY, spriteToDraw);
-					layer_sprite_angle(spr, choose(0, 90, 180, 270));
+					if(randomizeAngle)
+						layer_sprite_angle(spr, choose(0, 90, 180, 270));
 					if(object != -1) {
 						if(is_array(object)) {
 							var index = irandom(array_length(object)-1);
@@ -61,7 +64,8 @@ function spawnTiles(terrainMap, sprite, spriteOrder, startX, startY, object = -1
 					genY = row*spacing + startY;
 					spriteToDraw = sprite[irandom_range(1,array_length(sprite)-1)];
 					var spr = layer_sprite_create(lay, genX, genY, spriteToDraw);
-					layer_sprite_angle(spr, choose(0, 90, 180, 270));
+					if(randomizeAngle)
+						layer_sprite_angle(spr, choose(0, 90, 180, 270));
 					if(object != -1) {
 						if(is_array(object)) {
 							var index = irandom(array_length(object)-1);
@@ -80,17 +84,21 @@ function spawnTiles(terrainMap, sprite, spriteOrder, startX, startY, object = -1
 	}
 }
 
-function generate(startX, startY) {
-	randomize();
-	grassMap = new cellular_automata_map(CHUNK_W, CHUNK_H, 1, 0, 0);
-	grassMap.iterate(1);
-	waterMap = new cellular_automata_map(CHUNK_W, CHUNK_H, 0.7, 5, 3);
-	waterMap.iterate(5);
-	yellowFilter = new cellular_automata_map(CHUNK_W, CHUNK_H, 0.7, 5, 5)
-	yellowFilter.iterate(5);
-	spawnTiles(grassMap, [spr_grass, spr_grass2, spr_grass3, spr_grass4], 1, startX, startY, , false, true);
-	spawnTiles(yellowFilter, [spr_yellow, spr_brown], 2, startX, startY, , true, false);
-	spawnTiles(waterMap, spr_water, 3, startX, startY, , true, false);
+function generate(startX, startY, biomeEnum = biomes.FIELD) {
+	switch(biomeEnum) {
+		case biomes.FIELD: {
+			randomize();
+			grassMap = new cellular_automata_map(CHUNK_W, CHUNK_H, 1, 0, 0);
+			grassMap.iterate(1);
+			waterMap = new cellular_automata_map(CHUNK_W, CHUNK_H, 0.7, 5, 3);
+			waterMap.iterate(5);
+			yellowFilter = new cellular_automata_map(CHUNK_W, CHUNK_H, 0.7, 5, 5)
+			yellowFilter.iterate(5);
+			spawnTiles(grassMap, [spr_grass, spr_grass2, spr_grass3, spr_grass4], 1, startX, startY, , false, true);
+			spawnTiles(yellowFilter, [spr_yellow, spr_brown], 2, startX, startY, , true, false);
+			spawnTiles(waterMap, spr_water, 3, startX, startY, , true, false);
+		}
+	}
 }
 
 layerId = layer_get_id("GrosDund");
@@ -116,6 +124,7 @@ for(var col=0; col<ds_grid_width(chunkGrid); col++) {
 						x2 : xx2,
 						y2 : yy2,
 						loaded : false,
+						biome : biomes.FIELD,
 					})
 	}
 }

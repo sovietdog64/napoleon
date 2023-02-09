@@ -6,7 +6,7 @@ for(var col=0; col<ds_grid_width(chunkGrid); col++) {
 			continue;
 		var unloadedChunkVisible = rectangle_in_rectangle(r.x1,r.y1, r.x2, r.y2, CAMX,CAMY, CAMX2,CAMY2);
 		if(unloadedChunkVisible) {
-			generate(r.x1, r.y1);
+			generate(r.x1, r.y1, r.biome);
 			r.loaded = true;
 		}
 	}
