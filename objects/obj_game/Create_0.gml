@@ -54,6 +54,10 @@ enum itemAnimations {
 	DAGGER,
 }
 
+enum biomes {
+	FIELD,
+}
+
 global.drag = 0.9;
 global.savingGame = false;
 global.loadingGame = false;
