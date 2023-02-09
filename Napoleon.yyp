@@ -36,6 +36,7 @@
     {"id":{"name":"spr_boar","path":"sprites/spr_boar/spr_boar.yy",},"order":1,},
     {"id":{"name":"render_utils","path":"scripts/render_utils/render_utils.yy",},"order":2,},
     {"id":{"name":"obj_camera","path":"objects/obj_camera/obj_camera.yy",},"order":1,},
+    {"id":{"name":"spr_grass3","path":"sprites/spr_grass3/spr_grass3.yy",},"order":4,},
     {"id":{"name":"spr_spider","path":"sprites/spr_spider/spr_spider.yy",},"order":0,},
     {"id":{"name":"spr_m16","path":"sprites/spr_m16/spr_m16.yy",},"order":0,},
     {"id":{"name":"spr_pebble","path":"sprites/spr_pebble/spr_pebble.yy",},"order":3,},

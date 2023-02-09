@@ -5,7 +5,7 @@ layerId = layer_get_id("Ground");
 randomize();
 grassMap = new cellular_automata_map(CHUNK_W, CHUNK_H, 0.7, 5, 5);
 grassMap.iterate(1);
-spawnTiles(grassMap, spr_grass, 1, 0, 0, false, true);
+spawnTiles(grassMap, [spr_grass, spr_grass2, spr_grass3], 1, 0, 0, false, true);
 
 //Updating chunk grid
 var w = PX_CHUNK_W-TILE_W/2
