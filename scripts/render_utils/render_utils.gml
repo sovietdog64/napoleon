@@ -1,7 +1,4 @@
 
-function camX() {return camera_get_view_x(view_camera[0]);}
-function camY() {return camera_get_view_y(view_camera[0]);}
-
 {//LIMBS
 	///@function drawLimbRight
 	//@param xx hip/shoulder x

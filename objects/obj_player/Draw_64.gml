@@ -103,7 +103,7 @@ if(invOpen) {
 }
 
 if(isItem(clickedItem)) {
-	draw_sprite(clickedItem.itemSpr, 0, mouse_x-(64+camX()), mouse_y-(64+camY()));
+	draw_sprite(clickedItem.itemSpr, 0, mouse_x-(64+CAMX), mouse_y-(64+CAMY));
 }
 
 //Drawing hotbar/items in use when outside of inventory
@@ -173,7 +173,7 @@ if(!invOpen) {
 			draw_set_color(c_red);
 			draw_set_halign(fa_center);
 			draw_set_font(fnt_notif);
-			draw_text_transformed(x-camX(), (y-camY())-100, "NO AMMO", 2, 2, 0);
+			draw_text_transformed(x-CAMX, (y-CAMY)-100, "NO AMMO", 2, 2, 0);
 			draw_text_transformed(mouseX, mouseY, "NO AMMO", 2, 2, 0);
 		}
 		else {

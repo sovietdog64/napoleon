@@ -52,6 +52,7 @@ for(var col=0; col<ds_grid_width(chunkGrid); col++) {
 						y1 : yy1,
 						x2 : xx2,
 						y2 : yy2,
+						loaded : false,
 					})
 	}
 }
