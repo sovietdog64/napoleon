@@ -24,7 +24,6 @@ for(var xx=0; xx<xCount; xx++) {
 					var sprToDraw = spr_grass;
 					var tileX = chunkX+(TILEW*(col-xx));
 					var tileY = chunkY+(TILEH*(row-yy));
-					show_debug_message(string(ds_grid_get(terrainMap, col, row)) + " aeae")
 					//picking which sprite to draw based on the number of the tile
 					switch(ds_grid_get(terrainMap, col, row)) {
 						case 1: {
