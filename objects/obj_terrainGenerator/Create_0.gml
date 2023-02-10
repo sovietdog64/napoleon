@@ -5,7 +5,7 @@ function spawnTiles(terrainMap, sprite, spriteOrder, startX, startY, object = -1
 	if(is_array(sprite))
 		spriteToDraw = sprite[0];
 	var lay = layer_create(layer_get_depth(layerId) - spriteOrder, sprite_get_name(spriteToDraw) + " layer");
-	var spacing = TILE_W;
+	var spacing = TILEW;
 	for(var col = 0; col < terrainMap.width; col++) {
 		for(var row = 0; row < terrainMap.height; row++) {
 			if(is_array(sprite))
@@ -101,32 +101,10 @@ function generate(startX, startY, biomeEnum = biomes.FIELD) {
 	}
 }
 
-layerId = layer_get_id("GrosDund");
+allChunks = 0;
 
 generatedX = 0;
 generatedY = 0;
 
-
-//Updating chunk grid
-chunkGrid = ds_grid_create(1, 1);
-
-for(var col=0; col<ds_grid_width(chunkGrid); col++) {
-	for(var row=0; row<ds_grid_height(chunkGrid); row++) {
-		var xx1 = col*PX_CHUNK_W;
-		var yy1 = row*PX_CHUNK_H;
-		var xx2 = xx1 + PX_CHUNK_W;
-		var yy2 = yy1 + PX_CHUNK_H;
-		ds_grid_set(chunkGrid,
-					col,row,
-					{
-						x1 : xx1,
-						y1 : yy1,
-						x2 : xx2,
-						y2 : yy2,
-						loaded : false,
-						biome : biomes.FIELD,
-					})
-	}
-}
-//terrainMap.iterate(10);
-//spawnTiles(0, 0);
+drawDebugX = 0;
+drawDebugY = 0;

@@ -7,11 +7,11 @@
 #macro CHUNK_W 64
 #macro CHUNK_H 64
 
-#macro TILE_W 64
-#macro TILE_H 64
+#macro TILEW 64
+#macro TILEH 64
 
-#macro PX_CHUNK_W (CHUNK_W*TILE_W)
-#macro PX_CHUNK_H (CHUNK_H*TILE_H)
+#macro PX_CHUNK_W (CHUNK_W*TILEW)
+#macro PX_CHUNK_H (CHUNK_H*TILEH)
 
 #macro CAMX camera_get_view_x(view_camera[0])
 #macro CAMY camera_get_view_y(view_camera[0])

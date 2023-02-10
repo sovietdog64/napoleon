@@ -1,56 +1,48 @@
-//auto-gen
-return;
-for(var col=0; col<ds_grid_width(chunkGrid); col++) {
-	for(var row=0; row<ds_grid_height(chunkGrid); row++) {
-		var r = ds_grid_get(chunkGrid, col, row);
-		if(r.loaded)
+
+var xCount = ds_grid_width(allChunks);
+var yCount = ds_grid_height(allChunks);
+//Loop through all chunks and see if it is unloaded and visible at the same time.
+//if it is, then load the chunk
+for(var xx=0; xx<xCount; xx++) {
+	for(var yy=0; yy<yCount; yy++) {
+		//If chunk loaded, continue.
+		if(is_struct(ds_grid_get(allChunks, xx, yy))) {
 			continue;
-		var unloadedChunkVisible = rectangle_in_rectangle(r.x1,r.y1, r.x2, r.y2, CAMX,CAMY, CAMX2,CAMY2);
-		if(unloadedChunkVisible) {
-			generate(r.x1, r.y1, r.biome);
-			r.loaded = true;
 		}
-	}
-}
-
-var reachingEndOfRoom = rectangle_in_rectangle(CAMX,CAMY, CAMX2+10,CAMY2+10, 0,0, room_width, room_height);
-if(reachingEndOfRoom != 1) {
-	room_width += PX_CHUNK_W;
-	room_height += PX_CHUNK_H;
-	var width = ds_grid_width(chunkGrid);
-	var height = ds_grid_height(chunkGrid);
-	ds_grid_resize(chunkGrid, width+1, height+1);
-	
-	//Updating chunk grid
-	var w = PX_CHUNK_W-TILE_W/2
-	var h = PX_CHUNK_H-TILE_H/2;
-	var countw = room_width div w;
-	var counth = room_width div h;
-
-	chunkGrid = ds_grid_create(countw, counth);
-
-	//Updating chunk grid
-	for(var col=0; col<ds_grid_width(chunkGrid); col++) {
-		for(var row=0; row<ds_grid_height(chunkGrid); row++) {
-			if(is_struct(ds_grid_get(chunkGrid, col, row)))
-				continue;
-			var xx1 = col*w;
-			var yy1 = row*h;
-			var xx2 = xx1 + w;
-			var yy2 = yy1 + h;
-			var isLoaded = false;
-			if(col == 0 && row = 0)
-				isLoaded = true;
-			ds_grid_set(chunkGrid,
-						col,row,
+		
+		var chunkX = xx*PX_CHUNK_W;
+		var chunkY = yy*PX_CHUNK_H;
+		var camInBounds = rectangle_in_rectangle(CAMX, CAMY, CAMX2, CAMY2,
+												chunkX, chunkY, chunkX+PX_CHUNK_W, chunkY+PX_CHUNK_H);
+		
+		//If unloaded chunk visible, load it
+		var lay = layer_get_id("Ground");
+		if(camInBounds != 0) {
+			//Loop through chunk's map info
+			for(var col=xx; col<xx+CHUNK_W; col++)
+				for(var row=yy; row<yy+CHUNK_H; row++) {
+					var sprToDraw = spr_grass;
+					//picking which sprite to draw based on the number of the tile
+					switch(ds_grid_get(terrainMap, col, row)) {
+						case 1: sprToDraw = spr_grass break;
+						case 2: sprToDraw = spr_grass2 break;
+						case 3: sprToDraw = spr_grass3 break;
+						case 4: sprToDraw = spr_grass4 break;
+						case 5: sprToDraw = spr_grass5 break;
+						case 6: sprToDraw = spr_water break;
+						case 7: sprToDraw = spr_ground break;
+					}
+					var tileX = chunkX+(TILEW*(col-xx));
+					var tileY = chunkY+(TILEH*(row-yy));
+					layer_sprite_create(lay, tileX, tileY, sprToDraw);
+				}
+			
+			//Set chunk info. will be able to add structures later.
+			ds_grid_set(allChunks, xx, yy, 
 						{
-							x1 : xx1,
-							y1 : yy1,
-							x2 : xx2,
-							y2 : yy2,
-							loaded : isLoaded,
 							biome : biomes.FIELD,
-						})
+							structures : [],
+						});
 		}
 	}
 }

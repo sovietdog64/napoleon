@@ -1,9 +1,9 @@
 //drawing chunks
-try{
-	for(var i=0; i<ds_grid_width(chunkGrid); i++) {
-		for(var j=0; j<ds_grid_height(chunkGrid); j++) {
-			var r = ds_grid_get(chunkGrid, i, j);
-			draw_rectangle(r.x1, r.y1, r.x2, r.y2, 1)
-		}
+var xCount = ds_grid_width(allChunks);
+var yCount = ds_grid_height(allChunks);
+for(var xx=0; xx<xCount; xx++) {
+	for(var yy=0; yy<yCount; yy++) {
+		draw_set_color(c_red);
+		draw_rectangle(xx*PX_CHUNK_W, yy*PX_CHUNK_W, xx*PX_CHUNK_W+PX_CHUNK_W, yy*PX_CHUNK_W+PX_CHUNK_W, 1);
 	}
-} catch(err) {}
+}
