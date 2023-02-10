@@ -22,18 +22,33 @@ for(var xx=0; xx<xCount; xx++) {
 			for(var col=xx; col<xx+CHUNK_W; col++)
 				for(var row=yy; row<yy+CHUNK_H; row++) {
 					var sprToDraw = spr_grass;
-					//picking which sprite to draw based on the number of the tile
-					switch(ds_grid_get(terrainMap, col, row)) {
-						case 1: sprToDraw = spr_grass break;
-						case 2: sprToDraw = spr_grass2 break;
-						case 3: sprToDraw = spr_grass3 break;
-						case 4: sprToDraw = spr_grass4 break;
-						case 5: sprToDraw = spr_grass5 break;
-						case 6: sprToDraw = spr_water break;
-						case 7: sprToDraw = spr_ground break;
-					}
 					var tileX = chunkX+(TILEW*(col-xx));
 					var tileY = chunkY+(TILEH*(row-yy));
+					show_debug_message(string(ds_grid_get(terrainMap, col, row)) + " aeae")
+					//picking which sprite to draw based on the number of the tile
+					switch(ds_grid_get(terrainMap, col, row)) {
+						case 1: {
+							sprToDraw = spr_grass
+						} break;
+						case 2: {
+							sprToDraw = spr_grass2
+						} break;
+						case 3: {
+							sprToDraw = spr_grass3
+						} break;
+						case 4: {
+							sprToDraw = spr_grass4
+						} break;
+						case 5: {
+							sprToDraw = spr_grass5
+						} break;
+						case 6: {
+							sprToDraw = spr_water
+						} break;
+						case 7: {
+							sprToDraw = spr_ground
+						} break;
+					}
 					layer_sprite_create(lay, tileX, tileY, sprToDraw);
 				}
 			
