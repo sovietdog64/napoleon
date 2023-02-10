@@ -1,4 +1,5 @@
 //auto-gen
+return;
 for(var col=0; col<ds_grid_width(chunkGrid); col++) {
 	for(var row=0; row<ds_grid_height(chunkGrid); row++) {
 		var r = ds_grid_get(chunkGrid, col, row);

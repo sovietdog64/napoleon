@@ -1,5 +1,7 @@
 if(room == rm_init)
 	return;
+	
+return;
 layerId = layer_get_id("Ground");
 
 randomize();

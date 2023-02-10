@@ -408,3 +408,11 @@ function distanceToRectangle(px, py, x1, y1, x2, y2) {
 	var dy = max(y1 - py, 0, py - y2);
 	return sqrt(dx*dx + dy*dy);
 }
+	
+function numRound(num) {
+	var val = frac(num)
+	if(val < 0.5) 
+		return floor(num);
+	else
+		return ceil(num);
+}
