@@ -108,3 +108,103 @@ generatedY = 0;
 
 drawDebugX = 0;
 drawDebugY = 0;
+
+placeSprites = function() {
+	var lay = layer_get_id("Ground")
+	for(var xx=0; xx<ds_grid_width(terrainMap); xx++)
+		for(var yy=0; yy<ds_grid_height(terrainMap); yy++) {
+			var sprToDraw;
+			var ind = numRound(ds_grid_get(terrainMap, xx, yy))
+			switch(ind) {
+				case 0: {
+					sprToDraw = spr_water;
+				} break;
+				case 1: {
+					sprToDraw = spr_water;
+				} break;
+				case 2: {
+					sprToDraw = spr_grass;
+				} break;
+				case 3: {
+					sprToDraw = spr_grass3;
+				} break;
+				case 4: {
+					sprToDraw = spr_grass4;
+				} break;
+				case 5: {
+					sprToDraw = spr_grass5;
+				} break;
+				case 6: {
+					sprToDraw = spr_dirt;
+				} break;
+				case 7: {
+					sprToDraw = spr_dirt;
+				} break;
+				case 8: {
+					sprToDraw = spr_stone;
+				} break;
+				case 9: {
+					sprToDraw = spr_water;
+				} break;
+				case 10: {
+					sprToDraw = spr_water;
+				} break;
+				default: {
+					show_debug_message(string(ind) + " defaulting unknown index")
+					sprToDraw = spr_grass;
+				} break;
+			}
+			layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
+		}
+}
+
+placeChunk = function(mapStartX, mapStartY) {
+	var lay = layer_get_id("Ground");
+	var startX = mapStartX * CHUNK_W;
+	var startY = mapStartY * CHUNK_H;
+	for(var xx=startX; xx<startX+CHUNK_W; xx++)
+		for(var yy=startY; yy<startY+CHUNK_H; yy++) {
+			var sprToDraw;
+			var ind = numRound(ds_grid_get(terrainMap, xx, yy))
+			switch(ind) {
+				case 0: {
+					sprToDraw = spr_water;
+				} break;
+				case 1: {
+					sprToDraw = spr_water;
+				} break;
+				case 2: {
+					sprToDraw = spr_grass;
+				} break;
+				case 3: {
+					sprToDraw = spr_grass3;
+				} break;
+				case 4: {
+					sprToDraw = spr_grass4;
+				} break;
+				case 5: {
+					sprToDraw = spr_grass5;
+				} break;
+				case 6: {
+					sprToDraw = spr_dirt;
+				} break;
+				case 7: {
+					sprToDraw = spr_dirt;
+				} break;
+				case 8: {
+					sprToDraw = spr_stone;
+				} break;
+				case 9: {
+					sprToDraw = spr_water;
+				} break;
+				case 10: {
+					sprToDraw = spr_water;
+				} break;
+				default: {
+					show_debug_message(string(ind) + " defaulting unknown index")
+					sprToDraw = spr_grass;
+				} break;
+			}
+			layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
+		}
+}

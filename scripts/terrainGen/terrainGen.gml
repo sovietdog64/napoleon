@@ -53,71 +53,83 @@ function cellular_automata_map(_width, _height, _spawnChance, _createLimit, _des
 	}
 }
 
-function diamondSquare(chunkSize, squareSize = 5, roughness = 2) {
-	randomize();
-	var mapSize = chunkSize + 1;
-	var map = ds_grid_create(mapSize, mapSize);
-	//four corners
-	ds_grid_set(map, 0, 0, irandom_range(1, 4));
-	ds_grid_set(map, mapSize, 0, irandom_range(1, 4));
-	ds_grid_set(map, 0, mapSize, irandom_range(1, 4));
-	ds_grid_set(map, mapSize, mapSize, irandom_range(1, 4));
+//@function diamondSquare
+//@param _dsGridId The id of the ds_grid that you made
+//@param _height The values that the map will contain, up to said height. These values will be used to determine what goes into what tile
+//@param _defaultVal The default value that should be placed in a cell of the grid. (Ex. num representing grass in a plains biome)
+//@param [seed] optional seed used for generating the land.
+//Returns seed generated.
+//Having a grid that doesn't have square-like dimensions will terminate the function
+function diamondSquare(_dsGridId, _height, _defaultVal, seed = undefined) {
+	var size,sideLength,halfSide,avg,startTime,endTime,baseHeight;
 	
-	var size = mapSize-1;
-	while(size > 1) {
-		var half = numRound(size/2);
-		
-		//square step
-		for(var xx=0; xx<mapSize-1; xx += size) 
-			for(var yy=0; yy<mapSize-1; yy += size) {
-				var val = (ds_grid_get(map, xx, yy) +
-						  ds_grid_get(map, xx+size, yy) +
-						  ds_grid_get(map, xx, yy+size) +
-						  ds_grid_get(map, xx+size, yy+size)) /
-						  4 + irandom_range(-roughness, roughness)
-				ds_grid_set(map, xx+half, yy+half, val);
-			}
-		
-		//diamond step
-		for(var xx=0; xx<mapSize-1; xx += size) 
-			for(var yy=0; yy<mapSize-1; yy += size) {
-				var midTop = (ds_grid_get(map, xx, yy) +
-							 ds_grid_get(map, xx+half, yy+half) +
-							 ds_grid_get(map, xx, yy+size)) /
-							 3 + irandom_range(-roughness, roughness);
-				var midBottom = (ds_grid_get(map, xx, yy+size) +
-								ds_grid_get(map, xx+half, yy+half) +
-								ds_grid_get(map, xx+size, yy+size)) /
-								3 + irandom_range(-roughness, roughness);
-				var midLeft = (ds_grid_get(map, xx, yy) +
-							  ds_grid_get(map, xx+half, yy+half) +
-							  ds_grid_get(map, xx, yy+size)) /
-							  3 + irandom_range(-roughness, roughness);
-				var midRight = (ds_grid_get(map, xx+size, yy) +
-							   ds_grid_get(map, xx+half, yy+half) +
-							   ds_grid_get(map, xx+size, yy+size)) /
-							   3 + irandom_range(-roughness, roughness);
-							   
-				ds_grid_set(map, xx+half, yy, midTop);
-				ds_grid_set(map, xx+half, yy+size, midBottom);
-				ds_grid_set(map, xx, yy+half, midLeft);
-				ds_grid_set(map, xx+size, yy+half, midRight);
-			}
-			
-		size /= 2;
-		size = numRound(size);
-		roughness /= 2;
-		roughness = numRound(roughness);
+	if(seed != undefined)
+		random_set_seed(seed)
+	else
+		randomize();
+	
+	if(ds_grid_height(_dsGridId) != ds_grid_width(_dsGridId)){
+	    show_debug_message("ERROR! Check if the ds_grid _height is equal to its width.");
+	    return "ERROR";
 	}
-		
-	for(var xx=0; xx<ds_grid_width(map); xx++) {
-		//var str = ""
-		for(var yy=0; yy<ds_grid_height(map); yy++) {
-			var val = ds_grid_get(map, yy, xx);
-			ds_grid_set(map, yy, xx, abs(numRound(val)))
-			//str += ", " + string(ds_grid_get(map, yy, xx));
-		}
-		//show_debug_message(str);
+	size = ds_grid_height(_dsGridId);
+	if(size < 2){
+	    show_debug_message("ERROR! Invalid ds_grid size.");
+	    return "ERROR";
 	}
-	return map;
+	if(size mod 2 == 0){
+	    show_debug_message("WARNING: Size inappropriate. Increased by 1...");
+	    size += 1;
+	}
+	
+	ds_grid_clear(_dsGridId,0);
+	baseHeight = _height;
+
+	_dsGridId[# 0,0] = _defaultVal;
+	_dsGridId[# 0,size-1] = _defaultVal;
+	_dsGridId[# size-1,0] = _defaultVal;
+	_dsGridId[# size-1,size-1] = _defaultVal;
+
+	sideLength = size-1;
+	while(sideLength >= 2){
+	    sideLength /=2
+	    _height/= 2.0;
+
+	    halfSide = sideLength/2;
+
+	    for(var sx=0;sx<size-1;sx+=sideLength){
+	        for(var sy=0;sy<size-1;sy+=sideLength){
+	            avg = _dsGridId[# sx,sy] + _dsGridId[# sx+sideLength,sy] + _dsGridId[# sx,sy+sideLength] + _dsGridId[# sx+sideLength,sy+sideLength];
+	            avg /= 4.0;
+
+
+	            _dsGridId[# sx+halfSide,sy+halfSide] = 
+
+	            avg + (random(1)*2*_height);
+	        }
+	    }
+	    for(var dx=0;dx<size-1;dx+=halfSide){
+	        for(var dy=(dx+halfSide) mod sideLength;dy<size-1;dy+=sideLength){
+	            avg = _dsGridId[# (dx-halfSide+size-1) mod (size-1),dy] + _dsGridId[# (dx+halfSide) mod (size-1),dy] + _dsGridId[# dx,(dy+halfSide) mod (size-1)] + _dsGridId[# dx,(dy-halfSide+size-1) mod (size-1)];
+	            avg /= 4.0;
+    
+	            avg = avg + (random(1)*2*_height)- _height;
+	            _dsGridId[# dx,dy] = avg;
+	            if(dx == 0)  _dsGridId[# size-1,dy] = avg;
+	            if(dy == 0)  _dsGridId[# dx,size-1] = avg;
+	        }
+	  }
+	}
+
+	for(var j = 0; j < size; j += 1){
+	    for(var i = 0; i < size; i += 1){
+	        if(ds_grid_get(_dsGridId,i,j) < 0){
+	            _dsGridId[# i, j] = 0;
+	        }
+	        if(ds_grid_get(_dsGridId,i,j) > baseHeight){
+	            _dsGridId[# i, j] = baseHeight;
+	        }
+	    }
+	}
+	return random_get_seed();
 }
