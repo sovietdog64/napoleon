@@ -1,1 +1,0 @@
-placeSequenceAnimation(x, y, hi)
