@@ -332,7 +332,7 @@ else {
 }
 switch(animType) {
 	case itemAnimations.NONE:
-		doWalkingArmMovements(10, hspWalk/4, 15);
+		doWalkingArmMovements(10, hspWalk*0.3, 10);
 	break;
 	case itemAnimations.PUNCHING: {
 		//Fists up. Idle.
@@ -345,7 +345,7 @@ switch(animType) {
 	} break;
 	case itemAnimations.KNIFE_STAB: {
 		if(leftAttackCooldown <= 0)
-			doWalkingArmMovements(10, hspWalk/4, 15);
+			doWalkingArmMovements(10, hspWalk*0.3, 10);
 		else
 			doStabMovement(mouse_x, mouse_y);
 	}
@@ -355,7 +355,7 @@ hipB.y = y+8;
 	
 hipF.x = x+2*sign(image_xscale);
 hipF.y = y+8;
-doWalkingLegMovements(14, 5, hspWalk/3);
+doWalkingLegMovements(14, 5, hspWalk*0.7);
 
 //if(isItem(global.heldItem) && global.heldItem.itemSpr == spr_boxingGloves)
 //	variable_struct_set(global.heldItem, "animationType", itemAnimations.PUNCHING);

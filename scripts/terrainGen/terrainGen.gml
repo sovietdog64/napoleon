@@ -139,6 +139,90 @@ function diamondSquare(_dsGridId, _height, _defaultVal, seed = undefined) {
 	return random_get_seed();
 }
 
+function diamondSquare2(_dsGridId, _height, _defaultVal, seed = undefined) {
+	var size,sideLength,halfSide,avg,baseHeight;
+	
+	if(seed != undefined)
+		random_set_seed(seed)
+	else
+		randomize();
+	
+	if(ds_grid_height(_dsGridId) != ds_grid_width(_dsGridId)){
+	    show_debug_message("ERROR! Check if the ds_grid _height is equal to its width.");
+	    return "ERROR";
+	}
+	size = ds_grid_height(_dsGridId);
+	if(size < 2){
+	    show_debug_message("ERROR! Invalid ds_grid size.");
+	    return "ERROR";
+	}
+	if(size mod 2 == 0){
+	    show_debug_message("WARNING: Size inappropriate. Increased by 1...");
+	    size += 1;
+	}
+	
+	//ds_grid_clear(_dsGridId,0);
+	baseHeight = _height;
+	
+	//Setting four corners
+	_dsGridId[# 0,0] = _defaultVal;
+	_dsGridId[# 0,size-1] = _defaultVal;
+	_dsGridId[# size-1,0] = _defaultVal;
+	_dsGridId[# size-1,size-1] = _defaultVal;
+	
+	sideLength = size-1;
+	while(sideLength >= 2){
+	    sideLength /=2
+	    _height/= 2.0;
+
+	    halfSide = sideLength/2;
+		
+		//Square step
+	    for(var sx=0;sx<size-1;sx+=sideLength){
+	        for(var sy=0;sy<size-1;sy+=sideLength){
+				if(_dsGridId[# sx, sy] == -1 || _dsGridId[# sx, sy] == 0)
+					continue;
+	            avg = _dsGridId[# sx,sy] + _dsGridId[# sx+sideLength,sy] + _dsGridId[# sx,sy+sideLength] + _dsGridId[# sx+sideLength,sy+sideLength];
+	            avg /= 4.0;
+
+
+	            _dsGridId[# sx+halfSide,sy+halfSide] = 
+
+	            avg + (random(1)*2*_height);
+	        }
+	    }
+		
+		//Diamond Step
+	    for(var dx=0;dx<size-1;dx+=halfSide){
+	        for(var dy=(dx+halfSide) mod sideLength;dy<size-1;dy+=sideLength){
+				if(_dsGridId[# dx, sy] == -1 || _dsGridId[# dx, dy] == 0)
+					continue;
+	            avg = _dsGridId[# (dx-halfSide+size-1) mod (size-1),dy] + _dsGridId[# (dx+halfSide) mod (size-1),dy] + _dsGridId[# dx,(dy+halfSide) mod (size-1)] + _dsGridId[# dx,(dy-halfSide+size-1) mod (size-1)];
+	            avg /= 4.0;
+    
+	            avg = avg + (random(1)*2*_height)- _height;
+	            _dsGridId[# dx,dy] = avg;
+	            if(dx == 0)  _dsGridId[# size-1,dy] = avg;
+	            if(dy == 0)  _dsGridId[# dx,size-1] = avg;
+	        }
+	  }
+	}
+
+
+	for(var j = 0; j < size; j += 1){
+	    for(var i = 0; i < size; i += 1){
+	        if(ds_grid_get(_dsGridId,i,j) < 0){
+	            _dsGridId[# i, j] = 0;
+	        }
+	        if(ds_grid_get(_dsGridId,i,j) > baseHeight){
+	            _dsGridId[# i, j] = baseHeight;
+	        }
+	    }
+	}
+	return random_get_seed();
+}
+
+
 function lazyFloodFill(_dsGridId, startX, startY, _decay = 0.999) {
 	var visited = -1;
 	var filled = 1;

@@ -123,7 +123,7 @@ placeSprites = function() {
 					sprToDraw = spr_water;
 				} break;
 				case 2: {
-					sprToDraw = spr_grass;
+					sprToDraw = spr_sand;
 				} break;
 				case 3: {
 					sprToDraw = spr_grass3;
@@ -135,7 +135,7 @@ placeSprites = function() {
 					sprToDraw = spr_grass5;
 				} break;
 				case 6: {
-					sprToDraw = spr_dirt;
+					sprToDraw = spr_grass;
 				} break;
 				case 7: {
 					sprToDraw = spr_dirt;
