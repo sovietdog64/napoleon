@@ -84,19 +84,21 @@ function diamondSquare(_dsGridId, _height, _defaultVal, seed = undefined) {
 	
 	ds_grid_clear(_dsGridId,0);
 	baseHeight = _height;
-
+	
+	//Setting four corners
 	_dsGridId[# 0,0] = _defaultVal;
 	_dsGridId[# 0,size-1] = _defaultVal;
 	_dsGridId[# size-1,0] = _defaultVal;
 	_dsGridId[# size-1,size-1] = _defaultVal;
-
+	
 	sideLength = size-1;
 	while(sideLength >= 2){
 	    sideLength /=2
 	    _height/= 2.0;
 
 	    halfSide = sideLength/2;
-
+		
+		//Square step
 	    for(var sx=0;sx<size-1;sx+=sideLength){
 	        for(var sy=0;sy<size-1;sy+=sideLength){
 	            avg = _dsGridId[# sx,sy] + _dsGridId[# sx+sideLength,sy] + _dsGridId[# sx,sy+sideLength] + _dsGridId[# sx+sideLength,sy+sideLength];
@@ -108,6 +110,8 @@ function diamondSquare(_dsGridId, _height, _defaultVal, seed = undefined) {
 	            avg + (random(1)*2*_height);
 	        }
 	    }
+		
+		//Diamond Step
 	    for(var dx=0;dx<size-1;dx+=halfSide){
 	        for(var dy=(dx+halfSide) mod sideLength;dy<size-1;dy+=sideLength){
 	            avg = _dsGridId[# (dx-halfSide+size-1) mod (size-1),dy] + _dsGridId[# (dx+halfSide) mod (size-1),dy] + _dsGridId[# dx,(dy+halfSide) mod (size-1)] + _dsGridId[# dx,(dy-halfSide+size-1) mod (size-1)];
@@ -121,6 +125,7 @@ function diamondSquare(_dsGridId, _height, _defaultVal, seed = undefined) {
 	  }
 	}
 
+
 	for(var j = 0; j < size; j += 1){
 	    for(var i = 0; i < size; i += 1){
 	        if(ds_grid_get(_dsGridId,i,j) < 0){
@@ -132,4 +137,53 @@ function diamondSquare(_dsGridId, _height, _defaultVal, seed = undefined) {
 	    }
 	}
 	return random_get_seed();
+}
+
+function lazyFloodFill(_dsGridId, startX, startY, _decay = 0.999) {
+	var visited = -1;
+	var filled = 1;
+	var chance = 1;
+	var deck = array_create(0);
+	array_push(deck, new Point(startX, startY));
+	while(array_length(deck) > 0) {
+		var coords = array_pop(deck);
+		_dsGridId[# coords.x, coords.y] = filled;
+		if(random(1) <= chance) {
+			//if current cell being checked was not altered yet, set them to be visited and add them to the deck
+			if(withinBoundsGrid(_dsGridId, coords.x, coords.y-1) &&
+			   _dsGridId[# coords.x, coords.y-1] != filled &&
+			   _dsGridId[# coords.x, coords.y-1] != visited) 
+			{
+				array_insert(deck, 0, new Point(coords.x, coords.y-1));
+				_dsGridId[# coords.x, coords.y-1] = visited;
+			}
+			if(withinBoundsGrid(_dsGridId, coords.x-1, coords.y) &&
+			   _dsGridId[# coords.x-1, coords.y] != filled &&
+			   _dsGridId[# coords.x-1, coords.y] != visited) 
+			{
+				array_insert(deck, 0, new Point(coords.x-1, coords.y));
+				_dsGridId[# coords.x-1, coords.y] = visited;
+			}
+			if(withinBoundsGrid(_dsGridId, coords.x+1, coords.y) &&
+			   _dsGridId[# coords.x+1, coords.y] != filled &&
+			   _dsGridId[# coords.x+1, coords.y] != visited) 
+			{
+				array_insert(deck, 0, new Point(coords.x+1, coords.y));
+				_dsGridId[# coords.x+1, coords.y] = visited;
+			}
+			if(withinBoundsGrid(_dsGridId, coords.x, coords.y+1) &&
+			   _dsGridId[# coords.x, coords.y+1] != filled &&
+			   _dsGridId[# coords.x, coords.y+1] != visited) 
+			{
+				array_insert(deck, 0, new Point(coords.x, coords.y+1));
+				_dsGridId[# coords.x, coords.y+1] = visited;
+			}
+		}
+		chance *= _decay;
+	}
+}
+
+function withinBoundsGrid(dsGrid, xx, yy) {
+	return xx >= 0 && yy >=0 &&
+		   xx < ds_grid_width(dsGrid) && yy < ds_grid_height(dsGrid);
 }
