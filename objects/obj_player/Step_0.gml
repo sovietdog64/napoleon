@@ -40,6 +40,7 @@ if(inv) {
 }
 if(instance_exists(obj_game) && global.gamePaused || obj_player.invOpen || state = PlayerStateLocked)
 	return;
+
 var moveLeft = keyboard_check(ord("A"));
 var moveRight = keyboard_check(ord("D"));
 var horizDirection = moveRight-moveLeft;
@@ -311,10 +312,10 @@ if(global.hp <= 0 && !global.dead) {
 if(!instance_exists(obj_game)) instance_create_layer(0,0, "Instances", obj_game);
 
 #region animations
-shoulderB.x = x-5*image_xscale;
-shoulderB.y = y-4;
-shoulderF.x = x-5*image_xscale;
-shoulderF.y = y-4;
+shoulderB.x = x+3*image_xscale;
+shoulderB.y = y-2;
+shoulderF.x = x-3*image_xscale;
+shoulderF.y = y-2;
 
 
 //Handling which animation to do
@@ -331,7 +332,7 @@ else {
 }
 switch(animType) {
 	case itemAnimations.NONE:
-		doWalkingArmMovements();
+		doWalkingArmMovements(10, hspWalk/4, 15);
 	break;
 	case itemAnimations.PUNCHING: {
 		//Fists up. Idle.
@@ -344,17 +345,17 @@ switch(animType) {
 	} break;
 	case itemAnimations.KNIFE_STAB: {
 		if(leftAttackCooldown <= 0)
-			doWalkingArmMovements();
+			doWalkingArmMovements(10, hspWalk/4, 15);
 		else
 			doStabMovement(mouse_x, mouse_y);
 	}
 }
-hipB.x = x-13*sign(image_xscale);
-hipB.y = y+10;
+hipB.x = x-5*sign(image_xscale);
+hipB.y = y+8;
 	
 hipF.x = x+2*sign(image_xscale);
-hipF.y = y+10;
-doWalkingLegMovements();
+hipF.y = y+8;
+doWalkingLegMovements(14, 5, hspWalk/3);
 
 //if(isItem(global.heldItem) && global.heldItem.itemSpr == spr_boxingGloves)
 //	variable_struct_set(global.heldItem, "animationType", itemAnimations.PUNCHING);

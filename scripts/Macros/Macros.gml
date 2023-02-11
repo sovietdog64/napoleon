@@ -1,5 +1,5 @@
-#macro RESOLUTION_W 1366
-#macro RESOLUTION_H 768
+#macro RESOLUTION_W 683
+#macro RESOLUTION_H 384
 #macro INTERACTION_W sprite_get_width(spr_interactions)
 #macro INTERACTION_H sprite_get_height(spr_interactions)
 
@@ -7,8 +7,8 @@
 #macro CHUNK_W 64
 #macro CHUNK_H 64
 
-#macro TILEW 64
-#macro TILEH 64
+#macro TILEW 32
+#macro TILEH 32
 
 #macro PX_CHUNK_W (CHUNK_W*TILEW)
 #macro PX_CHUNK_H (CHUNK_H*TILEH)

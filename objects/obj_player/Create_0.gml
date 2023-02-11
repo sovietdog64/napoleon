@@ -1,6 +1,6 @@
 hsp = 0;//horizontal speed
 vsp = 0;//vertical speed
-hspWalk = 8;//horizontal speed when walking
+hspWalk = 4;//horizontal speed when walking
 vspJump = -16;//vertical speed when jumping
 canJump = false;//bool for whether player can jump.
 inDialogue = false;//bool stating whether the player is talking with an NPC.
@@ -9,7 +9,7 @@ clickedItem = -1;
 
 maxHurtCooldown = room_speed;
 
-minHspWalk = 8;
+minHspWalk = hspWalk;
 
 runCooldown = 0;
 
@@ -57,7 +57,7 @@ shoulderF = new Point(x, y);
 handF = new Point(x+10, y+10);
 
 handProgress = 0;
-handDir = 2;
+handDir = 1;
 
 footProgress = 0;
 footDir = 2;

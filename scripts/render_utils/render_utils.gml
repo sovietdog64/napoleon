@@ -135,12 +135,12 @@
 			}
 		}
 		
-		function doWalkingLegMovements() {
-			var factor = abs(sprite_width/64);
+		function doWalkingLegMovements(legLen, stepRadius, footSpeed) {
+			footSpeed *= 0.1;
 			footDir = abs(footDir) * sign(image_xscale);
-			footDir = (hspWalk/3) * sign(footDir) * 0.08;
-			bOrigin = new Point(hipB.x, hipB.y+25*factor);
-			fOrigin = new Point(hipF.x, hipF.y+25*factor);
+			footDir = sign(footDir) * footSpeed;
+			bOrigin = new Point(hipB.x, hipB.y+legLen);
+			fOrigin = new Point(hipF.x, hipF.y+legLen);
 			var changeInPos = abs(x - xprevious) + abs(y - yprevious);
 			if(changeInPos > 0) {
 				footProgress += footDir;
@@ -151,12 +151,11 @@
 				footB.y = bOrigin.y;
 				footF.x = fOrigin.x;
 				footF.y = fOrigin.y;
-				var radius = 8 * factor
-				footB.x += radius*cos(footProgress);
-				footB.y += radius*sin(footProgress);
+				footB.x += stepRadius*cos(footProgress);
+				footB.y += stepRadius*sin(footProgress);
 			
-				footF.x += radius*cos(footProgress-pi);
-				footF.y += radius*sin(footProgress-pi);
+				footF.x += stepRadius*cos(footProgress-pi);
+				footF.y += stepRadius*sin(footProgress-pi);
 			}
 			else {
 				var bDist= distanceBetweenPoints(footB.x, footB.y, bOrigin.x, bOrigin.y)/2;
@@ -186,13 +185,13 @@
 			}
 		}
 		
-		function doWalkingArmMovements() {
+		function doWalkingArmMovements(fullArmLen, armSpeed, swingLen = 17) {
 			//Scale animation speed with walk speed
-			handDir = hspWalk / 5 * sign(handDir);
+			handDir = armSpeed * sign(handDir);
 			//Do animation of moving
 			if(abs(x - xprevious) > 0 || abs(y - yprevious) > 0) {
 				handProgress += handDir;
-				if(abs(handProgress) >= 17) {
+				if(abs(handProgress) >= swingLen) {
 					handDir *= -1;
 				}
 			}
@@ -202,7 +201,7 @@
 			}
 			handProgress = clamp(handProgress, -20, 20);
 ;			//Calculating movements with parabola equation (i finally found a use for math i learned at school)
-			var offset = (abs(sprite_width)/3);
+			var offset = fullArmLen * 0.99;
 			handB.x = shoulderB.x+handProgress+offset*image_xscale;
 			handB.y = shoulderB.y+((-0.01*power(handProgress, 2))+offset);
 			

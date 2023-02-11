@@ -2,7 +2,7 @@ layer_destroy(layer_get_id("Ground"))
 var lay = layer_create(100, "Ground")
 var size = power(2, 8)+1;
 terrainMap = ds_grid_create(size, size)
-lazyFloodFill(terrainMap, 0, 0)
+lazyFloodFill(terrainMap, 0, 0, 0.9999)
 
 for(var xx=0; xx<size; xx++)
 	for(var yy=0; yy<size; yy++) {
