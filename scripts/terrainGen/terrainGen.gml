@@ -61,7 +61,7 @@ function cellular_automata_map(_width, _height, _spawnChance, _createLimit, _des
 //Returns seed generated.
 //Having a grid that doesn't have square-like dimensions will terminate the function
 function diamondSquare(_dsGridId, _height, _defaultVal, seed = undefined) {
-	var size,sideLength,halfSide,avg,startTime,endTime,baseHeight;
+	var size,sideLength,halfSide,avg,baseHeight;
 	
 	if(seed != undefined)
 		random_set_seed(seed)
