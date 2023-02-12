@@ -344,6 +344,7 @@ function Line(_x1, _y1, _x2, _y2) constructor {
 	y1 = _y1;
 	x2 = _x2;
 	y2 = _y2;
+	length = distanceBetweenPoints(x1, y1, x2, y2);
 }
 
 function raycast4Directional(distance, incrementInPixels, preciseCheck) {
