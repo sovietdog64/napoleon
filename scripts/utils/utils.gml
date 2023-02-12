@@ -339,6 +339,13 @@ function Point(px, py) constructor {
 	y = py;
 }
 
+function Line(_x1, _y1, _x2, _y2) constructor {
+	x1 = _x1; 
+	y1 = _y1;
+	x2 = _x2;
+	y2 = _y2;
+}
+
 function raycast4Directional(distance, incrementInPixels, preciseCheck) {
 	for(var i=0; i < 361; i+=90) {
 		var len = 1;
@@ -415,4 +422,58 @@ function numRound(num) {
 		return floor(num);
 	else
 		return ceil(num);
+}
+	
+function randPointInCircle(radius, snapToTile = false) {
+	var theta = 2*pi*random(1);
+	var u = random(1)+random(1);
+	var r;
+	if(u > 1) 
+		r = 2-u
+	else
+		r = u
+	var xx = radius*r*cos(theta);
+	var yy = radius*r*sin(theta);
+	if(snapToTile) {
+		xx = roundToTile(xx, TILEW/8);
+		yy = roundToTile(yy, TILEW/8);
+	}
+	return new Point(xx, yy);
+}
+
+function randPointInEllipse(ellipseWidth, ellipseHeight, snapToTile = false) {
+	var theta = 2*pi*random(1);
+	var u = random(1)+random(1);
+	var r;
+	
+	if(u > 1) 
+		r = 2-u
+	else
+		r = u
+
+	var xx = ellipseWidth*r*cos(theta)/2;
+	var yy = ellipseHeight*r*sin(theta)/2;
+	if(snapToTile) {
+		xx = roundToTile(xx, TILEW/8);
+		yy = roundToTile(yy, TILEW/8);
+	}
+	return new Point(xx, yy);
+}
+
+function roundToTile(num, tileSize) {
+	return floor(((num + tileSize - 1)/tileSize))*tileSize;
+}
+	
+function pointDistanceToLine(px, py, x1, y1, x2, y2) {
+	var numerator = abs((x2-x1)*(y1-py) - (x1-px)*(y2-y1));
+	var denominator = distanceBetweenPoints(x1, y1, x2, y2);
+	return numerator/denominator;
+}
+
+function getSpriteCenter(sprite, xx, yy) {
+	var w = sprite_get_width(sprite);
+	var h = sprite_get_height(sprite);
+	var centerX = xx - sprite_get_xoffset(sprite) + w/ 2;
+	var centerY = yy - sprite_get_yoffset(sprite) + h/ 2;
+	return new Point(centerX, centerY);
 }

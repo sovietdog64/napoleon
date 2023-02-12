@@ -17,7 +17,6 @@ for(var xx=0; xx<xCount; xx++) {
 		//If unloaded chunk visible, load it
 		var lay = layer_get_id("Ground");
 		if(camInBounds != 0) {
-			show_debug_message("found chunk")
 			placeChunk(xx, yy);
 			ds_grid_set(allChunks, xx, yy,
 			{
