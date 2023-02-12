@@ -16,7 +16,7 @@ if(invOpen) {
 	
 	//Drawing inv slots & handling slot clicks
 	for(var i = 0; i < array_length(global.invItems); i++) {
-		var xx = (RESOLUTION_W*0.13)+128*i;
+		var xx = (RESOLUTION_W*0.13)+SLOT_SIZE*i;
 		var yy = RESOLUTION_H*0.2;
 		
 		var spriteToDraw = -1;
@@ -31,7 +31,7 @@ if(invOpen) {
 		//Replaces items with the item currently held by the mouse.
 		xx -= 64;
 		yy -= 64;
-		var mouseInSlot = point_in_rectangle(mouse_x-cx,mouse_y-cy, xx,yy, xx+128,yy+128);
+		var mouseInSlot = point_in_rectangle(mouse_x-cx,mouse_y-cy, xx,yy, xx+64,yy+64);
 		if(mouseInSlot && mouse_check_button_pressed(mb_left)) {
 			var temp;
 			if(!isItem(global.invItems[i]))
@@ -49,7 +49,7 @@ if(invOpen) {
 	
 	//Drawing hotbar slots when inventory is open & handling slot clicks
 	for(var i = 0; i < array_length(global.hotbarItems); i++) {
-		var xx = (RESOLUTION_W*0.13)+128*i;
+		var xx = (RESOLUTION_W*0.13)+SLOT_SIZE*i;
 		var yy = RESOLUTION_H*0.5;
 		
 		var spriteToDraw = -1;
@@ -80,8 +80,8 @@ if(invOpen) {
 	var invY = RESOLUTION_H*0.2 - 64;
 	var hotbarX = invX;
 	var hotbarY = RESOLUTION_H*0.5 - 64;
-	var mouseInSlot = point_in_rectangle(mouse_x-cx, mouse_y-cy, invX, invY, invX+128*array_length(global.invItems), invY+128);
-	var mouseInHotbarSlot = point_in_rectangle(mouse_x-cx, mouse_y-cy, hotbarX, hotbarY, hotbarX+128*array_length(global.hotbarItems), hotbarY+128);
+	var mouseInSlot = point_in_rectangle(mouse_x-cx, mouse_y-cy, invX, invY, invX+SLOT_SIZE*array_length(global.invItems), invY+128);
+	var mouseInHotbarSlot = point_in_rectangle(mouse_x-cx, mouse_y-cy, hotbarX, hotbarY, hotbarX+SLOT_SIZE*array_length(global.hotbarItems), hotbarY+128);
 	if(!mouseInSlot &&
 		!mouseInHotbarSlot &&
 		mouse_check_button_pressed(mb_left) && clickedItem != -1) {
@@ -109,7 +109,7 @@ if(isItem(clickedItem)) {
 //Drawing hotbar/items in use when outside of inventory
 if(!invOpen && !global.dead) {
 	for(var i = 0; i < array_length(global.hotbarItems); i++) {
-		var xx = (RESOLUTION_W*0.7)+160*i;
+		var xx = (RESOLUTION_W*0.7)+SLOT_SIZE*i;
 		var yy = (RESOLUTION_H*0.05)+32;
 		
 		var spriteToDraw = -1;

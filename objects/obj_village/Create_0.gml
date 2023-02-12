@@ -39,6 +39,7 @@ for(var i=0; i<361; i += 90) {
 }
 
 for(var i=0; i<array_length(buildings); i++) {
+	var building = buildings[i];
 	var foundPlot = false;
 	var slotPos = -1;
 	var road;
@@ -49,7 +50,7 @@ for(var i=0; i<array_length(buildings); i++) {
 		var road = roads[j];
 		for(var k=0; k<array_length(roads[j].plots); k++) {
 			if(road.plots[k] == 0) {
-				road.plots[k] = buildings[i];
+				road.plots[k] = building;
 				slotPos = k;
 				foundPlot = true;
 				break;
@@ -68,14 +69,21 @@ for(var i=0; i<array_length(buildings); i++) {
 		break;
 	}
 	var l = road.line;
-	var buildingLength = buildings[i].sprite_width;
-	if(buildings[i].sprite_height > buildingLength) 
-		buildingLength = buildings[i].sprite_height;
+	var buildingLength = building.sprite_width;
+	if(building.sprite_height > buildingLength) 
+		buildingLength = building.sprite_height;
 	var len = l.length*0.3*(k+1);
 	var dir = point_direction(l.x1, l.y1, l.x2, l.y2);
 	var xx = l.x1 + lengthdir_x(len, dir);
 	var yy = l.y1 + lengthdir_y(len, dir);
-	buildings[i].x = xx;
-	buildings[i].y = yy;
-	buildings[i].image_angle = dir-90;
+	building.x = xx;
+	building.y = yy;
+	building.image_angle = dir-90;
+	if(choose(0, 1)) {
+		//var newX = building.x + lengthdir_x(building.sprite_width, building.image_angle);
+		//var newY = building.y + lengthdir_y(building.sprite_width, building.image_angle);
+		//building.x = newX;
+		//building.y = newY;
+		building.image_angle -= 180;
+	}
 }

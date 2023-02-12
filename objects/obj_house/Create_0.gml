@@ -1,2 +1,0 @@
-xOrg = x;
-yOrg = y;
