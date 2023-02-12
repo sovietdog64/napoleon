@@ -136,7 +136,7 @@
 		}
 		
 		function doWalkingLegMovements(legLen, stepRadius, footSpeed) {
-			footSpeed *= 0.1;
+			footSpeed *= 0.15;
 			footDir = abs(footDir) * sign(image_xscale);
 			footDir = sign(footDir) * footSpeed;
 			bOrigin = new Point(hipB.x, hipB.y+legLen);

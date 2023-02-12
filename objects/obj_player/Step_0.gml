@@ -355,7 +355,7 @@ hipB.y = y+8;
 	
 hipF.x = x+2*sign(image_xscale);
 hipF.y = y+8;
-doWalkingLegMovements(14, 5, hspWalk*0.7);
+doWalkingLegMovements(14, 5, hspWalk*0.3);
 
 //if(isItem(global.heldItem) && global.heldItem.itemSpr == spr_boxingGloves)
 //	variable_struct_set(global.heldItem, "animationType", itemAnimations.PUNCHING);
