@@ -171,11 +171,11 @@ placeTiles = function(_mapIndex, xx, yy, lay2 = layer_get_id("OnGround"), lay = 
 			var spr = layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
 			var c = choose(make_color_rgb(78, 102, 1), make_color_rgb(66, 87, 1));
 			layer_sprite_blend(spr, c);
+			layer_sprite_create(lay2, xx*TILEW, yy*TILEW, spr_pine)
 		}break;
 		case 8: {
 			sprToDraw = spr_grass6;
 			layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
-			layer_sprite_create(lay2, xx*TILEW, yy*TILEW, spr_pine)
 		}break;
 		case 9: {
 			sprToDraw = spr_dirt;
