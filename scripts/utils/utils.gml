@@ -346,6 +346,13 @@ function Line(_x1, _y1, _x2, _y2) constructor {
 	y2 = _y2;
 	length = distanceBetweenPoints(x1, y1, x2, y2);
 	dir = point_direction(x1, y1, x2, y2);
+	midpoint = lineMidpoint(x1, y1, x2, y2);
+}
+
+function lineMidpoint(x1, y1, x2, y2) {
+	var xx = (x1+x2)/2;
+	var yy = (y1+y2)/2;
+	return new Point(xx, yy);
 }
 
 function raycast4Directional(distance, incrementInPixels, preciseCheck) {

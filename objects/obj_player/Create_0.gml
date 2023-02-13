@@ -22,6 +22,7 @@ lungeForward = false;
 isHurt = false;
 
 if(!variable_global_exists("hp"))global.hp = 5;//health
+if(!variable_global_exists("maxHp"))global.maxHp = 5;//health
 if(!variable_global_exists("dead"))global.dead = false;
 leftAttackCooldown = 0;
 

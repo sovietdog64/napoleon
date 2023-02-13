@@ -109,8 +109,8 @@ if(isItem(clickedItem)) {
 //Drawing hotbar/items in use when outside of inventory
 if(!invOpen && !global.dead) {
 	for(var i = 0; i < array_length(global.hotbarItems); i++) {
-		var xx = (RESOLUTION_W*0.7)+SLOT_SIZE*i;
-		var yy = (RESOLUTION_H*0.05)+32;
+		var xx = (RESOLUTION_W*0.8)+SLOT_SIZE*i;
+		var yy = (RESOLUTION_H*0.01)+32;
 		
 		var spriteToDraw = -1;
 		var itemAmount = 0;
@@ -133,11 +133,18 @@ if(!invOpen && !global.dead) {
 
 //Health, quest, and crosshair/amount of ammo
 if(!invOpen) {
-	//Drawing health
-	for(var i = 0; i < global.hp; i++) {
-		draw_sprite(spr_health, 0, (32*i)-5, 70);
-	}
-	
+	draw_healthbar(RESOLUTION_W*0.01, RESOLUTION_H*0.12+30,
+				   RESOLUTION_W*0.3, RESOLUTION_H*0.12+50,
+				   100*(global.hp/global.maxHp),
+				   c_black, c_red, c_green,
+				   1,
+				   true,
+				   true)
+	draw_set_halign(fa_center);
+	draw_set_valign(fa_center);
+	var p = lineMidpoint(RESOLUTION_W*0.01, RESOLUTION_H*0.12+30,
+						 RESOLUTION_W*0.3, RESOLUTION_H*0.12+50);
+	draw_text(p.x, p.y, string(global.hp) + "/" + string(global.maxHp) + " HP");
 	//Drawing quest
 	if(array_length(global.activeQuests) > 0) {
 		var x1 = RESOLUTION_W*0.8;
