@@ -4,8 +4,6 @@ roads = [];
 
 largestLen = 0;
 
-randomize();
-
 for(var i=0; i<irandom_range(10, 11); i++) {
 	var spr = choose(spr_house, spr_house2, spr_house3, spr_house4);
 	var inst = instance_create_layer(x, y, "Structures", obj_house)

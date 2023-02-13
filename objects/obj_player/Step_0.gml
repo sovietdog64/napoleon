@@ -81,6 +81,10 @@ var vertDirection = down-up;
 		if(!isHurt && !lungeForward)
 			vsp = vertDirection * hspWalk;
 	}
+	
+	if(abs(vertDirection) && abs(horizDirection)) {
+		hspWalk = hspWalk/sqrt(2);
+	}
 }
 
 if(keyboard_check(ord("T")))

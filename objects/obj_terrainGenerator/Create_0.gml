@@ -14,7 +14,7 @@ function spawnTiles(terrainMap, sprite, spriteOrder, startX, startY, object = -1
 				if(terrainMap.map[col][row]) {
 					genX = col*spacing + startX;
 					genY = row*spacing + startY;
-					var spr = layer_sprite_create(lay, genX, genY, spriteToDraw);
+					layer_sprite_create(lay, genX, genY, spriteToDraw);
 					if(randomizeAngle)
 						layer_sprite_angle(spr, choose(0, 90, 180, 270));
 					if(object != -1) {
@@ -30,7 +30,7 @@ function spawnTiles(terrainMap, sprite, spriteOrder, startX, startY, object = -1
 					genX = col*spacing + startX;
 					genY = row*spacing + startY;
 					spriteToDraw = sprite[irandom_range(1,array_length(sprite)-1)];
-					var spr = layer_sprite_create(lay, genX, genY, spriteToDraw);
+					layer_sprite_create(lay, genX, genY, spriteToDraw);
 					if(randomizeAngle)
 						layer_sprite_angle(spr, choose(0, 90, 180, 270));
 					if(object != -1) {
@@ -47,7 +47,7 @@ function spawnTiles(terrainMap, sprite, spriteOrder, startX, startY, object = -1
 				if(!terrainMap.map[col][row]) {
 					genX = col*spacing + startX;
 					genY = row*spacing + startY;
-					var spr = layer_sprite_create(lay, genX, genY, spriteToDraw);
+					layer_sprite_create(lay, genX, genY, spriteToDraw);
 					if(randomizeAngle)
 						layer_sprite_angle(spr, choose(0, 90, 180, 270));
 					if(object != -1) {
@@ -63,7 +63,7 @@ function spawnTiles(terrainMap, sprite, spriteOrder, startX, startY, object = -1
 					genX = col*spacing + startX;
 					genY = row*spacing + startY;
 					spriteToDraw = sprite[irandom_range(1,array_length(sprite)-1)];
-					var spr = layer_sprite_create(lay, genX, genY, spriteToDraw);
+					layer_sprite_create(lay, genX, genY, spriteToDraw);
 					if(randomizeAngle)
 						layer_sprite_angle(spr, choose(0, 90, 180, 270));
 					if(object != -1) {
@@ -106,55 +106,13 @@ allChunks = 0;
 generatedX = 0;
 generatedY = 0;
 
-drawDebugX = 0;
-drawDebugY = 0;
-
 placeSprites = function() {
 	var lay = layer_get_id("Ground")
 	for(var xx=0; xx<ds_grid_width(terrainMap); xx++)
 		for(var yy=0; yy<ds_grid_height(terrainMap); yy++) {
 			var sprToDraw;
 			var ind = numRound(ds_grid_get(terrainMap, xx, yy))
-			switch(ind) {
-				case 0: {
-					sprToDraw = spr_water;
-				} break;
-				case 1: {
-					sprToDraw = spr_water;
-				} break;
-				case 2: {
-					sprToDraw = spr_sand;
-				} break;
-				case 3: {
-					sprToDraw = spr_grass3;
-				} break;
-				case 4: {
-					sprToDraw = spr_grass4;
-				} break;
-				case 5: {
-					sprToDraw = spr_grass5;
-				} break;
-				case 6: {
-					sprToDraw = spr_grass;
-				} break;
-				case 7: {
-					sprToDraw = spr_dirt;
-				} break;
-				case 8: {
-					sprToDraw = spr_stone;
-				} break;
-				case 9: {
-					sprToDraw = spr_water;
-				} break;
-				case 10: {
-					sprToDraw = spr_water;
-				} break;
-				default: {
-					show_debug_message(string(ind) + " defaulting unknown index")
-					sprToDraw = spr_grass;
-				} break;
-			}
-			layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
+			placeTiles(ind, lay, xx, yy);
 		}
 }
 
@@ -166,45 +124,70 @@ placeChunk = function(mapStartX, mapStartY) {
 		for(var yy=startY; yy<startY+CHUNK_H; yy++) {
 			var sprToDraw;
 			var ind = numRound(ds_grid_get(terrainMap, xx, yy))
-			switch(ind) {
-				case 0: {
-					sprToDraw = spr_water;
-				} break;
-				case 1: {
-					sprToDraw = spr_water;
-				} break;
-				case 2: {
-					sprToDraw = spr_sand;
-				} break;
-				case 3: {
-					sprToDraw = spr_grass3;
-				} break;
-				case 4: {
-					sprToDraw = spr_grass4;
-				} break;
-				case 5: {
-					sprToDraw = spr_grass5;
-				} break;
-				case 6: {
-					sprToDraw = spr_grass;
-				} break;
-				case 7: {
-					sprToDraw = spr_dirt;
-				} break;
-				case 8: {
-					sprToDraw = spr_stone;
-				} break;
-				case 9: {
-					sprToDraw = spr_water;
-				} break;
-				case 10: {
-					sprToDraw = spr_water;
-				} break;
-				default: {
-					show_debug_message(string(ind) + " defaulting unknown index")
-					sprToDraw = spr_grass;
-				} break;
-			}
+			placeTiles(ind, lay, xx, yy);
+		}
+}
+
+placeTiles = function(_mapIndex, lay, xx, yy) {
+	var sprToDraw;
+	switch(_mapIndex) {
+		case 0: {
+			sprToDraw = spr_water;
+			layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
+		}break;
+		case 1: {
+			sprToDraw = spr_sand;
+			layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
+		}break;
+		case 2: {
+			sprToDraw = spr_grass;
+			layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
+		}break;
+		case 3: {
+			sprToDraw = spr_grass;
+			var spr = layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
+			var c = choose(make_color_rgb(144, 252, 3), make_color_rgb(177, 252, 3));
+			layer_sprite_blend(spr, c);
+		}break;
+		case 4: {
+			sprToDraw = spr_grass;
+			var spr = layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
+			var c = choose(make_color_rgb(104, 168, 2), make_color_rgb(124, 168, 2));
+			layer_sprite_blend(spr, c);
+		}break;
+		case 5: {
+			sprToDraw = spr_grass;
+			var spr = layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
+			var c = choose(make_color_rgb(95, 153, 3), make_color_rgb(82, 117, 1));
+			layer_sprite_blend(spr, c);
+		}break;
+		case 6: {
+			sprToDraw = spr_grass;
+			var spr = layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
+			var c = choose(make_color_rgb(51, 66, 2), make_color_rgb(63, 82, 2));
+			layer_sprite_blend(spr, c);
+		}break;
+		case 7: {
+			sprToDraw = spr_grass;
+			var spr = layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
+			var c = choose(make_color_rgb(78, 102, 1), make_color_rgb(66, 87, 1));
+			layer_sprite_blend(spr, c);
+		}break;
+		case 8: {
+			sprToDraw = spr_grass6;
+			layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
+		}break;
+		case 9: {
+			sprToDraw = spr_dirt;
 			layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
 		}
+		case 10: {
+			sprToDraw = spr_sand;
+			layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
+		}break;
+		default: {
+			sprToDraw = spr_water;
+			layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
+		}break;
+	}
 }
