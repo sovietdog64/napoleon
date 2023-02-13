@@ -110,9 +110,8 @@ placeSprites = function() {
 	var lay = layer_get_id("Ground")
 	for(var xx=0; xx<ds_grid_width(terrainMap); xx++)
 		for(var yy=0; yy<ds_grid_height(terrainMap); yy++) {
-			var sprToDraw;
 			var ind = numRound(ds_grid_get(terrainMap, xx, yy))
-			placeTiles(ind, lay, xx, yy);
+			placeTiles(ind, xx, yy);
 		}
 }
 
@@ -124,11 +123,11 @@ placeChunk = function(mapStartX, mapStartY) {
 		for(var yy=startY; yy<startY+CHUNK_H; yy++) {
 			var sprToDraw;
 			var ind = numRound(ds_grid_get(terrainMap, xx, yy))
-			placeTiles(ind, lay, xx, yy);
+			placeTiles(ind, xx, yy);
 		}
 }
 
-placeTiles = function(_mapIndex, lay, xx, yy) {
+placeTiles = function(_mapIndex, xx, yy, lay2 = layer_get_id("OnGround"), lay = layer_get_id("Ground")) {
 	var sprToDraw;
 	switch(_mapIndex) {
 		case 0: {
@@ -176,6 +175,7 @@ placeTiles = function(_mapIndex, lay, xx, yy) {
 		case 8: {
 			sprToDraw = spr_grass6;
 			layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
+			layer_sprite_create(lay2, xx*TILEW, yy*TILEW, spr_pine)
 		}break;
 		case 9: {
 			sprToDraw = spr_dirt;
