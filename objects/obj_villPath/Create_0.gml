@@ -1,4 +1,4 @@
-var maxHouses = sprite_width/94;
+var maxHouses = ceil(sprite_width/250);
 var leftCount = irandom_range(1, maxHouses);
 var rightCount = irandom_range(1, maxHouses);
 leftHouses = [];
@@ -17,8 +17,8 @@ for(var i=0; i<leftCount; i++) {
 		var w = sprite_get_width(spr)+30;
 		var xx = x+lengthdir_x(sprite_height/2, image_angle+90);
 		var yy = y+lengthdir_y(sprite_height/2, image_angle+90);
-		xx += lengthdir_x(i*w, image_angle);
-		yy += lengthdir_y(i*w, image_angle);
+		xx += lengthdir_x(i*w+100, image_angle);
+		yy += lengthdir_y(i*w+100, image_angle);
 		var inst = instance_create_layer(xx,
 										yy,
 										"Structures",
@@ -42,8 +42,8 @@ for(var i=0; i<rightCount; i++) {
 		var w = sprite_get_width(spr)+30;
 		var xx = x+lengthdir_x(sprite_height/2, image_angle-90);
 		var yy = y+lengthdir_y(sprite_height/2, image_angle-90);
-		xx += lengthdir_x(i*w, image_angle);
-		yy += lengthdir_y(i*w, image_angle);
+		xx += lengthdir_x(i*w+100, image_angle);
+		yy += lengthdir_y(i*w+100, image_angle);
 		var inst = instance_create_layer(xx,
 										yy,
 										"Structures",
