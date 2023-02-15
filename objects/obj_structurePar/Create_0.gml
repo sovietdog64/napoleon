@@ -1,1 +1,0 @@
-structureType = structureTypes.GROUND;

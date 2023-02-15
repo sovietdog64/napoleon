@@ -3,7 +3,7 @@ if(!instance_exists(obj_player))
 if(global.gamePaused)
 	return;
 if(obj_player.state != PlayerStateLocked && distance_to_object(obj_player) <= 150) {
-	drawInteraction(0, x-CAMX, y-CAMY-sprite_width/2);
+	drawInteraction(0, x-camX(), y-camY()-sprite_width/2);
 	if(inspectCooldown > 0)
 		inspectCooldown--;
 	else if(keyboard_check_pressed(vk_space)) {
