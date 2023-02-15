@@ -1,4 +1,7 @@
 
+function camX() {return camera_get_view_x(view_camera[0]);}
+function camY() {return camera_get_view_y(view_camera[0]);}
+
 {//LIMBS
 	///@function drawLimbRight
 	//@param xx hip/shoulder x
@@ -135,12 +138,12 @@
 			}
 		}
 		
-		function doWalkingLegMovements(legLen, stepRadius, footSpeed) {
-			footSpeed *= 0.15;
+		function doWalkingLegMovements() {
+			var factor = abs(sprite_width/64);
 			footDir = abs(footDir) * sign(image_xscale);
-			footDir = sign(footDir) * footSpeed;
-			bOrigin = new Point(hipB.x, hipB.y+legLen);
-			fOrigin = new Point(hipF.x, hipF.y+legLen);
+			footDir = (hspWalk/3) * sign(footDir) * 0.08;
+			bOrigin = new Point(hipB.x, hipB.y+25*factor);
+			fOrigin = new Point(hipF.x, hipF.y+25*factor);
 			var changeInPos = abs(x - xprevious) + abs(y - yprevious);
 			if(changeInPos > 0) {
 				footProgress += footDir;
@@ -151,11 +154,12 @@
 				footB.y = bOrigin.y;
 				footF.x = fOrigin.x;
 				footF.y = fOrigin.y;
-				footB.x += stepRadius*cos(footProgress);
-				footB.y += stepRadius*sin(footProgress);
+				var radius = 8 * factor
+				footB.x += radius*cos(footProgress);
+				footB.y += radius*sin(footProgress);
 			
-				footF.x += stepRadius*cos(footProgress-pi);
-				footF.y += stepRadius*sin(footProgress-pi);
+				footF.x += radius*cos(footProgress-pi);
+				footF.y += radius*sin(footProgress-pi);
 			}
 			else {
 				var bDist= distanceBetweenPoints(footB.x, footB.y, bOrigin.x, bOrigin.y)/2;
@@ -185,13 +189,13 @@
 			}
 		}
 		
-		function doWalkingArmMovements(fullArmLen, armSpeed, swingLen = 17) {
+		function doWalkingArmMovements() {
 			//Scale animation speed with walk speed
-			handDir = armSpeed * sign(handDir);
+			handDir = hspWalk / 5 * sign(handDir);
 			//Do animation of moving
 			if(abs(x - xprevious) > 0 || abs(y - yprevious) > 0) {
 				handProgress += handDir;
-				if(abs(handProgress) >= swingLen) {
+				if(abs(handProgress) >= 17) {
 					handDir *= -1;
 				}
 			}
@@ -201,7 +205,7 @@
 			}
 			handProgress = clamp(handProgress, -20, 20);
 ;			//Calculating movements with parabola equation (i finally found a use for math i learned at school)
-			var offset = fullArmLen * 0.99;
+			var offset = (abs(sprite_width)/3);
 			handB.x = shoulderB.x+handProgress+offset*image_xscale;
 			handB.y = shoulderB.y+((-0.01*power(handProgress, 2))+offset);
 			
