@@ -58,6 +58,10 @@ enum biomes {
 	FIELD,
 }
 
+enum structureTypes {
+	GROUND,
+}
+
 global.drag = 0.9;
 global.savingGame = false;
 global.loadingGame = false;

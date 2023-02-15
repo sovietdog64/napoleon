@@ -15,14 +15,13 @@ for(var xx=0; xx<xCount; xx++) {
 												chunkX, chunkY, chunkX+PX_CHUNK_W, chunkY+PX_CHUNK_H);
 		
 		//If unloaded chunk visible, load it
-		var lay = layer_get_id("Ground");
 		if(camInBounds != 0) {
-			placeChunk(xx, yy);
 			ds_grid_set(allChunks, xx, yy,
 			{
 				biome : biomes.FIELD,
 				structures : array_create(0),
-			})
+			});
+			placeChunk(xx,yy);
 		}
 	}
 }

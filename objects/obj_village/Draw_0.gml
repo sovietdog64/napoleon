@@ -4,3 +4,4 @@ for(var i=0; i<array_length(roads); i++) {
 	var l = roads[i].line;
 	draw_line(l.x1, l.y1, l.x2, l.y2);
 }
+draw_circle(x, y, 1000, 0);

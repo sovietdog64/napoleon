@@ -61,6 +61,7 @@
     {"id":{"name":"spr_health","path":"sprites/spr_health/spr_health.yy",},"order":2,},
     {"id":{"name":"spr_invSlot","path":"sprites/spr_invSlot/spr_invSlot.yy",},"order":2,},
     {"id":{"name":"Items","path":"scripts/Items/Items.yy",},"order":7,},
+    {"id":{"name":"obj_structurePar","path":"objects/obj_structurePar/obj_structurePar.yy",},"order":2,},
     {"id":{"name":"spr_npc_1","path":"sprites/spr_npc_1/spr_npc_1.yy",},"order":1,},
     {"id":{"name":"obj_player","path":"objects/obj_player/obj_player.yy",},"order":2,},
     {"id":{"name":"spr_dirt","path":"sprites/spr_dirt/spr_dirt.yy",},"order":9,},

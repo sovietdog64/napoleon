@@ -1,5 +1,7 @@
 buildings = [];
 
+structureType = structureTypes.GROUND;
+
 roads = [];
 
 largestLen = 0;
