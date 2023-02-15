@@ -107,7 +107,6 @@ generatedX = 0;
 generatedY = 0;
 
 placeSprites = function() {
-	var lay = layer_get_id("Ground")
 	for(var xx=0; xx<ds_grid_width(terrainMap); xx++)
 		for(var yy=0; yy<ds_grid_height(terrainMap); yy++) {
 			var ind = numRound(ds_grid_get(terrainMap, xx, yy))
@@ -116,7 +115,6 @@ placeSprites = function() {
 }
 
 placeChunk = function(mapStartX, mapStartY) {
-	var lay = layer_get_id("Ground");
 	var startX = mapStartX * CHUNK_W;
 	var startY = mapStartY * CHUNK_H;
 	for(var xx=startX; xx<startX+CHUNK_W; xx++)
@@ -141,24 +139,28 @@ placeTile = function(_mapIndex, xx, yy, lay2 = layer_get_id("OnGround"), lay = l
 		case 2: {
 			sprToDraw = spr_grass;
 			layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
+			canSpawnGroundStructure = true;
 		}break;
 		case 3: {
 			sprToDraw = spr_grass;
 			var spr = layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
 			var c = choose(make_color_rgb(144, 252, 3), make_color_rgb(177, 252, 3));
 			layer_sprite_blend(spr, c);
+			canSpawnGroundStructure = true;
 		}break;
 		case 4: {
 			sprToDraw = spr_grass;
 			var spr = layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
 			var c = choose(make_color_rgb(104, 168, 2), make_color_rgb(124, 168, 2));
 			layer_sprite_blend(spr, c);
+			canSpawnGroundStructure = true;
 		}break;
 		case 5: {
 			sprToDraw = spr_grass;
 			var spr = layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
 			var c = choose(make_color_rgb(95, 153, 3), make_color_rgb(82, 117, 1));
 			layer_sprite_blend(spr, c);
+			canSpawnGroundStructure = true;
 		}break;
 		case 6: {
 			sprToDraw = spr_grass;
@@ -166,6 +168,7 @@ placeTile = function(_mapIndex, xx, yy, lay2 = layer_get_id("OnGround"), lay = l
 			var c = choose(make_color_rgb(51, 66, 2), make_color_rgb(63, 82, 2));
 			layer_sprite_blend(spr, c);
 			layer_sprite_create(lay2, xx*TILEW, yy*TILEW, spr_pine);
+			canSpawnGroundStructure = true;
 		}break;
 		case 7: {
 			sprToDraw = spr_grass;
@@ -173,18 +176,22 @@ placeTile = function(_mapIndex, xx, yy, lay2 = layer_get_id("OnGround"), lay = l
 			var c = choose(make_color_rgb(78, 102, 1), make_color_rgb(66, 87, 1));
 			layer_sprite_blend(spr, c);
 			layer_sprite_create(lay2, xx*TILEW, yy*TILEW, spr_pine);
+			canSpawnGroundStructure = true;
 		}break;
 		case 8: {
 			sprToDraw = spr_grass6;
 			layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
+			canSpawnGroundStructure = true;
 		}break;
 		case 9: {
 			sprToDraw = spr_dirt;
 			layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
+			canSpawnGroundStructure = true;
 		}
 		case 10: {
 			sprToDraw = spr_sand;
 			layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
+			canSpawnGroundStructure = true;
 		}break;
 		default: {
 			sprToDraw = spr_water;
@@ -193,42 +200,6 @@ placeTile = function(_mapIndex, xx, yy, lay2 = layer_get_id("OnGround"), lay = l
 	}
 	//Spawning ground structures
 	if(canSpawnGroundStructure) {
-		//25% chance of village spawn
-		if(irandom(100) <= 25) {
-			var shouldSpawnVillage = true;
-			///Check all chunks around this chunk if there is no villlage
-			//If no village, then make one in thiss chunk
-			var startX = xx;
-			var startY = yy;
-			if(withinBoundsGrid(allChunks, startX-1, startY-1)) {
-				startX--;
-				startY--;
-			}
-			for(var xx2=startX; xx2<=startX+2; xx2++) {
-				for(var yy2=startY; yy2<=startY+2; yy2++) {
-					if(!withinBoundsGrid(allChunks, xx2, yy2))
-						continue;
-					var chunk = allChunks[# xx2, yy2];
-					if(is_struct(chunk)) {
-						for(var i=0; i<array_length(chunk.structures); i++) {
-							if(chunk.structures[i].object_index == obj_village) {
-								shouldSpawnVillage = false;
-								break;
-							}
-						}
-					}
-					if(!shouldSpawnVillage)
-						break;
-				}
-				if(!shouldSpawnVillage)
-					break;
-			}
-			if(shouldSpawnVillage) {
-				instance_create_layer(irandom_range(chunkX, chunkX+PX_CHUNK_W),
-										irandom_range(chunkY, chunkY+PX_CHUNK_W),
-										"Structures",
-										obj_village);
-			}
-		}
+		
 	}
 }

@@ -344,9 +344,9 @@ function Line(_x1, _y1, _x2, _y2) constructor {
 	y1 = _y1;
 	x2 = _x2;
 	y2 = _y2;
-	length = distanceBetweenPoints(x1, y1, x2, y2);
-	dir = point_direction(x1, y1, x2, y2);
-	midpoint = lineMidpoint(x1, y1, x2, y2);
+	length = distanceBetweenPoints(_x1, _y1, _x2, _y2);
+	dir = point_direction(_x1, _y1, _x2, _y2);
+	midpoint = lineMidpoint(_x1, _y1, _x2, _y2);
 }
 
 function lineMidpoint(x1, y1, x2, y2) {

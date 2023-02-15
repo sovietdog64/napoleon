@@ -17,9 +17,10 @@ for(var i=0; i<irandom_range(10, 11); i++) {
 		largestLen = inst.sprite_height
 }
 
+//Paths
 for(var i=0; i<361; i += 90) {
-	var xx = x+lengthdir_x(largestLen*3, i)
-	var yy = y+lengthdir_y(largestLen*3, i)
+	var xx = x+lengthdir_x(largestLen*2, i)
+	var yy = y+lengthdir_y(largestLen*2, i)
 	var struct = {
 		line : new Line(x, y, xx, yy),
 		plots : array_create(3, 0),
@@ -28,8 +29,8 @@ for(var i=0; i<361; i += 90) {
 	//Extending line has 30% chance of spawning
 	if(irandom_range(1, 100) <= 30) {
 		var dir = choose(0, 90, 180, 270);
-		var xx2 = xx+lengthdir_x(largestLen*3, dir);
-		var yy2 = yy+lengthdir_y(largestLen*3, dir);
+		var xx2 = xx+lengthdir_x(largestLen*2, dir);
+		var yy2 = yy+lengthdir_y(largestLen*2, dir);
 		var struct = {
 			line : new Line(xx, yy, xx2, yy2),
 			plots : array_create(3, 0),
@@ -61,10 +62,11 @@ for(var i=0; i<array_length(buildings); i++) {
 	}
 	//Deleting houses if there isn't enough space for more
 	if(!foundPlot) {
-		var f = function(_element, _index) {
-			instance_destroy(_element)
-		}
-		array_foreach(buildings, f, i);
+		array_foreach(buildings,
+					    function(_element, _index) {
+							instance_destroy(_element);
+						},
+						i);
 		array_delete(buildings, i, array_length(buildings)-i);
 		break;
 	}
