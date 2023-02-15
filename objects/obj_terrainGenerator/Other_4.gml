@@ -1,12 +1,16 @@
-if(room == rm_init)
+if(room = rm_init)
 	return;
-layerId = layer_get_id("Ground");
-randomize();
-grassMap = new cellular_automata_map(30, 30, 0.7, 5, 5);
-grassMap.iterate(10);
-waterMap = new cellular_automata_map(30, 30, 0.1, 5, 3);
-spawnSquares(grassMap, spr_grass, 1, 0, 0);
-//spawnSquares(waterMap, spr_water, 2, 0, 0)
+var xCount = room_width div PX_CHUNK_W;
+var yCount = room_height div PX_CHUNK_H;
 
-generatedWidth = 30;
-generatedHeight = 30;
+allChunks = ds_grid_create(xCount, yCount);
+
+if(!layer_exists(layer_get_id("Ground")))
+	layer_create(100, "Ground");
+var size = power(2, 8)+1;
+terrainMap = ds_grid_create(size, size)
+lazyFloodFill(terrainMap, 0, 0, 0.99999);
+diamondSquare2(terrainMap, 13, 0);
+ds_grid_clear(allChunks, 0);
+if(debug_mode)
+	placeSprites();
