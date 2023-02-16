@@ -215,6 +215,11 @@ if(runCooldown > 0)
 	global.stamina += 0.2;	
 }
 
+//collisions that change player spd
+if(place_meeting(x, y, obj_water)) {
+	hspWalk *= 0.7;
+}
+
 //Collision
 {
 	{//Horizontal

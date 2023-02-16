@@ -1,3 +1,4 @@
+depth = layer_get_depth(layer_get_id("Instances"))+1;
 var maxHouses = ceil(sprite_width/250);
 var leftCount = irandom_range(1, maxHouses);
 var rightCount = irandom_range(1, maxHouses);

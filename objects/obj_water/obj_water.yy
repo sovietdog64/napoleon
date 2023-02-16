@@ -1,8 +1,11 @@
 {
   "resourceType": "GMObject",
   "resourceVersion": "1.0",
-  "name": "obj_house",
-  "spriteId": null,
+  "name": "obj_water",
+  "spriteId": {
+    "name": "spr_water",
+    "path": "sprites/spr_water/spr_water.yy",
+  },
   "solid": false,
   "visible": true,
   "managed": true,
@@ -21,14 +24,11 @@
   "physicsStartAwake": true,
   "physicsKinematic": false,
   "physicsShapePoints": [],
-  "eventList": [
-    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","isDnD":false,"eventNum":0,"eventType":3,"collisionObjectId":null,},
-    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","isDnD":false,"eventNum":0,"eventType":0,"collisionObjectId":null,},
-  ],
+  "eventList": [],
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Structures",
-    "path": "folders/Objects/Structures.yy",
+    "name": "Tiles",
+    "path": "folders/Objects/Tiles.yy",
   },
 }

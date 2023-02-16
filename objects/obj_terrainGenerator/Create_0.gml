@@ -151,7 +151,8 @@ placeChunk = function(chunkMapX, chunkMapY) {
 			}
 		}
 	}
-		
+	
+	//if most were ground tiles, spawn ground structure
 	else if(numWaterTiles/CHUNK_AREA >= 0.5) {
 	
 	}
@@ -163,8 +164,8 @@ placeTile = function(_mapIndex, xx, yy, lay2 = layer_get_id("OnGround"), lay = l
 	var possibleStructure = structureTypes.GROUND;
 	switch(_mapIndex) {
 		case 0: {
-			sprToDraw = spr_water;
-			layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
+			sprToDraw = undefined;
+			instance_create_layer(xx*TILEW, yy*TILEW, lay, obj_water);
 			possibleStructure = structureTypes.WATER;
 		}break;
 		case 1: {
@@ -220,8 +221,8 @@ placeTile = function(_mapIndex, xx, yy, lay2 = layer_get_id("OnGround"), lay = l
 			layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
 		}break;
 		default: {
-			sprToDraw = spr_water;
-			layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
+			sprToDraw = undefined;
+			instance_create_layer(xx*TILEW, yy*TILEW, lay, obj_water);
 			possibleStructure = structureTypes.WATER;
 		}break;
 	}
