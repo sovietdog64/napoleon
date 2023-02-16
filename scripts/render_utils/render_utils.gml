@@ -412,7 +412,7 @@
 		if(amount > 1) {
 			draw_set_color(c_white)
 			draw_set_halign(fa_center)
-			draw_text_transformed(xx+78*scl, yy+78*scl, string(amount), 1, 1, 0);
+			draw_text_transformed(xx+(SLOT_SIZE/2)*scl, yy+(SLOT_SIZE/2)*scl, string(amount), 1, 1, 0);
 		}
 	}
 

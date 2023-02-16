@@ -120,10 +120,10 @@ if(!invOpen && !global.dead) {
 		}
 		
 		drawInvSlot(spriteToDraw, xx-32, yy+32, i, true, itemAmount);
-		draw_set_color(c_white)
+		draw_set_color(c_white);
 		draw_set_font(fnt_npc);
 		draw_set_halign(fa_left);
-		draw_text_transformed(xx-64, yy+64, "Key " + string(i+1), 1, 1, 0);
+		draw_text_transformed(xx-54, yy+64, "Key " + string(i+1), 1, 1, 0);
 		//If a hotkey for an item in use is pressed, equip it.
 		if(keyboard_check_pressed(ord(string(i+1)))) {
 			global.equippedItem = i;

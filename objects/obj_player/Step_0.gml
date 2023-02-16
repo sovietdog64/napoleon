@@ -100,6 +100,7 @@ else
 			switch(global.heldItem.itemSpr) {
 				case spr_boxingGloves: boxingGloveAttack(mouse_x, mouse_y, 12); break;
 				case spr_tanto: tantoStab(mouse_x, mouse_y, 12); break;
+				case spr_woodHatchet : hatchetSwipe(mouse_x,mouse_y, 12); break;
 			}
 		}
 		//Right press
