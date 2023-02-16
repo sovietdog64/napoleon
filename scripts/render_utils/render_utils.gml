@@ -412,7 +412,13 @@
 		if(amount > 1) {
 			draw_set_color(c_white)
 			draw_set_halign(fa_center)
-			draw_text_transformed(xx+(SLOT_SIZE/2)*scl, yy+(SLOT_SIZE/2)*scl, string(amount), 1, 1, 0);
+			var xx2 = xx+(SLOT_SIZE/2)*scl;
+			var yy2 = yy+(SLOT_SIZE/2)*scl;
+			if(obj_player.invOpen) {
+				xx2 -= 10;
+				yy2 -= 10;
+			}
+			draw_text_transformed(xx2, yy2, string(amount), 1, 1, 0);
 		}
 	}
 
