@@ -12,16 +12,16 @@ if(drawPauseScreen && global.gamePaused && !obj_player.invOpen) {
 	
 	draw_sprite(spr_saveBtn, 0, RESOLUTION_W*0.9, 50);
 	draw_sprite(spr_loadBtn, 0, RESOLUTION_W*0.9, 150);
-	if(point_in_rectangle(mouse_x-camX(), mouse_y-camY(), RESOLUTION_W*0.9, 50, 128+RESOLUTION_W*0.9, 50+64)) {
+	if(point_in_rectangle(mouse_x-CAMX, mouse_y-CAMY, RESOLUTION_W*0.9, 50, 128+RESOLUTION_W*0.9, 50+64)) {
 		draw_set_color(c_black);
-		draw_circle(mouse_x-camX(), mouse_y-camY(), 8, 1);
+		draw_circle(mouse_x-CAMX, mouse_y-CAMY, 8, 1);
 		if(mouse_check_button_pressed(mb_left)) {
 			saveGame();
 		}
 	}
-	else if(point_in_rectangle(mouse_x-camX(), mouse_y-camY(), RESOLUTION_W*0.9, 150, 128+RESOLUTION_W*0.9, 150+64)) {
+	else if(point_in_rectangle(mouse_x-CAMX, mouse_y-CAMY, RESOLUTION_W*0.9, 150, 128+RESOLUTION_W*0.9, 150+64)) {
 		draw_set_color(c_black);
-		draw_circle(mouse_x-camX(), mouse_y-camY(), 8, 1);
+		draw_circle(mouse_x-CAMX, mouse_y-CAMY, 8, 1);
 		if(mouse_check_button_pressed(mb_left)) {
 			loadGame();
 		}
