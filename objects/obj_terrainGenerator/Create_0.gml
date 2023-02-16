@@ -80,6 +80,8 @@ placeTile = function(_mapIndex, xx, yy, lay2 = layer_get_id("OnGround"), lay = l
 		case 1: {
 			sprToDraw = spr_sand;
 			layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
+			if(random(1) < 0.01)
+				instance_create_layer(xx*TILEW, yy*TILEW, lay2, obj_tree).sprite_index = spr_palmTree;
 		}break;
 		case 2: {
 			sprToDraw = spr_grass;
@@ -132,6 +134,8 @@ placeTile = function(_mapIndex, xx, yy, lay2 = layer_get_id("OnGround"), lay = l
 		case 10: {
 			sprToDraw = spr_sand;
 			layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
+			if(random(1) < 0.01)
+				instance_create_layer(xx*TILEW, yy*TILEW, lay2, obj_tree).sprite_index = spr_palmTree;
 		}break;
 		default: {
 			sprToDraw = undefined;

@@ -2,7 +2,10 @@
   "resourceType": "GMObject",
   "resourceVersion": "1.0",
   "name": "obj_tree",
-  "spriteId": null,
+  "spriteId": {
+    "name": "spr_pine",
+    "path": "sprites/spr_pine/spr_pine.yy",
+  },
   "solid": true,
   "visible": true,
   "managed": true,
