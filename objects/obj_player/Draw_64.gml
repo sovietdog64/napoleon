@@ -2,7 +2,7 @@
 if(instance_exists(obj_game) && global.gamePaused || obj_player.inDialogue) 
 	return;
 
-if(global.invOpen) {
+if(!global.invOpen) {
 
 	//Drawing hotbar when outside of inventory
 	if(!global.invOpen && !global.dead) {
@@ -31,7 +31,6 @@ if(global.invOpen) {
 	}
 
 	//Health, quest, and crosshair/amount of ammo
-	if(!global.invOpen) {
 		draw_healthbar(RESOLUTION_W*0.01, RESOLUTION_H*0.12+30,
 					   RESOLUTION_W*0.3, RESOLUTION_H*0.12+50,
 					   100*(global.hp/global.maxHp),
@@ -92,6 +91,5 @@ if(global.invOpen) {
 				draw_text_transformed(mouseX, mouseY-80, strToDraw, 1, 1, 0);
 			}
 		}
-	}
 	
 }

@@ -10,9 +10,9 @@ var inv = keyboard_check_pressed(ord("I"));
 #region opening inv
 //Opening/closing inventory. Handled in draw event
 if(inv) {
-	global.noHud = !global.noHud;
 	global.invOpen = !global.invOpen;
 	closeAllInvs();
+	closeAllScreens();
 	if(global.invOpen) {
 		openPlayerInv();
 	}

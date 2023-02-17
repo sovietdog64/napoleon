@@ -26,3 +26,8 @@ function GuiScreen(_x1, _y1, _x2, _y2, _buttons, _backgroundSpr, _subimg) constr
 	}
 	buttons = _buttons;
 }
+	
+function closeAllScreens() {
+	instance_destroy(obj_inventory);
+	instance_destroy(obj_guiScreenPar);
+}
