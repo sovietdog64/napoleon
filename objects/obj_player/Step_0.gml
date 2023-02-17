@@ -12,6 +12,7 @@ var inv = keyboard_check_pressed(ord("I"));
 if(inv) {
 	global.noHud = !global.noHud;
 	global.invOpen = !global.invOpen;
+	closeAllInvs();
 	if(global.invOpen) {
 		openPlayerInv();
 	}

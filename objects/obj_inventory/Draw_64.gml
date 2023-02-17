@@ -29,5 +29,5 @@ if(is_array(buttons))
 	for(var i=0; i<array_length(buttons); i++) {
 		var btn = buttons[i];
 		if(is_struct(btn))
-			draw_sprite(btn.sprite, btn.subimg, btn.x, btn.y);
+			draw_sprite(btn.sprite_index, btn.subimg, btn.x, btn.y);
 	}

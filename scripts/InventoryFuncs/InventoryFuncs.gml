@@ -63,28 +63,15 @@ function pointInSprite(px, py, sprite, sprX, sprY) {
 	return point_in_rectangle(px, py, sprX, sprY, sprX+w, sprY+w)
 }
 
-function Button(_sprite, _subimg, xx, yy, _actionFunc) constructor {
-	x = xx;
-	y = yy;
-	sprite = _sprite;
-	subimg = _subimg;
-	var w = sprite_get_width(sprite);
-	var h = sprite_get_height(sprite);
-	var xOff = sprite_get_xoffset(sprite);
-	var yOff = sprite_get_yoffset(sprite);
-	xx -= xOff;
-	yy -= yOff;
-	rectangle = new Rectangle(xx, yy, xx+w, yy+h);
-	sprite_index = _sprite;
-	clickAction = _actionFunc;
-}
-
 function openPlayerInv() {
 	var w = sprite_get_width(spr_btnCrafting);
 	var h = sprite_get_height(spr_btnCrafting);
 	var xx = RESOLUTION_W-w*1.5;
 	var yy = RESOLUTION_H*0.8;
-	var btnAction = function(){show_debug_message("eeaeea")}
+	var btnAction = function(){
+		closeAllInvs();
+		instance_create_depth(0, 0, 1, obj_craftingScreen);
+	}
 	var btns = [new Button(spr_btnCrafting, 0, xx, yy, btnAction)]
 	instance_create_layer(RESOLUTION_W*0.1,RESOLUTION_H*0.1,
 							layer,
