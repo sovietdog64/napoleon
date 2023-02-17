@@ -4,9 +4,11 @@ if(instance_exists(obj_game) && global.gamePaused || obj_player.inDialogue)
 var cx = camera_get_view_x(view_camera[0]);
 var cy = camera_get_view_y(view_camera[0]);
 if(invOpen) {
+	//Background shade
 	draw_set_alpha(0.5);
 	draw_rectangle_color(0, 0, RESOLUTION_W, RESOLUTION_H, c_black,c_black,c_black,c_black, 0);
 	draw_set_alpha(1);
+	if(invType == inventories.PLAYER_INV) {
 	
 	//Drawing panel
 	var x1 = (RESOLUTION_W*0.07), y1 = RESOLUTION_H*0.07;
@@ -101,6 +103,10 @@ if(invOpen) {
 		clickedItem = -1;
 	}
 }
+	else if(invType == inventories.CRAFTING) {
+		
+	}		
+}
 
 if(isItem(clickedItem)) {
 	draw_sprite(clickedItem.itemSpr, 0, mouse_x-CAMX, mouse_y-CAMY);
@@ -119,11 +125,12 @@ if(!invOpen && !global.dead) {
 			itemAmount = global.hotbarItems[i].amount;
 		}
 		
-		drawInvSlot(spriteToDraw, xx-32, yy+32, i, true, itemAmount);
+		var h = SLOT_SIZE/2;
+		drawInvSlot(spriteToDraw, xx-h, yy+h, i, true, itemAmount);
 		draw_set_color(c_white);
 		draw_set_font(fnt_npc);
 		draw_set_halign(fa_left);
-		draw_text_transformed(xx-54, yy+64, "Key " + string(i+1), 1, 1, 0);
+		draw_text_transformed(xx-54, yy+SLOT_SIZE, "Key " + string(i+1), 1, 1, 0);
 		//If a hotkey for an item in use is pressed, equip it.
 		if(keyboard_check_pressed(ord(string(i+1)))) {
 			global.equippedItem = i;

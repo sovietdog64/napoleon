@@ -64,6 +64,13 @@ enum structureTypes {
 	WATER,
 }
 
+enum inventories {
+	NONE,
+	PLAYER_INV,
+	CRAFTING,
+	EQUIPMENT,
+}
+
 global.drag = 0.9;
 global.savingGame = false;
 global.loadingGame = false;
