@@ -29,9 +29,8 @@ if(invOpen) {
 		drawInvSlot(spriteToDraw, xx, yy, i, false, itemAmount);
 		//If mouse clicks on an item, drag it.
 		//Replaces items with the item currently held by the mouse.
-		xx -= 64;
-		yy -= 64;
-		var mouseInSlot = point_in_rectangle(mouse_x-cx,mouse_y-cy, xx,yy, xx+64,yy+64);
+		var half = SLOT_SIZE/2;
+		var mouseInSlot = point_in_rectangle(mouse_x-cx,mouse_y-cy, xx-half,yy-half, xx+half,yy+half);
 		if(mouseInSlot && mouse_check_button_pressed(mb_left)) {
 			var temp;
 			if(!isItem(global.invItems[i]))
@@ -61,9 +60,9 @@ if(invOpen) {
 		
 		drawInvSlot(spriteToDraw, xx, yy, i, true, itemAmount);
 		//Handling slot clicks
-		xx -= 64;
-		yy -= 64;
-		if(point_in_rectangle(mouse_x-cx,mouse_y-cy, xx,yy, xx+128,yy+128) && mouse_check_button_pressed(mb_left)) {
+		var half = SLOT_SIZE/2;
+		var mouseInSlot = point_in_rectangle(mouse_x-cx,mouse_y-cy, xx-half, yy-half, xx+half,yy+half);
+		if(mouseInSlot && mouse_check_button_pressed(mb_left)) {
 			//Swap out item with item currently being dragged
 			var temp;
 			if(!isItem(global.hotbarItems[i]))
@@ -84,7 +83,8 @@ if(invOpen) {
 	var mouseInHotbarSlot = point_in_rectangle(mouse_x-cx, mouse_y-cy, hotbarX, hotbarY, hotbarX+SLOT_SIZE*array_length(global.hotbarItems), hotbarY+128);
 	if(!mouseInSlot &&
 		!mouseInHotbarSlot &&
-		mouse_check_button_pressed(mb_left) && clickedItem != -1) {
+		mouse_check_button_pressed(mb_left) &&
+		clickedItem != -1) {
 			
 		var foundValidPosition = false;
 		var xPos = x+50*sign(image_xscale);
@@ -103,7 +103,7 @@ if(invOpen) {
 }
 
 if(isItem(clickedItem)) {
-	draw_sprite(clickedItem.itemSpr, 0, mouse_x-(64+CAMX), mouse_y-(64+CAMY));
+	draw_sprite(clickedItem.itemSpr, 0, mouse_x-CAMX, mouse_y-CAMY);
 }
 
 //Drawing hotbar/items in use when outside of inventory
