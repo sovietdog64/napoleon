@@ -10,10 +10,6 @@ var inv = keyboard_check_pressed(ord("I"));
 //Opening/closing inventory. Handled in draw event
 if(inv) {
 	invOpen = !invOpen;
-	if(invOpen)
-		invType = inventories.PLAYER_INV;
-	else
-		invType = inventories.NONE;
 	//If the inventory is closed while the mouse has an item selected,
 	//place that item in the lowest-index inv slot that is empty.
 	if(!invOpen && clickedItem != -1) {

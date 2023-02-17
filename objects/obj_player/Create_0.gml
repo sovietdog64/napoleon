@@ -5,7 +5,6 @@ vspJump = -16;//vertical speed when jumping
 canJump = false;//bool for whether player can jump.
 inDialogue = false;//bool stating whether the player is talking with an NPC.
 invOpen = false;
-invType = inventories.PLAYER_INV;
 clickedItem = -1;
 
 maxHurtCooldown = room_speed;

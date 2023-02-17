@@ -33,7 +33,7 @@ function giveItemToPlayer(item) {
 	return 0;
 }
 
-function copyStruct(struct){
+function copyStruct(struct) {
 	if(!is_struct(struct))
 		return -1;
     var key, value;

@@ -8,7 +8,7 @@ if(invOpen) {
 	draw_set_alpha(0.5);
 	draw_rectangle_color(0, 0, RESOLUTION_W, RESOLUTION_H, c_black,c_black,c_black,c_black, 0);
 	draw_set_alpha(1);
-	if(invType == inventories.PLAYER_INV) {
+	if(invType) {
 	
 	//Drawing panel
 	var x1 = (RESOLUTION_W*0.07), y1 = RESOLUTION_H*0.07;
@@ -111,6 +111,9 @@ if(invOpen) {
 if(isItem(clickedItem)) {
 	draw_sprite(clickedItem.itemSpr, 0, mouse_x-CAMX, mouse_y-CAMY);
 }
+
+if(global.noHud)
+	return;
 
 //Drawing hotbar/items in use when outside of inventory
 if(!invOpen && !global.dead) {
