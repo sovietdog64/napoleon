@@ -76,3 +76,4 @@ global.savingGame = false;
 global.loadingGame = false;
 
 global.noHud = false;
+global.invOpen = false

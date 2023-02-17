@@ -9,36 +9,31 @@ if(instance_exists(obj_game) && global.gamePaused)
 var inv = keyboard_check_pressed(ord("I"));
 //Opening/closing inventory. Handled in draw event
 if(inv) {
-	invOpen = !invOpen;
-	//If the inventory is closed while the mouse has an item selected,
-	//place that item in the lowest-index inv slot that is empty.
-	if(!invOpen && clickedItem != -1) {
-		var temp = copyStruct(clickedItem);
-		clickedItem = -1;
-		var foundSlot = false;
-		for(var i = 0; i < array_length(global.invItems); i++) {
-			if(global.invItems[i] == -1) {
-				global.invItems[i] = temp;
-				foundSlot = true;
-				break;
-			}
-		}
-		for(var i = 0; i < array_length(global.hotbarItems); i++) {
-			if(foundSlot)
-				break;
-			if(global.hotbarItems[i] == -1) {
-				global.hotbarItems[i] = temp;
-				foundSlot = true;
-				break;
-			}
-		}
-		if(!foundSlot) {
-			var inst = instance_create_layer(x, y, "Interactables", obj_item);
-			inst.item = temp;
-		}
+	global.noHud = !global.noHud;
+	global.invOpen = !global.invOpen;
+	if(global.invOpen) {
+		instance_create_layer(RESOLUTION_W*0.1,RESOLUTION_H*0.1,
+								layer,
+								obj_inventory,
+								{
+									invArray : global.invItems,
+									invType : inventories.PLAYER_INV,
+								});
+						
+		instance_create_layer(RESOLUTION_W*0.1,RESOLUTION_H*0.8,
+								layer,
+								obj_inventory,
+								{
+									invArray : global.hotbarItems,
+									invType : inventories.PLAYER_INV,
+									rowLength : array_length(global.hotbarItems),
+								});
+	}
+	else {
+		instance_destroy(obj_inventory)
 	}
 }
-if(instance_exists(obj_game) && global.gamePaused || obj_player.invOpen || state = PlayerStateLocked)
+if(instance_exists(obj_game) && global.gamePaused || global.invOpen|| state = PlayerStateLocked)
 	return;
 
 var moveLeft = keyboard_check(ord("A"));

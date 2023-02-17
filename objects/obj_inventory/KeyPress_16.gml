@@ -1,1 +1,0 @@
-InvAdd(invArray, new Item(spr_boxingGloves, 5, 1));
