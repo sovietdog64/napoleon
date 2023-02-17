@@ -5,6 +5,8 @@ invDrag = -1;
 slotDrag = -1;
 itemDrag = -1;
 
+btnHover = -1;
+
 mouseOver = function() {
 	//reset hover results
 	slotHover = -1;
@@ -15,6 +17,7 @@ mouseOver = function() {
 	for(var i=0; i<instance_number(obj_inventory); i++) {
 		var inv = instance_find(obj_inventory, i);
 		with(inv) {
+			//Getting sllot/inv being hovered over
 			if(point_in_rectangle(
 				mx,
 				my,
@@ -30,23 +33,43 @@ mouseOver = function() {
 					}
 				}
 			}
+			
+			//Find the button the mouse is hovering over
+			if(is_array(buttons))
+				for(var j=0; j<array_length(buttons); j++) {
+					var btn = buttons[j];
+					if(btn.rectangle.pointInRect(mx, my)) {
+						other.btnHover = btn;
+					}
+				}
 		}
 	}
 }
 	
 handleMouseInvInput = function() {
 	mouseOver();
-	if(invHover != -1 && mouse_check_button_pressed(mb_left)) {
-		var invItemHovered = duplicateItem(invHover[slotHover]);
-		invHover[slotHover] = itemDrag;
-		itemDrag = invItemHovered;
-	}
-	else if(mouse_check_button_pressed(mb_left) && isItem(itemDrag)) {
-		with(instance_create_layer(obj_player.x, obj_player.y, obj_player.layer, obj_item)) {
-			item = duplicateItem(other.itemDrag);
+	//Handling mouse click in inv
+	if(mouse_check_button_pressed(mb_left)) {
+		//Placing items in slot that is being hovered
+		if(invHover != -1) {
+			var invItemHovered = duplicateItem(invHover[slotHover]);
+			invHover[slotHover] = itemDrag;
+			itemDrag = invItemHovered;
 		}
-		itemDrag = -1;
+		//Drop item when mouse clicked out of inventory
+		else if(isItem(itemDrag)) {
+			with(instance_create_layer(obj_player.x, obj_player.y, obj_player.layer, obj_item)) {
+				item = duplicateItem(other.itemDrag);
+			}
+			itemDrag = -1;
+		}
+		
+		//Click on button when hovering over button.
+		if(btnHover != -1) {
+			btnHover.clickAction();
+		}
 	}
+	
 }
 	
 stateFree = function() {

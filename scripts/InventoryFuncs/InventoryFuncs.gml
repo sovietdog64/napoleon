@@ -51,3 +51,30 @@ function InvSwap(invFrom, slotFrom, invTo, slotTo) {
 	invFrom[slotFrom] = duplicateItem(invTo[slotTo]);
 	invTo[slotTo] = itemFrom;
 }
+	
+function pointInSprite(px, py, sprite, sprX, sprY) {
+	var w = sprite_get_width(sprite);
+	var h = sprite_get_height(sprite);
+	var xOff = sprite_get_xoffset(sprite);
+	var yOff = sprite_get_yoffset(sprite);
+	//Make function check from top left of sprite
+	sprX -= xOff;
+	sprY -= yOff;
+	return point_in_rectangle(px, py, sprX, sprY, sprX+w, sprY+w)
+}
+
+function Button(_sprite, _subimg, xx, yy, _actionFunc) constructor {
+	x = xx;
+	y = yy;
+	sprite = _sprite;
+	subimg = _subimg;
+	var w = sprite_get_width(sprite);
+	var h = sprite_get_height(sprite);
+	var xOff = sprite_get_xoffset(sprite);
+	var yOff = sprite_get_yoffset(sprite);
+	xx -= xOff;
+	yy -= yOff;
+	rectangle = new Rectangle(xx, yy, xx+w, yy+h);
+	sprite_index = _sprite;
+	clickAction = _actionFunc;
+}

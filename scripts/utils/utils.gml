@@ -479,10 +479,15 @@ function pointDistanceToLine(px, py, x1, y1, x2, y2) {
 	return numerator/denominator;
 }
 
-function getSpriteCenter(sprite, xx, yy) {
-	var w = sprite_get_width(sprite);
-	var h = sprite_get_height(sprite);
-	var centerX = xx - sprite_get_xoffset(sprite) + w/ 2;
-	var centerY = yy - sprite_get_yoffset(sprite) + h/ 2;
-	return new Point(centerX, centerY);
+function Rectangle(_x1, _y1, _x2, _y2) constructor {
+	x1 = _x1;
+	y1 = _y1;
+	x2 = _x2;
+	y2 = _y2;
+	
+	midpoint = new Point((_x1+_x2)/2, (_y1+_y2)/2);
+	
+	pointInRect = function(px, py) {
+		return point_in_rectangle(px, py, x1, y1, x2, y2);
+	}
 }

@@ -555,3 +555,9 @@ function nineSliceBoxStretched(sprite, x1, y1, x2, y2, frame = 0) {
 		draw_sprite_part_ext(sprite, frame, size, size*2, 1, size, x1+size, y1+h-size, w-(size*2), 1, c_white, 1);
 	}
 }
+	
+function drawSpritePosNineSlice(sprite, subimg, x1, y1, x2, y2) {
+	var w = abs(x2-x1);
+	var h = abs(y2-y1);
+	draw_sprite_stretched(sprite, subimg, x1, y1, w, h)
+}

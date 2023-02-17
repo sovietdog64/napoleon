@@ -7,17 +7,25 @@ if(global.dead)
 if(instance_exists(obj_game) && global.gamePaused) 
 	return;
 var inv = keyboard_check_pressed(ord("I"));
+#region opening inv
 //Opening/closing inventory. Handled in draw event
 if(inv) {
 	global.noHud = !global.noHud;
 	global.invOpen = !global.invOpen;
 	if(global.invOpen) {
+		var w = sprite_get_width(spr_btnCrafting);
+		var h = sprite_get_height(spr_btnCrafting);
+		var xx = RESOLUTION_W-w*1.5;
+		var yy = RESOLUTION_H*0.8;
+		var btnAction = function(){show_debug_message("eeaeea")}
+		var btns = [new Button(spr_btnCrafting, 0, xx, yy, btnAction)]
 		instance_create_layer(RESOLUTION_W*0.1,RESOLUTION_H*0.1,
 								layer,
 								obj_inventory,
 								{
 									invArray : global.invItems,
 									invType : inventories.PLAYER_INV,
+									buttons : btns,
 								});
 						
 		instance_create_layer(RESOLUTION_W*0.1,RESOLUTION_H*0.8,
@@ -33,9 +41,13 @@ if(inv) {
 		instance_destroy(obj_inventory)
 	}
 }
+	
+#endregion opening inv
+
 if(instance_exists(obj_game) && global.gamePaused || global.invOpen|| state = PlayerStateLocked)
 	return;
 
+#region movement
 var moveLeft = keyboard_check(ord("A"));
 var moveRight = keyboard_check(ord("D"));
 var horizDirection = moveRight-moveLeft;
@@ -43,49 +55,44 @@ var up = keyboard_check(ord("W"));
 var down = keyboard_check(ord("S"));
 var vertDirection = down-up;
 
-//Movement
-{
-	{//Horizontal movement
-		//Checks direction  & speed of horizontal movement.
-		if(isHurt) {
-			hsp *= 0.8;
-			vsp *= 0.8;
-			if(abs(hsp) < 1 && abs(vsp) < 1) {
-				isHurt = false;
-				hsp = 0;
-				vsp = 0;
-			}
-		} 
-		else if(lungeForward) {
-			hsp *= 0.8;
-			vsp *= 0.8;
-			if(abs(hsp) < 1 && abs(vsp) < 1) {
-				lungeForward = false;
-				hsp = 0;
-				vsp = 0;
-			}
+{//Horizontal movement
+	//Checks direction  & speed of horizontal movement.
+	if(isHurt) {
+		hsp *= 0.8;
+		vsp *= 0.8;
+		if(abs(hsp) < 1 && abs(vsp) < 1) {
+			isHurt = false;
+			hsp = 0;
+			vsp = 0;
 		}
-		else {
-			hsp = horizDirection * hspWalk;
-			if(horizDirection < 0) {image_xscale = -1; direction = 180;}
-			else if(horizDirection > 0) {image_xscale = 1; direction = 0;}
+	} 
+	else if(lungeForward) {
+		hsp *= 0.8;
+		vsp *= 0.8;
+		if(abs(hsp) < 1 && abs(vsp) < 1) {
+			lungeForward = false;
+			hsp = 0;
+			vsp = 0;
 		}
 	}
-		
-	{//Vertical movement
-		if(!isHurt && !lungeForward)
-			vsp = vertDirection * hspWalk;
-	}
-	
-	if(abs(vertDirection) && abs(horizDirection)) {
-		hspWalk = hspWalk/sqrt(2);
+	else {
+		hsp = horizDirection * hspWalk;
+		if(horizDirection < 0) {image_xscale = -1; direction = 180;}
+		else if(horizDirection > 0) {image_xscale = 1; direction = 0;}
 	}
 }
+		
+{//Vertical movement
+	if(!isHurt && !lungeForward)
+		vsp = vertDirection * hspWalk;
+}
+	
+if(abs(vertDirection) && abs(horizDirection)) {
+	hspWalk = hspWalk/sqrt(2);
+}
+#endregion movement
 
-if(keyboard_check(ord("T")))
-	room_speed = 30;
-else 
-	room_speed = 60;
+#region items
 
 {//Item usage/animations
 	leftAttackCooldown--;
@@ -139,6 +146,9 @@ else
 if(leftAttackCooldown <= 0)
 	attackState = attackStates.NONE;
 
+#endregion items
+
+#region sequences
 //Make specific sequences follow player
 for(var i=0; i<array_length(followingSequences); i++) {
 	var seq = followingSequences[i].sequenceElementId;
@@ -187,11 +197,14 @@ for(var i=0; i<array_length(followingSequences); i++) {
 		layer_sequence_angle(seq, point_direction(x, y, mouse_x, mouse_y));
 }
 
+#endregion sequences
+
 if(debug_mode) {
 	global.level = 5;
 	global.levelUpThreshold = 480;
 }
 
+#region stamina
 global.stamina = clamp(global.stamina, 0, global.maxStamina);
 
 if(runCooldown > 0)
@@ -211,6 +224,9 @@ if(runCooldown > 0)
 	global.stamina += 0.2;	
 }
 
+#endregion stamina
+
+#region collisions
 //collisions that change player spd
 if(place_meeting(x, y, obj_water)) {
 	hspWalk *= 0.7;
@@ -263,6 +279,9 @@ if(place_meeting(x, y, obj_water)) {
 			}
 		}
 	}
+	
+
+#endregion collisions
 	
 {//Completeting quests
 	var nearestNPC = instance_nearest(x, y, obj_npc);
