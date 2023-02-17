@@ -1,4 +1,3 @@
-itemHover = -1;
 invHover = -1;
 slotHover = -1;
 invDrag = -1;

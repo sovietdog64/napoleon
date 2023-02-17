@@ -78,3 +78,33 @@ function Button(_sprite, _subimg, xx, yy, _actionFunc) constructor {
 	sprite_index = _sprite;
 	clickAction = _actionFunc;
 }
+
+function openPlayerInv() {
+	var w = sprite_get_width(spr_btnCrafting);
+	var h = sprite_get_height(spr_btnCrafting);
+	var xx = RESOLUTION_W-w*1.5;
+	var yy = RESOLUTION_H*0.8;
+	var btnAction = function(){show_debug_message("eeaeea")}
+	var btns = [new Button(spr_btnCrafting, 0, xx, yy, btnAction)]
+	instance_create_layer(RESOLUTION_W*0.1,RESOLUTION_H*0.1,
+							layer,
+							obj_inventory,
+							{
+								invArray : global.invItems,
+								invType : inventories.PLAYER_INV,
+								buttons : btns,
+							});
+						
+	instance_create_layer(RESOLUTION_W*0.1,RESOLUTION_H*0.8,
+							layer,
+							obj_inventory,
+							{
+								invArray : global.hotbarItems,
+								invType : inventories.PLAYER_INV,
+								rowLength : array_length(global.hotbarItems),
+							});
+}
+
+function closeAllInvs() {instance_destroy(obj_inventory)};
+
+function closeInv(inv) {instance_destroy(inv)};

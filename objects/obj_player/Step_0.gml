@@ -13,32 +13,10 @@ if(inv) {
 	global.noHud = !global.noHud;
 	global.invOpen = !global.invOpen;
 	if(global.invOpen) {
-		var w = sprite_get_width(spr_btnCrafting);
-		var h = sprite_get_height(spr_btnCrafting);
-		var xx = RESOLUTION_W-w*1.5;
-		var yy = RESOLUTION_H*0.8;
-		var btnAction = function(){show_debug_message("eeaeea")}
-		var btns = [new Button(spr_btnCrafting, 0, xx, yy, btnAction)]
-		instance_create_layer(RESOLUTION_W*0.1,RESOLUTION_H*0.1,
-								layer,
-								obj_inventory,
-								{
-									invArray : global.invItems,
-									invType : inventories.PLAYER_INV,
-									buttons : btns,
-								});
-						
-		instance_create_layer(RESOLUTION_W*0.1,RESOLUTION_H*0.8,
-								layer,
-								obj_inventory,
-								{
-									invArray : global.hotbarItems,
-									invType : inventories.PLAYER_INV,
-									rowLength : array_length(global.hotbarItems),
-								});
+		openPlayerInv();
 	}
 	else {
-		instance_destroy(obj_inventory)
+		closeAllInvs();
 	}
 }
 	
