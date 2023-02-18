@@ -40,14 +40,14 @@ placeChunk = function(chunkMapX, chunkMapY) {
 			var chestSpawnX = irandom_range(chunkMapX*PX_CHUNK_W, chunkMapX*PX_CHUNK_W + PX_CHUNK_W);
 			var chestSpawnY = irandom_range(chunkMapY*PX_CHUNK_W, chunkMapY*PX_CHUNK_W + PX_CHUNK_W);
 			var bonusChest = instance_create_layer(playerSpawnX, playerSpawnY, "Interactables", obj_chest);
-			bonusChest.items = [new Item(spr_woodHatchet, 1, 2, itemAnimations.KNIFE_STAB)];
+			bonusChest.items = [new Item(spr_woodHatchet, 1, 2, "Wood Hatchet", "A simple wood hatchet.\nDamage: 2", itemAnimations.KNIFE_STAB)];
 		}
 		
 		
 		var spawnX = irandom_range(chunkMapX*PX_CHUNK_W, chunkMapX*PX_CHUNK_W + PX_CHUNK_W);
 		var spawnY = irandom_range(chunkMapY*PX_CHUNK_W, chunkMapY*PX_CHUNK_W + PX_CHUNK_W);
 		//10% chance of village spawn in this chunk
-		if(irandom(100) < 10) {
+		if(irandom(100) < 20) {
 			var structures = allChunks[# chunkMapX, chunkMapY].structures;
 			var canSpawn = true;
 			for(var i=0; i<array_length(structures); i++) {

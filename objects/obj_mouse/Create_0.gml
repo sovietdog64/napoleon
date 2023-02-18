@@ -4,6 +4,8 @@ invDrag = -1;
 slotDrag = -1;
 itemDrag = -1;
 
+shouldDropItem = false;
+
 depth = -999;
 
 btnHover = -1;
@@ -13,6 +15,7 @@ mouseOver = function() {
 	slotHover = -1;
 	invHover = -1;
 	btnHover = -1;
+	shouldDropItem = false;
 	
 	var mx = mouse_x-CAMX;
 	var my = mouse_y-CAMY;
@@ -33,8 +36,13 @@ mouseOver = function() {
 					if(point_in_rectangle(mx, my, p.x, p.y, p.x+INV_SLOT_SIZE, p.y+INV_SLOT_SIZE)) {
 						other.slotHover = j;
 						other.invHover = invArray;
+						break;
 					}
 				}
+				if(other.invHover != -1)
+					other.shouldDropItem = false;
+				else
+					other.shouldDropItem = true;
 			}
 		}
 	}
@@ -49,10 +57,14 @@ mouseOver = function() {
 						other.btnHover = btn;
 					}
 				}
+			if(!screen.rectangle.pointInRect(mx, my))
+				other.shouldDropItem = true;
+			else
+				other.shouldDropItem = false;
 		}
 }
 	
-handleMouseInvInput = function() {
+handleScreenInput = function() {
 	mouseOver();
 	//Handling mouse click in inv
 	if(mouse_check_button_pressed(mb_left)) {
@@ -63,7 +75,7 @@ handleMouseInvInput = function() {
 			itemDrag = invItemHovered;
 		}
 		//Drop item when mouse clicked out of inventory
-		else if(isItem(itemDrag)) {
+		else if(shouldDropItem) {
 			with(instance_create_layer(obj_player.x, obj_player.y, obj_player.layer, obj_item)) {
 				item = duplicateItem(other.itemDrag);
 			}

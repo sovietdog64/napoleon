@@ -1,6 +1,7 @@
 //@function giveItemToPlayer
 //@param item sprite of item to give
 //Returns 1 if successfully gave item. Returns 0 if inventory too full
+//Return 2 when added item to an empty slot
 function giveItemToPlayer(item) {
 	//Trying to give to hotbar
 	for(var i=0; i<array_length(global.hotbarItems); i++) {
@@ -14,7 +15,7 @@ function giveItemToPlayer(item) {
 				continue;
 		}
 		global.hotbarItems[i] = copyStruct(item);
-		return 1;
+		return 2;
 	}
 	//Trying to give to inventory
 	for(var i=0; i<array_length(global.invItems); i++) {
@@ -28,7 +29,7 @@ function giveItemToPlayer(item) {
 				continue;
 		}
 		global.invItems[i] = item;
-		return 1;
+		return 2;
 	}
 	return 0;
 }
@@ -48,12 +49,6 @@ function copyStruct(struct) {
     return newCopy;
 }
 
-function Item(itemSprite, itemAmount, dmg, animationTypeEnum = itemAnimations.NONE) constructor {
-	itemSpr = itemSprite;
-	amount = itemAmount;
-	damage = dmg;
-	animationType = animationTypeEnum;
-}
 
 function sequenceGetName(sequenceId) {
 	if(layer_exists("Animations") &&  layer_sequence_exists("Animations", sequenceId)) {

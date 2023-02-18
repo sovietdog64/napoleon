@@ -1,3 +1,4 @@
+#region globals
 global.gamePaused = false;
 persistent = true;
 
@@ -22,6 +23,17 @@ global.completedQuests = array_create(0);
 global.textSpeed = 0.75;
 surface_resize(application_surface, RESOLUTION_W, RESOLUTION_H);
 global.heldItem = global.hotbarItems[global.equippedItem];
+
+global.drag = 0.9;
+global.savingGame = false;
+global.loadingGame = false;
+
+global.noHud = false;
+global.invOpen = false
+
+#endregion globals
+
+#region enums
 
 enum states {
 	IDLE,
@@ -71,9 +83,20 @@ enum inventories {
 	EQUIPMENT,
 }
 
-global.drag = 0.9;
-global.savingGame = false;
-global.loadingGame = false;
+#endregion enums
 
-global.noHud = false;
-global.invOpen = false
+#region crafting recipies
+global.craftingRecipies = 
+[
+	new CraftingRecipie(
+		new PlaceableItem(
+			spr_woodBench,1,2,
+			"Workbench",
+			"A bench used for making a variety of things.\nCrafting Slots: 4"
+		),
+		[
+			{item: spr_wood, amount: 10}
+		]
+	)
+]
+#endregion crafting recipies

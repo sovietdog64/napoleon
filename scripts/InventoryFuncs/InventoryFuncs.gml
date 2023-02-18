@@ -43,7 +43,16 @@ function duplicateItem(item) {
 		return item;
 	return copyStruct(item);
 }
-	
+
+function removeEmptyItems(invArray) {
+	for(var i=0; i<invArray; i++) {
+		if(!isItem(invArray[i]))
+			continue;
+		if(invArray[i].amount <= 0)
+			invArray[i] = -1;
+	}
+}
+
 //invs are the inv arrays
 //a slot is an index in the array
 function InvSwap(invFrom, slotFrom, invTo, slotTo) {
@@ -70,3 +79,8 @@ function openPlayerInv() {
 function closeAllInvs() {instance_destroy(obj_inventory)};
 
 function closeInv(inv) {instance_destroy(inv)};
+
+function CraftingRecipie(_item, _itemsRequired) {
+	item = _item;
+	itemsRequired = _itemsRequired;
+}

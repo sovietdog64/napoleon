@@ -5,6 +5,10 @@ for(var i=0; i<instance_number(obj_guiScreenPar); i++) {
 		instance_destroy(inst);
 }
 
+craftingSlots = array_create(numOfSlots, -1);
+
+itemResultSlot = array_create(1, -1);
+
 screen = new GuiScreen(
 	RESOLUTION_W*0.05, RESOLUTION_H*0.05,
 	RESOLUTION_W*0.95, RESOLUTION_H*0.95,
@@ -13,19 +17,61 @@ screen = new GuiScreen(
 	spr_invPanel,
 	0
 );
-#region inv GUI instance
+#region inv GUI instances
+
+variable_struct_set(screen, "invs", array_create(0));
 
 var invInstance = instance_create_depth(
-	RESOLUTION_W*0.05+20, RESOLUTION_H*0.05+20,
+	screen.x1+20, screen.y1+20,
 	depth-1,
 	obj_craftingSlots,
 	{
-		rowLength : 3,
+		rowLength : 4,
 		invType : inventories.NONE,
-		invArray : array_create(numOfSlots, -1),
+		invArray : craftingSlots,
 	}
 );
+array_push(screen.invs, invInstance);
 
-variable_struct_set(screen, "invInst", invInstance);
+var playerInv = instance_create_depth(
+	screen.x1+20, screen.y2-150,
+	depth-1,
+	obj_inventory,
+	{
+		rowLength : 8,
+		invType : inventories.PLAYER_INV,
+		invArray : global.invItems,
+		slotSize : 32,
+		itemSize : 32,
+	}
+);
+array_push(screen.invs, playerInv);
 
-#endregion inv GUI instance
+var playerInv = instance_create_depth(
+	screen.x1+8*45-10, screen.y2-150,
+	depth-1,
+	obj_inventory,
+	{
+		rowLength : 3,
+		invType : inventories.PLAYER_INV,
+		invArray : global.hotbarItems,
+		slotSize : 32,
+		itemSize : 32,
+	}
+);
+array_push(screen.invs, playerInv);
+
+var resultInv = instance_create_depth(
+	screen.x1+20+4*50, screen.y1+20,
+	depth-1,
+	obj_inventory,
+	{
+		rowLength : 1,
+		invArray : itemResultSlot,
+		slotSize : 32,
+		itemSize : 32,
+	}
+)
+
+
+#endregion inv GUI instances

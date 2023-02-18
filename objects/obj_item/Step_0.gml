@@ -38,6 +38,9 @@ sprite_index = item.itemSpr;
 	}
 }
 
+x = clamp(x, 0, room_width);
+y = clamp(y, 0, room_height);
+
 if(!canBePickedUp) pickUpCoolDown--;
 if(pickUpCoolDown <= 0) {
 	canBePickedUp = true;
