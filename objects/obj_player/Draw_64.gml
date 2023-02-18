@@ -7,7 +7,7 @@ if(!global.invOpen) {
 	//Drawing hotbar when outside of inventory
 	if(!global.invOpen && !global.dead) {
 		for(var i = 0; i < array_length(global.hotbarItems); i++) {
-			var xx = (RESOLUTION_W*0.8)+SLOT_SIZE*i;
+			var xx = (RESOLUTION_W*0.8)+INV_SLOT_SIZE*i;
 			var yy = (RESOLUTION_H*0.01)+32;
 		
 			var spriteToDraw = -1;
@@ -17,12 +17,12 @@ if(!global.invOpen) {
 				itemAmount = global.hotbarItems[i].amount;
 			}
 		
-			var h = SLOT_SIZE/2;
+			var h = INV_SLOT_SIZE/2;
 			drawInvSlot(spriteToDraw, xx-h, yy+h, i, true, itemAmount);
 			draw_set_color(c_white);
 			draw_set_font(fnt_npc);
 			draw_set_halign(fa_left);
-			draw_text_transformed(xx-54, yy+SLOT_SIZE, "Key " + string(i+1), 1, 1, 0);
+			draw_text_transformed(xx-54, yy+INV_SLOT_SIZE, "Key " + string(i+1), 1, 1, 0);
 			//If a hotkey for an item in use is pressed, equip it.
 			if(keyboard_check_pressed(ord(string(i+1)))) {
 				global.equippedItem = i;

@@ -28,7 +28,7 @@ mouseOver = function() {
 			{
 				for(var j=0; j<invSize; j++) {
 					var p = slotPositions[j];
-					if(point_in_rectangle(mx, my, p.x, p.y, p.x+SLOT_SIZE, p.y+SLOT_SIZE)) {
+					if(point_in_rectangle(mx, my, p.x, p.y, p.x+INV_SLOT_SIZE, p.y+INV_SLOT_SIZE)) {
 						other.slotHover = j;
 						other.invHover = invArray;
 					}

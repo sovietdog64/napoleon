@@ -11,7 +11,7 @@ for(var i=0; i<instance_number(obj_inventory); i++) {
 	}
 }
 
-var multiplier = SLOT_SIZE+5;
+var multiplier = slotSize+5;
 for(var i=0; i<invSize; i++) {
 	var xx = x + (i mod rowLength) * multiplier + 2;
 	var yy = y + (i div rowLength) * multiplier + 2;
@@ -19,7 +19,7 @@ for(var i=0; i<invSize; i++) {
 	array_push(slotPositions, new Point(xx, yy));
 }
 
-var multiplier = SLOT_SIZE+5;
+var multiplier = slotSize+5;
 var x1 = x-10;
 var y1 = y-10;
 var x2 = x1 + 20+rowLength*multiplier;

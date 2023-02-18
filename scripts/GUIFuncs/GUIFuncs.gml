@@ -80,6 +80,14 @@ function GuiScreen(_x1, _y1, _x2, _y2, _buttons, _texts, _backgroundSpr, _subimg
 	}
 	
 	static drawScreen = function() {
+		draw_set_alpha(0.5);
+		draw_rectangle_color(
+		0,0,
+		RESOLUTION_W, RESOLUTION_H,
+		c_black,c_black,c_black,c_black,
+		0);
+		draw_set_alpha(1);
+		
 		drawSpritePosNineSlice(sprite_index, subimg, x1, y1, x2, y2);
 		drawButtons();
 		drawTexts();

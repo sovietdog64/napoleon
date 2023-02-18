@@ -412,8 +412,8 @@
 		if(amount > 1) {
 			draw_set_color(c_white)
 			draw_set_halign(fa_center)
-			var xx2 = xx+(SLOT_SIZE/2)*scl;
-			var yy2 = yy+(SLOT_SIZE/2)*scl;
+			var xx2 = xx+(INV_SLOT_SIZE/2)*scl;
+			var yy2 = yy+(INV_SLOT_SIZE/2)*scl;
 			if(obj_player.invOpen) {
 				xx2 -= 10;
 				yy2 -= 10;
