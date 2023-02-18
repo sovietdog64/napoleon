@@ -47,7 +47,10 @@ var hotbarInvGui = instance_create_depth(RESOLUTION_W*0.1,RESOLUTION_H*0.75,
 							invType : inventories.PLAYER_INV,
 							rowLength : array_length(global.hotbarItems),
 						});
-variable_struct_set(screen, "invGui", invGui);
-variable_struct_set(screen, "hotbarInvGui", hotbarInvGui);
+variable_struct_set(screen, "invs", []);
+array_push(screen.invs, invGui);
+array_push(screen.invs, hotbarInvGui);
 
 #endregion inv GUI instances
+
+global.screenOpen = true;

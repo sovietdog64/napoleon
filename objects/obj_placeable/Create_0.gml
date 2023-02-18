@@ -1,0 +1,2 @@
+rightClick = function(){};
+leftClick = function(){}

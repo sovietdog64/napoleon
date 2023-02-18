@@ -29,7 +29,7 @@ global.savingGame = false;
 global.loadingGame = false;
 
 global.noHud = false;
-global.invOpen = false
+global.screenOpen = false
 
 #endregion globals
 
@@ -86,17 +86,5 @@ enum inventories {
 #endregion enums
 
 #region crafting recipies
-global.craftingRecipies = 
-[
-	new CraftingRecipie(
-		new PlaceableItem(
-			spr_woodBench,1,2,
-			"Workbench",
-			"A bench used for making a variety of things.\nCrafting Slots: 4"
-		),
-		[
-			{item: spr_wood, amount: 10}
-		]
-	)
-]
+global.craftingRecipies = []
 #endregion crafting recipies

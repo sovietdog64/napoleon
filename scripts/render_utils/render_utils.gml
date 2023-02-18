@@ -10,7 +10,7 @@
 	//@param width1 width of 1st segment
 	//@param width2 width of 2nd segment
 	function drawLimbRight(xx, yy, targX, targY, segment1Len, segment2Len, color1, color2, width1, width2) {
-		var dist = distanceBetweenPoints(xx, yy, targX, targY);
+		var dist = point_distance(xx, yy, targX, targY);
 		var dir = point_direction(xx, yy, targX, targY);
 		var thighDir = darctan(dist/segment1Len);
 		thighDir -= dir;
@@ -36,7 +36,7 @@
 	//@param width1 width of 1st segment
 	//@param width2 width of 2nd segment
 	function drawSpiderLimbLeft(xx, yy, targX, targY, segment1Len, segment2Len, color1, color2, width1, width2) {
-		var dist = distanceBetweenPoints(xx, yy, targX, targY);
+		var dist = point_distance(xx, yy, targX, targY);
 		var dir = point_direction(xx, yy, targX, targY);
 
 		//Left leg
@@ -57,7 +57,7 @@
 	
 	function drawLimbRightSpr(segment1Spr, segment2Spr, xx, yy, targX, targY) {
 		var segment1Len = sprite_get_width(segment1Spr);
-		var dist = distanceBetweenPoints(xx, yy, targX, targY);
+		var dist = point_distance(xx, yy, targX, targY);
 		var dir = point_direction(xx, yy, targX, targY);
 		var thighDir = darctan(dist/segment1Len);
 		thighDir -= dir;
@@ -72,7 +72,7 @@
 	
 	function drawLimbLeftSpr(segment1Spr, segment2Spr, xx, yy, targX, targY) {
 		var segment1Len = sprite_get_width(segment1Spr);
-		var dist = distanceBetweenPoints(xx, yy, targX, targY);
+		var dist = point_distance(xx, yy, targX, targY);
 		var dir = point_direction(xx, yy, targX, targY);
 
 		//Left leg
@@ -158,12 +158,12 @@
 				footF.y += stepRadius*sin(footProgress-pi);
 			}
 			else {
-				var bDist= distanceBetweenPoints(footB.x, footB.y, bOrigin.x, bOrigin.y)/2;
+				var bDist= point_distance(footB.x, footB.y, bOrigin.x, bOrigin.y)/2;
 				var bDir = point_direction(footB.x, footB.y, bOrigin.x, bOrigin.y)
 				footB.x += lengthdir_x(bDist, bDir);
 				footB.y += lengthdir_y(bDist, bDir);
 				
-				var fDist= distanceBetweenPoints(footF.x, footF.y, fOrigin.x, fOrigin.y)/10;
+				var fDist= point_distance(footF.x, footF.y, fOrigin.x, fOrigin.y)/10;
 				var fDir = point_direction(footF.x, footF.y, fOrigin.x, fOrigin.y)
 				footF.x += lengthdir_x(fDist, fDir);
 				footF.y += lengthdir_y(fDist, fDir);
@@ -498,12 +498,6 @@
 			variable_instance_set(id, "drawInteractionProgress", 0);
 		drawInteractionProgress = 0;
 	}
-}
-
-function distanceBetweenPoints(x1, y1, x2, y2) {
-	var xx = power((x2-x1), 2);
-	var yy = power((y2-y1), 2);
-	return sqrt(xx+yy);
 }
 
 ///@function pointInRectangle

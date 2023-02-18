@@ -2,10 +2,10 @@
 if(instance_exists(obj_game) && global.gamePaused || obj_player.inDialogue) 
 	return;
 
-if(!global.invOpen) {
+if(!global.screenOpen) {
 
 	//Drawing hotbar when outside of inventory
-	if(!global.invOpen && !global.dead) {
+	if(!global.screenOpen && !global.dead) {
 		for(var i = 0; i < array_length(global.hotbarItems); i++) {
 			var xx = (RESOLUTION_W*0.8)+INV_SLOT_SIZE*i;
 			var yy = (RESOLUTION_H*0.01)+32;

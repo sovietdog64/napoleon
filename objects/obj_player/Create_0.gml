@@ -6,6 +6,8 @@ inDialogue = false;//bool stating whether the player is talking with an NPC.
 invOpen = false;
 clickedItem = -1;
 
+invOpen = false;
+
 maxHurtCooldown = room_speed;
 
 minHspWalk = hspWalk;

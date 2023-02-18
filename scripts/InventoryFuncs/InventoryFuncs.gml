@@ -45,7 +45,7 @@ function duplicateItem(item) {
 }
 
 function removeEmptyItems(invArray) {
-	for(var i=0; i<invArray; i++) {
+	for(var i=0; i<array_length(invArray); i++) {
 		if(!isItem(invArray[i]))
 			continue;
 		if(invArray[i].amount <= 0)

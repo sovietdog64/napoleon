@@ -6,3 +6,5 @@ for(var i=0; i<instance_number(obj_guiScreenPar); i++) {
 	if(inst != id)
 		instance_destroy(inst);
 }
+
+global.screenOpen = true;

@@ -10,8 +10,8 @@ var inv = keyboard_check_pressed(ord("I"));
 #region opening inv
 //Opening/closing inventory. Handled in draw event
 if(inv) {
-	global.invOpen = !global.invOpen;
-	if(global.invOpen) {
+	global.screenOpen = !global.screenOpen;
+	if(global.screenOpen) {
 		openPlayerInv();
 	}
 	else {
@@ -21,7 +21,7 @@ if(inv) {
 	
 #endregion opening inv
 
-if(instance_exists(obj_game) && global.gamePaused || global.invOpen|| state = PlayerStateLocked)
+if(instance_exists(obj_game) && global.gamePaused || global.screenOpen|| state = PlayerStateLocked)
 	return;
 
 #region movement

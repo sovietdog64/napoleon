@@ -339,7 +339,7 @@ function Line(_x1, _y1, _x2, _y2) constructor {
 	y1 = _y1;
 	x2 = _x2;
 	y2 = _y2;
-	length = distanceBetweenPoints(_x1, _y1, _x2, _y2);
+	length = point_distance(_x1, _y1, _x2, _y2);
 	dir = point_direction(_x1, _y1, _x2, _y2);
 	midpoint = lineMidpoint(_x1, _y1, _x2, _y2);
 }
@@ -470,7 +470,7 @@ function roundToTile(num, tileSize) {
 	
 function pointDistanceToLine(px, py, x1, y1, x2, y2) {
 	var numerator = abs((x2-x1)*(y1-py) - (x1-px)*(y2-y1));
-	var denominator = distanceBetweenPoints(x1, y1, x2, y2);
+	var denominator = point_distance(x1, y1, x2, y2);
 	return numerator/denominator;
 }
 

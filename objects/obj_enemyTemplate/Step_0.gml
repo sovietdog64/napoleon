@@ -21,7 +21,7 @@ if(obj_player.state = PlayerStateLocked)
 var moveLeft = obj_player.x < x;
 var moveRight = obj_player.x > x;
 var vertMovement = sign(y-obj_player.y);
-var distToPlayer = distanceBetweenPoints(x, y, obj_player.x, obj_player.y);
+var distToPlayer = point_distance(x, y, obj_player.x, obj_player.y);
 //Horizontal movement
 {
 	jumpCooldown--;

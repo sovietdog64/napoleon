@@ -15,14 +15,14 @@ else if(excavate) {
 		if(layer_get_element_type(element) == layerelementtype_sprite) {
 			var xx = layer_sprite_get_x(element);
 			var yy = layer_sprite_get_y(element);
-			if(distanceBetweenPoints(x, y, xx, yy) <= radius) {
+			if(point_distance(x, y, xx, yy) <= radius) {
 				layer_sprite_destroy(element);
 				layer_sprite_create(sprLay, xx, yy, spr_grass);
 			}
 		}
 		else if(layer_get_element_type(element) == layerelementtype_instance) {
 			var inst = layer_instance_get_instance(element);
-			if(distanceBetweenPoints(x, y, inst.x, inst.y) <= radius) {
+			if(point_distance(x, y, inst.x, inst.y) <= radius) {
 				layer_sprite_create(sprLay, inst.x, inst.y, spr_grass);
 				instance_destroy(inst);
 			}

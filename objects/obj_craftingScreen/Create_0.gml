@@ -75,3 +75,5 @@ var resultInv = instance_create_depth(
 
 
 #endregion inv GUI instances
+
+global.screenOpen = true;
