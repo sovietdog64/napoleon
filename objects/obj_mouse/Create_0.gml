@@ -4,6 +4,8 @@ invDrag = -1;
 slotDrag = -1;
 itemDrag = -1;
 
+depth = -999;
+
 btnHover = -1;
 
 mouseOver = function() {
@@ -34,17 +36,20 @@ mouseOver = function() {
 					}
 				}
 			}
-			
+		}
+	}
+	
+	if(instance_exists(obj_guiScreenPar))
+		with(obj_guiScreenPar) {
 			//Find the button the mouse is hovering over
-			if(is_array(buttons))
-				for(var j=0; j<array_length(buttons); j++) {
-					var btn = buttons[j];
+			if(is_array(screen.buttons))
+				for(var j=0; j<array_length(screen.buttons); j++) {
+					var btn = screen.buttons[j];
 					if(btn.rectangle.pointInRect(mx, my)) {
 						other.btnHover = btn;
 					}
 				}
 		}
-	}
 }
 	
 handleMouseInvInput = function() {

@@ -36,7 +36,7 @@
   ],
   "overriddenProperties": [],
   "parent": {
-    "name": "Game_control",
-    "path": "folders/Objects/Game_control.yy",
+    "name": "Inventories",
+    "path": "folders/Objects/Inventories.yy",
   },
 }

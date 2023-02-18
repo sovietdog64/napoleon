@@ -14,11 +14,3 @@ for(var i=0; i<invSize; i++) {
 	if(isItem(invArray[i]))
 		draw_sprite_stretched(invArray[i].itemSpr, 0, p.x, p.y, itemSize, itemSize);
 }
-
-	
-if(is_array(buttons))
-	for(var i=0; i<array_length(buttons); i++) {
-		var btn = buttons[i];
-		if(is_struct(btn))
-			btn.draw();
-	}

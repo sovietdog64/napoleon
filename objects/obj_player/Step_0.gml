@@ -15,8 +15,7 @@ if(inv) {
 		openPlayerInv();
 	}
 	else {
-		closeAllInvs();
-		instance_destroy(obj_craftingScreen)
+		closeAllScreens();
 	}
 }
 	

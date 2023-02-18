@@ -35,7 +35,7 @@
     {"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","name":"","propertyId":{"name":"itemSize","path":"objects/obj_inventory/obj_inventory.yy",},"objectId":{"name":"obj_inventory","path":"objects/obj_inventory/obj_inventory.yy",},"value":"32",},
   ],
   "parent": {
-    "name": "Gui Screens",
-    "path": "folders/Objects/Gui Screens.yy",
+    "name": "Inventories",
+    "path": "folders/Objects/Inventories.yy",
   },
 }

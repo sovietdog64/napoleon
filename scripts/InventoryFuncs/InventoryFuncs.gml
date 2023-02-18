@@ -64,32 +64,7 @@ function pointInSprite(px, py, sprite, sprX, sprY) {
 }
 
 function openPlayerInv() {
-	var w = sprite_get_width(spr_btnCrafting);
-	var h = sprite_get_height(spr_btnCrafting);
-	var xx = RESOLUTION_W-w*1.5;
-	var yy = RESOLUTION_H*0.8;
-	var btnAction = function() {
-		closeAllInvs();
-		instance_create_depth(0, 0, 100, obj_craftingScreen);
-	}
-	var btns = [new GuiButton(spr_btnCrafting, 0, xx, yy, btnAction)]
-	instance_create_layer(RESOLUTION_W*0.1,RESOLUTION_H*0.1,
-							layer,
-							obj_inventory,
-							{
-								invArray : global.invItems,
-								invType : inventories.PLAYER_INV,
-								buttons : btns,
-							});
-						
-	instance_create_layer(RESOLUTION_W*0.1,RESOLUTION_H*0.8,
-							layer,
-							obj_inventory,
-							{
-								invArray : global.hotbarItems,
-								invType : inventories.PLAYER_INV,
-								rowLength : array_length(global.hotbarItems),
-							});
+	instance_create_depth(0,0,0,obj_playerInvScreen);
 }
 
 function closeAllInvs() {instance_destroy(obj_inventory)};

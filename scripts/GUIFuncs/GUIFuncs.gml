@@ -1,4 +1,4 @@
-function GuiButton(_sprite, _subimg, xx, yy, _actionFunc, objDepth) constructor {
+function GuiButton(_sprite, _subimg, xx, yy, _actionFunc) constructor {
 	x = xx;
 	y = yy;
 	sprite_index = _sprite;
@@ -68,7 +68,8 @@ function GuiScreen(_x1, _y1, _x2, _y2, _buttons, _texts, _backgroundSpr, _subimg
 	static drawButtons = function() {
 		if(is_array(buttons))
 			for(var i=0; i<array_length(buttons); i++) {
-				buttons[i].draw();
+				var b = buttons[i];
+				draw_sprite(b.sprite_index, b.subimg, b.x, b.y);
 			}
 	}
 	
