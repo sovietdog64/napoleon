@@ -3,7 +3,7 @@ slotPositions = [];
 invRect = [];
 for(var i=0; i<instance_number(obj_inventory); i++) {
 	var inst = instance_find(obj_inventory, i);
-	if(inst != instance_id) {
+	if(inst != id) {
 		//Prevent destroying hotbar inv
 		if(invType == inventories.PLAYER_INV && inst.invType == inventories.PLAYER_INV)
 			continue;

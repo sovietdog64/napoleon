@@ -10,6 +10,8 @@ mouseOver = function() {
 	//reset hover results
 	slotHover = -1;
 	invHover = -1;
+	btnHover = -1;
+	
 	var mx = mouse_x-CAMX;
 	var my = mouse_y-CAMY;
 	

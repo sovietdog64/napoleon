@@ -68,11 +68,11 @@ function openPlayerInv() {
 	var h = sprite_get_height(spr_btnCrafting);
 	var xx = RESOLUTION_W-w*1.5;
 	var yy = RESOLUTION_H*0.8;
-	var btnAction = function(){
+	var btnAction = function() {
 		closeAllInvs();
-		instance_create_depth(0, 0, 1, obj_craftingScreen);
+		instance_create_depth(0, 0, 100, obj_craftingScreen);
 	}
-	var btns = [new Button(spr_btnCrafting, 0, xx, yy, btnAction)]
+	var btns = [new GuiButton(spr_btnCrafting, 0, xx, yy, btnAction)]
 	instance_create_layer(RESOLUTION_W*0.1,RESOLUTION_H*0.1,
 							layer,
 							obj_inventory,

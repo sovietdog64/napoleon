@@ -11,13 +11,12 @@ var inv = keyboard_check_pressed(ord("I"));
 //Opening/closing inventory. Handled in draw event
 if(inv) {
 	global.invOpen = !global.invOpen;
-	closeAllInvs();
-	closeAllScreens();
 	if(global.invOpen) {
 		openPlayerInv();
 	}
 	else {
 		closeAllInvs();
+		instance_destroy(obj_craftingScreen)
 	}
 }
 	
