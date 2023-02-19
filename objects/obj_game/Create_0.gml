@@ -88,5 +88,8 @@ enum inventories {
 #endregion enums
 
 #region crafting recipies
-global.craftingRecipies = []
+global.craftingRecipies = 
+[
+	new CraftingRecipie()
+]
 #endregion crafting recipies

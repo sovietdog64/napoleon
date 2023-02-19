@@ -1,9 +1,24 @@
-function InvSearch(invArray, itemSprite) {
+function InvSearch(invArray, itemSprite, amount = 1) {
 	for(var i=0; i<array_length(invArray); i++)
 		if(isItem(invArray[i]) && invArray[i].itemSpr == itemSprite)
-			return i;
+				if(invArray[i].amount >= amount)
+					return i;
 			
 	return -1;
+}
+
+function InvGet(invArray, itemSprite, amount = 1) {
+	var pos = InvSearch(invArray, itemSprite, amount);
+	if(pos != -1)
+		return invArray[pos];
+	return undefined;
+}
+
+function InvSearchPlayer( itemSprite, amount = 1) {
+	var pos = InvSearch(global.invItems, itemSprite, amount);
+	if(pos == -1)
+		pos = InvSearch(global.hotbarItems, itemSprite, amount);
+	return pos;
 }
 
 function InvRemove(invArray, itemSprite, amount = undefined) {
@@ -83,4 +98,36 @@ function closeInv(inv) {instance_destroy(inv)};
 function CraftingRecipie(_item, _itemsRequired) {
 	item = _item;
 	itemsRequired = _itemsRequired;
+	
+	//Checks if can craft an item
+	//If cannot, it will return an array of the missing items
+	static canCraft = function() {
+		var craftable = true;
+		var missingItems = [];
+		//the var "craftable" will remain true until a missing item is found
+		for(var i=0; i<array_length(itemsRequired); i++) {
+			var reqItem = itemsRequired[i];
+			//If missing item, set craftable to false & add the required item to list of missing items
+			//else, continue in the loop
+			if(InvSearchPlayer(reqItem.itemSpr, reqItem.amount) == -1) {
+				craftable = false;
+				array_push(missingItems, reqItem);
+			}
+		}
+		
+		if(craftable)
+			return true;
+		else
+			return missingItems;
+	}
+	
+	static craftItem = function() {
+		var craftedItem = canCraft();
+		if(craftedItem) {
+			return item;
+		}
+		else
+			return -1;
+	}
+	
 }
