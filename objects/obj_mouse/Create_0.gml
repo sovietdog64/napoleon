@@ -3,6 +3,7 @@ slotHover = -1;
 invDrag = -1;
 slotDrag = -1;
 itemDrag = -1;
+dontPutItem = false;
 
 placeableColorBlend = c_green;
 
@@ -18,6 +19,7 @@ mouseOver = function() {
 	invHover = -1;
 	btnHover = -1;
 	shouldDropItem = false;
+	dontPutItem = false;
 	
 	var mx = GUI_MOUSE_X;
 	var my = GUI_MOUSE_Y;
@@ -33,6 +35,7 @@ mouseOver = function() {
 				invRect[1].x, invRect[1].y
 			))
 			{
+				other.dontPutItem = cannotPlaceItem;
 				for(var j=0; j<invSize; j++) {
 					var p = slotPositions[j];
 					if(point_in_rectangle(mx, my, p.x,p.y, p.x+slotSize,p.y+slotSize)) {
@@ -73,15 +76,24 @@ handleScreenInput = function() {
 		//Placing items in slot that is being hovered
 		if(invHover != -1) {
 			//If the item being dragged & the itme hovered are similar, place the stack into the slot.
-			if(itemsAreSimilar(itemDrag, invHover[slotHover])) {
+			if(itemsAreSimilar(itemDrag, invHover[slotHover]) && !dontPutItem) {
 				invHover[slotHover].amount += itemDrag.amount;
 				itemDrag = -1;
 			}
 			//If not similar, swap the itme being dragged with the hovered item
 			else {
-				var invItemHovered = duplicateItem(invHover[slotHover]);
-				invHover[slotHover] = itemDrag;
-				itemDrag = invItemHovered;
+				if(dontPutItem) {
+					if(itemDrag == -1) {
+						var invItemHovered = duplicateItem(invHover[slotHover]);
+						invHover[slotHover] = itemDrag;
+						itemDrag = invItemHovered;
+					}
+				}
+				else {
+					var invItemHovered = duplicateItem(invHover[slotHover]);
+					invHover[slotHover] = itemDrag;
+					itemDrag = invItemHovered;
+				}
 			}
 		}
 		//Drop item when mouse clicked out of inventory
@@ -97,7 +109,7 @@ handleScreenInput = function() {
 			btnHover.clickAction();
 		}
 	}
-	else if(RMOUSE_PRESSED) {
+	else if(RMOUSE_PRESSED && !dontPutItem) {
 		if(invHover != -1) {
 			var item = invHover[slotHover];
 			if(itemDrag == -1 && isItem(item)) {

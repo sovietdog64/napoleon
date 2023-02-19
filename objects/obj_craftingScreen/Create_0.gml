@@ -74,6 +74,7 @@ var resultInv = instance_create_depth(
 		slotSize : 32,
 		itemSize : 32,
 		throwOutItems : true,
+		cannotPlaceItem : true,
 	}
 );
 array_push(screen.invs, resultInv)
