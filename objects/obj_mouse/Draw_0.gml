@@ -1,5 +1,4 @@
 if (isPlaceableItem(global.heldItem)) {
-	show_debug_message("aeae")
 	draw_sprite_ext(
 		global.heldItem.placedSprite,
 		0,

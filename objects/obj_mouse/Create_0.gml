@@ -4,6 +4,8 @@ invDrag = -1;
 slotDrag = -1;
 itemDrag = -1;
 
+placeableColorBlend = c_green;
+
 shouldDropItem = false;
 
 depth = -9999;
@@ -17,8 +19,8 @@ mouseOver = function() {
 	btnHover = -1;
 	shouldDropItem = false;
 	
-	var mx = mouse_x-CAMX;
-	var my = mouse_y-CAMY;
+	var mx = x-CAMX;
+	var my = y-CAMY;
 	
 	for(var i=0; i<instance_number(obj_inventory); i++) {
 		var inv = instance_find(obj_inventory, i);
