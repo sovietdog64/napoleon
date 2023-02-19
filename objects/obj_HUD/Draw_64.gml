@@ -1,5 +1,5 @@
 ///@description inv handling/player GUI
-if(instance_exists(obj_game) && global.gamePaused || obj_player.inDialogue) 
+if(global.gamePaused || obj_player.inDialogue) 
 	return;
 
 if(!global.screenOpen) {
