@@ -56,7 +56,27 @@ function InvAdd(invArray, item) {
 function duplicateItem(item) {
 	if(!isItem(item))
 		return item;
-	return copyStruct(item);
+	//Get item's constructor as a string
+	var constructorName = instanceof(item)
+	var scriptFunc = asset_get_index(constructorName);
+	var test = [-1];
+	//Run constructor, but it changes "test" array's 1st index into a new workbench
+	//i had to do it this way because script_execute doesn't really execute constructors. 
+	//maybe it does, but it doesn't return the struct created. i belive this is a bug in the current verison of gms2
+	script_execute(scriptFunc, test);
+	var newItem = test[0];
+	
+	//Update all values in the new item to be the same as the old item's
+	var key, value;
+	var keys = variable_struct_get_names(item);
+    for (var i = array_length(keys)-1; i >= 0; --i) {
+            key = keys[i];
+            value = item[$ key];
+            variable_struct_get(item, key);
+            variable_struct_set(newItem, key, value);
+    }
+	//Return the item duplicate
+	return newItem;
 }
 
 function removeEmptyItems(invArray) {
@@ -123,11 +143,11 @@ function CraftingRecipie(_item, _itemsRequired) {
 	
 	static craftItem = function() {
 		var craftedItem = canCraft();
-		if(craftedItem) {
+		if(craftedItem == true) {
 			return item;
 		}
 		else
-			return -1;
+			return craftedItem;
 	}
 	
 }

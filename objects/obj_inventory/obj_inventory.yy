@@ -34,6 +34,7 @@
     {"resourceType":"GMObjectProperty","resourceVersion":"1.0","name":"buttons","filters":[],"listItems":[],"multiselect":false,"rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"value":"0","varType":6,},
     {"resourceType":"GMObjectProperty","resourceVersion":"1.0","name":"slotSize","filters":[],"listItems":[],"multiselect":false,"rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"value":"INV_SLOT_SIZE","varType":0,},
     {"resourceType":"GMObjectProperty","resourceVersion":"1.0","name":"itemSize","filters":[],"listItems":[],"multiselect":false,"rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"value":"INV_ITEM_SIZE","varType":0,},
+    {"resourceType":"GMObjectProperty","resourceVersion":"1.0","name":"throwOutItems","filters":[],"listItems":[],"multiselect":false,"rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"value":"False","varType":3,},
   ],
   "solid": false,
   "spriteId": null,

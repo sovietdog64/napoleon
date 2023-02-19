@@ -40,7 +40,7 @@ placeChunk = function(chunkMapX, chunkMapY) {
 			var chestSpawnX = irandom_range(chunkMapX*PX_CHUNK_W, chunkMapX*PX_CHUNK_W + PX_CHUNK_W);
 			var chestSpawnY = irandom_range(chunkMapY*PX_CHUNK_W, chunkMapY*PX_CHUNK_W + PX_CHUNK_W);
 			var bonusChest = instance_create_layer(playerSpawnX, playerSpawnY, "Interactables", obj_chest);
-			bonusChest.items = [new Item(spr_woodHatchet, 1, 2, "Wood Hatchet", "A simple wood hatchet.\nDamage: 2", itemAnimations.KNIFE_STAB)];
+			bonusChest.items = [new WoodHatchet()];
 		}
 		
 		

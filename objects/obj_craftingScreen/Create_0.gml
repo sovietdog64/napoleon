@@ -24,11 +24,14 @@ variable_struct_set(screen, "invs", array_create(0));
 var invInstance = instance_create_depth(
 	screen.x1+20, screen.y1+20,
 	depth-1,
-	obj_craftingSlots,
+	obj_inventory,
 	{
 		rowLength : 4,
 		invType : inventories.NONE,
 		invArray : craftingSlots,
+		slotSize : 32,
+		itemSize : 32,
+		throwOutItems : true,
 	}
 );
 array_push(screen.invs, invInstance);
@@ -70,8 +73,10 @@ var resultInv = instance_create_depth(
 		invArray : itemResultSlot,
 		slotSize : 32,
 		itemSize : 32,
+		throwOutItems : true,
 	}
-)
+);
+array_push(screen.invs, resultInv)
 
 
 #endregion inv GUI instances

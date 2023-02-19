@@ -19,7 +19,14 @@ function PlaceableItem(itemSprite, itemAmount, dmg, itemName, itemDescription, s
 
 
 #region all item constructors
-function Workbench() : PlaceableItem(spr_woodBench,1,0,"Workbench") constructor {
+
+///@param {array} outputArray An optional param. Use it if you want to run script_execute() on it.
+function Workbench(outputArray = undefined) : PlaceableItem(spr_woodBench,1,0,"Workbench") constructor {
+	//Output a new workbench into the output array's first index
+	if(is_array(outputArray)) {
+		outputArray[0] = new Workbench();
+		return;
+	}
 	desc = "A bench used for making a variety of things\nCrafting slots: " + string(4);
 	
 	placedSprite = spr_woodBenchP;
@@ -31,6 +38,21 @@ function Workbench() : PlaceableItem(spr_woodBench,1,0,"Workbench") constructor 
 	
 	solid = true;
 }
+	
+function WoodHatchet(outputArray = undefined) : Item(spr_woodHatchet,1,2,"Wood Hatchet", "Hatchet that can cut down trees\nDamage: 2", itemAnimations.KNIFE_STAB) constructor {
+	if(is_array(outputArray)) {
+		outputArray[0] = new WoodHatchet();
+		return;
+	}
+}
+	
+function Wood(outputArray = undefined) : Item(spr_wood,1,0,"Wood",":Resource:") constructor {
+	if(is_array(outputArray)) {
+		outputArray[0] = new Wood();
+		return;
+	}
+}	
+
 #endregion
 
 function placeItem(placeableItem, placeX, placeY) {
