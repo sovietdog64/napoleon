@@ -90,6 +90,6 @@ enum inventories {
 #region crafting recipies
 global.craftingRecipies = 
 [
-
+	new CraftingRecipie(new Workbench(), [new Wood(4)])
 ]
 #endregion crafting recipies

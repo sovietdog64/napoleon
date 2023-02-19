@@ -1,24 +1,97 @@
 function InvSearch(invArray, itemSprite, amount = 1) {
+	var amountFound = 0;
+	var slots = [];
 	for(var i=0; i<array_length(invArray); i++)
-		if(isItem(invArray[i]) && invArray[i].itemSpr == itemSprite)
-				if(invArray[i].amount >= amount)
-					return i;
-			
+		if(isItem(invArray[i]) && invArray[i].itemSpr == itemSprite) {
+			//If still didn't find the amount of the item needed, add on to the slots found
+			if(amountFound < amount) {
+				amountFound += invArray[i].amount;
+				array_push(slots, i);
+			}
+			//If already found the amount, exit loop
+			else
+				break;
+		}
+	//if found the right amount, 
+	if(amountFound >= amount) {
+		//and if more than 1 slot was found, return the array of slots
+		if(array_length(slots) > 1)
+			return slots;
+		//if there was only one slot found, return that one.
+		else if(array_length(slots) > 0)
+			return slots[0];
+	}
+	//Return -1 if nothing found
 	return -1;
 }
 
+//Returns an item struct of the item you want to find.
+//If found the amount of items across multiple slots, returns array of item structs.
 function InvGet(invArray, itemSprite, amount = 1) {
+	//Find the inv slot(s) containing the amount of the item needed
 	var pos = InvSearch(invArray, itemSprite, amount);
-	if(pos != -1)
-		return invArray[pos];
+	//If found the item(s)
+	if(pos != -1) {
+		//If only one slot was found, return the item in that slot.
+		if(!is_array(pos))
+			return invArray[pos];
+		else {//More than one slot found? return an array of all items in all the slots.
+			var items = [];
+			for(var i=0; i<array_length(pos); i++)
+				array_push(items, invArray[pos[i]]);
+			return items;
+		}
+	}
+	//couldn't find anything? return undefined.
 	return undefined;
 }
 
+//Only use this if you want to find if the player has an item. I don't want to make this work, because it might get too impractical
 function InvSearchPlayer( itemSprite, amount = 1) {
+	//Gets the slot(s) containing wanted item
 	var pos = InvSearch(global.invItems, itemSprite, amount);
+	//If couldn't find slot(s), try looking through all hotbar slots.
 	if(pos == -1)
 		pos = InvSearch(global.hotbarItems, itemSprite, amount);
+	//return the slot(s) found. will be -1 if no slot(s) were found
 	return pos;
+}
+
+function InvGetPlayer(itemSprite, amount = 1) {
+	var name = sprite_get_name(itemSprite)
+	var amountFound = 0;
+	
+	var items = [];
+	var temp = InvGet(global.invItems, itemSprite, amount);
+	if(is_array(temp))
+		items = temp;
+	else if(temp != undefined)
+		array_push(items, temp);
+	else
+		items = undefined;
+	
+	var items2 = [];
+	var temp2 = InvGet(global.hotbarItems, itemSprite, amount);
+	if(is_array(temp2))
+		items2 = temp2;
+	else if(temp2 != undefined)
+		array_push(items2, temp2);
+	else
+		items2 = undefined;
+	
+	var fullArray = undefined;
+	//if found items in both inventory & hotbar, the to-be-returned array will contain all item results.
+	if(items != undefined && items2 != undefined)
+		return array_concat(items,items2)
+	//If items found in inventory only, return those items
+	else if(items != undefined)
+		return items;
+	//If items found in hotbar only, return thsoe items.
+	else if(items2 != undefined)
+		return items2;
+	//if nothing is found, then return undefined
+	else
+		return undefined;
 }
 
 function InvRemove(invArray, itemSprite, amount = undefined) {
@@ -63,7 +136,7 @@ function duplicateItem(item) {
 	//Run constructor, but it changes "test" array's 1st index into a new workbench
 	//i had to do it this way because script_execute doesn't really execute constructors. 
 	//maybe it does, but it doesn't return the struct created. i belive this is a bug in the current verison of gms2
-	script_execute(scriptFunc, test);
+	script_execute(scriptFunc, 1, test);
 	var newItem = test[0];
 	
 	//Update all values in the new item to be the same as the old item's
@@ -115,39 +188,3 @@ function closeAllInvs() {instance_destroy(obj_inventory)};
 
 function closeInv(inv) {instance_destroy(inv)};
 
-function CraftingRecipie(_item, _itemsRequired) {
-	item = _item;
-	itemsRequired = _itemsRequired;
-	
-	//Checks if can craft an item
-	//If cannot, it will return an array of the missing items
-	static canCraft = function() {
-		var craftable = true;
-		var missingItems = [];
-		//the var "craftable" will remain true until a missing item is found
-		for(var i=0; i<array_length(itemsRequired); i++) {
-			var reqItem = itemsRequired[i];
-			//If missing item, set craftable to false & add the required item to list of missing items
-			//else, continue in the loop
-			if(InvSearchPlayer(reqItem.itemSpr, reqItem.amount) == -1) {
-				craftable = false;
-				array_push(missingItems, reqItem);
-			}
-		}
-		
-		if(craftable)
-			return true;
-		else
-			return missingItems;
-	}
-	
-	static craftItem = function() {
-		var craftedItem = canCraft();
-		if(craftedItem == true) {
-			return item;
-		}
-		else
-			return craftedItem;
-	}
-	
-}
