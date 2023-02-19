@@ -11,8 +11,13 @@ draw_sprite_stretched(
 for(var i=0; i<invSize; i++) {
 	var p = slotPositions[i];
 	draw_sprite_stretched(spr_invSlot, 0, p.x, p.y, slotSize, slotSize);
-	if(isItem(invArray[i])) {
+	if(isItem(invArray[i])) 
 		draw_sprite_stretched(invArray[i].itemSpr, 0, p.x, p.y, itemSize, itemSize);
+}
+
+for(var i=0; i<invSize; i++) {
+	if(isItem(invArray[i])) {
+		var p = slotPositions[i];
 		draw_set_color(c_white);
 		draw_set_halign(fa_center);
 		if(invArray[i].amount > 1)

@@ -88,6 +88,12 @@ handleScreenInput = function() {
 						invHover[slotHover] = itemDrag;
 						itemDrag = invItemHovered;
 					}
+					else if(itemsAreSimilar(itemDrag, invHover[slotHover])) {
+						invHover[slotHover].amount--;
+						itemDrag.amount++;
+						if(invHover[slotHover].amount <= 0)
+							invHover[slotHover] = -1;
+					}
 				}
 				else {
 					var invItemHovered = duplicateItem(invHover[slotHover]);

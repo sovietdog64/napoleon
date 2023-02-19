@@ -41,11 +41,11 @@ sprite_index = item.itemSpr;
 x = clamp(x, 0, room_width);
 y = clamp(y, 0, room_height);
 
-if(!canBePickedUp) pickUpCoolDown--;
-if(pickUpCoolDown <= 0) {
-	canBePickedUp = true;
-	pickUpCoolDown = 0;
-}
+//if(!canBePickedUp) pickUpCoolDown--;
+//if(pickUpCoolDown <= 0) {
+//	canBePickedUp = true;
+//	pickUpCoolDown = 0;
+//}
 
 lifeSpan--;
 if(lifeSpan <= 0) {
@@ -53,10 +53,10 @@ if(lifeSpan <= 0) {
 }
 
 //Pick up item
-if(canBePickedUp && !pickedUp && place_meeting(x, y, obj_player)) {
-	pickedUp = true;
+
+if(pickUpCoolDown > 0) 
+	pickUpCoolDown--;
+else if(place_meeting(x, y, obj_player)) {
 	if(giveItemToPlayer(item))
 		instance_destroy();
-	else
-		pickedUp = false;
 }
