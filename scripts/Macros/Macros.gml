@@ -6,6 +6,9 @@
 #macro LMOUSE_PRESSED mouse_check_button_pressed(mb_left)
 #macro RMOUSE_PRESSED mouse_check_button_pressed(mb_right)
 
+#macro GUI_MOUSE_X device_mouse_x_to_gui(0)
+#macro GUI_MOUSE_Y device_mouse_y_to_gui(0)
+
 //These numbers are not in pixels. They are the amount of tiles that will be spawned on the x/y axis
 #macro CHUNK_W 64
 #macro CHUNK_H 64

@@ -6,7 +6,7 @@ itemDrag = -1;
 
 shouldDropItem = false;
 
-depth = -999;
+depth = -9999;
 
 btnHover = -1;
 

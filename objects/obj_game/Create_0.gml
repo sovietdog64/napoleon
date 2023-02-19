@@ -29,7 +29,9 @@ global.savingGame = false;
 global.loadingGame = false;
 
 global.noHud = false;
-global.screenOpen = false
+global.screenOpen = false;
+
+global.canPlaceItem = false;
 
 #endregion globals
 
