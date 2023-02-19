@@ -1,9 +1,10 @@
-solid = false;
+Wsolid = false;
 if(instance_exists(obj_game) && global.gamePaused || obj_player.invOpen) return;
 if(!isItem(item)) {
 	instance_destroy();
 	return;
 }
+
 hsp *= 0.95;
 vsp *= 0.95;
 
@@ -41,20 +42,12 @@ sprite_index = item.itemSpr;
 
 x = clamp(x, 0, room_width);
 y = clamp(y, 0, room_height);
-
-//if(!canBePickedUp) pickUpCoolDown--;
-//if(pickUpCoolDown <= 0) {
-//	canBePickedUp = true;
-//	pickUpCoolDown = 0;
-//}
-
 lifeSpan--;
 if(lifeSpan <= 0) {
 	instance_destroy();
 }
 
 //Pick up item
-
 if(pickUpCoolDown > 0) 
 	pickUpCoolDown--;
 else if(place_meeting(x, y, obj_player)) {

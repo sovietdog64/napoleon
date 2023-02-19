@@ -75,7 +75,7 @@ if(abs(vertDirection) && abs(horizDirection)) {
 	leftAttackCooldown--;
 	if(isPlaceableItem(global.heldItem)) {
 		if(global.canPlaceItem && LMOUSE_PRESSED) 
-			placeItem(global.heldItem, roundToTile(mouse_x, TILEW), roundToTile(mouse_y, TILEW));
+			placeItem(global.heldItem, roundToTile(mouse_x, TILEW/2), roundToTile(mouse_y, TILEW/2));
 	}
 	else if(isItem(global.heldItem)) {
 		//Using items on left press

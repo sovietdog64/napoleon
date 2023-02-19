@@ -99,6 +99,11 @@ handleScreenInput = function() {
 						if(invHover[slotHover].amount <= 0)
 							invHover[slotHover] = -1;
 					}
+					if(instance_exists(obj_craftingScreen)) {
+						with(obj_craftingScreen) {
+							craftRecipie.craftItem(craftingSlots);
+						}
+					}
 				}
 				else {
 					var invItemHovered = duplicateItem(invHover[slotHover]);

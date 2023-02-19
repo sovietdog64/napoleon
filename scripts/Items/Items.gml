@@ -103,7 +103,7 @@ function CraftingRecipie(_item, _itemsRequired) constructor {
 	
 	//Checks if can craft an item
 	//If cannot, it will return an array of the missing items
-	static canCraft = function(craftInv = undefined) {
+	static canCraft = function(craftInv) {
 		var craftable = true;
 		var missingItems = [];
 		//the var "craftable" will remain true until a missing item is found
@@ -111,11 +111,7 @@ function CraftingRecipie(_item, _itemsRequired) constructor {
 			var reqItem = itemsRequired[i];
 			//If missing item, set craftable to false & add the required item to list of missing items
 			//else, continue in the loop
-			var search;
-			if(is_array(craftInv))
-				search = InvSearch(craftInv, reqItem.itemSpr, reqItem.amount);
-			else
-				search = InvSearchPlayer(reqItem.itemSpr, reqItem.amount);
+			var search = InvSearch(craftInv, reqItem.itemSpr, reqItem.amount);
 			if(search == -1) {
 				craftable = false;
 				array_push(missingItems, reqItem);
@@ -128,12 +124,8 @@ function CraftingRecipie(_item, _itemsRequired) constructor {
 			return missingItems;
 	}
 	
-	static craftItem = function(craftInv = undefined) {
-		var craftPossible;
-		if(is_array(craftInv))
-			craftPossible = canCraft(craftInv);
-		else
-			craftPossible = canCraft();
+	static craftItem = function(craftInv) {
+		var craftPossible = canCraft(craftInv);
 		if(craftPossible == true) {
 			//Remove all items that are not needed
 			for(var i=0; i<array_length(itemsRequired); i++) {

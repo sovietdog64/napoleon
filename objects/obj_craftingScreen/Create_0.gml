@@ -5,8 +5,11 @@ for(var i=0; i<instance_number(obj_guiScreenPar); i++) {
 		instance_destroy(inst);
 }
 
+craftRecipie = 0;
+
 craftingSlots = array_create(numOfSlots, -1);
 
+resultInv = 0;
 itemResultSlot = array_create(1, -1);
 
 screen = new GuiScreen(
@@ -64,7 +67,7 @@ var playerInv = instance_create_depth(
 );
 array_push(screen.invs, playerInv);
 
-var resultInv = instance_create_depth(
+resultInv = instance_create_depth(
 	screen.x1+20+4*50, screen.y1+20,
 	depth-1,
 	obj_inventory,

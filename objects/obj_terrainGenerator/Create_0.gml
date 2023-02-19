@@ -94,12 +94,16 @@ placeTile = function(_mapIndex, xx, yy, lay2 = layer_get_id("OnGround"), lay = l
 			var spr = layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
 			var c = choose(make_color_rgb(144, 252, 3), make_color_rgb(177, 252, 3));
 			layer_sprite_blend(spr, c);
+			if(random(1) < 0.01)
+				instance_create_layer(xx*TILEW, yy*TILEW, lay2, obj_tree);	
 		}break;
 		case 4: {
 			sprToDraw = spr_grass;
 			var spr = layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
 			var c = choose(make_color_rgb(104, 168, 2), make_color_rgb(124, 168, 2));
 			layer_sprite_blend(spr, c);
+			if(random(1) < 0.015)
+				instance_create_layer(xx*TILEW, yy*TILEW, lay2, obj_tree);	
 		}break;
 		case 5: {
 			sprToDraw = spr_grass;
@@ -126,6 +130,8 @@ placeTile = function(_mapIndex, xx, yy, lay2 = layer_get_id("OnGround"), lay = l
 		case 8: {
 			sprToDraw = spr_grass6;
 			layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
+			if(random(1) < 0.4)
+				instance_create_layer(xx*TILEW, yy*TILEW, lay2, obj_tree);	
 		}break;
 		case 9: {
 			sprToDraw = spr_dirt;
