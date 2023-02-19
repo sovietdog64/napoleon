@@ -19,9 +19,8 @@ function PlaceableItem(itemSprite, itemAmount, dmg, itemName, itemDescription, s
 
 
 #region all item constructors
-function Workbench(_numOfCraftingSlots) : PlaceableItem(spr_woodBench,1,0,"Workbench") constructor {
-	numOfCraftingSlots = _numOfCraftingSlots;
-	desc = "A bench used for making a variety of things\nCrafting slots: " + string(numOfCraftingSlots);
+function Workbench() : PlaceableItem(spr_woodBench,1,0,"Workbench") constructor {
+	desc = "A bench used for making a variety of things\nCrafting slots: " + string(4);
 	
 	placedSprite = spr_woodBenchP;
 	static rightClickAction = function() {
