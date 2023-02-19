@@ -19,8 +19,8 @@ mouseOver = function() {
 	btnHover = -1;
 	shouldDropItem = false;
 	
-	var mx = x-CAMX;
-	var my = y-CAMY;
+	var mx = GUI_MOUSE_X;
+	var my = GUI_MOUSE_Y;
 	
 	for(var i=0; i<instance_number(obj_inventory); i++) {
 		var inv = instance_find(obj_inventory, i);
@@ -35,7 +35,7 @@ mouseOver = function() {
 			{
 				for(var j=0; j<invSize; j++) {
 					var p = slotPositions[j];
-					if(point_in_rectangle(mx, my, p.x, p.y, p.x+slotSize, p.y+slotSize)) {
+					if(point_in_rectangle(mx, my, p.x,p.y, p.x+slotSize,p.y+slotSize)) {
 						other.slotHover = j;
 						other.invHover = invArray;
 						break;
@@ -72,10 +72,12 @@ handleScreenInput = function() {
 	if(LMOUSE_PRESSED) {
 		//Placing items in slot that is being hovered
 		if(invHover != -1) {
+			//If the item being dragged & the itme hovered are similar, place the stack into the slot.
 			if(itemsAreSimilar(itemDrag, invHover[slotHover])) {
 				invHover[slotHover].amount += itemDrag.amount;
 				itemDrag = -1;
 			}
+			//If not similar, swap the itme being dragged with the hovered item
 			else {
 				var invItemHovered = duplicateItem(invHover[slotHover]);
 				invHover[slotHover] = itemDrag;
@@ -95,7 +97,41 @@ handleScreenInput = function() {
 			btnHover.clickAction();
 		}
 	}
-
+	else if(RMOUSE_PRESSED) {
+		if(invHover != -1) {
+			var item = invHover[slotHover];
+			if(itemDrag == -1 && isItem(item)) {
+				var half = numRound(item.amount/2);
+				itemDrag = duplicateItem(item);
+				itemDrag.amount = half;
+				item.amount = item.amount - half;
+			}
+			else if(itemsAreSimilar(itemDrag, item)){
+				itemDrag.amount--;
+				item.amount++;
+				if(itemDrag.amount <= 0)
+					itemDrag = -1;
+			}
+			else if(isItem(itemDrag)){
+				invHover[slotHover] = duplicateItem(itemDrag);
+				invHover[slotHover].amount = 1;
+				itemDrag.amount--;
+				if(itemDrag.amount <= 0)
+					itemDrag = -1;
+			}
+		}
+		//Drop item when mouse clicked out of inventory
+		else if(shouldDropItem) {
+			itemDrag.amount--;
+			var newItem = duplicateItem(itemDrag);
+			newItem.amount = 1;
+			with(instance_create_layer(obj_player.x, obj_player.y, obj_player.layer, obj_item)) {
+				id.item = newItem;
+			}
+			if(itemDrag.amount <= 0)
+				itemDrag = -1;
+		}
+	}
 }
 	
 stateFree = function() {

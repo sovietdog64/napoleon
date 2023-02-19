@@ -74,10 +74,8 @@ if(abs(vertDirection) && abs(horizDirection)) {
 {//Item usage/animations
 	leftAttackCooldown--;
 	if(isPlaceableItem(global.heldItem)) {
-		if(global.canPlaceItem && LMOUSE_PRESSED) {
+		if(global.canPlaceItem && LMOUSE_PRESSED) 
 			placeItem(global.heldItem, roundToTile(mouse_x, TILEW), roundToTile(mouse_y, TILEW));
-			global.hotbarItems[global.equippedItem] = -1;
-		}
 	}
 	else if(isItem(global.heldItem)) {
 		//Using items on left press
