@@ -33,7 +33,7 @@ mouseOver = function() {
 			{
 				for(var j=0; j<invSize; j++) {
 					var p = slotPositions[j];
-					if(point_in_rectangle(mx, my, p.x, p.y, p.x+INV_SLOT_SIZE, p.y+INV_SLOT_SIZE)) {
+					if(point_in_rectangle(mx, my, p.x, p.y, p.x+slotSize, p.y+slotSize)) {
 						other.slotHover = j;
 						other.invHover = invArray;
 						break;
@@ -67,7 +67,7 @@ mouseOver = function() {
 handleScreenInput = function() {
 	mouseOver();
 	//Handling mouse click in inv
-	if(mouse_check_button_pressed(mb_left)) {
+	if(LMOUSE_PRESSED) {
 		//Placing items in slot that is being hovered
 		if(invHover != -1) {
 			var invItemHovered = duplicateItem(invHover[slotHover]);
@@ -93,7 +93,7 @@ handleScreenInput = function() {
 stateFree = function() {
 	mouseOver();
 	//drag an item if the slot is not empty
-	if(mouse_check_button_pressed(mb_left) && slotHover != -1 && invHover[slotHover] != -1) {
+	if(LMOUSE_PRESSED && slotHover != -1 && invHover[slotHover] != -1) {
 		//enter item-dragging state
 		state = stateDrag;
 		var prevItemDragged = duplicateItem(itemDrag);
@@ -104,7 +104,7 @@ stateFree = function() {
 
 stateDrag = function() {
 	mouseOver();
-	if(mouse_check_button_pressed(mb_left)) {
+	if(LMOUSE_PRESSED) {
 		//if dragging item, place
 		if(itemDrag != -1) 
 			invHover[slotHover] = itemDrag;

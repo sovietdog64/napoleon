@@ -1,15 +1,6 @@
 invSize = array_length(invArray);
 slotPositions = [];
 invRect = [];
-//for(var i=0; i<instance_number(obj_inventory); i++) {
-//	var inst = instance_find(obj_inventory, i);
-//	if(inst != id) {
-//		//Prevent destroying hotbar inv
-//		if(invType == inventories.PLAYER_INV && inst.invType == inventories.PLAYER_INV)
-//			continue;
-//		instance_destroy(inst);
-//	}
-//}
 
 var multiplier = slotSize+5;
 for(var i=0; i<invSize; i++) {

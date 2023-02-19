@@ -39,13 +39,14 @@ function placeItem(placeableItem, placeX, placeY) {
 		return 0;
 	if(!variable_struct_exists(placeableItem, "placedSprite"))
 		return 0;
-	var inst = instance_create_layer(
+	instance_create_layer(
 		placeX, placeY,
 		"Structures",
-		obj_placeable
-	)
-	inst.sprite_index = placeableItem.placedSprite;
-	inst.rightClick = placeableItem.rightClickAction;
-	inst.leftClick = placeableItem.leftClickAction;
+		obj_placeable,
+		{
+			item : placeableItem,
+		}
+	);
+	
 	return 1;
 }

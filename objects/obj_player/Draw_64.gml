@@ -93,3 +93,4 @@ if(!global.screenOpen) {
 		}
 	
 }
+

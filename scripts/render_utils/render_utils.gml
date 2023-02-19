@@ -342,7 +342,7 @@
 		draw_text_transformed(xx, yy+50, caption, 3, 3, 0);
 		var mouseX = device_mouse_x_to_gui(0);
 		var mouseY = device_mouse_y_to_gui(0);
-		var mouseClicked = mouse_check_button_pressed(mb_left);
+		var mouseClicked = LMOUSE_PRESSED;
 		switch(options) {
 			case "yes/no":
 				//Yes btn

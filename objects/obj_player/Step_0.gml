@@ -73,9 +73,15 @@ if(abs(vertDirection) && abs(horizDirection)) {
 
 {//Item usage/animations
 	leftAttackCooldown--;
-	if(isItem(global.heldItem)) {
+	if(isPlaceableItem(global.heldItem)) {
+		if(LMOUSE_PRESSED) {
+			placeItem(global.heldItem, roundToTile(mouse_x, TILEW), roundToTile(mouse_y, TILEW));
+			global.hotbarItems[global.equippedItem] = -1;
+		}
+	}
+	else if(isItem(global.heldItem)) {
 		//Using items on left press
-		if(mouse_check_button_pressed(mb_left) && leftAttackCooldown <= 0) {
+		if(LMOUSE_PRESSED && leftAttackCooldown <= 0) {
 			switch(global.heldItem.itemSpr) {
 				case spr_boxingGloves: boxingGloveAttack(mouse_x, mouse_y, 12); break;
 				case spr_tanto: tantoStab(mouse_x, mouse_y, 12); break;
@@ -83,7 +89,7 @@ if(abs(vertDirection) && abs(horizDirection)) {
 			}
 		}
 		//Right press
-		else if(mouse_check_button_pressed(mb_right) && leftAttackCooldown <= 0) {
+		else if(RMOUSE_PRESSED && leftAttackCooldown <= 0) {
 			switch(global.heldItem.itemSpr) {
 				case spr_tanto: tantoSlash(mouse_x, mouse_y, 12); break;
 			}
@@ -119,6 +125,7 @@ if(abs(vertDirection) && abs(horizDirection)) {
 			}
 		}
 	}
+
 }
 if(leftAttackCooldown <= 0)
 	attackState = attackStates.NONE;

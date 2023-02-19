@@ -14,7 +14,7 @@ function giveItemToPlayer(item) {
 			else 
 				continue;
 		}
-		global.hotbarItems[i] = copyStruct(item);
+		global.hotbarItems[i] = item;
 		return 2;
 	}
 	//Trying to give to inventory
@@ -191,6 +191,8 @@ function sequenceGetName(sequenceId) {
 function isItem(item) {
 	return is_struct(item) && variable_struct_exists(item, "itemSpr");
 }
+	
+function isPlaceableItem(item) {return is_struct(item) && variable_struct_exists(item, "placedSprite")}
 	
 function purchaseItem(item, price, levelReq) {
 	//TODO:check if enough money
@@ -465,7 +467,7 @@ function randPointInEllipse(ellipseWidth, ellipseHeight, snapToTile = false) {
 }
 
 function roundToTile(num, tileSize) {
-	return floor(((num + tileSize - 1)/tileSize))*tileSize;
+	return (floor(((num + tileSize - 1)/tileSize))*tileSize)-tileSize;
 }
 	
 function pointDistanceToLine(px, py, x1, y1, x2, y2) {
