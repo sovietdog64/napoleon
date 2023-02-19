@@ -7,7 +7,8 @@ draw_sprite_stretched(
 	invRect[1].x-invRect[0].x,
 	invRect[1].y-invRect[0].y
 );
-		
+	
+//Drawing slots
 for(var i=0; i<invSize; i++) {
 	var p = slotPositions[i];
 	draw_sprite_stretched(spr_invSlot, 0, p.x, p.y, slotSize, slotSize);
@@ -15,6 +16,7 @@ for(var i=0; i<invSize; i++) {
 		draw_sprite_stretched(invArray[i].itemSpr, 0, p.x, p.y, itemSize, itemSize);
 }
 
+//drawing item amounts above slots
 for(var i=0; i<invSize; i++) {
 	if(isItem(invArray[i])) {
 		var p = slotPositions[i];

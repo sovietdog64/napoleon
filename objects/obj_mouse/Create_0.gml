@@ -3,6 +3,7 @@ slotHover = -1;
 invDrag = -1;
 slotDrag = -1;
 itemDrag = -1;
+/*set to true when an inventory can't have items placed in it*/
 dontPutItem = false;
 
 placeableColorBlend = c_green;
@@ -82,15 +83,19 @@ handleScreenInput = function() {
 			}
 			//If not similar, swap the itme being dragged with the hovered item
 			else {
+				//If cannot put items in inventory
 				if(dontPutItem) {
+					//If no item dragged, then pick up item from inv
 					if(itemDrag == -1) {
 						var invItemHovered = duplicateItem(invHover[slotHover]);
 						invHover[slotHover] = itemDrag;
 						itemDrag = invItemHovered;
 					}
+					//If item being dragged is similar to the item in the slot, pick up the item in the slot and update dragged item amount
 					else if(itemsAreSimilar(itemDrag, invHover[slotHover])) {
-						invHover[slotHover].amount--;
-						itemDrag.amount++;
+						var temp = invHover[slotHover].amount;
+						invHover[slotHover].amount = 0;
+						itemDrag.amount += temp;
 						if(invHover[slotHover].amount <= 0)
 							invHover[slotHover] = -1;
 					}
