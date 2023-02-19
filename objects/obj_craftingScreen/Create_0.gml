@@ -82,3 +82,5 @@ array_push(screen.invs, resultInv)
 #endregion inv GUI instances
 
 global.screenOpen = true;
+
+alarm_set(0, 1);

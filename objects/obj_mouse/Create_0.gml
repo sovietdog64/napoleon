@@ -72,9 +72,15 @@ handleScreenInput = function() {
 	if(LMOUSE_PRESSED) {
 		//Placing items in slot that is being hovered
 		if(invHover != -1) {
-			var invItemHovered = duplicateItem(invHover[slotHover]);
-			invHover[slotHover] = itemDrag;
-			itemDrag = invItemHovered;
+			if(itemsAreSimilar(itemDrag, invHover[slotHover])) {
+				invHover[slotHover].amount += itemDrag.amount;
+				itemDrag = -1;
+			}
+			else {
+				var invItemHovered = duplicateItem(invHover[slotHover]);
+				invHover[slotHover] = itemDrag;
+				itemDrag = invItemHovered;
+			}
 		}
 		//Drop item when mouse clicked out of inventory
 		else if(shouldDropItem) {
@@ -89,7 +95,7 @@ handleScreenInput = function() {
 			btnHover.clickAction();
 		}
 	}
-	
+
 }
 	
 stateFree = function() {

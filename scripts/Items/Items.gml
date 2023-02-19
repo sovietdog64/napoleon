@@ -100,7 +100,7 @@ function CraftingRecipie(_item, _itemsRequired) constructor {
 	
 	//Checks if can craft an item
 	//If cannot, it will return an array of the missing items
-	static canCraft = function() {
+	static canCraft = function(craftInv = undefined) {
 		var craftable = true;
 		var missingItems = [];
 		//the var "craftable" will remain true until a missing item is found
@@ -108,7 +108,12 @@ function CraftingRecipie(_item, _itemsRequired) constructor {
 			var reqItem = itemsRequired[i];
 			//If missing item, set craftable to false & add the required item to list of missing items
 			//else, continue in the loop
-			if(InvSearchPlayer(reqItem.itemSpr, reqItem.amount) == -1) {
+			var search;
+			if(is_array(craftInv))
+				search = InvSearch(craftInv, reqItem.itemSpr, reqItem.amount);
+			else
+				search = InvSearchPlayer(reqItem.itemSpr, reqItem.amount);
+			if(search == -1) {
 				craftable = false;
 				array_push(missingItems, reqItem);
 			}
@@ -120,13 +125,23 @@ function CraftingRecipie(_item, _itemsRequired) constructor {
 			return missingItems;
 	}
 	
-	static craftItem = function() {
-		var craftPossible = canCraft();
+	static craftItem = function(craftInv = undefined) {
+		var craftPossible;
+		if(is_array(craftInv))
+			craftPossible = canCraft(craftInv);
+		else
+			craftPossible = canCraft();
 		if(craftPossible == true) {
 			//Remove all items that are not needed
 			for(var i=0; i<array_length(itemsRequired); i++) {
 				var reqItem = itemsRequired[i];
-				var neededItems = InvGetPlayer(reqItem.itemSpr, reqItem.amount);
+				var neededItems = [];
+				if(!is_array(craftInv))
+					neededItems = InvGetPlayer(reqItem.itemSpr, reqItem.amount);
+				else
+					neededItems = InvGet(craftInv, reqItem.itemSpr, reqItem.amount);
+				if(!is_array(neededItems))
+					neededItems = array_create(1, neededItems)
 				var amountToRemove = reqItem.amount;
 				for(var j=0; j<array_length(neededItems); j++)  {
 					var neededItem = neededItems[j];
@@ -143,4 +158,15 @@ function CraftingRecipie(_item, _itemsRequired) constructor {
 			return craftPossible;
 	}
 	
+}
+	
+function itemsAreSimilar(item, item2) {
+	if(!isItem(item) || !isItem(item2))
+		return false;
+	return 
+		item.itemSpr == item2.itemSpr &&
+		item.name == item2.name &&
+		item.desc == item2.desc &&
+		instanceof(item) == instanceof(item2) &&
+		item.animationType == item2.animationType;
 }
