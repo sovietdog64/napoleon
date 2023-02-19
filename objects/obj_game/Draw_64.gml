@@ -15,14 +15,14 @@ if(drawPauseScreen && global.gamePaused && !obj_player.invOpen) {
 	if(point_in_rectangle(mouse_x-CAMX, mouse_y-CAMY, RESOLUTION_W*0.9, 50, 128+RESOLUTION_W*0.9, 50+64)) {
 		draw_set_color(c_black);
 		draw_circle(mouse_x-CAMX, mouse_y-CAMY, 8, 1);
-		if(mouse_check_button_pressed(mb_left)) {
+		if(LMOUSE_PRESSED) {
 			saveGame();
 		}
 	}
 	else if(point_in_rectangle(mouse_x-CAMX, mouse_y-CAMY, RESOLUTION_W*0.9, 150, 128+RESOLUTION_W*0.9, 150+64)) {
 		draw_set_color(c_black);
 		draw_circle(mouse_x-CAMX, mouse_y-CAMY, 8, 1);
-		if(mouse_check_button_pressed(mb_left)) {
+		if(LMOUSE_PRESSED) {
 			loadGame();
 		}
 	}

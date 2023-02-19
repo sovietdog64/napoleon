@@ -1,6 +1,7 @@
 //@function giveItemToPlayer
 //@param item sprite of item to give
 //Returns 1 if successfully gave item. Returns 0 if inventory too full
+//Return 2 when added item to an empty slot
 function giveItemToPlayer(item) {
 	//Trying to give to hotbar
 	for(var i=0; i<array_length(global.hotbarItems); i++) {
@@ -13,8 +14,8 @@ function giveItemToPlayer(item) {
 			else 
 				continue;
 		}
-		global.hotbarItems[i] = copyStruct(item);
-		return 1;
+		global.hotbarItems[i] = item;
+		return 2;
 	}
 	//Trying to give to inventory
 	for(var i=0; i<array_length(global.invItems); i++) {
@@ -28,12 +29,12 @@ function giveItemToPlayer(item) {
 				continue;
 		}
 		global.invItems[i] = item;
-		return 1;
+		return 2;
 	}
 	return 0;
 }
 
-function copyStruct(struct){
+function copyStruct(struct) {
 	if(!is_struct(struct))
 		return -1;
     var key, value;
@@ -48,12 +49,6 @@ function copyStruct(struct){
     return newCopy;
 }
 
-function Item(itemSprite, itemAmount, dmg, animationTypeEnum = itemAnimations.NONE) constructor {
-	itemSpr = itemSprite;
-	amount = itemAmount;
-	damage = dmg;
-	animationType = animationTypeEnum;
-}
 
 function sequenceGetName(sequenceId) {
 	if(layer_exists("Animations") &&  layer_sequence_exists("Animations", sequenceId)) {
@@ -196,6 +191,8 @@ function sequenceGetName(sequenceId) {
 function isItem(item) {
 	return is_struct(item) && variable_struct_exists(item, "itemSpr");
 }
+	
+function isPlaceableItem(item) {return is_struct(item) && variable_struct_exists(item, "placedSprite")}
 	
 function purchaseItem(item, price, levelReq) {
 	//TODO:check if enough money
@@ -344,7 +341,7 @@ function Line(_x1, _y1, _x2, _y2) constructor {
 	y1 = _y1;
 	x2 = _x2;
 	y2 = _y2;
-	length = distanceBetweenPoints(_x1, _y1, _x2, _y2);
+	length = point_distance(_x1, _y1, _x2, _y2);
 	dir = point_direction(_x1, _y1, _x2, _y2);
 	midpoint = lineMidpoint(_x1, _y1, _x2, _y2);
 }
@@ -470,19 +467,24 @@ function randPointInEllipse(ellipseWidth, ellipseHeight, snapToTile = false) {
 }
 
 function roundToTile(num, tileSize) {
-	return floor(((num + tileSize - 1)/tileSize))*tileSize;
+	return (floor(((num + tileSize - 1)/tileSize))*tileSize)-tileSize;
 }
 	
 function pointDistanceToLine(px, py, x1, y1, x2, y2) {
 	var numerator = abs((x2-x1)*(y1-py) - (x1-px)*(y2-y1));
-	var denominator = distanceBetweenPoints(x1, y1, x2, y2);
+	var denominator = point_distance(x1, y1, x2, y2);
 	return numerator/denominator;
 }
 
-function getSpriteCenter(sprite, xx, yy) {
-	var w = sprite_get_width(sprite);
-	var h = sprite_get_height(sprite);
-	var centerX = xx - sprite_get_xoffset(sprite) + w/ 2;
-	var centerY = yy - sprite_get_yoffset(sprite) + h/ 2;
-	return new Point(centerX, centerY);
+function Rectangle(_x1, _y1, _x2, _y2) constructor {
+	x1 = _x1;
+	y1 = _y1;
+	x2 = _x2;
+	y2 = _y2;
+	
+	midpoint = new Point((_x1+_x2)/2, (_y1+_y2)/2);
+	
+	pointInRect = function(px, py) {
+		return point_in_rectangle(px, py, x1, y1, x2, y2);
+	}
 }

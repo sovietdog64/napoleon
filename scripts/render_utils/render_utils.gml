@@ -10,7 +10,7 @@
 	//@param width1 width of 1st segment
 	//@param width2 width of 2nd segment
 	function drawLimbRight(xx, yy, targX, targY, segment1Len, segment2Len, color1, color2, width1, width2) {
-		var dist = distanceBetweenPoints(xx, yy, targX, targY);
+		var dist = point_distance(xx, yy, targX, targY);
 		var dir = point_direction(xx, yy, targX, targY);
 		var thighDir = darctan(dist/segment1Len);
 		thighDir -= dir;
@@ -36,7 +36,7 @@
 	//@param width1 width of 1st segment
 	//@param width2 width of 2nd segment
 	function drawSpiderLimbLeft(xx, yy, targX, targY, segment1Len, segment2Len, color1, color2, width1, width2) {
-		var dist = distanceBetweenPoints(xx, yy, targX, targY);
+		var dist = point_distance(xx, yy, targX, targY);
 		var dir = point_direction(xx, yy, targX, targY);
 
 		//Left leg
@@ -57,7 +57,7 @@
 	
 	function drawLimbRightSpr(segment1Spr, segment2Spr, xx, yy, targX, targY) {
 		var segment1Len = sprite_get_width(segment1Spr);
-		var dist = distanceBetweenPoints(xx, yy, targX, targY);
+		var dist = point_distance(xx, yy, targX, targY);
 		var dir = point_direction(xx, yy, targX, targY);
 		var thighDir = darctan(dist/segment1Len);
 		thighDir -= dir;
@@ -72,7 +72,7 @@
 	
 	function drawLimbLeftSpr(segment1Spr, segment2Spr, xx, yy, targX, targY) {
 		var segment1Len = sprite_get_width(segment1Spr);
-		var dist = distanceBetweenPoints(xx, yy, targX, targY);
+		var dist = point_distance(xx, yy, targX, targY);
 		var dir = point_direction(xx, yy, targX, targY);
 
 		//Left leg
@@ -158,12 +158,12 @@
 				footF.y += stepRadius*sin(footProgress-pi);
 			}
 			else {
-				var bDist= distanceBetweenPoints(footB.x, footB.y, bOrigin.x, bOrigin.y)/2;
+				var bDist= point_distance(footB.x, footB.y, bOrigin.x, bOrigin.y)/2;
 				var bDir = point_direction(footB.x, footB.y, bOrigin.x, bOrigin.y)
 				footB.x += lengthdir_x(bDist, bDir);
 				footB.y += lengthdir_y(bDist, bDir);
 				
-				var fDist= distanceBetweenPoints(footF.x, footF.y, fOrigin.x, fOrigin.y)/10;
+				var fDist= point_distance(footF.x, footF.y, fOrigin.x, fOrigin.y)/10;
 				var fDir = point_direction(footF.x, footF.y, fOrigin.x, fOrigin.y)
 				footF.x += lengthdir_x(fDist, fDir);
 				footF.y += lengthdir_y(fDist, fDir);
@@ -342,7 +342,7 @@
 		draw_text_transformed(xx, yy+50, caption, 3, 3, 0);
 		var mouseX = device_mouse_x_to_gui(0);
 		var mouseY = device_mouse_y_to_gui(0);
-		var mouseClicked = mouse_check_button_pressed(mb_left);
+		var mouseClicked = LMOUSE_PRESSED;
 		switch(options) {
 			case "yes/no":
 				//Yes btn
@@ -412,7 +412,13 @@
 		if(amount > 1) {
 			draw_set_color(c_white)
 			draw_set_halign(fa_center)
-			draw_text_transformed(xx+78*scl, yy+78*scl, string(amount), 1, 1, 0);
+			var xx2 = xx+(INV_SLOT_SIZE/2)*scl;
+			var yy2 = yy+(INV_SLOT_SIZE/2)*scl;
+			if(obj_player.invOpen) {
+				xx2 -= 10;
+				yy2 -= 10;
+			}
+			draw_text_transformed(xx2, yy2, string(amount), 1, 1, 0);
 		}
 	}
 
@@ -494,12 +500,6 @@
 	}
 }
 
-function distanceBetweenPoints(x1, y1, x2, y2) {
-	var xx = power((x2-x1), 2);
-	var yy = power((y2-y1), 2);
-	return sqrt(xx+yy);
-}
-
 ///@function pointInRectangle
 //Literally a better version of point_in_rectangle, because gamemaker sucks sometimes
 function pointInRectangle(px, py, x1, y1, x2, y2) {
@@ -548,4 +548,10 @@ function nineSliceBoxStretched(sprite, x1, y1, x2, y2, frame = 0) {
 		//bottom edge
 		draw_sprite_part_ext(sprite, frame, size, size*2, 1, size, x1+size, y1+h-size, w-(size*2), 1, c_white, 1);
 	}
+}
+	
+function drawSpritePosNineSlice(sprite, subimg, x1, y1, x2, y2) {
+	var w = abs(x2-x1);
+	var h = abs(y2-y1);
+	draw_sprite_stretched(sprite, subimg, x1, y1, w, h)
 }

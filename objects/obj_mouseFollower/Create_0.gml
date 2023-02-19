@@ -1,0 +1,2 @@
+snapToTile = false;
+tileSize = TILEW;

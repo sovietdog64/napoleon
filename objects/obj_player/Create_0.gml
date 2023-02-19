@@ -2,10 +2,11 @@ hsp = 0;//horizontal speed
 vsp = 0;//vertical speed
 hspWalk = 2;//horizontal speed when walking
 vspJump = -16;//vertical speed when jumping
-canJump = false;//bool for whether player can jump.
 inDialogue = false;//bool stating whether the player is talking with an NPC.
 invOpen = false;
 clickedItem = -1;
+
+invOpen = false;
 
 maxHurtCooldown = room_speed;
 

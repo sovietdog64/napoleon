@@ -1,3 +1,4 @@
+#region globals
 global.gamePaused = false;
 persistent = true;
 
@@ -22,6 +23,19 @@ global.completedQuests = array_create(0);
 global.textSpeed = 0.75;
 surface_resize(application_surface, RESOLUTION_W, RESOLUTION_H);
 global.heldItem = global.hotbarItems[global.equippedItem];
+
+global.drag = 0.9;
+global.savingGame = false;
+global.loadingGame = false;
+
+global.noHud = false;
+global.screenOpen = false;
+
+global.canPlaceItem = false;
+
+#endregion globals
+
+#region enums
 
 enum states {
 	IDLE,
@@ -64,6 +78,15 @@ enum structureTypes {
 	WATER,
 }
 
-global.drag = 0.9;
-global.savingGame = false;
-global.loadingGame = false;
+enum inventories {
+	NONE,
+	PLAYER_INV,
+	CRAFTING,
+	EQUIPMENT,
+}
+
+#endregion enums
+
+#region crafting recipies
+global.craftingRecipies = []
+#endregion crafting recipies

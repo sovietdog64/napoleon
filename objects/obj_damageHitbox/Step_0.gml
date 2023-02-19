@@ -54,3 +54,30 @@ else if (enemyHit){
 		obj_player.knockBack(x, y, knockbackDur);
 	}
 }
+	
+if(variable_instance_exists(id, "resourceCollect")) {
+	var resources = ds_list_create();
+	instance_place_list(x, y, obj_resourcePar, resources, 0);
+	if(ds_list_size(resources) > 0) {
+		for(var i=0; i<ds_list_size(resources); i++){
+			//prevent hitting same resource twice
+			var alreadyHit = false;
+			for(var j=0; j<array_length(enemiesHit); j++) {
+				if(ds_list_find_value(resources, i) == enemiesHit[j]) {
+					alreadyHit = true;
+					break;
+				}
+			}
+			if(alreadyHit)
+				continue;
+			//If new resource, do a hit
+			var inst = ds_list_find_value(resources, i);
+			
+			inst.hp -= damage;
+			
+			screenShake(scrnShakeDur, scrnShakeLevel);
+			
+			array_push(enemiesHit, inst);
+		}
+	}
+}

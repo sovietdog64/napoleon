@@ -29,7 +29,7 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Game_control",
-    "path": "folders/Objects/Game_control.yy",
+    "name": "Miscellaneous",
+    "path": "folders/Objects/Miscellaneous.yy",
   },
 }
