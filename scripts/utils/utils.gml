@@ -488,3 +488,10 @@ function Rectangle(_x1, _y1, _x2, _y2) constructor {
 		return point_in_rectangle(px, py, x1, y1, x2, y2);
 	}
 }
+	
+function numericalKeyPressed() {
+	for(var i=0; i<=9; i++) {
+		if(keyboard_check_pressed(ord(string(i))))
+			return i;
+	}
+}

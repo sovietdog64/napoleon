@@ -73,6 +73,7 @@ mouseOver = function() {
 	
 handleScreenInput = function() {
 	mouseOver();
+	var numKey = numericalKeyPressed();
 	//Handling mouse click in inv
 	if(LMOUSE_PRESSED) {
 		//Placing items in slot that is being hovered
@@ -174,6 +175,14 @@ handleScreenInput = function() {
 			}
 			if(itemDrag.amount <= 0)
 				itemDrag = -1;
+		}
+	}
+	else if(numKey != undefined) {
+		if(invHover != -1) {
+			if(slotHover != -1) {
+				if(!dontPutItem && numKey-1 < array_length(global.hotbarItems))
+					InvSwap(invHover, slotHover, global.hotbarItems, numKey-1)
+			}
 		}
 	}
 }
