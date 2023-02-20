@@ -14,7 +14,10 @@
     "name": "Solids",
     "path": "folders/Objects/Solids.yy",
   },
-  "parentObjectId": null,
+  "parentObjectId": {
+    "name": "obj_selectablePar",
+    "path": "objects/obj_selectablePar/obj_selectablePar.yy",
+  },
   "persistent": false,
   "physicsAngularDamping": 0.1,
   "physicsDensity": 0.5,

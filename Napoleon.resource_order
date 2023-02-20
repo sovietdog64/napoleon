@@ -82,6 +82,7 @@
     {"name":"spr_bulletFlash","order":7,"path":"sprites/spr_bulletFlash/spr_bulletFlash.yy",},
     {"name":"spr_musketCartridge","order":3,"path":"sprites/spr_musketCartridge/spr_musketCartridge.yy",},
     {"name":"spr_m16Mag","order":3,"path":"sprites/spr_m16Mag/spr_m16Mag.yy",},
+    {"name":"obj_selectablePar","order":10,"path":"objects/obj_selectablePar/obj_selectablePar.yy",},
     {"name":"obj_wiggleChild","order":12,"path":"objects/obj_wiggleChild/obj_wiggleChild.yy",},
     {"name":"spr_McKinley","order":2,"path":"sprites/spr_McKinley/spr_McKinley.yy",},
     {"name":"spr_spawner","order":1,"path":"sprites/spr_spawner/spr_spawner.yy",},

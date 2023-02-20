@@ -21,14 +21,38 @@ if (isPlaceableItem(global.heldItem)) {
 	sprite_index = -1;
 }
 else if(isItem(global.heldItem)) {
-	//If placeable being hovered can be broken with current item, and mouse btn is held down
-	//Break le item
+
+	var inst = collision_point(x, y, obj_selectablePar,0,0);
+	var dist = distance_to_object(obj_player);
+	
+	if(inst != noone && dist <= global.reachDistance)
+		selectedObj = inst;
+	else
+		selectedObj = -1;
+	
 	if(LMOUSE_DOWN) {
-		var inst = collision_point(x, y, obj_placeable,0,0);
-		if(inst != noone && is_instanceof(global.heldItem, inst.item.breakingTool)) {
-			var dist = distance_to_object(obj_player);
-			if(dist <= global.reachDistance)
-				inst.hp -= global.heldItem.damage;
+		if(selectedObj != noone && dist <= global.reachDistance) {
+			//If placeable being hovered can be broken with held item, and mouse btn is held down
+			//Break le item
+			if(selectedObj.object_index == obj_placeable) {
+				if(is_instanceof(global.heldItem, selectedObj.item.breakingTool)) {
+					selectedObj.hp -= global.heldItem.damage;
+				}
+				else
+					selectedObj.leftClick();
+			}
+		}
+		else
+			selectedObj = -1;
+	}
+	
+	if(RMOUSE_PRESSED) {
+		if(selectedObj != -1 && dist <= global.reachDistance) {
+			switch(selectedObj.object_index) {
+				case obj_placeable: {
+					selectedObj.rightClick();
+				}break;
+			}
 		}
 	}
 }

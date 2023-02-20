@@ -3,6 +3,7 @@ slotHover = -1;
 invDrag = -1;
 slotDrag = -1;
 itemDrag = -1;
+selectedObj = -1;
 /*set to true when an inventory can't have items placed in it*/
 dontPutItem = false;
 
