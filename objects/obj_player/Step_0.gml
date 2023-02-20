@@ -1,3 +1,4 @@
+solid = false;
 if(inDialogue) 
 	return;
 if(hurtCooldown > 0)

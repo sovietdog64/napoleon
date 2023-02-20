@@ -12,6 +12,9 @@ function Placeable(sprite, rightClickFunction = undefined, leftClickFunction = u
 	rightClickAction = rightClickFunction;
 	leftClickAction = leftClickFunction;
 }
+	
+function Axe(itemSprite, itemAmount, dmg, itemName, itemDescription, animationTypeEnum = itemAnimations.KNIFE_STAB) : Item(itemSprite, itemAmount, dmg, itemName, itemDescription, animationTypeEnum) constructor {}
+function Pickaxe(itemSprite, itemAmount, dmg, itemName, itemDescription, animationTypeEnum = itemAnimations.KNIFE_STAB) : Item(itemSprite, itemAmount, dmg, itemName, itemDescription, animationTypeEnum) constructor {}
 
 function PlaceableItem(itemSprite, itemAmount, dmg, itemName, itemDescription, sprite, rightClickFunction = function(){}, leftClickFunction = function(){}) : Item(itemSprite, itemAmount, dmg, itemName, itemDescription) constructor {
 	solid = true;
@@ -56,12 +59,15 @@ function Workbench(_amount = 1, outputArray = undefined) : PlaceableItem(spr_woo
 		instance_create_depth(0,0,0,obj_craftingScreen, {numOfSlots : 4})
 	};
 	
+	breakingTool = Axe;
+	hp = 180;
+	
 	static leftClickAction = function(){}
 	
 	solid = true;
 }
 	
-function WoodHatchet(_amount = 1, outputArray = undefined) : Item(spr_woodHatchet,_amount,2,"Wood Hatchet", "Hatchet that can cut down trees\nDamage: 2", itemAnimations.KNIFE_STAB) constructor {
+function WoodHatchet(_amount = 1, outputArray = undefined) : Axe(spr_woodHatchet,_amount,2,"Wood Hatchet", "Hatchet that can cut down trees\nDamage: 2", itemAnimations.KNIFE_STAB) constructor {
 	if(is_array(outputArray)) {
 		outputArray[0] = new WoodHatchet();
 		return;

@@ -20,3 +20,15 @@ if (isPlaceableItem(global.heldItem)) {
 	}
 	sprite_index = -1;
 }
+else if(isItem(global.heldItem)) {
+	//If placeable being hovered can be broken with current item, and mouse btn is held down
+	//Break le item
+	if(LMOUSE_DOWN) {
+		var inst = collision_point(x, y, obj_placeable,0,0);
+		if(inst != noone && is_instanceof(global.heldItem, inst.item.breakingTool)) {
+			var dist = distance_to_object(obj_player);
+			if(dist <= global.reachDistance)
+				inst.hp -= global.heldItem.damage;
+		}
+	}
+}

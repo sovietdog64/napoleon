@@ -142,6 +142,7 @@
     {"name":"spr_invPanel","order":1,"path":"sprites/spr_invPanel/spr_invPanel.yy",},
     {"name":"m16Reload","order":2,"path":"sequences/m16Reload/m16Reload.yy",},
     {"name":"spr_grass2","order":20,"path":"sprites/spr_grass2/spr_grass2.yy",},
+    {"name":"spr_placeableBreak","order":3,"path":"sprites/spr_placeableBreak/spr_placeableBreak.yy",},
     {"name":"obj_triggerPosition","order":3,"path":"objects/obj_triggerPosition/obj_triggerPosition.yy",},
     {"name":"DialogueResponses","order":6,"path":"scripts/DialogueResponses/DialogueResponses.yy",},
     {"name":"Items","order":12,"path":"scripts/Items/Items.yy",},

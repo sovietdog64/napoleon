@@ -32,6 +32,7 @@ global.noHud = false;
 global.screenOpen = false;
 
 global.canPlaceItem = false;
+global.reachDistance = 60;
 
 #endregion globals
 

@@ -11,11 +11,12 @@ vsp *= 0.95;
 //Set sprite to item sprite
 sprite_index = item.itemSpr;
 
-{//Collision
+//Collision
+{
 	{//Horizontal
-		if(!place_free(x+hsp, y)) {
+		if(!place_free(x+hsp, y) && hsp != 0) {
 			while(place_free(x, y)) {
-				x += sign(hsp);	
+				x += sign(hsp);
 			}
 			while(!place_free(x, y)) {
 				x -= sign(hsp);
@@ -26,8 +27,7 @@ sprite_index = item.itemSpr;
 	}
 	
 	{//Vertical
-		if(!place_free(x, y+vsp)) {
-			y = round(y)
+		if(!place_free(x, y+vsp) && vsp != 0) {
 			while(place_free(x, y)) {
 				y += sign(vsp);
 			}
@@ -39,7 +39,7 @@ sprite_index = item.itemSpr;
 		y += vsp;
 	}
 }
-
+	
 x = clamp(x, 0, room_width);
 y = clamp(y, 0, room_height);
 
