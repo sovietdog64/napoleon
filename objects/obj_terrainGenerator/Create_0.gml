@@ -9,46 +9,70 @@ placeSprites = function() {
 }
 
 placeChunk = function(chunkMapX, chunkMapY) {
-	if(!is_struct(allChunks[# chunkMapX, chunkMapY]))
-		allChunks[# chunkMapX, chunkMapY] = {
-			structures : [],
-		}
+	var chunk = allChunks[# chunkMapX, chunkMapY];
+	chunk.loaded = true;
 	var startX = chunkMapX * CHUNK_W;
 	var startY = chunkMapY * CHUNK_H;
-	var numGroundTiles = 0;
-	var numWaterTiles = 0;
 	for(var xx=startX; xx<startX+CHUNK_W; xx++)
 		for(var yy=startY; yy<startY+CHUNK_H; yy++) {
 			var ind = numRound(ds_grid_get(terrainMap, xx, yy))
-			var tileType = placeTile(ind, xx, yy);
+			placeTile(ind, xx, yy);
+		}
+	for(var i=0; i<array_length(chunk.structures); i++) {
+		chunk.structures[i].loaded = true;
+	}
+}
+
+loadChunk = function(chunkMapX, chunkMapY) {
+	if(!is_struct(allChunks[# chunkMapX, chunkMapY])) {
+		allChunks[# chunkMapX, chunkMapY] = {
+			structures : [],
+			structureType : structureTypes.ALL,
+			loaded : false,
+		}
+	}
+	
+	var chunk = allChunks[# chunkMapX, chunkMapY];
+	var startX = chunkMapX * CHUNK_W, 
+		startY = chunkMapY * CHUNK_W;
+	var numGroundTiles = 0, 
+		numWaterTiles = 0;
+	
+	//Getting chunk strucutre type
+	for(var xx=startX; xx<startX+CHUNK_W; xx++)
+		for(var yy=startY; yy<startY+CHUNK_H; yy++) {
+			var ind = numRound(ds_grid_get(terrainMap, xx, yy));
+			var tileType = getTileType(ind);
 			if(tileType == structureTypes.GROUND)
 				numGroundTiles++;
 			else if(tileType == structureTypes.WATER)
 				numWaterTiles++;
 		}
+		
 	//Spawning structures
-	//if most were ground tiles, spawn ground structure
+	//if most were ground tiles, spawn ground structure + player spawn
 	if(numGroundTiles/CHUNK_AREA >= 0.5) {
 		
+		chunk.structureType = structureTypes.GROUND;
+		
 		//Spawn player in random pos
-		if(playerSpawnSetup) {
+		if(playerSpawnSetup && irandom(100) < 20) {
 			playerSpawnSetup = false;
 			var playerSpawnX = irandom_range(chunkMapX*PX_CHUNK_W, chunkMapX*PX_CHUNK_W + PX_CHUNK_W);
 			var playerSpawnY = irandom_range(chunkMapY*PX_CHUNK_W, chunkMapY*PX_CHUNK_W + PX_CHUNK_W);
 			instance_create_layer(playerSpawnX, playerSpawnY, "Instances", obj_player);
-		
-			var chestSpawnX = irandom_range(chunkMapX*PX_CHUNK_W, chunkMapX*PX_CHUNK_W + PX_CHUNK_W);
-			var chestSpawnY = irandom_range(chunkMapY*PX_CHUNK_W, chunkMapY*PX_CHUNK_W + PX_CHUNK_W);
-			var bonusChest = instance_create_layer(playerSpawnX, playerSpawnY, "Interactables", obj_chest);
-			bonusChest.items = [new WoodHatchet()];
+			giveItemToPlayer(new WoodHatchet())
+			//var chestSpawnX = irandom_range(chunkMapX*PX_CHUNK_W, chunkMapX*PX_CHUNK_W + PX_CHUNK_W);
+			//var chestSpawnY = irandom_range(chunkMapY*PX_CHUNK_W, chunkMapY*PX_CHUNK_W + PX_CHUNK_W);
+			//var bonusChest = instance_create_layer(playerSpawnX, playerSpawnY, "Interactables", obj_chest);
+			//bonusChest.items = [new WoodHatchet()];
 		}
-		
 		
 		var spawnX = irandom_range(chunkMapX*PX_CHUNK_W, chunkMapX*PX_CHUNK_W + PX_CHUNK_W);
 		var spawnY = irandom_range(chunkMapY*PX_CHUNK_W, chunkMapY*PX_CHUNK_W + PX_CHUNK_W);
-		//10% chance of village spawn in this chunk
-		if(irandom(100) < 20) {
-			var structures = allChunks[# chunkMapX, chunkMapY].structures;
+		//25% chance of village spawn in this chunk
+		if(irandom(100) < 25) {
+			var structures = chunk.structures;
 			var canSpawn = true;
 			for(var i=0; i<array_length(structures); i++) {
 				if(structures[i].object_index == obj_testVillage)
@@ -59,13 +83,13 @@ placeChunk = function(chunkMapX, chunkMapY) {
 				array_push(structures, inst);
 			}
 		}
-	}
-	
-	//if most were ground tiles, spawn ground structure
-	else if(numWaterTiles/CHUNK_AREA >= 0.5) {
-	
-	}
 		
+	}
+	
+	//If most were water tiles, spawn water structure (not added yet)
+	else if(numWaterTiles/CHUNK_AREA >= 0.5) {
+		chunk.structureType = structureTypes.WATER;
+	}
 }
 
 placeTile = function(_mapIndex, xx, yy, lay2 = layer_get_id("OnGround"), lay = layer_get_id("Ground")) {
@@ -151,5 +175,48 @@ placeTile = function(_mapIndex, xx, yy, lay2 = layer_get_id("OnGround"), lay = l
 	}
 	return possibleStructure;
 }
-	
+
+getTileType = function(_mapIndex) {
+	var possibleStructure = structureTypes.GROUND;
+	switch(_mapIndex) {
+		case 0: {
+			possibleStructure = structureTypes.WATER;
+		}break;
+		case 1: {
+			
+		}break;
+		case 2: {
+			
+		}break;
+		case 3: {
+			
+		}break;
+		case 4: {
+			
+		}break;
+		case 5: {
+			
+		}break;
+		case 6: {
+			
+		}break;
+		case 7: {
+			
+		}break;
+		case 8: {
+			
+		}break;
+		case 9: {
+			
+		}
+		case 10: {
+			
+		}break;
+		default: {
+			possibleStructure = structureTypes.WATER;
+		}break;
+	}
+	return possibleStructure;
+}
+
 playerSpawnSetup = true;

@@ -58,8 +58,6 @@ function InvSearchPlayer( itemSprite, amount = 1) {
 }
 
 function InvGetPlayer(itemSprite, amount = 1) {
-	var name = sprite_get_name(itemSprite)
-	var amountFound = 0;
 	
 	var items = [];
 	var temp = InvGet(global.invItems, itemSprite, amount);
