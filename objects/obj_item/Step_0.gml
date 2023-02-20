@@ -1,4 +1,4 @@
-Wsolid = false;
+solid = false;
 if(instance_exists(obj_game) && global.gamePaused || obj_player.invOpen) return;
 if(!isItem(item)) {
 	instance_destroy();
@@ -42,6 +42,7 @@ sprite_index = item.itemSpr;
 
 x = clamp(x, 0, room_width);
 y = clamp(y, 0, room_height);
+
 lifeSpan--;
 if(lifeSpan <= 0) {
 	instance_destroy();

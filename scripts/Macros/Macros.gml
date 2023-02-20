@@ -4,6 +4,7 @@
 #macro INTERACTION_H sprite_get_height(spr_interactions)
 
 #macro LMOUSE_PRESSED mouse_check_button_pressed(mb_left)
+#macro LMOUSE_DOWN mouse_check_button(mb_left)
 #macro RMOUSE_PRESSED mouse_check_button_pressed(mb_right)
 
 #macro GUI_MOUSE_X device_mouse_x_to_gui(0)

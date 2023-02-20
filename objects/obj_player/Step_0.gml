@@ -74,7 +74,7 @@ if(abs(vertDirection) && abs(horizDirection)) {
 {//Item usage/animations
 	leftAttackCooldown--;
 	if(isPlaceableItem(global.heldItem)) {
-		if(global.canPlaceItem && LMOUSE_PRESSED) 
+		if(global.canPlaceItem && LMOUSE_DOWN) 
 			placeItem(global.heldItem, roundToTile(mouse_x, TILEW/2), roundToTile(mouse_y, TILEW/2));
 	}
 	else if(isItem(global.heldItem)) {

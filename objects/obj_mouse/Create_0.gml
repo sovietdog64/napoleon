@@ -85,11 +85,25 @@ handleScreenInput = function() {
 			else {
 				//If cannot put items in inventory
 				if(dontPutItem) {
+					if(keyboard_check(vk_shift) && instance_exists(obj_craftingScreen))
+						with(obj_craftingScreen) {
+							try{
+								while(craftRecipie.canCraft(craftingSlots)) {
+									giveItemToPlayer(craftRecipie.craftItem(craftingSlots));
+								}
+							}
+							catch(err){}
+						}
 					//If no item dragged, then pick up item from inv
-					if(itemDrag == -1) {
+					else if(itemDrag == -1) {
 						var invItemHovered = duplicateItem(invHover[slotHover]);
 						invHover[slotHover] = itemDrag;
 						itemDrag = invItemHovered;
+						if(instance_exists(obj_craftingScreen)) {
+							with(obj_craftingScreen) {
+								craftRecipie.craftItem(craftingSlots);
+							}
+						}
 					}
 					//If item being dragged is similar to the item in the slot, pick up the item in the slot and update dragged item amount
 					else if(itemsAreSimilar(itemDrag, invHover[slotHover])) {
@@ -98,10 +112,11 @@ handleScreenInput = function() {
 						itemDrag.amount += temp;
 						if(invHover[slotHover].amount <= 0)
 							invHover[slotHover] = -1;
-					}
-					if(instance_exists(obj_craftingScreen)) {
-						with(obj_craftingScreen) {
-							craftRecipie.craftItem(craftingSlots);
+
+						if(instance_exists(obj_craftingScreen)) {
+							with(obj_craftingScreen) {
+								craftRecipie.craftItem(craftingSlots);
+							}
 						}
 					}
 				}
