@@ -20,7 +20,7 @@ if (isPlaceableItem(global.heldItem)) {
 	}
 	sprite_index = -1;
 }
-else if(isItem(global.heldItem)) {
+else  {
 
 	var inst = collision_point(x, y, obj_selectablePar,0,0);
 	var dist = distance_to_object(obj_player);

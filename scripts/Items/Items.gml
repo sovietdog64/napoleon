@@ -46,12 +46,8 @@ function removeFromItem(item, amountToRemove) {
 #region all item constructors
 
 ///@param {array} outputArray An optional param. Use it if you want to run script_execute() on it.
-function Workbench(_amount = 1, outputArray = undefined) : PlaceableItem(spr_woodBench,_amount,0,"Workbench") constructor {
-	//Output a new workbench into the output array's first index
-	if(is_array(outputArray)) {
-		outputArray[0] = new Workbench();
-		return;
-	}
+function Workbench(_amount = 1) : PlaceableItem(spr_woodBench,_amount,0,"Workbench") constructor {
+
 	desc = "A bench used for making a variety of things\nCrafting slots: " + string(4);
 	
 	placedSprite = spr_woodBenchP;
@@ -67,19 +63,14 @@ function Workbench(_amount = 1, outputArray = undefined) : PlaceableItem(spr_woo
 	solid = true;
 }
 	
-function WoodHatchet(_amount = 1, outputArray = undefined) : Axe(spr_woodHatchet,_amount,2,"Wood Hatchet", "Hatchet that can cut down trees\nDamage: 2", itemAnimations.KNIFE_STAB) constructor {
-	if(is_array(outputArray)) {
-		outputArray[0] = new WoodHatchet();
-		return;
-	}
+function WoodHatchet(_amount = 1) : Axe(spr_woodHatchet,_amount,2,"Wood Hatchet", "Hatchet that can cut down trees\nDamage: 2", itemAnimations.KNIFE_STAB) constructor {
+	
 }
 	
-function Wood(_amount = 1, outputArray = undefined) : Item(spr_wood,_amount,0,"Wood",":Resource:") constructor {
-	if(is_array(outputArray)) {
-		outputArray[0] = new Wood();
-		return;
-	}
+function Wood(_amount = 1) : Item(spr_wood,_amount,0,"Wood",":Resource:") constructor {
+	
 }	
+
 
 #endregion
 

@@ -142,12 +142,7 @@ function duplicateItem(item) {
 	//Get item's constructor as a string
 	var constructorName = instanceof(item)
 	var scriptFunc = asset_get_index(constructorName);
-	var test = [-1];
-	//Run constructor, but it changes "test" array's 1st index into a new workbench
-	//i had to do it this way because script_execute doesn't really execute constructors. 
-	//maybe it does, but it doesn't return the struct created. i belive this is a bug in the current verison of gms2
-	script_execute(scriptFunc, 1, test);
-	var newItem = test[0];
+	var newItem = new scriptFunc();
 	
 	//Update all values in the new item to be the same as the old item's
 	var key, value;
