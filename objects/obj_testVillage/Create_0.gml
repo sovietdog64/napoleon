@@ -40,3 +40,5 @@ for(var i=0; i<360; i += 90) { //Roads spawn in directions of all quadrantial di
 	}
 }
 prevLoaded = loaded;
+
+event_inherited()

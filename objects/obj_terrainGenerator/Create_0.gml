@@ -84,6 +84,15 @@ loadChunk = function(chunkMapX, chunkMapY) {
 			}
 		}
 		
+		if(irandom(100) < 50) {
+			repeat(3) {
+				var spawnX = irandom_range(chunkMapX*PX_CHUNK_W, chunkMapX*PX_CHUNK_W + PX_CHUNK_W);
+				var spawnY = irandom_range(chunkMapY*PX_CHUNK_W, chunkMapY*PX_CHUNK_W + PX_CHUNK_W);
+			
+				instance_create_layer(spawnX, spawnY, "Instances", obj_spawner);
+			}
+			
+		}
 	}
 	
 	//If most were water tiles, spawn water structure (not added yet)
