@@ -15,6 +15,15 @@ for(var xx=0; xx<xCount; xx++) {
 												chunkX, chunkY, chunkX+PX_CHUNK_W, chunkY+PX_CHUNK_H);
 		if(camInBounds) {
 			placeChunk(xx,yy);
+			alarm_set(0, room_speed);
+		}
+		
+		if(pointDistToRect(
+			chunkX, chunkY, chunkX+PX_CHUNK_W, chunkY+PX_CHUNK_H,
+			CAMX, CAMY
+		) > global.renderDist) 
+		{
+			unloadChunk(xx, yy)
 		}
 	}
 }

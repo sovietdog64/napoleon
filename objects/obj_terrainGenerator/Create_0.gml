@@ -16,7 +16,7 @@ placeChunk = function(chunkMapX, chunkMapY) {
 	for(var xx=startX; xx<startX+CHUNK_W; xx++)
 		for(var yy=startY; yy<startY+CHUNK_H; yy++) {
 			var ind = numRound(ds_grid_get(terrainMap, xx, yy))
-			placeTile(ind, xx, yy);
+			placeTile(ind, xx, yy, chunk);
 		}
 	for(var i=0; i<array_length(chunk.structures); i++) {
 		chunk.structures[i].loaded = true;
@@ -29,6 +29,7 @@ loadChunk = function(chunkMapX, chunkMapY) {
 			structures : [],
 			structureType : structureTypes.ALL,
 			loaded : false,
+			tiles : []
 		}
 	}
 	
@@ -100,89 +101,136 @@ loadChunk = function(chunkMapX, chunkMapY) {
 		chunk.structureType = structureTypes.WATER;
 	}
 }
+	
+unloadChunk = function(chunkMapX, chunkMapY) {
+	var chunk = allChunks[# chunkMapX, chunkMapY];
+	if(!is_struct(chunk))
+		return;
+	
+	chunk.loaded = false;
+	for(var i=0; i<array_length(chunk.structures); i++) {
+		chunk.structures[i].loaded = false;
+	}
+	for(var i=0; i<array_length(chunk.tiles); i++) {
+		var tile = chunk.tiles[i]
+		if(instance_exists(tile))
+			instance_destroy(tile);
+		else if(layer_get_element_type(tile) == layerelementtype_sprite) {
+			layer_sprite_destroy(tile);
+		}
+	}
+}
 
-placeTile = function(_mapIndex, xx, yy, lay2 = layer_get_id("OnGround"), lay = layer_get_id("Ground")) {
+placeTile = function(_mapIndex, xx, yy, chunk = undefined, lay2 = layer_get_id("OnGround"), lay = layer_get_id("Ground")) {
 	var sprToDraw;
 	var possibleStructure = structureTypes.GROUND;
+	var tiles = [];
 	switch(_mapIndex) {
 		case 0: {
 			sprToDraw = undefined;
-			instance_create_layer(xx*TILEW, yy*TILEW, lay, obj_water);
+			array_push(tiles, instance_create_layer(xx*TILEW, yy*TILEW, lay, obj_water));
 			possibleStructure = structureTypes.WATER;
 		}break;
 		case 1: {
 			sprToDraw = spr_sand;
-			layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
-			if(random(1) < 0.01)
-				instance_create_layer(xx*TILEW, yy*TILEW, lay2, obj_tree).sprite_index = spr_palmTree;
+			array_push(tiles, layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw));
+			if(random(1) < 0.01) {
+				var inst = instance_create_layer(xx*TILEW, yy*TILEW, lay2, obj_tree)
+				inst.sprite_index = spr_palmTree;
+				array_push(tiles, inst);
+			}
 		}break;
 		case 2: {
 			sprToDraw = spr_grass;
-			layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
-			if(random(1) < 0.01)
-				instance_create_layer(xx*TILEW, yy*TILEW, lay2, obj_tree);
+			array_push(tiles, layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw));
+			if(random(1) < 0.01) {
+				var inst = instance_create_layer(xx*TILEW, yy*TILEW, lay2, obj_tree);
+				array_push(tiles, inst);
+			}
 		}break;
 		case 3: {
 			sprToDraw = spr_grass;
 			var spr = layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
 			var c = choose(make_color_rgb(144, 252, 3), make_color_rgb(177, 252, 3));
 			layer_sprite_blend(spr, c);
-			if(random(1) < 0.01)
-				instance_create_layer(xx*TILEW, yy*TILEW, lay2, obj_tree);	
+			array_push(tiles, spr);
+			if(random(1) < 0.01) {
+				var inst = instance_create_layer(xx*TILEW, yy*TILEW, lay2, obj_tree)
+				array_push(tiles, inst);
+			}
 		}break;
 		case 4: {
 			sprToDraw = spr_grass;
 			var spr = layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
 			var c = choose(make_color_rgb(104, 168, 2), make_color_rgb(124, 168, 2));
 			layer_sprite_blend(spr, c);
-			if(random(1) < 0.015)
-				instance_create_layer(xx*TILEW, yy*TILEW, lay2, obj_tree);	
+			array_push(tiles, spr);
+			if(random(1) < 0.015) {
+				var inst = instance_create_layer(xx*TILEW, yy*TILEW, lay2, obj_tree)
+				array_push(tiles, inst);
+			}
 		}break;
 		case 5: {
 			sprToDraw = spr_grass;
 			var spr = layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
 			var c = choose(make_color_rgb(95, 153, 3), make_color_rgb(82, 117, 1));
 			layer_sprite_blend(spr, c);
+			array_push(tiles, spr);
 		}break;
 		case 6: {
 			sprToDraw = spr_grass;
 			var spr = layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
 			var c = choose(make_color_rgb(51, 66, 2), make_color_rgb(63, 82, 2));
 			layer_sprite_blend(spr, c);
-			if(random(1) < 0.4)
-				instance_create_layer(xx*TILEW, yy*TILEW, lay2, obj_tree);
+			array_push(tiles, spr);
+			if(random(1) < 0.3) {
+				var inst = instance_create_layer(xx*TILEW, yy*TILEW, lay2, obj_tree)
+				array_push(tiles, inst);
+			}
 		}break;
 		case 7: {
 			sprToDraw = spr_grass;
 			var spr = layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
 			var c = choose(make_color_rgb(78, 102, 1), make_color_rgb(66, 87, 1));
 			layer_sprite_blend(spr, c);
-			if(random(1) < 0.4)
-				instance_create_layer(xx*TILEW, yy*TILEW, lay2, obj_tree);	
+			array_push(tiles, spr);
+			if(random(1) < 0.3) {
+				var inst = instance_create_layer(xx*TILEW, yy*TILEW, lay2, obj_tree)
+				array_push(tiles, inst);
+			}	
 		}break;
 		case 8: {
 			sprToDraw = spr_grass6;
-			layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
-			if(random(1) < 0.4)
-				instance_create_layer(xx*TILEW, yy*TILEW, lay2, obj_tree);	
+			array_push(tiles, layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw));
+			if(random(1) < 0.3) {
+				var inst = instance_create_layer(xx*TILEW, yy*TILEW, lay2, obj_tree)
+				array_push(tiles, inst);
+			}
 		}break;
 		case 9: {
 			sprToDraw = spr_dirt;
-			layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
+			array_push(tiles, layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw));
 		}
 		case 10: {
 			sprToDraw = spr_sand;
-			layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw);
-			if(random(1) < 0.01)
-				instance_create_layer(xx*TILEW, yy*TILEW, lay2, obj_tree).sprite_index = spr_palmTree;
+			array_push(tiles, layer_sprite_create(lay, xx*TILEW, yy*TILEH, sprToDraw));
+			if(random(1) < 0.01) {
+				var inst = instance_create_layer(xx*TILEW, yy*TILEW, lay2, obj_tree)
+				inst.sprite_index = spr_palmTree;
+				array_push(tiles, inst);
+			}
 		}break;
 		default: {
 			sprToDraw = undefined;
-			instance_create_layer(xx*TILEW, yy*TILEW, lay, obj_water);
+			array_push(tiles, instance_create_layer(xx*TILEW, yy*TILEW, lay, obj_water));
 			possibleStructure = structureTypes.WATER;
 		}break;
 	}
-	return possibleStructure;
+	
+	if(is_struct(chunk)) {
+		for(var i=0; i<array_length(tiles); i++)
+			array_push(chunk.tiles, tiles[i]);
+	}
 }
 
 getTileType = function(_mapIndex) {

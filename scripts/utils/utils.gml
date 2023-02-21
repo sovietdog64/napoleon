@@ -495,3 +495,9 @@ function numericalKeyPressed() {
 			return i;
 	}
 }
+	
+function pointDistToRect(x1, y1, x2, y2, px, py) {
+	var dx = max(x1 - px, 0, px - x2);
+	var dy = max(y1 - py, 0, py - y2);
+	return sqrt(dx*dx + dy*dy);
+}
