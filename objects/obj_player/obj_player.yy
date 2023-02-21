@@ -14,8 +14,8 @@
     "path": "folders/Objects/Characters.yy",
   },
   "parentObjectId": {
-    "name": "obj_notCameraObstacle",
-    "path": "objects/obj_notCameraObstacle/obj_notCameraObstacle.yy",
+    "name": "obj_entity",
+    "path": "objects/obj_entity/obj_entity.yy",
   },
   "persistent": false,
   "physicsAngularDamping": 0.1,

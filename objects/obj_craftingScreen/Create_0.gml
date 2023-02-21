@@ -76,7 +76,7 @@ resultInv = instance_create_depth(
 		invArray : itemResultSlot,
 		slotSize : 32,
 		itemSize : 32,
-		throwOutItems : true,
+		throwOutItems : false,
 		cannotPlaceItem : true,
 	}
 );

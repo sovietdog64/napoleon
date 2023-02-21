@@ -135,7 +135,6 @@ function CraftingRecipie(_item, _itemsRequired, _toolsRequired = undefined) cons
 				//Else if required tool is an item type, search through item type.
 				else {
 					search = InvSearch(craftInv, reqTool);
-					show_debug_message(search)
 				}
 				
 				if(search == -1) {

@@ -10,12 +10,14 @@ if (isPlaceableItem(global.heldItem)) {
 	sprite_index = global.heldItem.placedSprite;
 	//If being blocked, do red blend & dont allow player to place
 	//else, do green blend & allow player to place
-	if(!place_free(roundToTile(x, TILEW/2), roundToTile(y, TILEW/2))) {
+	var xx = roundToTile(x, TILEW/2);
+	var yy = roundToTile(y, TILEW/2);
+	if(!place_free(xx, yy) || place_meeting(xx, yy, obj_entity)) {
 		placeableColorBlend = c_red;
 		global.canPlaceItem = false;
 	}
 	else {
-		placeableColorBlend = c_green;
+		placeableColorBlend = green;
 		global.canPlaceItem = true;
 	}
 	sprite_index = -1;

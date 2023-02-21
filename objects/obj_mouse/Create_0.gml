@@ -7,6 +7,8 @@ selectedObj = -1;
 /*set to true when an inventory can't have items placed in it*/
 dontPutItem = false;
 
+green = make_color_rgb(128, 245, 110);
+
 placeableColorBlend = c_green;
 
 shouldDropItem = false;
