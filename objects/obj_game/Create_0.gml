@@ -32,7 +32,7 @@ global.noHud = false;
 global.screenOpen = false;
 
 global.canPlaceItem = false;
-global.reachDistance = TILEW*2;
+global.reachDistance = TILEW*4;
 
 #endregion globals
 

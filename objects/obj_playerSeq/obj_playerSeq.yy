@@ -13,7 +13,10 @@
     "name": "Characters",
     "path": "folders/Objects/Characters.yy",
   },
-  "parentObjectId": null,
+  "parentObjectId": {
+    "name": "obj_notCameraObstacle",
+    "path": "objects/obj_notCameraObstacle/obj_notCameraObstacle.yy",
+  },
   "persistent": false,
   "physicsAngularDamping": 0.1,
   "physicsDensity": 0.5,

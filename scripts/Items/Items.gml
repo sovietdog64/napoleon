@@ -93,7 +93,7 @@ function placeItem(placeableItem, placeX, placeY) {
 	placeableItem.amount--;
 	instance_create_layer(
 		placeX, placeY,
-		"Structures",
+		layer,
 		obj_placeable,
 		{
 			item : newItem,
@@ -103,9 +103,10 @@ function placeItem(placeableItem, placeX, placeY) {
 	return 1;
 }
 	
-function CraftingRecipie(_item, _itemsRequired) constructor {
+function CraftingRecipie(_item, _itemsRequired, _toolsRequired = undefined) constructor {
 	item = _item;
 	itemsRequired = _itemsRequired;
+	toolsRequired = _toolsRequired;
 	
 	//Checks if can craft an item
 	//If cannot, it will return an array of the missing items
@@ -123,6 +124,26 @@ function CraftingRecipie(_item, _itemsRequired) constructor {
 				array_push(missingItems, reqItem);
 			}
 		}
+		
+		//Checking if the right tool is in the grid
+		if(is_array(toolsRequired))
+			for(var i=0; i<array_length(toolsRequired); i++) {
+				var reqTool = toolsRequired[i];
+				var search;
+				//If the required tool is not an item type, then search with item sprite
+				if(is_struct(reqTool)) {
+					search = InvSearch(craftInv, reqTool.itemSpr, reqTool.amount);
+				}
+				//Else if required tool is an item type, search through item type.
+				else {
+					search = InvSearch(craftInv, reqTool);
+				}
+				
+				if(search == -1) {
+					craftable = false;
+					array_push(missingItems, reqTool);
+				}
+			}
 		
 		if(craftable)
 			return true;

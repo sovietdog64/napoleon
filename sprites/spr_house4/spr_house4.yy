@@ -48,8 +48,8 @@
   },
   "origin": 7,
   "parent": {
-    "name": "Tiles",
-    "path": "folders/Sprites/Tiles.yy",
+    "name": "Houses",
+    "path": "folders/Sprites/Tiles/Houses.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

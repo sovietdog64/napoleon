@@ -1,1 +1,0 @@
-hasSetSpawnPoint = false;

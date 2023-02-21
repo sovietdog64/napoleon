@@ -1,8 +1,8 @@
-function InvSearch(invArray, itemSprite, amount = 1) {
+function InvSearch(invArray, itemSpr_or_type, amount = 1) {
 	var amountFound = 0;
 	var slots = [];
 	for(var i=0; i<array_length(invArray); i++)
-		if(isItem(invArray[i]) && invArray[i].itemSpr == itemSprite) {
+		if(isItem(invArray[i]) && invArray[i].itemSpr == itemSpr_or_type) {
 			//If still didn't find the amount of the item needed, add on to the slots found
 			if(amountFound < amount) {
 				amountFound += invArray[i].amount;
@@ -11,6 +11,18 @@ function InvSearch(invArray, itemSprite, amount = 1) {
 			//If already found the amount, exit loop
 			else
 				break;
+		}
+		//if an item type was inputted, then search with that
+		else if(!isItem(invArray[i]) && script_exists(itemSpr_or_type)) {
+			//if the item being checked is an instance of specified type
+			if(is_instanceof(invArray[i], itemSpr_or_type)) {
+				if(amountFound < amount) {
+					amountFound += invArray[i].amount;
+					array_push(slots, i);
+				}
+				else
+					break;
+			}
 		}
 	//if found the right amount, 
 	if(amountFound >= amount) {
