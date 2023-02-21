@@ -56,6 +56,7 @@
     {"name":"fnt_npc","order":2,"path":"fonts/fnt_npc/fnt_npc.yy",},
     {"name":"spr_wood","order":13,"path":"sprites/spr_wood/spr_wood.yy",},
     {"name":"enemyFuncs","order":8,"path":"scripts/enemyFuncs/enemyFuncs.yy",},
+    {"name":"Animations","order":13,"path":"scripts/Animations/Animations.yy",},
     {"name":"obj_villPath","order":4,"path":"objects/obj_villPath/obj_villPath.yy",},
     {"name":"obj_text","order":5,"path":"objects/obj_text/obj_text.yy",},
     {"name":"spr_playerBoxingGloves","order":3,"path":"sprites/spr_playerBoxingGloves/spr_playerBoxingGloves.yy",},

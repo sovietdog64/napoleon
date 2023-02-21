@@ -31,5 +31,7 @@
 #macro INV_SLOT_SIZE 48
 #macro INV_ITEM_SIZE 48	
 
+#macro ITEM_SIZE 64
+
 #macro HIGHEST_HOUSE_W 192
 #macro HIGHEST_HOUSE_H 300

@@ -24,6 +24,8 @@ for(var xx=0; xx<ds_grid_width(allChunks);xx++)
 while(playerSpawnSetup == true) {
 	var xx = irandom(ds_grid_width(allChunks));
 	var yy = irandom(ds_grid_height(allChunks));
+	if(!is_struct(allChunks[# xx, yy]))
+		continue;
 	if(allChunks[# xx, yy].structureType == structureTypes.GROUND) {
 		playerSpawnSetup = false;
 		var playerSpawnX = irandom_range(xx*PX_CHUNK_W, xx*PX_CHUNK_W + PX_CHUNK_W);

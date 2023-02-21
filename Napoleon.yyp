@@ -79,6 +79,7 @@
     {"id":{"name":"spr_wood","path":"sprites/spr_wood/spr_wood.yy",},"order":13,},
     {"id":{"name":"enemyFuncs","path":"scripts/enemyFuncs/enemyFuncs.yy",},"order":8,},
     {"id":{"name":"saveFuncs","path":"scripts/saveFuncs/saveFuncs.yy",},"order":0,},
+    {"id":{"name":"Animations","path":"scripts/Animations/Animations.yy",},"order":13,},
     {"id":{"name":"fnt_hud","path":"fonts/fnt_hud/fnt_hud.yy",},"order":0,},
     {"id":{"name":"spr_entranceFar2","path":"sprites/spr_entranceFar2/spr_entranceFar2.yy",},"order":0,},
     {"id":{"name":"obj_villPath","path":"objects/obj_villPath/obj_villPath.yy",},"order":4,},

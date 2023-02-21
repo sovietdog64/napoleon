@@ -85,6 +85,7 @@ function hatchetSwipe(targX, targY, hitboxDuration) {
 	leftAttackCooldown = room_speed*0.21;
 	handProgress = 1;
 	attackState = attackStates.MELEE;
+	animType = itemAnimations.KNIFE_STAB;
 	var dir = point_direction(x, y, targX, targY);
 	//Calculate the direction of the punch hitbox
 	var xx = x + (50*dcos(dir));
