@@ -13,7 +13,7 @@ function InvSearch(invArray, itemSpr_or_type, amount = 1) {
 				break;
 		}
 		//if an item type was inputted, then search with that
-		else if(!isItem(invArray[i]) && script_exists(itemSpr_or_type)) {
+		else if(script_exists(itemSpr_or_type)) {
 			//if the item being checked is an instance of specified type
 			if(is_instanceof(invArray[i], itemSpr_or_type)) {
 				if(amountFound < amount) {

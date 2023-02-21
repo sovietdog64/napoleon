@@ -18,6 +18,8 @@ function Pickaxe(itemSprite, itemAmount, dmg, itemName, itemDescription, animati
 
 function PlaceableItem(itemSprite, itemAmount, dmg, itemName, itemDescription, sprite, rightClickFunction = function(){}, leftClickFunction = function(){}) : Item(itemSprite, itemAmount, dmg, itemName, itemDescription) constructor {
 	solid = true;
+	static rightClickAction = rightClickFunction;
+	static leftClickAction = leftClickFunction;
 }
 
 //Returns the amount needed to remove after removing
@@ -71,8 +73,13 @@ function Wood(_amount = 1) : Item(spr_wood,_amount,0,"Wood",":Resource:") constr
 	
 }	
 
+function WoodBlock(amount) : PlaceableItem(spr_woodBlock,amount,0,"Wood Block") constructor {
+	placedSprite = spr_woodBlockP;
+	breakingTool = Axe;
+	hp = 120;
+}
 
-#endregion
+#endregion all item constructors
 
 function placeItem(placeableItem, placeX, placeY) {
 	if(!is_struct(placeableItem))
@@ -128,6 +135,7 @@ function CraftingRecipie(_item, _itemsRequired, _toolsRequired = undefined) cons
 				//Else if required tool is an item type, search through item type.
 				else {
 					search = InvSearch(craftInv, reqTool);
+					show_debug_message(search)
 				}
 				
 				if(search == -1) {
