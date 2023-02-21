@@ -4,6 +4,7 @@
 #macro INTERACTION_H sprite_get_height(spr_interactions)
 
 #macro LMOUSE_PRESSED mouse_check_button_pressed(mb_left)
+#macro LMOUSE_DOWN mouse_check_button(mb_left)
 #macro RMOUSE_PRESSED mouse_check_button_pressed(mb_right)
 
 #macro GUI_MOUSE_X device_mouse_x_to_gui(0)
@@ -29,6 +30,8 @@
 
 #macro INV_SLOT_SIZE 48
 #macro INV_ITEM_SIZE 48	
+
+#macro ITEM_SIZE 64
 
 #macro HIGHEST_HOUSE_W 192
 #macro HIGHEST_HOUSE_H 300

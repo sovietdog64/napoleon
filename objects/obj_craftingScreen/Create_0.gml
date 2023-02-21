@@ -5,8 +5,11 @@ for(var i=0; i<instance_number(obj_guiScreenPar); i++) {
 		instance_destroy(inst);
 }
 
+craftRecipie = 0;
+
 craftingSlots = array_create(numOfSlots, -1);
 
+resultInv = 0;
 itemResultSlot = array_create(1, -1);
 
 screen = new GuiScreen(
@@ -24,11 +27,14 @@ variable_struct_set(screen, "invs", array_create(0));
 var invInstance = instance_create_depth(
 	screen.x1+20, screen.y1+20,
 	depth-1,
-	obj_craftingSlots,
+	obj_inventory,
 	{
 		rowLength : 4,
 		invType : inventories.NONE,
 		invArray : craftingSlots,
+		slotSize : 32,
+		itemSize : 32,
+		throwOutItems : true,
 	}
 );
 array_push(screen.invs, invInstance);
@@ -61,7 +67,7 @@ var playerInv = instance_create_depth(
 );
 array_push(screen.invs, playerInv);
 
-var resultInv = instance_create_depth(
+resultInv = instance_create_depth(
 	screen.x1+20+4*50, screen.y1+20,
 	depth-1,
 	obj_inventory,
@@ -70,10 +76,15 @@ var resultInv = instance_create_depth(
 		invArray : itemResultSlot,
 		slotSize : 32,
 		itemSize : 32,
+		throwOutItems : false,
+		cannotPlaceItem : true,
 	}
-)
+);
+array_push(screen.invs, resultInv)
 
 
 #endregion inv GUI instances
 
 global.screenOpen = true;
+
+alarm_set(0, 1);

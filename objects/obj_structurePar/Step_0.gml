@@ -1,3 +1,6 @@
+if(!loaded)
+	return;
+
 if(timer > 0)
 	timer--;
 else if(excavate) {

@@ -32,6 +32,7 @@ global.noHud = false;
 global.screenOpen = false;
 
 global.canPlaceItem = false;
+global.reachDistance = TILEW*4;
 
 #endregion globals
 
@@ -88,5 +89,9 @@ enum inventories {
 #endregion enums
 
 #region crafting recipies
-global.craftingRecipies = []
+global.craftingRecipies = 
+[
+	new CraftingRecipie(new Workbench(), [new Wood(4)]),
+	new CraftingRecipie(new WoodBlock(4), [new Wood(2)], [Axe])
+]
 #endregion crafting recipies

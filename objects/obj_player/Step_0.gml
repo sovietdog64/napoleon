@@ -1,3 +1,4 @@
+solid = false;
 if(inDialogue) 
 	return;
 if(hurtCooldown > 0)
@@ -32,6 +33,11 @@ var up = keyboard_check(ord("W"));
 var down = keyboard_check(ord("S"));
 var vertDirection = down-up;
 
+if(mouse_x - x >= 0)
+	image_xscale = abs(image_xscale);
+else
+	image_xscale = -abs(image_xscale);
+
 {//Horizontal movement
 	//Checks direction  & speed of horizontal movement.
 	if(isHurt) {
@@ -54,8 +60,7 @@ var vertDirection = down-up;
 	}
 	else {
 		hsp = horizDirection * hspWalk;
-		if(horizDirection < 0) {image_xscale = -1; direction = 180;}
-		else if(horizDirection > 0) {image_xscale = 1; direction = 0;}
+		direction = point_direction(x, y, mouse_x, mouse_y)
 	}
 }
 		
@@ -74,10 +79,8 @@ if(abs(vertDirection) && abs(horizDirection)) {
 {//Item usage/animations
 	leftAttackCooldown--;
 	if(isPlaceableItem(global.heldItem)) {
-		if(global.canPlaceItem && LMOUSE_PRESSED) {
-			placeItem(global.heldItem, roundToTile(mouse_x, TILEW), roundToTile(mouse_y, TILEW));
-			global.hotbarItems[global.equippedItem] = -1;
-		}
+		if(global.canPlaceItem && LMOUSE_DOWN) 
+			placeItem(global.heldItem, roundToTile(mouse_x, TILEW/2), roundToTile(mouse_y, TILEW/2));
 	}
 	else if(isItem(global.heldItem)) {
 		//Using items on left press
@@ -320,54 +323,69 @@ if(global.hp <= 0 && !global.dead) {
 if(!instance_exists(obj_game)) instance_create_layer(0,0, "Instances", obj_game);
 
 #region animations
-shoulderB.x = x+3*image_xscale;
+//Make lower-depth objects partially visible when being drawn over player
+with(all) {
+	var isntObstacle = !object_is_ancestor(object_index, obj_notCameraObstacle)
+	if(isntObstacle && id != other.id) {
+		if(depth < other.depth && sprite_exists(sprite_index) && visible) {
+			var xOffset = sprite_get_xoffset(sprite_index);
+			var yOffset = sprite_get_yoffset(sprite_index);
+			var collision = collision_rectangle(
+				x-xOffset-1, y-yOffset-1,
+				x-xOffset+sprite_width+1, y-yOffset+sprite_height+1,
+				other.object_index, 0, 1
+			)
+			if(collision != noone && collision.id == other.id) {
+				image_alpha = 0.5;
+			}
+			else
+				image_alpha = 1;
+		}
+	}
+}
+
+shoulderB.x = x+5*image_xscale;
 shoulderB.y = y-2;
+hBOrigin.x = shoulderB.x;
+hBOrigin.y = y+10;
+
 shoulderF.x = x-3*image_xscale;
 shoulderF.y = y-2;
+hFOrigin.x = shoulderF.x;
+hFOrigin.y = y+10;
 
 
-//Handling which animation to do
-if(variable_struct_exists(global.heldItem, "animationType")) {
-	animType = global.heldItem.animationType;
-}
-else {
-	if(isFirearm(global.heldItem)) {
-		variable_struct_set(global.heldItem, "animationType", itemAnimations.GUN);
-		animType = itemAnimations.GUN;
-	}
-	else
-		animType = itemAnimations.NONE;
-}
-switch(animType) {
-	case itemAnimations.NONE:
-		doWalkingArmMovements(10, hspWalk*0.3, 10);
-	break;
-	case itemAnimations.PUNCHING: {
-		//Fists up. Idle.
-		if(leftAttackCooldown <= 0) {
-			holdFistsUp(mouse_x, mouse_y);
-		}
-		else {
-			doPunchingMovements(mouse_x, mouse_y);
-		}
-	} break;
-	case itemAnimations.KNIFE_STAB: {
-		if(leftAttackCooldown <= 0)
-			doWalkingArmMovements(10, hspWalk*0.3, 10);
-		else
-			doStabMovement(mouse_x, mouse_y);
-	}
-}
 hipB.x = x-5*sign(image_xscale);
 hipB.y = y+8;
+fBOrigin.x = hipB.x;
+fBOrigin.y = hipB.y+legLen-footRadius;
 	
 hipF.x = x+2*sign(image_xscale);
 hipF.y = y+8;
-doWalkingLegMovements(14, 5, hspWalk*0.3);
+fFOrigin.x = hipF.x;
+fFOrigin.y = hipF.y+legLen-footRadius;
 
-//if(isItem(global.heldItem) && global.heldItem.itemSpr == spr_boxingGloves)
-//	variable_struct_set(global.heldItem, "animationType", itemAnimations.PUNCHING);
-//else if(isItem(global.heldItem) && global.heldItem.itemSpr == spr_tanto)
-//	variable_struct_set(global.heldItem, "animationType", itemAnimations.KNIFE_STAB);
+var dirFacing = sign(mouse_x - x);
+if(dirFacing == 0)
+	dirFacing = 1;
+	
+if(isItem(global.heldItem))
+	animType = global.heldItem.animationType;
+else
+	animType = itemAnimations.NONE;
+
+switch(animType) {
+	case itemAnimations.NONE: 
+		walkMovements(footRadius, walkAnimSpd, dirFacing);
+	break;
+	case itemAnimations.KNIFE_STAB: {
+		legWalk(footRadius, walkAnimSpd, dirFacing)
+		if(leftAttackCooldown > 0)
+			knifeStab(legLen*2, mouse_x, mouse_y, dirFacing);
+		else
+			armWalk(footRadius, walkAnimSpd, dirFacing);
+	} break;
+}
+
 
 #endregion animations

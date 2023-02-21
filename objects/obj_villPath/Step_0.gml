@@ -1,3 +1,5 @@
+if(!loaded)
+	return;
 if(timer > 0)
 	timer--;
 else if(excavate) {
@@ -15,6 +17,7 @@ else if(excavate) {
 			var shouldExcavate = point_in_rectangle(xx, yy,
 													bbox_left-sprite_height, bbox_top-sprite_height,
 													bbox_right+sprite_height, bbox_bottom+sprite_height)
+			//If tile is near, excavate it
 			if(shouldExcavate) {
 				layer_sprite_destroy(element);
 				layer_sprite_create(sprLay, xx, yy, spr_grass);
