@@ -1,5 +1,7 @@
 loaded = creatorID.loaded;
 
+if(!loaded)
+	return;
 
 var inst = instance_place(x, y, obj_resourcePar)
 if(inst != noone) {
