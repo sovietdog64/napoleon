@@ -27,9 +27,13 @@ for(var xx=0; xx<xCount; xx++) {
 	}
 }
 	
-var list = ds_list_create();
-var num = collision_rectangle_list(CAMX, CAMY, CAMX2, CAMY2, obj_structurePar, 0, 1, list, 0);
-if(num > 0)
-	for(var i=0; i<num; i++) {
-		list[| i].creatorId.loaded = true;
-	}
+//Load strucutres when part of them are seen
+var inst = collision_rectangle(CAMX, CAMY, CAMX2, CAMY2, obj_structurePar, 0, 1);
+if(inst != noone) {
+	var creator = inst.creatorId;
+	//Find the first ancestor of the strucutre found
+	while(variable_instance_exists(creator, "creatorId"))
+		creator = creator.creatorId;
+	//and set it to be loaded.
+	creator.loaded = true;
+}
