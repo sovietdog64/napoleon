@@ -10,8 +10,8 @@
   "managed": true,
   "overriddenProperties": [],
   "parent": {
-    "name": "Structures",
-    "path": "folders/Objects/Structures.yy",
+    "name": "Village",
+    "path": "folders/Objects/Structures/Village.yy",
   },
   "parentObjectId": {
     "name": "obj_structurePar",

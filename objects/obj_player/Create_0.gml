@@ -28,8 +28,8 @@ if(!variable_global_exists("maxHp"))global.maxHp = 5;//health
 if(!variable_global_exists("dead"))global.dead = false;
 leftAttackCooldown = 0;
 
-enteredX = x;
-enteredY = y;
+global.spawnX = x;
+global.spawnY = y;
 
 global.stamina = 100;
 global.maxStamina = 100;
@@ -62,7 +62,7 @@ hBOrigin = copyStruct(handB);
 hFOrigin = copyStruct(handF);
 
 handProgress = 0;
-handDir = 1;
+handDir = 0.3;
 
 footProgress = 0;
 footDir = 2;

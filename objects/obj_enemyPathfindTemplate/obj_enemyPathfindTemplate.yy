@@ -39,7 +39,10 @@
   "physicsStartAwake": true,
   "properties": [],
   "solid": false,
-  "spriteId": null,
+  "spriteId": {
+    "name": "spr_theRealMckinley",
+    "path": "sprites/spr_theRealMckinley/spr_theRealMckinley.yy",
+  },
   "spriteMaskId": null,
   "visible": true,
 }

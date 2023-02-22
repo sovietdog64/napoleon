@@ -1,4 +1,8 @@
-if(spawnCooldown > 0)spawnCooldown--;
+if(!loaded)
+	return;
+
+if(spawnCooldown > 0)
+	spawnCooldown--;
 else {
 	for(var i=0; i<amountOfEnemies; i++) {
 		if(layer_has_instance("Enemies", enemiesSpawned[i]))

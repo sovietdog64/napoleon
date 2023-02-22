@@ -311,16 +311,11 @@ if(instance_exists(obj_camera)) {
 	}
 }
 
-//Death of player. Makes player invisible and 1s delay to respawn
 if(global.hp <= 0 && !global.dead) {
-	global.hp = 5;
 	global.dead = true;
-	x = enteredX;
-	y = enteredY;
-	global.setPosToSpawnPos = true;
-	room_goto(global.spawnRoom);
+	image_alpha = 0;
+	alarm_set(0, room_speed*3);
 }
-if(!instance_exists(obj_game)) instance_create_layer(0,0, "Instances", obj_game);
 
 #region animations
 //Make lower-depth objects partially visible when being drawn over player
@@ -331,8 +326,8 @@ with(all) {
 			var xOffset = sprite_get_xoffset(sprite_index);
 			var yOffset = sprite_get_yoffset(sprite_index);
 			var collision = collision_rectangle(
-				x-xOffset-1, y-yOffset-1,
-				x-xOffset+sprite_width+1, y-yOffset+sprite_height+1,
+				(x-xOffset)+1, (y-yOffset)+1,
+				(x-xOffset+sprite_width)-1, (y-yOffset+sprite_height)-1,
 				other.object_index, 0, 1
 			)
 			if(collision != noone && collision.id == other.id) {
@@ -365,7 +360,7 @@ hipF.y = y+8;
 fFOrigin.x = hipF.x;
 fFOrigin.y = hipF.y+legLen-footRadius;
 
-var dirFacing = sign(mouse_x - x);
+var dirFacing = sign(x - xprevious);
 if(dirFacing == 0)
 	dirFacing = 1;
 	
@@ -380,9 +375,10 @@ switch(animType) {
 	break;
 	case itemAnimations.KNIFE_STAB: {
 		legWalk(footRadius, walkAnimSpd, dirFacing)
-		if(leftAttackCooldown > 0)
-			knifeStab(legLen*2, mouse_x, mouse_y, dirFacing);
-		else
+		if(leftAttackCooldown > 0) {
+			knifeStab(legLen*2, mouse_x, mouse_y, 13);
+			armBehindWalk(footRadius, walkAnimSpd, dirFacing);
+		} else
 			armWalk(footRadius, walkAnimSpd, dirFacing);
 	} break;
 }

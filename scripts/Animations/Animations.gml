@@ -237,10 +237,40 @@ function armWalk(radius, spd, directionFacing = image_xscale, doProgress = false
 	}
 }
 
-function knifeStab(distance, targX, targY) {
+function armBehindWalk(radius, spd, directionFacing = image_xscale, doProgress = false) {
+	if(abs(x - xprevious) > 0 || abs(y - yprevious) > 0) {
+		if(doProgress) {
+			footProgress += footDir;
+			if(footProgress > 360) 
+				footProgress = 0;
+			footDir = abs(footDir) * sign(directionFacing);
+			footDir = spd * sign(footDir) * hspWalk/2;
+		}	
+		
+		//Arm
+		{
+			handB.x = hBOrigin.x + radius*(hspWalk)*dcos(footProgress);
+			var yy = radius*(hspWalk)*dsin(footProgress);
+			if(yy < 0)
+				yy *= -1;
+			handB.y = hBOrigin.y + yy;
+		}
+	}
+	else {
+		//Arm
+		{
+			var dir = point_direction(handB.x, handB.y, hBOrigin.x, hBOrigin.y);
+			var dist = point_distance(handB.x, handB.y, hBOrigin.x, hBOrigin.y)/10;
+			handB.x += lengthdir_x(dist, dir);
+			handB.y += lengthdir_y(dist, dir);
+		}
+	}
+}
+
+function knifeStab(distance, targX, targY, duration = 10) {
 	
 	handProgress += handDir;
-	if(handProgress > 10) {
+	if(handProgress > duration) {
 		animType = itemAnimations.NONE;
 		handProgress = 1;
 	}
