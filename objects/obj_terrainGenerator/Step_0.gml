@@ -30,10 +30,15 @@ for(var xx=0; xx<xCount; xx++) {
 //Load strucutres when part of them are seen
 var inst = collision_rectangle(CAMX, CAMY, CAMX2, CAMY2, obj_structurePar, 0, 1);
 if(inst != noone && !inst.loaded) {
-	var creator = inst.creatorId;
+	inst.loaded = true;
+	var creator = inst;
 	//Find the first ancestor of the strucutre found
-	while(variable_instance_exists(creator, "creatorId"))
-		creator = creator.creatorId;
+	while(variable_instance_exists(creator, "creatorID")) {
+		creator = creator.creatorID;
+	}
 	//and set it to be loaded.
-	creator.loaded = true;
+	if(variable_instance_exists(creator, "loaded")) {
+		creator.loaded = true;
+		show_debug_message("loaded ancestor")
+	}
 }

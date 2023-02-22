@@ -10,8 +10,8 @@
     "path": "folders/Objects/Tiles.yy",
   },
   "parentObjectId": {
-    "name": "obj_notCameraObstacle",
-    "path": "objects/obj_notCameraObstacle/obj_notCameraObstacle.yy",
+    "name": "obj_tilePar",
+    "path": "objects/obj_tilePar/obj_tilePar.yy",
   },
   "persistent": false,
   "physicsAngularDamping": 0.1,

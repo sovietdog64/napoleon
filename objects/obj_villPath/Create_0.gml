@@ -1,4 +1,3 @@
-depth = layer_get_depth(layer_get_id("Instances"))+1;
 var maxHouses = ceil(sprite_width/250);
 var leftCount = irandom_range(1, maxHouses);
 var rightCount = irandom_range(1, maxHouses);
@@ -28,7 +27,7 @@ for(var i=0; i<leftCount; i++) {
 		var inst = instance_create_layer(xx,
 										yy,
 										"Structures",
-										obj_house, {creatorId : id});
+										obj_house, {creatorID : id});
 		inst.sprite_index = spr;
 		array_push(leftHouses, inst);
 	}
@@ -53,10 +52,11 @@ for(var i=0; i<rightCount; i++) {
 		var inst = instance_create_layer(xx,
 										yy,
 										"Structures",
-										obj_house, {creatorId : id});
+										obj_house, {creatorID : id});
 		inst.sprite_index = spr;
 		array_push(rightHouses, inst);
 	}
 }
 	
 event_inherited()
+solid = false;

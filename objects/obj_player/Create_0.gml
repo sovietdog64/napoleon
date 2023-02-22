@@ -1,4 +1,3 @@
-startDepth = depth;
 hsp = 0;//horizontal speed
 vsp = 0;//vertical speed
 hspWalk = 2;//horizontal speed when walking

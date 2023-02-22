@@ -1,7 +1,7 @@
 {
   "resourceType": "GMObject",
   "resourceVersion": "1.0",
-  "name": "obj_testVillage",
+  "name": "obj_depthSort",
   "eventList": [
     {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,},
     {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,},
@@ -9,14 +9,11 @@
   "managed": true,
   "overriddenProperties": [],
   "parent": {
-    "name": "Village",
-    "path": "folders/Objects/Structures/Village.yy",
+    "name": "Game_control",
+    "path": "folders/Objects/Game_control.yy",
   },
-  "parentObjectId": {
-    "name": "obj_structurePar",
-    "path": "objects/obj_structurePar/obj_structurePar.yy",
-  },
-  "persistent": false,
+  "parentObjectId": null,
+  "persistent": true,
   "physicsAngularDamping": 0.1,
   "physicsDensity": 0.5,
   "physicsFriction": 0.2,

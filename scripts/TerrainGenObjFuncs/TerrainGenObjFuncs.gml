@@ -93,6 +93,7 @@ function loadChunk(chunkMapX, chunkMapY) {
 function unloadChunk(chunkMapX, chunkMapY) {
 	var chunk = allChunks[# chunkMapX, chunkMapY];
 	var structures = chunk.structures;
+	chunk.loaded = false;
 	for(var i=0; i<array_length(structures); i++) {
 		structures[i].loaded = false;
 	}
