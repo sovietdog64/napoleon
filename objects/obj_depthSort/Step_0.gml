@@ -1,17 +1,18 @@
 //Get list of all objects
 ds_list_clear(drawList);
-var num = collision_rectangle_list(CAMX, CAMY, CAMX2, CAMY2, all, 0, 1, drawList, 0);
+var num = collision_rectangle_list(0, 0, room_width, room_height, all, 0, 1, drawList, 0);
 
 //Sort the objects based on their y value
 for(var i=0; i<num; i++) {
 	var inst = drawList[| i];
 	//Prevent adding game-control objects/tiles
-	if(inst.persistent || object_is_ancestor(inst.object_index, obj_tilePar))
+	if(inst.persistent || object_is_ancestor(inst.object_index, obj_noDepthSortPar))
 		continue;
-	ds_priority_add(drawQueue, inst, inst.y);
+	ds_priority_add(drawQueue, inst, inst.bbox_bottom);
 }
 
 for(var i=0; i<ds_priority_size(drawQueue); i++) {
 	var inst = ds_priority_delete_min(drawQueue);
-	inst.depth = -i;
+	if(instance_exists(inst))
+		inst.depth = -i;
 }

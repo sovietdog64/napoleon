@@ -24,7 +24,7 @@
     {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"fb2fac15-b6e5-4366-b79d-059af77f7371","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
   ],
   "nineSlice": null,
-  "origin": 0,
+  "origin": 9,
   "parent": {
     "name": "huts",
     "path": "folders/Sprites/Tiles/Houses/huts.yy",
@@ -60,8 +60,8 @@
     ],
     "visibleRange": null,
     "volume": 1.0,
-    "xorigin": 0,
-    "yorigin": 0,
+    "xorigin": 58,
+    "yorigin": 79,
   },
   "swatchColours": null,
   "swfPrecision": 2.525,
@@ -71,5 +71,5 @@
   },
   "type": 0,
   "VTile": false,
-  "width": 128,
+  "width": 115,
 }

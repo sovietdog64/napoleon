@@ -137,6 +137,7 @@
     {"id":{"name":"spr_tantoStab","path":"sprites/spr_tantoStab/spr_tantoStab.yy",},"order":1,},
     {"id":{"name":"spr_goblinLimbF","path":"sprites/spr_goblinLimbF/spr_goblinLimbF.yy",},"order":2,},
     {"id":{"name":"obj_mouseFollower","path":"objects/obj_mouseFollower/obj_mouseFollower.yy",},"order":11,},
+    {"id":{"name":"obj_noDepthSortPar","path":"objects/obj_noDepthSortPar/obj_noDepthSortPar.yy",},"order":13,},
     {"id":{"name":"spr_loadBtn","path":"sprites/spr_loadBtn/spr_loadBtn.yy",},"order":4,},
     {"id":{"name":"obj_playerInvScreen","path":"objects/obj_playerInvScreen/obj_playerInvScreen.yy",},"order":3,},
     {"id":{"name":"obj_resourcePar","path":"objects/obj_resourcePar/obj_resourcePar.yy",},"order":3,},

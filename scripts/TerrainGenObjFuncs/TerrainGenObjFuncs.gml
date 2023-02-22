@@ -164,18 +164,18 @@ function placeTile(_mapIndex, xx, yy, lay2 = layer_get_id("OnGround"), lay = lay
 		case 6: {
 			spr = spr_grass;
 			blend = choose(make_color_rgb(51, 66, 2), make_color_rgb(63, 82, 2));
-			if(random(1) < 0.4)
+			if(random(1) < 0.2)
 				obj = obj_tree;
 		}break;
 		case 7: {
 			spr = spr_grass;
 			blend = choose(make_color_rgb(78, 102, 1), make_color_rgb(66, 87, 1));
-			if(random(1) < 0.4)
+			if(random(1) < 0.2)
 				obj = obj_tree
 		}break;
 		case 8: {
 			spr = spr_grass6;
-			if(random(1) < 0.4)
+			if(random(1) < 0.2)
 				obj = obj_tree;
 		}break;
 		case 9: {
