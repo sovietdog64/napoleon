@@ -318,26 +318,6 @@ if(global.hp <= 0 && !global.dead) {
 }
 
 #region animations
-//Make lower-depth objects partially visible when being drawn over player
-with(all) {
-	var isntObstacle = !object_is_ancestor(object_index, obj_notCameraObstacle)
-	if(isntObstacle && id != other.id) {
-		if(depth < other.depth && sprite_exists(sprite_index) && visible) {
-			var xOffset = sprite_get_xoffset(sprite_index);
-			var yOffset = sprite_get_yoffset(sprite_index);
-			var collision = collision_rectangle(
-				(x-xOffset)+1, (y-yOffset)+1,
-				(x-xOffset+sprite_width)-1, (y-yOffset+sprite_height)-1,
-				other.object_index, 0, 1
-			)
-			if(collision != noone && collision.id == other.id) {
-				image_alpha = 0.5;
-			}
-			else
-				image_alpha = 1;
-		}
-	}
-}
 
 shoulderB.x = x+5*image_xscale;
 shoulderB.y = y-2;

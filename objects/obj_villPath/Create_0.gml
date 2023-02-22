@@ -4,6 +4,7 @@ var leftCount = irandom_range(1, maxHouses);
 var rightCount = irandom_range(1, maxHouses);
 leftHouses = [];
 rightHouses = [];
+
 //Adding houses
 for(var i=0; i<leftCount; i++) {
 	//40% chance of house spawning
@@ -58,5 +59,5 @@ for(var i=0; i<rightCount; i++) {
 	}
 }
 	
-timer = 5;
-excavate = true;
+event_inherited()
+
