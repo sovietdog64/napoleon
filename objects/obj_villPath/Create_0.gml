@@ -60,4 +60,3 @@ for(var i=0; i<rightCount; i++) {
 }
 	
 event_inherited()
-

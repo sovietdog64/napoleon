@@ -87,6 +87,14 @@ function loadChunk(chunkMapX, chunkMapY) {
 		chunk.structureType = structureTypes.WATER;
 	}
 }
+	
+function unloadChunk(chunkMapX, chunkMapY) {
+	var chunk = allChunks[# chunkMapX, chunkMapY];
+	var structures = chunk.structures;
+	for(var i=0; i<array_length(structures); i++) {
+		structures[i].loaded = false;
+	}
+}
 
 function spawnStructure(chunkMapX, chunkMapY, spawnX, spawnY, obj, lay = "Structures", varStruct = undefined) {
 	var structures = allChunks[# chunkMapX, chunkMapY]
@@ -110,9 +118,12 @@ function placeTile(_mapIndex, xx, yy, lay2 = layer_get_id("OnGround"), lay = lay
 	var obj = undefined;
 	var objSpr = undefined;
 	var blend = undefined;
+	var objLayer = lay2;
+	var sprLayer = lay;
 	switch(_mapIndex) {
 		case 0: {
 			obj = obj_water;
+			objLayer = lay;
 		}break;
 		case 1: {
 			spr = spr_sand;
@@ -167,18 +178,19 @@ function placeTile(_mapIndex, xx, yy, lay2 = layer_get_id("OnGround"), lay = lay
 		}break;
 		default: {
 			obj = obj_water;
+			objLayer = lay;
 		}break;
 	}
 	
 	//Placing tiles/spawning objects accordingly
 	if(spr != undefined) {
-		var s = layer_sprite_create(lay, xx*TILEW, yy*TILEW, spr);
+		var s = layer_sprite_create(sprLayer, xx*TILEW, yy*TILEW, spr);
 		if(blend != undefined)
 			layer_sprite_blend(s, blend);
 	}
 	
 	if(obj != undefined) {
-		var inst = instance_create_layer(xx*TILEW, yy*TILEH, lay2, obj);
+		var inst = instance_create_layer(xx*TILEW, yy*TILEH, objLayer, obj);
 		if(objSpr != undefined)
 			inst.sprite_index = objSpr;
 	}
