@@ -15,7 +15,6 @@ for(var xx=0; xx<xCount; xx++) {
 												chunkX, chunkY, chunkX+PX_CHUNK_W, chunkY+PX_CHUNK_H);
 		if(camInBounds) {
 			placeChunk(xx,yy);
-			alarm_set(0, room_speed);
 		}
 		
 		if(pointDistToRect(
@@ -27,3 +26,10 @@ for(var xx=0; xx<xCount; xx++) {
 		}
 	}
 }
+	
+var list = ds_list_create();
+var num = collision_rectangle_list(CAMX, CAMY, CAMX2, CAMY2, obj_structurePar, 0, 1, list, 0);
+if(num > 0)
+	for(var i=0; i<num; i++) {
+		list[| i].creatorId.loaded = true;
+	}

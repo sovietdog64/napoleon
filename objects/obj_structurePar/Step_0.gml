@@ -1,3 +1,5 @@
+loaded = creatorId.loaded;
+
 if(!loaded)
 	return;
 

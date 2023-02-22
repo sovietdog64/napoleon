@@ -36,7 +36,7 @@ function loadChunk(chunkMapX, chunkMapY) {
 	var numGroundTiles = 0, 
 		numWaterTiles = 0;
 	
-	//Getting chunk strucutre type + additional structure spawning
+	//Getting chunk strucutre type + structure spawning
 	for(var xx=startX; xx<startX+CHUNK_W; xx++)
 		for(var yy=startY; yy<startY+CHUNK_H; yy++) {
 			var ind = numRound(terrainMap[# xx, yy]);
@@ -46,7 +46,9 @@ function loadChunk(chunkMapX, chunkMapY) {
 			if(ind == 6) {
 				//goblin villages in woods
 				if(random(1) < 0.003) {
-					spawnStructure(chunkMapX, chunkMapY, xx*TILEW, yy*TILEW, obj_goblinVillage);
+					var inst = spawnStructure(chunkMapX, chunkMapY, xx*TILEW, yy*TILEW, obj_goblinVillage);
+					if(inst != undefined)
+						array_push(chunk.structures, inst);
 				}
 			}
 			if(tileType == structureTypes.GROUND)
@@ -103,6 +105,8 @@ function spawnStructure(chunkMapX, chunkMapY, spawnX, spawnY, obj, lay = "Struct
 		if(structures[i].object_index == obj)
 			canSpawn = false;
 	}
+		
+	//If there isn't any other strucutre like this one in the chunk, spawn it
 	if(canSpawn) {
 		var inst;
 		if(is_struct(varStruct))
@@ -111,6 +115,9 @@ function spawnStructure(chunkMapX, chunkMapY, spawnX, spawnY, obj, lay = "Struct
 			inst = instance_create_layer(spawnX, spawnY, lay, obj);
 		return inst;
 	}
+	//do not return the structure instance if couldn't spawn
+	else
+		return undefined;
 }
 
 function placeTile(_mapIndex, xx, yy, lay2 = layer_get_id("OnGround"), lay = layer_get_id("Ground")) {
