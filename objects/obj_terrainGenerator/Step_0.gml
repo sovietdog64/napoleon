@@ -29,7 +29,7 @@ for(var xx=0; xx<xCount; xx++) {
 	
 //Load strucutres when part of them are seen
 var inst = collision_rectangle(CAMX, CAMY, CAMX2, CAMY2, obj_structurePar, 0, 1);
-if(inst != noone) {
+if(inst != noone && !inst.loaded) {
 	var creator = inst.creatorId;
 	//Find the first ancestor of the strucutre found
 	while(variable_instance_exists(creator, "creatorId"))
