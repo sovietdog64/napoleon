@@ -34,7 +34,7 @@ global.screenOpen = false;
 global.canPlaceItem = false;
 global.reachDistance = TILEW*4;
 
-global.renderDist = CHUNK_AREA;
+global.renderDist = 3;
 
 #endregion globals
 

@@ -1,36 +1,53 @@
-function placeSprites() {
-	for(var xx=0; xx<ds_grid_width(terrainMap); xx++)
-		for(var yy=0; yy<ds_grid_height(terrainMap); yy++) {
-			var ind = numRound(ds_grid_get(terrainMap, xx, yy))
-			placeTile(ind, xx, yy);
-		}
-}
-
 function placeChunk(chunkMapX, chunkMapY) {
 	var chunk = allChunks[# chunkMapX, chunkMapY];
 	chunk.loaded = true;
+	
 	var startX = chunkMapX * CHUNK_W;
 	var startY = chunkMapY * CHUNK_H;
+	var tiles = ds_list_create();
 	for(var xx=startX; xx<startX+CHUNK_W; xx++)
 		for(var yy=startY; yy<startY+CHUNK_H; yy++) {
 			var ind = numRound(ds_grid_get(terrainMap, xx, yy))
-			placeTile(ind, xx, yy);
+			var tile = placeTile(ind, xx, yy);
+			if(tile != undefined)
+				ds_list_add(tiles, tile);
 		}
-	for(var i=0; i<array_length(chunk.structures); i++) {
-		chunk.structures[i].loaded = true;
-	}
+	chunk.tiles = tiles;
 }
 
-function loadChunk(chunkMapX, chunkMapY) {
-	if(!is_struct(allChunks[# chunkMapX, chunkMapY])) {
-		allChunks[# chunkMapX, chunkMapY] = {
-			structures : [],
-			structureType : structureTypes.ALL,
-			loaded : false,
-		}
+function updateChunkInstances(chunkMapX, chunkMapY) {
+	var chunk = allChunks[# chunkMapX, chunkMapY];
+	//list of all instances
+	var list = ds_list_create();
+	var chunkX = chunkMapX*PX_CHUNK_H;
+	var chunkY = chunkMapY*PX_CHUNK_H;
+	//Get all instances
+	collision_rectangle_list(
+		chunkX, chunkY,
+		chunkX+PX_CHUNK_H, chunkY+PX_CHUNK_H,
+		all, 0, 1, list, 0
+	);
+	
+	//save instances to chunk
+	chunk.instances = list;
+}
+
+function prepareChunk(chunkMapX, chunkMapY) {
+	allChunks[# chunkMapX, chunkMapY] = {
+		structures : [],
+		structureType : structureTypes.ALL,
+		loaded : false,
+		prepared : false,
+		instances : ds_list_create(),
+		tiles : ds_list_create(),
+		mapX : chunkMapX,
+		mapY : chunkMapY,
 	}
 	
 	var chunk = allChunks[# chunkMapX, chunkMapY];
+	if(chunk.prepared)
+		return;
+	chunk.prepared = true;
 	var startX = chunkMapX * CHUNK_W, 
 		startY = chunkMapY * CHUNK_W;
 	var numGroundTiles = 0, 
@@ -45,7 +62,7 @@ function loadChunk(chunkMapX, chunkMapY) {
 			//Spawning strucutres depending on 
 			if(ind == 6) {
 				//goblin villages in woods
-				if(random(1) < 0.003) {
+				if(random(1) < 0.0009) {
 					var inst = spawnStructure(chunkMapX, chunkMapY, xx*TILEW, yy*TILEW, obj_goblinVillage);
 					if(inst != undefined)
 						array_push(chunk.structures, inst);
@@ -78,8 +95,8 @@ function loadChunk(chunkMapX, chunkMapY) {
 		
 		var spawnX = irandom_range(chunkMapX*PX_CHUNK_W, chunkMapX*PX_CHUNK_W + PX_CHUNK_W);
 		var spawnY = irandom_range(chunkMapY*PX_CHUNK_W, chunkMapY*PX_CHUNK_W + PX_CHUNK_W);
-		//25% chance of village spawn in this chunk
-		if(irandom(100) < 25) 
+		//15% chance of village spawn in this chunk
+		if(irandom(100) < 15) 
 			spawnStructure(chunkMapX, chunkMapY, spawnX, spawnY, obj_testVillage);
 		
 	}
@@ -89,13 +106,16 @@ function loadChunk(chunkMapX, chunkMapY) {
 		chunk.structureType = structureTypes.WATER;
 	}
 }
-	
+
 function unloadChunk(chunkMapX, chunkMapY) {
 	var chunk = allChunks[# chunkMapX, chunkMapY];
-	var structures = chunk.structures;
+	if(!chunk.loaded)
+		return;
 	chunk.loaded = false;
-	for(var i=0; i<array_length(structures); i++) {
-		structures[i].loaded = false;
+	
+	//deleting sprites
+	for(var i=0; i<ds_list_size(chunk.tiles); i++) {
+		layer_sprite_destroy(chunk.tiles[| i]);
 	}
 }
 
@@ -190,11 +210,14 @@ function placeTile(_mapIndex, xx, yy, lay2 = layer_get_id("OnGround"), lay = lay
 		}break;
 	}
 	
+	var returnVal = undefined;
+	
 	//Placing tiles/spawning objects accordingly
 	if(spr != undefined) {
 		var s = layer_sprite_create(sprLayer, xx*TILEW, yy*TILEW, spr);
 		if(blend != undefined)
 			layer_sprite_blend(s, blend);
+		returnVal = s;
 	}
 	
 	if(obj != undefined) {
@@ -202,6 +225,7 @@ function placeTile(_mapIndex, xx, yy, lay2 = layer_get_id("OnGround"), lay = lay
 		if(objSpr != undefined)
 			inst.sprite_index = objSpr;
 	}
+	return returnVal;
 }
 
 function getTileType(_mapIndex) {

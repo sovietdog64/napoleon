@@ -1,6 +1,3 @@
-if(!loaded)
-	return;
-
 if(spawnCooldown > 0)
 	spawnCooldown--;
 else {

@@ -17,7 +17,7 @@ playerSpawnSetup = true;
 
 for(var xx=0; xx<ds_grid_width(allChunks);xx++)
 	for(var yy=0; yy<ds_grid_height(allChunks); yy++) {
-		loadChunk(xx,yy);
+		prepareChunk(xx,yy);
 	}
 
 //If player still didn't spawn, then force-spawn the player in a random chunk

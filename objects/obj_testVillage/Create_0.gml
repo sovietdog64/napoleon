@@ -4,7 +4,7 @@ radius = 0;
 
 //Roads
 for(var i=0; i<360; i += 90) { //Roads spawn in directions of all quadrantial directions
-	var xScale = irandom_range(10, 30);
+	var xScale = irandom_range(10, 20);
 	var inst = instance_create_layer(x, y, "Structures", obj_villPath,
 															{
 																image_angle : i,

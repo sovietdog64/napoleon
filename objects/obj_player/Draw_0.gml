@@ -13,3 +13,4 @@ switch(animType) {
 			)
 	}break;
 }
+	

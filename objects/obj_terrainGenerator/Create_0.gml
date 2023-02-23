@@ -1,5 +1,7 @@
 allChunks = 0;
 
-depth = -999
+depth = 99999
 
 playerSpawnSetup = true;
+
+currentChunk = 0;

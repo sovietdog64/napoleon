@@ -16,7 +16,10 @@
     "name": "Game_control",
     "path": "folders/Objects/Game_control.yy",
   },
-  "parentObjectId": null,
+  "parentObjectId": {
+    "name": "obj_gameControl",
+    "path": "objects/obj_gameControl/obj_gameControl.yy",
+  },
   "persistent": false,
   "physicsAngularDamping": 0.1,
   "physicsDensity": 0.5,

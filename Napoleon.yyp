@@ -192,6 +192,7 @@
     {"id":{"name":"spr_theRealMckinley","path":"sprites/spr_theRealMckinley/spr_theRealMckinley.yy",},"order":3,},
     {"id":{"name":"spr_shopItem","path":"sprites/spr_shopItem/spr_shopItem.yy",},"order":9,},
     {"id":{"name":"obj_goblin","path":"objects/obj_goblin/obj_goblin.yy",},"order":14,},
+    {"id":{"name":"obj_gameControl","path":"objects/obj_gameControl/obj_gameControl.yy",},"order":14,},
     {"id":{"name":"obj_McKinley","path":"objects/obj_McKinley/obj_McKinley.yy",},"order":13,},
     {"id":{"name":"spr_water","path":"sprites/spr_water/spr_water.yy",},"order":4,},
     {"id":{"name":"spr_transition","path":"sprites/spr_transition/spr_transition.yy",},"order":2,},

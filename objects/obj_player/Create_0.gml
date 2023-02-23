@@ -4,7 +4,6 @@ hspWalk = 2;//horizontal speed when walking
 vspJump = -16;//vertical speed when jumping
 inDialogue = false;//bool stating whether the player is talking with an NPC.
 invOpen = false;
-clickedItem = -1;
 
 invOpen = false;
 
@@ -64,7 +63,7 @@ handProgress = 0;
 handDir = 0.3;
 
 footProgress = 0;
-footDir = 2;
+footDir = 8;
 
 footRadius = 3;
 

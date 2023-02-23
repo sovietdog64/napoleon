@@ -7,7 +7,7 @@ rightHouses = [];
 //Adding houses
 for(var i=0; i<leftCount; i++) {
 	//40% chance of house spawning
-	if(random(1) < 0.4) {
+	if(random(1) < 0.5) {
 		var spr = spr_house;
 		if(image_angle == 0)
 			spr = choose(spr_house4);
@@ -34,7 +34,7 @@ for(var i=0; i<leftCount; i++) {
 }
 
 for(var i=0; i<rightCount; i++) {
-	if(random(1) < 0.4) {
+	if(random(1) < 0.5) {
 		var spr = spr_house;
 		if(image_angle == 0)
 			spr = choose(spr_house2);

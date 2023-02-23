@@ -342,7 +342,7 @@ fFOrigin.y = hipF.y+legLen-footRadius;
 
 var dirFacing = sign(x - xprevious);
 if(dirFacing == 0)
-	dirFacing = 1;
+	dirFacing = sign(image_xscale);
 	
 if(isItem(global.heldItem))
 	animType = global.heldItem.animationType;
