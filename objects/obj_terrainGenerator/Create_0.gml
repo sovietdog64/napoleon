@@ -1,6 +1,8 @@
 allChunks = 0;
 
-depth = 99999
+depth = -999;
+
+deactivatedInstances = [];
 
 playerSpawnSetup = true;
 

@@ -91,7 +91,7 @@ function placeItem(placeableItem, placeX, placeY) {
 	placeableItem.amount--;
 	instance_create_layer(
 		placeX, placeY,
-		layer,
+		"Instances",
 		obj_placeable,
 		{
 			item : newItem,

@@ -9,8 +9,6 @@ for(var i=0; i<360; i += 90) { //Roads spawn in directions of all quadrantial di
 															{
 																image_angle : i,
 																image_xscale : xScale,
-																loaded : loaded,
-																creatorID : id,
 															})
 	//Update radius when a longer path is created
 	if(inst.sprite_width > radius)
@@ -29,8 +27,6 @@ for(var i=0; i<360; i += 90) { //Roads spawn in directions of all quadrantial di
 														{
 															image_angle : dir,
 															image_xscale : irandom_range(10, 30),
-															loaded : loaded,
-															creatorID : id,
 														})
 		//Update radius if the distance to the end of the new path is longer
 		var pathEndX = xx+lengthdir_x(newPath.sprite_width, dir);

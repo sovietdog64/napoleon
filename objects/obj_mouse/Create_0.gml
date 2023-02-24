@@ -133,7 +133,7 @@ handleScreenInput = function() {
 		}
 		//Drop item when mouse clicked out of inventory
 		else if(shouldDropItem) {
-			with(instance_create_layer(obj_player.x, obj_player.y, obj_player.layer, obj_item)) {
+			with(instance_create_layer(obj_player.x, obj_player.y, "Instances", obj_item)) {
 				item = duplicateItem(other.itemDrag);
 			}
 			itemDrag = -1;
@@ -172,7 +172,7 @@ handleScreenInput = function() {
 			itemDrag.amount--;
 			var newItem = duplicateItem(itemDrag);
 			newItem.amount = 1;
-			with(instance_create_layer(obj_player.x, obj_player.y, obj_player.layer, obj_item)) {
+			with(instance_create_layer(obj_player.x, obj_player.y, "Instances", obj_item)) {
 				id.item = newItem;
 			}
 			if(itemDrag.amount <= 0)

@@ -15,7 +15,7 @@ for(var i=0; i<irandom_range(2, 5); i++) {
 	}
 	//If house can spawn in this point,
 	//spawn it and add it to huts array.
-	var inst = instance_create_layer(x+p.x, y+p.y, layer, obj_hut, {creatorID : id});
+	var inst = instance_create_layer(x+p.x, y+p.y, layer, obj_hut);
 	inst.sprite_index = choose(spr_hut);
 	array_push(huts, inst);
 }

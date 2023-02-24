@@ -1,6 +1,7 @@
 function placeChunk(chunkMapX, chunkMapY) {
 	var chunk = allChunks[# chunkMapX, chunkMapY];
-	chunk.loaded = true;
+	show_debug_message("load")
+	
 	
 	var startX = chunkMapX * CHUNK_W;
 	var startY = chunkMapY * CHUNK_H;
@@ -13,7 +14,31 @@ function placeChunk(chunkMapX, chunkMapY) {
 				ds_list_add(tiles, tile);
 		}
 	chunk.tiles = tiles;
+	
+	for(var i=0; i<ds_list_size(chunk.instances); i++)
+		instance_activate_object(chunk.instances[| i])
 }
+
+function placeChunkStruct(chunk) {
+	
+	var startX = chunk.mapX * CHUNK_W;
+	var startY = chunk.mapY * CHUNK_H;
+	var tiles = ds_list_create();
+	for(var xx=startX; xx<startX+CHUNK_W; xx++)
+		for(var yy=startY; yy<startY+CHUNK_H; yy++) {
+			var ind = numRound(ds_grid_get(terrainMap, xx, yy))
+			var tile = placeTile(ind, xx, yy);
+			if(tile != undefined)
+				ds_list_add(tiles, tile);
+		}
+	chunk.tiles = tiles;
+	
+	for(var i=0; i<ds_list_size(chunk.instances); i++)
+		instance_activate_object(chunk.instances[| i])
+
+	variable_struct_set(chunk, "loaded", true)
+}
+
 
 function updateChunkInstances(chunkMapX, chunkMapY) {
 	var chunk = allChunks[# chunkMapX, chunkMapY];
@@ -109,13 +134,39 @@ function prepareChunk(chunkMapX, chunkMapY) {
 
 function unloadChunk(chunkMapX, chunkMapY) {
 	var chunk = allChunks[# chunkMapX, chunkMapY];
-	if(!chunk.loaded)
-		return;
 	chunk.loaded = false;
 	
 	//deleting sprites
 	for(var i=0; i<ds_list_size(chunk.tiles); i++) {
 		layer_sprite_destroy(chunk.tiles[| i]);
+	}
+	
+	//Deactivating instances in chunk
+	updateChunkInstances(chunkMapX, chunkMapY);
+	for(var i=0; i<ds_list_size(chunk.instances); i++) {
+		var inst = chunk.instances[| i]
+		if(instance_exists(inst))
+			if(!inst.persistent && inst.object_index != obj_player)
+				instance_deactivate_object(inst);
+	}
+}
+
+
+function unloadChunkStruct(chunk) {
+	variable_struct_set(chunk, "loaded", false)
+	show_debug_message("unload")
+	//deleting sprites
+	for(var i=0; i<ds_list_size(chunk.tiles); i++) {
+		layer_sprite_destroy(chunk.tiles[| i]);
+	}
+	
+	//Deactivating instances in chunk
+	updateChunkInstances(chunk.mapX, chunk.mapY);
+	for(var i=0; i<ds_list_size(chunk.instances); i++) {
+		var inst = chunk.instances[| i];
+		if(instance_exists(inst))
+			if(!inst.persistent && inst.object_index != obj_player)
+				instance_deactivate_object(inst);
 	}
 }
 

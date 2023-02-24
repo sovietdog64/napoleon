@@ -27,7 +27,7 @@ for(var i=0; i<leftCount; i++) {
 		var inst = instance_create_layer(xx,
 										yy,
 										"Structures",
-										obj_house, {creatorID : id});
+										obj_house);
 		inst.sprite_index = spr;
 		array_push(leftHouses, inst);
 	}
@@ -52,7 +52,7 @@ for(var i=0; i<rightCount; i++) {
 		var inst = instance_create_layer(xx,
 										yy,
 										"Structures",
-										obj_house, {creatorID : id});
+										obj_house);
 		inst.sprite_index = spr;
 		array_push(rightHouses, inst);
 	}

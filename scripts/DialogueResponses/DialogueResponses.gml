@@ -37,7 +37,7 @@ function DialogueResponses(responseNum) {
 				//if inv too full, draw notification and drop tanto item on ground
 				if(!gaveItem) {
 					drawNotification(obj_player.x, obj_player.y - 100, "Inventory too full!", c_red, room_speed*3, 2, fa_center, 0);
-					var inst = instance_create_layer(obj_player.x, obj_player.y, "Interactables", obj_item);
+					var inst = instance_create_layer(obj_player.x, obj_player.y, "Instances", obj_item);
 					inst.item = tanto;
 				}
 			}
