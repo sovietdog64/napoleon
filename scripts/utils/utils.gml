@@ -460,8 +460,8 @@ function randPointInEllipse(ellipseWidth, ellipseHeight, snapToTile = false) {
 	var xx = ellipseWidth*r*cos(theta)/2;
 	var yy = ellipseHeight*r*sin(theta)/2;
 	if(snapToTile) {
-		xx = roundToTile(xx, TILEW/8);
-		yy = roundToTile(yy, TILEW/8);
+		xx = roundToTile(xx, TILEW/2);
+		yy = roundToTile(yy, TILEW/2);
 	}
 	return new Point(xx, yy);
 }

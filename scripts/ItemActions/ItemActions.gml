@@ -100,6 +100,7 @@ function hatchetSwipe(targX, targY, hitboxDuration) {
 	inst.damage = 2;
 	inst.lifeSpan = hitboxDuration;
 	inst.image_angle = dir;
+	inst.knockbackDur = 2;
 	if(!variable_instance_exists(inst, "resourceCollect"))
 		variable_instance_set(inst, "resourceCollect", true);
 }

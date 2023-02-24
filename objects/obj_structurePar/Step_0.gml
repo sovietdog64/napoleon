@@ -10,11 +10,4 @@ for(var i=0; i<ds_list_size(list); i++) {
 	instance_destroy(list[| i])
 }
 
-//Steer away from solids
-var dir = irandom(360);
-var xx = lengthdir_x(TILEW, dir);
-var yy = lengthdir_x(TILEW, dir);
-while(!place_free(x, y)) {
-	x += xx;
-	y += yy;
-}
+move_snap(TILEW, TILEW);

@@ -13,9 +13,6 @@ function placeChunk(chunkMapX, chunkMapY) {
 				ds_list_add(tiles, tile);
 		}
 	chunk.tiles = tiles;
-	
-	for(var i=0; i<ds_list_size(chunk.instances); i++)
-		instance_activate_object(chunk.instances[| i])
 }
 
 function placeChunkStruct(chunk) {
@@ -37,7 +34,6 @@ function placeChunkStruct(chunk) {
 
 	variable_struct_set(chunk, "loaded", true)
 }
-
 
 function updateChunkInstances(chunkMapX, chunkMapY) {
 	var chunk = allChunks[# chunkMapX, chunkMapY];
@@ -84,7 +80,7 @@ function prepareChunk(chunkMapX, chunkMapY) {
 			var tileType = getTileType(ind);
 			
 			//Spawning strucutres depending on 
-			if(ind == 6) {
+			if(ind == 6 || ind == 7) {
 				//goblin villages in woods
 				if(random(1) < 0.001) {
 					var inst = spawnStructure(chunkMapX, chunkMapY, xx*TILEW, yy*TILEW, obj_goblinVillage);
@@ -128,43 +124,6 @@ function prepareChunk(chunkMapX, chunkMapY) {
 	//If most were water tiles, spawn water structure (not added yet)
 	else if(numWaterTiles/CHUNK_AREA >= 0.5) {
 		chunk.structureType = structureTypes.WATER;
-	}
-}
-
-function unloadChunk(chunkMapX, chunkMapY) {
-	var chunk = allChunks[# chunkMapX, chunkMapY];
-	chunk.loaded = false;
-	
-	//deleting sprites
-	for(var i=0; i<ds_list_size(chunk.tiles); i++) {
-		layer_sprite_destroy(chunk.tiles[| i]);
-	}
-	
-	//Deactivating instances in chunk
-	updateChunkInstances(chunkMapX, chunkMapY);
-	for(var i=0; i<ds_list_size(chunk.instances); i++) {
-		var inst = chunk.instances[| i]
-		if(instance_exists(inst))
-			if(!inst.persistent && inst.object_index != obj_player)
-				instance_deactivate_object(inst);
-	}
-}
-
-
-function unloadChunkStruct(chunk) {
-	variable_struct_set(chunk, "loaded", false)
-	//deleting sprites
-	for(var i=0; i<ds_list_size(chunk.tiles); i++) {
-		layer_sprite_destroy(chunk.tiles[| i]);
-	}
-	
-	//Deactivating instances in chunk
-	updateChunkInstances(chunk.mapX, chunk.mapY);
-	for(var i=0; i<ds_list_size(chunk.instances); i++) {
-		var inst = chunk.instances[| i];
-		if(instance_exists(inst))
-			if(!inst.persistent && inst.object_index != obj_player)
-				instance_deactivate_object(inst);
 	}
 }
 

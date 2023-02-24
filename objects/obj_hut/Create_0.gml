@@ -11,8 +11,21 @@ if(sprite_height > radius)
 goblins = [];
 
 repeat(irandom_range(1, 4)) {
-	var p = randPointInCircle(radius);
-	var inst =  instance_create_layer(x+p.x, y+p.y, "Instances", obj_goblin);
+	var len = irandom_range(
+		radius+sprite_get_height(spr_goblin),
+		radius*1.5+sprite_get_height(spr_goblin)
+	);
+	var dir = irandom(360);
+	var inst =  instance_create_layer(
+		x+lengthdir_x(len, dir), y+lengthdir_y(len, dir),
+		"Instances", obj_goblin
+	);
+	with(inst) {
+		while(!place_free(x, y)) {
+			x += lengthdir_x(len, dir);
+			y += lengthdir_y(len, dir);
+		}
+	}
 	array_push(goblins, inst)
 }
 	

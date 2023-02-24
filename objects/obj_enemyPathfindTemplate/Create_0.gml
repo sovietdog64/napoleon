@@ -48,7 +48,7 @@ if(!layer_exists("Enemies")) {
 alert = false;
 detectionRange = TILEW*7;
 
-attackDist = TILEW*1.5;
+attackDist = TILEW*2;
 maxAtkCooldown = room_speed;
 
 deadTime = 0;
