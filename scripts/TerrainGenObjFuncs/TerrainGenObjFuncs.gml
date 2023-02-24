@@ -86,7 +86,7 @@ function prepareChunk(chunkMapX, chunkMapY) {
 			//Spawning strucutres depending on 
 			if(ind == 6) {
 				//goblin villages in woods
-				if(random(1) < 0.0009) {
+				if(random(1) < 0.001) {
 					var inst = spawnStructure(chunkMapX, chunkMapY, xx*TILEW, yy*TILEW, obj_goblinVillage);
 					if(inst != undefined)
 						array_push(chunk.structures, inst);

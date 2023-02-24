@@ -23,7 +23,7 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Save_System","folderPath":"folders/Objects/Game_control/Save_System.yy","order":0,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Gui Screens","folderPath":"folders/Objects/Gui Screens.yy","order":8,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Interactables","folderPath":"folders/Objects/Interactables.yy","order":2,},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Inventories","folderPath":"folders/Objects/Inventories.yy","order":9,},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Inventories","folderPath":"folders/Objects/Miscellaneous/Inventories.yy","order":7,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Miscellaneous","folderPath":"folders/Objects/Miscellaneous.yy","order":1,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Projectiles","folderPath":"folders/Objects/Projectiles.yy","order":3,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Solids","folderPath":"folders/Objects/Solids.yy","order":5,},

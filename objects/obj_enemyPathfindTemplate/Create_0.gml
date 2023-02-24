@@ -2,7 +2,7 @@ init = true;
 #region default enemy stuff
 hsp = 0;
 vsp = 0;
-hspWalk = random_range(3, 5);
+hspWalk = random_range(1, 3);
 vspJump = -10;
 jumpCooldown = room_speed*0.7;
 maxHp = 5;
@@ -12,7 +12,7 @@ state = states.MOVE;
 
 lungeForward = false;
 
-detectionRange = 800;
+detectionRange = TILEW*10;
 
 xpDrop = 5;
 if(global.level >= 5)
@@ -48,13 +48,17 @@ if(!layer_exists("Enemies")) {
 alert = false;
 detectionRange = TILEW*7;
 
-//Distance from player where enemy stops to attack
-attackDist = 30;
+attackDist = TILEW*1.5;
+maxAtkCooldown = room_speed;
 
 deadTime = 0;
+
+knockbackTime = 0;
 
 path = path_add();
 
 alarm_set(0, 10);
 
 #endregion pathfinding
+
+

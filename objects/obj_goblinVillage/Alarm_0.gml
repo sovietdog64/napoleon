@@ -1,5 +1,3 @@
-alarm_set(0, room_speed);
-
 var startX = x-radius;
 var startY = y-radius;
 for(var xx=0; xx<mapSize; xx++)

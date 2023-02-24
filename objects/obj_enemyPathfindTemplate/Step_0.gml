@@ -1,30 +1,31 @@
+knockbackTime--;
 attackCooldown--;
 if(state == states.DEAD) {
-	path_end();
 	calcEntityMovement();
-	deadTime++;
-	if(deadTime > room_speed*5) {
-		instance_destroy();
-	}
 	return;
 }
+
+//setting states
+var distToPlayer = distance_to_object(obj_player);
+if(knockbackTime > 0) //if getting knocked back, then enemy state is hurt
+	state = states.HURT;
+else if(distToPlayer <= attackDist) //attack if in range
+	state = states.ATTACK;
+else if(attackCooldown > 0) //if already attacked recently, back away for a bit
+	state = states.ATTACKED;
+else if(distToPlayer > detectionRange) //if player not in range, go idle
+	state = states.IDLE;
+else if(distToPlayer <= detectionRange) //if in range, then move
+	state = states.MOVE;
+//might add more else-ifs here
+
+//handling states
 switch(state) {
-	case states.IDLE:
+	case states.HURT: //if hurt, do knockback.
 		calcEntityMovement();
-		checkForPlayer();
-		if(path_index != -1)
-			state = states.MOVE;
-	break;
-	case states.MOVE:
-		calcEntityMovement();
-		checkForPlayer();
-		if(path_index == -1)
-			state = states.IDLE;
 	break;
 	case states.ATTACK:
-		calcEntityMovement();
-	break;
-	case states.DEAD:
-		
+		attackCooldown = maxAtkCooldown;
+		state = states.ATTACKED;
 	break;
 }

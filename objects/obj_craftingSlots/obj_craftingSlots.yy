@@ -13,7 +13,7 @@
   ],
   "parent": {
     "name": "Inventories",
-    "path": "folders/Objects/Inventories.yy",
+    "path": "folders/Objects/Miscellaneous/Inventories.yy",
   },
   "parentObjectId": {
     "name": "obj_inventory",

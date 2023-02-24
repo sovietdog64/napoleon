@@ -11,7 +11,7 @@ for(var i=0; i<irandom_range(2, 5); i++) {
 	var iterations = 0;
 	while(collision_circle(x+p.x, y+p.y, HIGHEST_HOUSE_H, obj_hut, 0, 1) != noone && iterations <= maxIterations) {
 		iterations++;
-		p = randPointInCircle(radius);
+		p = randPointInCircle(radius, true);
 	}
 	//If house can spawn in this point,
 	//spawn it and add it to huts array.
@@ -26,4 +26,4 @@ excavationMap = ds_grid_create(mapSize, mapSize);
 
 lazyFloodFill(excavationMap, floor(mapSize/2), floor(mapSize/2), 0.995)
 
-alarm_set(0, 1);
+alarm_set(0, 5);

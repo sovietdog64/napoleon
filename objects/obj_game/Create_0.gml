@@ -28,13 +28,14 @@ global.drag = 0.9;
 global.savingGame = false;
 global.loadingGame = false;
 
-global.noHud = false;
 global.screenOpen = false;
 
 global.canPlaceItem = false;
 global.reachDistance = TILEW*4;
 
 global.renderDist = 20;
+
+global.pathfindGrid = 0;
 
 #endregion globals
 
@@ -44,7 +45,9 @@ enum states {
 	IDLE,
 	MOVE,
 	ATTACK,
+	ATTACKED,
 	DEAD,
+	HURT,
 }
 
 enum attackStates {

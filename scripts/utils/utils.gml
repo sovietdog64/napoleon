@@ -430,7 +430,7 @@ function numRound(num) {
 		return ceil(num);
 }
 	
-function randPointInCircle(radius, snapToTile = false) {
+function randPointInCircle(radius, snapToTile = false, tileSize = TILEW) {
 	var theta = 2*pi*random(1);
 	var u = random(1)+random(1);
 	var r;
@@ -441,8 +441,8 @@ function randPointInCircle(radius, snapToTile = false) {
 	var xx = radius*r*cos(theta);
 	var yy = radius*r*sin(theta);
 	if(snapToTile) {
-		xx = roundToTile(xx, TILEW/8);
-		yy = roundToTile(yy, TILEW/8);
+		xx = roundToTile(xx, tileSize);
+		yy = roundToTile(yy, tileSize);
 	}
 	return new Point(xx, yy);
 }

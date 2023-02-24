@@ -1,28 +1,36 @@
-function calcEntityMovement() {
-	if(!place_free(x+hsp, y+vsp) && hsp != 0 && vsp != 0) {
-		while(place_free(x, y)) {
-			x += sign(hsp);
-			y += sign(vsp);
+function calcEntityMovement(drag = true) {
+	//Collision
+	{
+		{//Horizontal
+			if(!place_free(x+hsp, y) && hsp != 0) {
+				while(place_free(x, y)) {
+					x += sign(hsp);
+				}
+				while(!place_free(x, y)) {
+					x -= sign(hsp);
+				}
+				hsp = 0;
+			}
+			x += hsp;
 		}
-		while(!place_free(x, y)) {
-			x -= sign(hsp);
-			y -= sign(vsp);
+	
+		{//Vertical
+			if(!place_free(x, y+vsp) && vsp != 0) {
+				while(place_free(x, y)) {
+					y += sign(vsp);
+				}
+				while(!place_free(x, y)) {
+					y -= sign(vsp);
+				}
+				vsp = 0;
+			}
+			y += vsp;
 		}
-		hsp = 0;
-		vsp = 0;
 	}
-	else if(hsp == 0 || vsp == 0) {
-		var collisionPoint = raycast4Directional(sprite_width+5, 1, 0);
-		if(is_struct(collisionPoint)) {
-			var dir = point_direction(x, y, collisionPoint.x, collisionPoint.y)
-			hsp = lengthdir_x(5, dir);
-			vsp = lengthdir_y(5, dir);
-		}
+	if(drag) {
+		hsp *= global.drag;
+		vsp *= global.drag;
 	}
-	x += hsp;
-	y += vsp;
-	hsp *= global.drag;
-	vsp *= global.drag;
 	
 	checkIfStopped();
 }
@@ -67,9 +75,9 @@ function damageEntity(targetId, dmgSourceId, dmg, time) {
 		var dead = is_dead();
 		
 		if(dead)
-			var dis = 40;
+			var dis = 10;
 		else
-			var dis = 20;
+			var dis = 5;
 			
 		var dir = point_direction(dmgSourceId.x, dmgSourceId.y, x, y);
 		hsp = lengthdir_x(dis, dir);

@@ -11,7 +11,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Inventories",
-    "path": "folders/Objects/Inventories.yy",
+    "path": "folders/Objects/Miscellaneous/Inventories.yy",
   },
   "parentObjectId": null,
   "persistent": false,

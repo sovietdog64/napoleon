@@ -9,7 +9,7 @@
     {"name":"Game_control","order":4,"path":"folders/Objects/Game_control.yy",},
     {"name":"Gui Screens","order":8,"path":"folders/Objects/Gui Screens.yy",},
     {"name":"Interactables","order":2,"path":"folders/Objects/Interactables.yy",},
-    {"name":"Inventories","order":9,"path":"folders/Objects/Inventories.yy",},
+    {"name":"Inventories","order":7,"path":"folders/Objects/Miscellaneous/Inventories.yy",},
     {"name":"Miscellaneous","order":1,"path":"folders/Objects/Miscellaneous.yy",},
     {"name":"Projectiles","order":3,"path":"folders/Objects/Projectiles.yy",},
     {"name":"Solids","order":5,"path":"folders/Objects/Solids.yy",},
