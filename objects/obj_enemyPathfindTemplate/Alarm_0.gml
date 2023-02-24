@@ -35,6 +35,8 @@ else if(state == states.ATTACKED) {
 	{
 		move_towards_point(xx, yy, hspWalk);
 	}
+	alarm_set(0, room_speed*0.5);
+	return;
 }
 else {
 	path_end();

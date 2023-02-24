@@ -9,7 +9,7 @@ if(state == states.DEAD) {
 var distToPlayer = distance_to_object(obj_player);
 if(knockbackTime > 0) //if getting knocked back, then enemy state is hurt
 	state = states.HURT;
-else if(distToPlayer <= attackDist) //attack if in range
+else if(distToPlayer <= attackDist && attackCooldown <= 0) //attack if in range
 	state = states.ATTACK;
 else if(attackCooldown > 0) //if already attacked recently, back away for a bit
 	state = states.ATTACKED;
