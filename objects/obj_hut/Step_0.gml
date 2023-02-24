@@ -1,10 +1,12 @@
 // Inherit the parent event
 event_inherited();
 
-if(instance_exists(creatorID) && place_meeting(x, y, obj_house) || place_meeting(x, y, obj_villPath)) {
-	var creator = creatorID;
-	while(variable_instance_exists(creator, "creatorID"))
-		creator = creator.creatorID;
-	if(instance_exists(creator))
-		creator.destroy = true;
+for(var i=0; i<array_length(goblins); i++) {
+	var goblin = goblins[i];
+	if(instance_exists(goblin))
+		continue;
+	else {
+		array_delete(goblins, i, 1);
+		array_push(goblins, instance_create_layer(x, y, "Instances", obj_goblin))
+	}
 }

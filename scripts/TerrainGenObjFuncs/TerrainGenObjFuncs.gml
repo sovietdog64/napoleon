@@ -1,6 +1,5 @@
 function placeChunk(chunkMapX, chunkMapY) {
 	var chunk = allChunks[# chunkMapX, chunkMapY];
-	show_debug_message("load")
 	
 	
 	var startX = chunkMapX * CHUNK_W;
@@ -154,7 +153,6 @@ function unloadChunk(chunkMapX, chunkMapY) {
 
 function unloadChunkStruct(chunk) {
 	variable_struct_set(chunk, "loaded", false)
-	show_debug_message("unload")
 	//deleting sprites
 	for(var i=0; i<ds_list_size(chunk.tiles); i++) {
 		layer_sprite_destroy(chunk.tiles[| i]);

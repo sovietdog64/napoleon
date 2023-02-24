@@ -15,7 +15,7 @@ if(instance_exists(obj_player))
 		var inRenderDist = rectangle_in_circle(
 			inst.bbox_left, inst.bbox_top, inst.bbox_right, inst.bbox_bottom,
 			obj_player.x, obj_player.y,
-			TILEW*20
+			TILEW*global.renderDist
 		)
 		
 		if(!inRenderDist) {
@@ -32,7 +32,7 @@ if(instance_exists(obj_player))
 		var inRenderDist = rectangle_in_circle(
 			inst.bbox_left, inst.bbox_top, inst.bbox_right, inst.bbox_bottom,
 			obj_player.x, obj_player.y,
-			TILEW*20
+			TILEW*global.renderDist
 		)
 	
 		if(inRenderDist) {

@@ -34,7 +34,7 @@ global.screenOpen = false;
 global.canPlaceItem = false;
 global.reachDistance = TILEW*4;
 
-global.renderDist = 2;
+global.renderDist = 20;
 
 #endregion globals
 
