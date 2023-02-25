@@ -1,4 +1,5 @@
 function calcEntityMovement(drag = true) {
+	path_end();
 	//Collision
 	{
 		{//Horizontal
@@ -54,7 +55,7 @@ function checkForPlayer() {
 		var foundPlayer = mp_grid_path(grid, path, x, y, obj_player.x, obj_player.y, 1);
 	
 		if(foundPlayer) {
-			path_start(path, hspWalk, path_action_stop, 0);
+			path_start(path, walkSpd, path_action_stop, 0);
 		}
 	}
 	//If close enough to attack
@@ -75,14 +76,13 @@ function damageEntity(targetId, dmgSourceId, dmg, time) {
 		var dead = is_dead();
 		
 		if(dead)
-			var dis = 10;
+			var dis = 15;
 		else
-			var dis = 5;
+			var dis = 10;
 			
 		var dir = point_direction(dmgSourceId.x, dmgSourceId.y, x, y);
 		hsp = lengthdir_x(dis, dir);
 		vsp = lengthdir_y(dis, dir);
-		alert = true;
 		knockbackTime = time;
 		return dead;
 	}

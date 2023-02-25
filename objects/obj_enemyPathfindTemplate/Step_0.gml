@@ -7,25 +7,68 @@ if(state == states.DEAD) {
 
 //setting states
 var distToPlayer = distance_to_object(obj_player);
-if(knockbackTime > 0) //if getting knocked back, then enemy state is hurt
-	state = states.HURT;
-else if(distToPlayer <= attackDist && attackCooldown <= 0) //attack if in range
-	state = states.ATTACK;
-else if(attackCooldown > 0) //if already attacked recently, back away for a bit
-	state = states.ATTACKED;
-else if(distToPlayer > detectionRange) //if player not in range, go idle
-	state = states.IDLE;
-else if(distToPlayer <= detectionRange) //if in range, then move
-	state = states.MOVE;
-//might add more else-ifs here
 
 //handling states
 switch(state) {
-	case states.HURT: //if hurt, do knockback.
+	case states.HURT: { //if hurt, do knockback.
 		calcEntityMovement();
-	break;
-	case states.ATTACK:
+		if(knockbackTime <= 0) // set to move after no more knockback
+			state = states.MOVE;
+		return;
+	}break;
+	
+	case states.MOVE: {
+		if(distToPlayer <= attackDist)
+			state = states.ATTACK;
+		else if(distToPlayer > detectionRange)
+			state = states.IDLE;
+		
+		if(knockbackTime > 0) //check for being hurt when moving
+			state = states.HURT;
+		
+	}break;
+	
+	case states.ATTACK:{
 		attackCooldown = maxAtkCooldown;
+		var dir = point_direction(x, y, targX, targY);
+		var len = attackDist*0.3;
+		var xx = lengthdir_x(len, dir);
+		var yy = lengthdir_y(len, dir);
+		damageHitbox(
+			x+xx, y+yy,
+			24,24,
+			targX,targY,
+			1,
+			10, 10,
+			true,
+			true,
+			false,
+			xx,yy
+		).sprite_index = spr_stab;
 		state = states.ATTACKED;
-	break;
+	}break;
+	
+	case states.ATTACKED: {
+		if(attackCooldown <= 0)
+			state = states.MOVE;
+		
+		if(knockbackTime > 0) //check for being hurt when moving
+			state = states.HURT;
+	}break;
+		
+	case states.IDLE: {
+		if(distToPlayer <= detectionRange)
+			state = states.MOVE;
+	}
+}
+
+if(global.gamePaused || obj_player.state == PlayerStateLocked)
+	path_end();
+
+if(pathFailed) {
+	var dir = point_direction(x, y, obj_player.x, obj_player.y);
+	var len = walkSpd;
+	hsp = lengthdir_x(len, dir);
+	vsp = lengthdir_y(len, dir);
+	calcEntityMovement(false);
 }

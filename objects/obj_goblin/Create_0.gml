@@ -3,7 +3,7 @@
 
 // Inherit the parent event
 event_inherited();
-
+maxAtkCooldown = room_speed*0.2;
 #region animations
 //Vars for limb positions
 shoulderB = new Point(0,0)
@@ -19,9 +19,9 @@ handDir = 0.3;
 footProgress = 0;
 footDir = 8;
 
-footRadius = 3;
+footRadius = 2.5;
 
-walkAnimSpd = 5;
+walkAnimSpd = 8;
 
 //Legs
 hipB = new Point(0,0)

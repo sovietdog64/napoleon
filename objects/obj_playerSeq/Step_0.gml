@@ -1,5 +1,5 @@
-hspWalk = distance_to_point(xprevious, yprevious)
-hspWalk = clamp(hspWalk, -10, 10);
+walkSpd = distance_to_point(xprevious, yprevious)
+walkSpd = clamp(walkSpd, -10, 10);
 
 if(in_sequence) {
 	if(layer_sequence_is_finished(sequence_instance)) {
@@ -34,7 +34,7 @@ else {
 }
 switch(animType) {
 	case itemAnimations.NONE:
-		doWalkingArmMovements(10, hspWalk/7, 15);
+		doWalkingArmMovements(10, walkSpd/7, 15);
 	break;
 	case itemAnimations.PUNCHING: {
 		//Fists up. Idle.
@@ -47,7 +47,7 @@ switch(animType) {
 	} break;
 	case itemAnimations.KNIFE_STAB: {
 		if(leftAttackCooldown <= 0)
-			doWalkingArmMovements(10, hspWalk/7, 15);
+			doWalkingArmMovements(10, walkSpd/7, 15);
 		else
 			doStabMovement(mouse_x, mouse_y);
 	}
@@ -57,7 +57,7 @@ hipB.y = y+8;
 	
 hipF.x = x+2*sign(image_xscale);
 hipF.y = y+8;
-doWalkingLegMovements(14, 5, hspWalk/7);
+doWalkingLegMovements(14, 5, walkSpd/7);
 
 //if(isItem(heldItem) && heldItem.itemSpr == spr_boxingGloves)
 //	variable_struct_set(heldItem, "animationType", itemAnimations.PUNCHING);

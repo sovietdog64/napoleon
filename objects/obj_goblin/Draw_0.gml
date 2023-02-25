@@ -5,5 +5,6 @@
 event_inherited();
 
 draw_self();
-//draw_sprite(spr_loincloth, 0, x, y);
-drawArms(spr_goblinLimbB, spr_goblinLimbF)
+drawLegs(spr_goblinLimbB, spr_goblinLimbF);
+drawArms(spr_goblinLimbB, spr_goblinLimbF);
+draw_sprite_ext(spr_loincloth, 0, x, y, image_xscale, 1, 0, c_white, 1)

@@ -108,7 +108,7 @@ function walkMovements(radius, spd, directionFacing = image_xscale) {
 		if(footProgress > 360) 
 			footProgress = 0;
 		footDir = abs(footDir) * sign(directionFacing);
-		footDir = spd * sign(footDir) * hspWalk/2;
+		footDir = spd * sign(footDir) * walkSpd/2;
 
 		//Legs
 		{
@@ -121,14 +121,14 @@ function walkMovements(radius, spd, directionFacing = image_xscale) {
 	
 		//Arms
 		{
-			handF.x = hFOrigin.x + radius*(hspWalk)*dcos(footProgress-180);
-			var yy = radius*(hspWalk)*dsin(footProgress-180);
+			handF.x = hFOrigin.x + radius*(walkSpd)*dcos(footProgress-180);
+			var yy = radius*(walkSpd)*dsin(footProgress-180);
 			if(yy < 0)
 				yy *= -1;
 			handF.y = hFOrigin.y + yy;
 		
-			handB.x = hBOrigin.x + radius*(hspWalk)*dcos(footProgress);
-			var yy = radius*(hspWalk)*dsin(footProgress);
+			handB.x = hBOrigin.x + radius*(walkSpd)*dcos(footProgress);
+			var yy = radius*(walkSpd)*dsin(footProgress);
 			if(yy < 0)
 				yy *= -1;
 			handB.y = hBOrigin.y + yy;
@@ -169,7 +169,7 @@ function legWalk(radius, spd, directionFacing = image_xscale) {
 		if(footProgress > 360) 
 			footProgress = 0;
 		footDir = abs(footDir) * sign(directionFacing);
-		footDir = spd * sign(footDir) * hspWalk/2;
+		footDir = spd * sign(footDir) * walkSpd/2;
 
 		//Legs
 		{
@@ -203,19 +203,19 @@ function armWalk(radius, spd, directionFacing = image_xscale, doProgress = false
 			if(footProgress > 360) 
 				footProgress = 0;
 			footDir = abs(footDir) * sign(directionFacing);
-			footDir = spd * sign(footDir) * hspWalk/2;
+			footDir = spd * sign(footDir) * walkSpd/2;
 		}	
 		
 		//Arms
 		{
-			handF.x = hFOrigin.x + radius*(hspWalk)*dcos(footProgress-180);
-			var yy = radius*(hspWalk)*dsin(footProgress-180);
+			handF.x = hFOrigin.x + radius*(walkSpd)*dcos(footProgress-180);
+			var yy = radius*(walkSpd)*dsin(footProgress-180);
 			if(yy < 0)
 				yy *= -1;
 			handF.y = hFOrigin.y + yy;
 		
-			handB.x = hBOrigin.x + radius*(hspWalk)*dcos(footProgress);
-			var yy = radius*(hspWalk)*dsin(footProgress);
+			handB.x = hBOrigin.x + radius*(walkSpd)*dcos(footProgress);
+			var yy = radius*(walkSpd)*dsin(footProgress);
 			if(yy < 0)
 				yy *= -1;
 			handB.y = hBOrigin.y + yy;
@@ -244,13 +244,13 @@ function armBehindWalk(radius, spd, directionFacing = image_xscale, doProgress =
 			if(footProgress > 360) 
 				footProgress = 0;
 			footDir = abs(footDir) * sign(directionFacing);
-			footDir = spd * sign(footDir) * hspWalk/2;
+			footDir = spd * sign(footDir) * walkSpd/2;
 		}	
 		
 		//Arm
 		{
-			handB.x = hBOrigin.x + radius*(hspWalk)*dcos(footProgress);
-			var yy = radius*(hspWalk)*dsin(footProgress);
+			handB.x = hBOrigin.x + radius*(walkSpd)*dcos(footProgress);
+			var yy = radius*(walkSpd)*dsin(footProgress);
 			if(yy < 0)
 				yy *= -1;
 			handB.y = hBOrigin.y + yy;

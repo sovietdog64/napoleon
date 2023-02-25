@@ -38,39 +38,40 @@ if(mouse_x - x >= 0)
 else
 	image_xscale = -abs(image_xscale);
 
-{//Horizontal movement
-	//Checks direction  & speed of horizontal movement.
-	if(isHurt) {
-		hsp *= 0.8;
-		vsp *= 0.8;
-		if(abs(hsp) < 1 && abs(vsp) < 1) {
-			isHurt = false;
-			hsp = 0;
-			vsp = 0;
-		}
-	} 
-	else if(lungeForward) {
-		hsp *= 0.8;
-		vsp *= 0.8;
-		if(abs(hsp) < 1 && abs(vsp) < 1) {
-			lungeForward = false;
-			hsp = 0;
-			vsp = 0;
-		}
+if(isHurt) {
+	hsp *= 0.8;
+	vsp *= 0.8;
+	if(abs(hsp) < 1 && abs(vsp) < 1) {
+		isHurt = false;
+		hsp = 0;
+		vsp = 0;
 	}
-	else {
-		hsp = horizDirection * hspWalk;
-		direction = point_direction(x, y, mouse_x, mouse_y)
+} 
+else if(lungeForward) {
+	hsp *= 0.8;
+	vsp *= 0.8;
+	if(abs(hsp) < 1 && abs(vsp) < 1) {
+		lungeForward = false;
+		hsp = 0;
+		vsp = 0;
 	}
 }
+
+//Horizontal movement
+if(!isHurt && !lungeForward) {
+	hsp = horizDirection * walkSpd;
+	direction = point_direction(x, y, mouse_x, mouse_y)
+}
+
 		
-{//Vertical movement
-	if(!isHurt && !lungeForward)
-		vsp = vertDirection * hspWalk;
-}
+//Vertical movement
+if(!isHurt && !lungeForward)
+	vsp = vertDirection * walkSpd;
+
 	
-if(abs(vertDirection) && abs(horizDirection)) {
-	hspWalk = hspWalk/sqrt(2);
+if(hsp != 0 && vsp != 0) {
+	hsp /= sqrt(2);
+	vsp /= sqrt(2);
 }
 #endregion movement
 
@@ -201,12 +202,12 @@ if(runCooldown > 0)
 {
 	if(global.stamina > 10 && keyboard_check(vk_shift) && runCooldown <= 0) {
 		global.stamina -= 0.6;
-		hspWalk = minHspWalk*1.5;
+		walkSpd = minWalkSpd*1.5;
 	}
 	else {
 		if(runCooldown <= 0 && global.stamina <= 10)
 			runCooldown = room_speed*3;
-		hspWalk = minHspWalk;
+		walkSpd = minWalkSpd;
 	}
 	global.stamina += 0.2;	
 }
@@ -216,7 +217,7 @@ if(runCooldown > 0)
 #region collisions
 //collisions that change player spd
 if(place_meeting(x, y, obj_water)) {
-	hspWalk *= 0.7;
+	walkSpd *= 0.7;
 }
 
 //Collision

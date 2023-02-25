@@ -3,37 +3,39 @@ if(state == states.DEAD) {
 	return;
 }
 if(!instance_exists(obj_player)) {
+	path_end();
 	alarm_set(0, room_speed*0.2);
 	return;
 }
 
 if(!global.gamePaused && obj_player.state != PlayerStateLocked && state == states.MOVE) {
 	if(distance_to_object(obj_player) <= detectionRange) {
-		var dir = point_direction(x, y, obj_player.x, obj_player.y);
+		targX = obj_player.x;
+		targY = obj_player.y;
 		//Try to make path
-		if(mp_grid_path(global.pathfindGrid, path, x, y, obj_player.x, obj_player.y, 1)) {
-			path_start(path, hspWalk, path_action_stop, 0);
+		if(mp_grid_path(global.pathfindGrid, path, x, y, targX, targY, 1)) {
+			path_start(path, walkSpd, path_action_stop, 0);
 			motion_set(direction, 0);
+			pathFailed = false;
 		}
-		else	//if no path, try moving anyways
-		{
-			move_towards_point(obj_player.x, obj_player.y, hspWalk);
+		else {
+			pathFailed = true;
 		}
 	}
 }
 else if(state == states.ATTACKED) {
 	var dir = point_direction(x, y, obj_player.x, obj_player.y) - 180;
 	var len = TILEW*2;
-	var xx = lengthdir_x(len, dir);
-	var yy = lengthdir_y(len, dir);
+	targX = x+lengthdir_x(len, dir);
+	targY = y+lengthdir_y(len, dir);
 	//Try to make path
-	if(mp_grid_path(global.pathfindGrid, path, x, y, obj_player.x, obj_player.y, 1)) {
-		path_start(path, hspWalk, path_action_stop, 0);
+	if(mp_grid_path(global.pathfindGrid, path, x, y, targX, targY, 1)) {
+		path_start(path, walkSpd, path_action_stop, 0);
 		motion_set(direction, 0);
+		pathFailed = false;
 	}
-	else  //if no path, try moving anyways
-	{
-		move_towards_point(xx, yy, hspWalk);
+	else {
+		pathFailed = true;
 	}
 	alarm_set(0, room_speed*0.5);
 	return;

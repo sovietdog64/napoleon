@@ -501,3 +501,24 @@ function pointDistToRect(x1, y1, x2, y2, px, py) {
 	var dy = max(y1 - py, 0, py - y2);
 	return sqrt(dx*dx + dy*dy);
 }
+
+function damageHitbox(xx, yy, w, h, targX, targY, dmg, duration, kbDur, fromEnemy, follow, lastForInst = false, offX = 0, offY = 0) {
+	var inst = instance_create_layer(xx, yy, "Instances", obj_damageHitbox);
+	with(inst) {
+		image_xscale = w/sprite_width;
+		image_yscale = h/sprite_height;
+		dmgSourceId = other.id;
+		enemyHit = fromEnemy;
+		if(follow) {
+			instToFollow = other.id;
+			followOffsetX = offX;
+			followOffsetY = offY;
+		}
+		damage = dmg;
+		lifeSpan = duration;
+		lifeSpanSameAsInst = lastForInst;
+		knockbackDur = kbDur;
+		image_angle = point_direction(x, y, targX, targY);
+	}
+	return inst;
+}
