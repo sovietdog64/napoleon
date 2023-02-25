@@ -3,7 +3,7 @@ init = true;
 hsp = 0;
 vsp = 0;
 hspWalk = 7;
-vspJump = -10;
+
 jumpCooldown = room_speed*0.7;
 maxHp = 150;
 hp = maxHp;	

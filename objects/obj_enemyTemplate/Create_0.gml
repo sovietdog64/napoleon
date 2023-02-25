@@ -1,7 +1,7 @@
 hsp = 0;
 vsp = 0;
 hspWalk = -random_range(2, 4);
-vspJump = -10;
+
 jumpCooldown = room_speed*0.7;
 hp = 5;
 maxHp = hp;
