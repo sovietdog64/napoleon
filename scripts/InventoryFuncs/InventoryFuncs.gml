@@ -1,11 +1,15 @@
+//Returns the slot that contains the wanted item
+//If found across multiple slots, then returns array of slots
 function InvSearch(invArray, itemSpr_or_type, amount = 1) {
 	var amountFound = 0;
 	var slots = [];
-	for(var i=0; i<array_length(invArray); i++)
-		if(isItem(invArray[i]) && invArray[i].itemSpr == itemSpr_or_type) {
+	
+	for(var i=0; i<array_length(invArray); i++) {
+		var item = invArray[i];
+		if(isItem(item) && item.itemSpr == itemSpr_or_type) {
 			//If still didn't find the amount of the item needed, add on to the slots found
 			if(amountFound < amount) {
-				amountFound += invArray[i].amount;
+				amountFound += item.amount;
 				array_push(slots, i);
 			}
 			//If already found the amount, exit loop
@@ -15,15 +19,19 @@ function InvSearch(invArray, itemSpr_or_type, amount = 1) {
 		//if an item type was inputted, then search with that
 		else if(script_exists(itemSpr_or_type)) {
 			//if the item being checked is an instance of specified type
-			if(is_instanceof(invArray[i], itemSpr_or_type)) {
+			if(is_instanceof(item, itemSpr_or_type)) {
 				if(amountFound < amount) {
-					amountFound += invArray[i].amount;
+					amountFound += item.amount;
 					array_push(slots, i);
 				}
 				else
 					break;
 			}
 		}
+		
+	}
+
+
 	//if found the right amount, 
 	if(amountFound >= amount) {
 		//and if more than 1 slot was found, return the array of slots
@@ -35,6 +43,43 @@ function InvSearch(invArray, itemSpr_or_type, amount = 1) {
 	}
 	//Return -1 if nothing found
 	return -1;
+}
+	
+function InvSearchContainsOnly(invArray, arrayOfItems) {
+	var slots = [];
+	//Finding all slots in inv that contain the right items. these slots will be in the "slots" array
+	//This loop will immediately return false if it didn't find a required item
+	for(var i=0; i<array_length(arrayOfItems); i++) {
+		var reqItem = arrayOfItems[i];
+		//if required item is not an item type, get its amount. if it is, then amount is 1.
+		var amount = isItem(reqItem) ? reqItem.amount : 1;
+		var sprOrItemType = isItem(reqItem) ? reqItem.itemSpr : reqItem;
+		
+		var search = InvSearch(invArray, sprOrItemType, amount);
+		//if didn't find this required item, return false.
+		if(search == -1)
+			return false;
+		else { //if did find, then add the slots found to the "slots" array
+			if(is_array(search))
+				slots = array_concat(slots, search);
+			else
+				array_push(slots, search);
+		}
+	}
+	
+	//This loop will then go through all slots that are not in the "slots" array and check if they are items.
+	//If one of them is an item, it will immediately return false.
+	//This way, it makes sure that the inventory strictly contains the same items as arrayOfItems
+	for(var i=0; i<array_length(invArray); i++) {
+		if(array_contains(slots, i)) // skip found slots
+			continue;
+			
+		if(isItem(invArray[i])) //If current slot contains an item--it isn't a needed item--so return false.
+			return false;
+	}
+	
+	//Return true after all the checks.
+	return true;
 }
 
 //Returns an item struct of the item you want to find.
@@ -192,4 +237,3 @@ function openPlayerInv() {
 function closeAllInvs() {instance_destroy(obj_inventory)};
 
 function closeInv(inv) {instance_destroy(inv)};
-

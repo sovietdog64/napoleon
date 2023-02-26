@@ -1,7 +1,7 @@
 knockbackTime--;
 attackCooldown--;
 if(state == states.DEAD) {
-	calcEntityMovement();
+	instance_destroy();
 	return;
 }
 

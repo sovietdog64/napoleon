@@ -1,7 +1,7 @@
 ///@description spawn new goblins every 10s
 for(var i=0; i<array_length(goblins); i++) {
 	var goblin = goblins[i];
-	if(goblin.state == states.DEAD || !instance_exists(goblin)) {
+	if(!instance_exists(goblin) || goblin.state == states.DEAD) {
 		var len = irandom_range(
 			radius+sprite_get_height(spr_goblin),
 			radius*1.5+sprite_get_height(spr_goblin)

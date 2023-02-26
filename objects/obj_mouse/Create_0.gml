@@ -81,7 +81,7 @@ handleScreenInput = function() {
 		//Placing items in slot that is being hovered
 		if(invHover != -1) {
 			//If the item being dragged & the itme hovered are similar, place the stack into the slot.
-			if(itemsAreSimilar(itemDrag, invHover[slotHover]) && !dontPutItem) {
+			if(itemsAreSame(itemDrag, invHover[slotHover]) && !dontPutItem) {
 				invHover[slotHover].amount += itemDrag.amount;
 				itemDrag = -1;
 			}
@@ -110,7 +110,7 @@ handleScreenInput = function() {
 						}
 					}
 					//If item being dragged is similar to the item in the slot, pick up the item in the slot and update dragged item amount
-					else if(itemsAreSimilar(itemDrag, invHover[slotHover])) {
+					else if(itemsAreSame(itemDrag, invHover[slotHover])) {
 						var temp = invHover[slotHover].amount;
 						invHover[slotHover].amount = 0;
 						itemDrag.amount += temp;
@@ -153,7 +153,7 @@ handleScreenInput = function() {
 				itemDrag.amount = half;
 				item.amount = item.amount - half;
 			}
-			else if(itemsAreSimilar(itemDrag, item)){
+			else if(itemsAreSame(itemDrag, item)){
 				itemDrag.amount--;
 				item.amount++;
 				if(itemDrag.amount <= 0)

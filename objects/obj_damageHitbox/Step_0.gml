@@ -15,10 +15,10 @@ else {
 	}
 }
 
-if(instToFollow != noone) {
+if(instance_exists(instToFollow)) {
 	x = instToFollow.x + followOffsetX;
 	y = instToFollow.y + followOffsetY;
-}	
+}
 
 //Enemies
 if(!enemyHit && !dontHit) {

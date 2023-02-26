@@ -45,42 +45,6 @@ function removeFromItem(item, amountToRemove) {
 	return amountToRemove;
 }
 
-#region all item constructors
-
-///@param {array} outputArray An optional param. Use it if you want to run script_execute() on it.
-function Workbench(_amount = 1) : PlaceableItem(spr_woodBench,_amount,0,"Workbench") constructor {
-
-	desc = "A bench used for making a variety of things\nCrafting slots: " + string(4);
-	
-	placedSprite = spr_woodBenchP;
-	static rightClickAction = function() {
-		instance_create_depth(0,0,0,obj_craftingScreen, {numOfSlots : 4})
-	};
-	
-	breakingTool = Axe;
-	hp = 180;
-	
-	static leftClickAction = function(){}
-	
-	solid = true;
-}
-	
-function WoodHatchet(_amount = 1) : Axe(spr_woodHatchet,_amount,2,"Wood Hatchet", "Hatchet that can cut down trees\nDamage: 2", itemAnimations.KNIFE_STAB) constructor {
-	
-}
-	
-function Wood(_amount = 1) : Item(spr_wood,_amount,0,"Wood",":Resource:") constructor {
-	
-}	
-
-function WoodBlock(amount) : PlaceableItem(spr_woodBlock,amount,0,"Wood Block") constructor {
-	placedSprite = spr_woodBlockP;
-	breakingTool = Axe;
-	hp = 120;
-}
-
-#endregion all item constructors
-
 function placeItem(placeableItem, placeX, placeY) {
 	if(!is_struct(placeableItem))
 		return 0;
@@ -105,48 +69,15 @@ function CraftingRecipie(_item, _itemsRequired, _toolsRequired = undefined) cons
 	item = _item;
 	itemsRequired = _itemsRequired;
 	toolsRequired = _toolsRequired;
+	itemsAndTools = itemsRequired;
+	
+	if(is_array(toolsRequired))
+		itemsAndTools = array_concat(itemsRequired, toolsRequired)
 	
 	//Checks if can craft an item
 	//If cannot, it will return an array of the missing items
 	static canCraft = function(craftInv) {
-		var craftable = true;
-		var missingItems = [];
-		//the var "craftable" will remain true until a missing item is found
-		for(var i=0; i<array_length(itemsRequired); i++) {
-			var reqItem = itemsRequired[i];
-			//If missing item, set craftable to false & add the required item to list of missing items
-			//else, continue in the loop
-			var search = InvSearch(craftInv, reqItem.itemSpr, reqItem.amount);
-			if(search == -1) {
-				craftable = false;
-				array_push(missingItems, reqItem);
-			}
-		}
-		
-		//Checking if the right tool is in the grid
-		if(is_array(toolsRequired))
-			for(var i=0; i<array_length(toolsRequired); i++) {
-				var reqTool = toolsRequired[i];
-				var search;
-				//If the required tool is not an item type, then search with item sprite
-				if(is_struct(reqTool)) {
-					search = InvSearch(craftInv, reqTool.itemSpr, reqTool.amount);
-				}
-				//Else if required tool is an item type, search through item type.
-				else {
-					search = InvSearch(craftInv, reqTool);
-				}
-				
-				if(search == -1) {
-					craftable = false;
-					array_push(missingItems, reqTool);
-				}
-			}
-		
-		if(craftable)
-			return true;
-		else
-			return missingItems;
+		return InvSearchContainsOnly(craftInv, itemsAndTools);
 	}
 	
 	static craftItem = function(craftInv) {
@@ -180,7 +111,7 @@ function CraftingRecipie(_item, _itemsRequired, _toolsRequired = undefined) cons
 	
 }
 	
-function itemsAreSimilar(item, item2) {
+function itemsAreSame(item, item2) {
 	if(!isItem(item) || !isItem(item2))
 		return false;
 	return 
@@ -190,3 +121,46 @@ function itemsAreSimilar(item, item2) {
 		instanceof(item) == instanceof(item2) &&
 		item.animationType == item2.animationType;
 }
+
+function itemsAreSimilar(item, item2, includeAmount = false) {
+	if(!isItem(item) || !isItem(item2))
+		return false;
+	var boolean = instanceof(item) == instanceof(item2);
+	if(includeAmount)
+		boolean = instanceof(item) == instanceof(item2) && item.amount == item2.amount;
+	return boolean;
+}
+	
+#region all items
+function Workbench(amount = 1) : PlaceableItem(spr_woodBench,amount,0,"Workbench") constructor {
+
+	desc = "A bench used for making a variety of things\nCrafting slots: " + string(4);
+	
+	placedSprite = spr_woodBenchP;
+	static rightClickAction = function() {
+		instance_create_depth(0,0,0,obj_craftingScreen, {numOfSlots : 4})
+	};
+	
+	breakingTool = Axe;
+	hp = 180;
+	
+	static leftClickAction = function(){}
+	
+	solid = true;
+}
+	
+function WoodHatchet(amount = 1) : Axe(spr_woodHatchet,amount,2,"Wood Hatchet", "Hatchet that can cut down trees\nDamage: 2", itemAnimations.KNIFE_STAB) constructor {
+	
+}
+	
+function Wood(amount = 1) : Item(spr_wood,amount,0,"Wood",":Resource:") constructor {}	
+
+function WoodBlock(amount) : PlaceableItem(spr_woodBlock,amount,0,"Wood Block") constructor {
+	placedSprite = spr_woodBlockP;
+	breakingTool = Axe;
+	hp = 120;
+}
+	
+function WoodShaft(amount = 1) : Item(spr_woodShaft,amount,0,"Wood",":Resource:") constructor {}
+
+#endregion all items

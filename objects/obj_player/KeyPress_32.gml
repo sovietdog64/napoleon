@@ -1,8 +1,4 @@
-for(var i=0; i<array_length(obj_terrainGenerator.deactivatedInstances); i++) {
-	var inst = obj_terrainGenerator.deactivatedInstances[i];
-	if(inst.object_index == obj_goblinVillage) {
-		x = inst.x;
-		y = inst.y;
-		break;
-	}
+if(instance_exists(obj_craftingScreen)) {
+	var itemsNeeded = [new Wood(4)];
+	show_debug_message(InvSearchContainsOnly(obj_craftingScreen.craftingSlots, itemsNeeded))
 }

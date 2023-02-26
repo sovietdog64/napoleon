@@ -97,6 +97,7 @@ enum inventories {
 global.craftingRecipies = 
 [
 	new CraftingRecipie(new Workbench(), [new Wood(4)]),
-	new CraftingRecipie(new WoodBlock(4), [new Wood(2)], [Axe])
+	new CraftingRecipie(new WoodBlock(4), [new Wood(2)], [Axe]),
+	new CraftingRecipie(new WoodShaft(2), [new Wood(1)], [Axe]),
 ]
 #endregion crafting recipies
