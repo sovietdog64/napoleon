@@ -105,7 +105,9 @@ function drawHoldingSword(armBehindSpr, armFrontSpr, swordSpr, isSwiping, targX,
 	var hand = arms.front.hand;
 	var dir = 0;
 	var offset = (ITEM_SIZE*0.2)/2;
-	draw_sprite_ext(swordSpr, 0, hand.x-offset*dirFacing, hand.y-offset, 0.2*dirFacing, 0.2, dir, c_white, 1)
+	var xOffset = (hand.x-offset*dirFacing)+2*dirFacing
+	var yOffset = hand.y-offset
+	draw_sprite_ext(swordSpr, 0, xOffset, yOffset, 0.2*dirFacing, 0.2, dir, c_white, 1)
 }
 #endregion drawing
 
