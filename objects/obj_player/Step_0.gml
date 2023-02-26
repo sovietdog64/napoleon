@@ -77,20 +77,25 @@ if(hsp != 0 && vsp != 0) {
 
 #region items
 
-var canLeftClick = variable_struct_exists(global.heldItem, "leftClick");
-var canRightClick = variable_struct_exists(global.heldItem, "rightClick");
+var canLeftPress = variable_struct_exists(global.heldItem, "leftPress");
+var canRightPress = variable_struct_exists(global.heldItem, "rightPress");
+
+var canLeftDown = variable_struct_exists(global.heldItem, "leftDown");
+var canRightDown = variable_struct_exists(global.heldItem, "rightDown");
 
 
 var spr = isItem(global.heldItem) ? global.heldItem.itemSpr : 0;
+
+{//Updating list of cooldowns for missing items
+	//Add to cooldowns if this item is not in the list.
+	if(canLeftPress && !arrayInBounds(leftAttackCooldowns, spr)) {
+		array_insert(leftAttackCooldowns, spr, 0)
+	}
 		
-//Add to cooldowns if this item is not in the list.
-if(canLeftClick && !arrayInBounds(leftAttackCooldowns, spr)) {
-	array_insert(leftAttackCooldowns, spr, 0)
-}
-		
-//Add to cooldowns if this item is not in the list.
-if(canRightClick && !arrayInBounds(rightAttackCooldowns, spr)) {
-	array_insert(rightAttackCooldowns, spr, 0);
+	//Add to cooldowns if this item is not in the list.
+	if(canRightPress && !arrayInBounds(rightAttackCooldowns, spr)) {
+		array_insert(rightAttackCooldowns, spr, 0);
+	}
 }
 
 {//Item usage/animations
@@ -106,28 +111,42 @@ if(canRightClick && !arrayInBounds(rightAttackCooldowns, spr)) {
 		//Left press
 		{
 			//Will skip the leftclick if there isn't a leftclick action
-			if(LMOUSE_PRESSED && canLeftClick) { 
-				if(leftAttackCooldowns[spr] <= 0) {
-					//If cooldown is 0 for this item, then do its left click action
-					var cooldown = global.heldItem.leftClick(mouse_x, mouse_y);
-					if(is_numeric(cooldown))
-						leftAttackCooldowns[spr] = cooldown;
-				}
+			if(LMOUSE_PRESSED && canLeftPress && leftAttackCooldowns[spr] <= 0) { 
+				//If cooldown is 0 for this item, then do its left click action
+				var cooldown = global.heldItem.leftPress(mouse_x, mouse_y);
+				if(is_numeric(cooldown))
+					leftAttackCooldowns[spr] = cooldown;
+			}
+		}
+		
+		{//Left down
+			if(LMOUSE_DOWN && canLeftDown && leftAttackCooldowns[spr] <= 0) {
+				//If cooldown is 0 for this item, then do its left click action
+				var cooldown = global.heldItem.leftDown(mouse_x, mouse_y);
+				if(is_numeric(cooldown))
+					leftAttackCooldowns[spr] = cooldown;
 			}
 		}
 		
 			
 		//Right press
 		{
-		
-			if(RMOUSE_PRESSED && canRightClick) { //Will skip the rightclick if there isn't a rightclick action
-			if(rightAttackCooldowns[spr] <= 0) {
+			 //Will skip the rightclick if there isn't a rightclick action
+			if(RMOUSE_PRESSED && canRightPress && rightAttackCooldowns[spr] <= 0) {	
 				//If cooldown is 0 for this item, then do its right click action
-				var cooldown = global.heldItem.rightClick(mouse_x, mouse_y);
+				var cooldown = global.heldItem.rightPress(mouse_x, mouse_y);
 				if(is_numeric(cooldown))
 					rightAttackCooldowns[spr] = cooldown;
 			}
 		}
+			
+		{//Right down
+			if(LMOUSE_DOWN && canRightDown && rightAttackCooldowns[spr] <= 0) {
+				//If cooldown is 0 for this item, then do its right click action
+				var cooldown = global.heldItem.rightDown(mouse_x, mouse_y);
+				if(is_numeric(cooldown))
+					rightAttackCooldowns[spr] = cooldown;
+			}
 		}
 		
 	}
@@ -136,7 +155,7 @@ if(canRightClick && !arrayInBounds(rightAttackCooldowns, spr)) {
 	
 	
 if(isItem(global.heldItem))
-	if(canLeftClick && leftAttackCooldowns[global.heldItem.itemSpr] <= 0)
+	if(canLeftPress && leftAttackCooldowns[global.heldItem.itemSpr] <= 0)
 		attackState = attackStates.NONE
 else
 	attackState = attackStates.NONE;

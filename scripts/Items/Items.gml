@@ -158,7 +158,7 @@ function Workbench(amount = 1) : PlaceableItem(spr_woodBench,amount,0,"Workbench
 	
 function WoodHatchet(amount = 1) : Axe(spr_woodHatchet,amount,2,"Wood Hatchet", "Hatchet that can cut down trees\nDamage: 2", itemAnimations.SWORD) constructor {
 	cooldown = room_speed*0.4;
-	static leftClick = function(targX, targY) {
+	static leftPress = function(targX, targY) {
 		with(other) {
 			handProgress = 1;
 			attackState = attackStates.MELEE;
