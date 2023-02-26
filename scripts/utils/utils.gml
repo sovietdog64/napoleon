@@ -522,3 +522,7 @@ function damageHitbox(xx, yy, w, h, targX, targY, dmg, duration, kbDur, fromEnem
 	}
 	return inst;
 }
+
+function arrayInBounds(array, ind) {
+	return ind < array_length(array);
+}

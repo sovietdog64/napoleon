@@ -81,28 +81,5 @@ function tantoSlash(targX, targY, hitboxDuration) {
 	else if(hsp> 0) {image_xscale = 1; direction = 0;}
 }
 	
-function hatchetSwipe(targX, targY, hitboxDuration) {
-	leftAttackCooldown = room_speed*0.4;
-	handProgress = 1;
-	attackState = attackStates.MELEE;
-	animType = itemAnimations.KNIFE_STAB;
-	var dir = point_direction(x, y, targX, targY);
-	//Calculate the direction of the punch hitbox
-	var xx = x + lengthdir_x(30, dir);
-	var yy = y + lengthdir_y(30, dir);
-	//Create dmg hitbox (hitboxes are more resource efficient compared to individial enemy collision checks)
-	var inst = damageHitbox(
-		xx,yy,
-		24,24,
-		targX,targY,
-		2,
-		10,3,
-		object_is_ancestor(object_index, obj_enemy),
-		true, false,
-		xx-x,yy-y
-	);
-	inst.sprite_index = spr_npc;
-	
-	if(!variable_instance_exists(inst, "resourceCollect"))
-		variable_instance_set(inst, "resourceCollect", true);
+function hatchetSwipe(targX, targY, hitboxDuration, cooldownArr) {
 }

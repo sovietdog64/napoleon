@@ -34,7 +34,9 @@ hurtCooldown = 0;
 
 #endregion health
 
-leftAttackCooldown = 0;
+//Access cooldowns in this array by doing leftAttackCooldowns[<item sprite>]
+leftAttackCooldowns = [];
+rightAttackCooldowns = [];
 
 global.spawnX = x;
 global.spawnY = y;

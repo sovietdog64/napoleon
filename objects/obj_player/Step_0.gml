@@ -77,61 +77,68 @@ if(hsp != 0 && vsp != 0) {
 
 #region items
 
+var canLeftClick = variable_struct_exists(global.heldItem, "leftClick");
+var canRightClick = variable_struct_exists(global.heldItem, "rightClick");
+
+
+var spr = isItem(global.heldItem) ? global.heldItem.itemSpr : 0;
+		
+//Add to cooldowns if this item is not in the list.
+if(canLeftClick && !arrayInBounds(leftAttackCooldowns, spr)) {
+	array_insert(leftAttackCooldowns, spr, 0)
+}
+		
+//Add to cooldowns if this item is not in the list.
+if(canRightClick && !arrayInBounds(rightAttackCooldowns, spr)) {
+	array_insert(rightAttackCooldowns, spr, 0);
+}
+
 {//Item usage/animations
-	leftAttackCooldown--;
 	if(isPlaceableItem(global.heldItem)) {
 		if(global.canPlaceItem && LMOUSE_DOWN) 
 			placeItem(global.heldItem, roundToTile(mouse_x, TILEW/2), roundToTile(mouse_y, TILEW/2));
 	}
 	else if(isItem(global.heldItem)) {
-		//Using items on left press
-		if(LMOUSE_PRESSED && leftAttackCooldown <= 0) {
-			switch(global.heldItem.itemSpr) {
-				case spr_boxingGloves: boxingGloveAttack(mouse_x, mouse_y, 12); break;
-				case spr_tanto: tantoStab(mouse_x, mouse_y, 12); break;
-				case spr_woodHatchet : hatchetSwipe(mouse_x,mouse_y, 12); break;
-			}
-		}
-		//Right press
-		else if(RMOUSE_PRESSED && leftAttackCooldown <= 0) {
-			switch(global.heldItem.itemSpr) {
-				case spr_tanto: tantoSlash(mouse_x, mouse_y, 12); break;
+		
+		decrementCooldowns(leftAttackCooldowns)
+		decrementCooldowns(rightAttackCooldowns)
+		
+		//Left press
+		{
+			//Will skip the leftclick if there isn't a leftclick action
+			if(LMOUSE_PRESSED && canLeftClick) { 
+				if(leftAttackCooldowns[spr] <= 0) {
+					//If cooldown is 0 for this item, then do its left click action
+					var cooldown = global.heldItem.leftClick(mouse_x, mouse_y);
+					if(is_numeric(cooldown))
+						leftAttackCooldowns[spr] = cooldown;
+				}
 			}
 		}
 		
-		//Using items when holding down left
-		if(mouse_check_button(mb_left) && leftAttackCooldown <= 0) {
-			if(isFirearm(global.heldItem)) {
-				leftAttackCooldown = global.heldItem.cooldown;
-				attackState = attackStates.SHOOT;
-				var firedBullet = fireBullet(x, y, mouse_x, mouse_y, global.heldItem);
-				//If mag empty, try reloading
-				if(!firedBullet) {
-					var ammoItem = getItemFromInv(global.heldItem.ammoItemSpr);
-					//If found ammo, place reload animation
-					if(ammoItem != -1) {
-						var inst = placeSequenceAnimation(x, y, global.heldItem.reloadSeq);
-						var copy = copyStruct(global.heldItem);
-						var seqStruct =
-						{
-							sequenceElementId : inst,
-							followImageScale : true,
-							followMouseDirection : false,
-							assetIndex : copy.reloadSeq,
-						}
-						array_push(followingSequences, seqStruct);
-						leftAttackCooldown = copy.reloadDuration+2;
-						attackState = attackStates.RELOAD;
-					}
-				}
-				else
-					screenShake(room_speed*0.2, 10);
+			
+		//Right press
+		{
+		
+			if(RMOUSE_PRESSED && canRightClick) { //Will skip the rightclick if there isn't a rightclick action
+			if(rightAttackCooldowns[spr] <= 0) {
+				//If cooldown is 0 for this item, then do its right click action
+				var cooldown = global.heldItem.rightClick(mouse_x, mouse_y);
+				if(is_numeric(cooldown))
+					rightAttackCooldowns[spr] = cooldown;
 			}
 		}
+		}
+		
 	}
 
 }
-if(leftAttackCooldown <= 0)
+	
+	
+if(isItem(global.heldItem))
+	if(canLeftClick && leftAttackCooldowns[global.heldItem.itemSpr] <= 0)
+		attackState = attackStates.NONE
+else
 	attackState = attackStates.NONE;
 
 #endregion items
@@ -344,11 +351,16 @@ fFOrigin.y = hipF.y+legLen-footRadius;
 var dirFacing = sign(x - xprevious);
 if(dirFacing == 0)
 	dirFacing = sign(image_xscale);
-	
-if(isItem(global.heldItem))
+
+var spr = 0;
+
+if(isItem(global.heldItem)) {
 	animType = global.heldItem.animationType;
+	spr = global.heldItem.itemSpr;
+}
 else
 	animType = itemAnimations.NONE;
+
 
 switch(animType) {
 	case itemAnimations.NONE: 
@@ -356,7 +368,7 @@ switch(animType) {
 	break;
 	case itemAnimations.KNIFE_STAB: {
 		legWalk(footRadius, walkAnimSpd, dirFacing)
-		if(leftAttackCooldown > 0) {
+		if(leftAttackCooldowns[spr] > 0) {
 			knifeStab(legLen*2, mouse_x, mouse_y, 13);
 			armBehindWalk(footRadius, walkAnimSpd, dirFacing);
 		} else
@@ -365,7 +377,7 @@ switch(animType) {
 	
 	case itemAnimations.SWORD: {
 		legWalk(footRadius, walkAnimSpd, dirFacing)
-		if(leftAttackCooldown > 0) {
+		if(leftAttackCooldowns[spr] > 0) {
 			swordSwipe(mouse_x, mouse_y, walkAnimSpd/2, 90, image_xscale);
 			armBehindWalk(footRadius, walkAnimSpd, dirFacing);
 		} else

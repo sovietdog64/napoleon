@@ -130,7 +130,14 @@ function itemsAreSimilar(item, item2, includeAmount = false) {
 		boolean = instanceof(item) == instanceof(item2) && item.amount == item2.amount;
 	return boolean;
 }
-	
+
+function decrementCooldowns(cooldownArr) {
+	for(var i=0; i<array_length(cooldownArr); i++) {
+		if(is_numeric(cooldownArr[i]))
+			cooldownArr[i] -= 1;
+	}
+}
+
 #region all items
 function Workbench(amount = 1) : PlaceableItem(spr_woodBench,amount,0,"Workbench") constructor {
 
@@ -150,7 +157,33 @@ function Workbench(amount = 1) : PlaceableItem(spr_woodBench,amount,0,"Workbench
 }
 	
 function WoodHatchet(amount = 1) : Axe(spr_woodHatchet,amount,2,"Wood Hatchet", "Hatchet that can cut down trees\nDamage: 2", itemAnimations.SWORD) constructor {
+	cooldown = room_speed*0.4;
+	static leftClick = function(targX, targY) {
+		with(other) {
+			handProgress = 1;
+			attackState = attackStates.MELEE;
+			animType = itemAnimations.KNIFE_STAB;
+			var dir = point_direction(x, y, targX, targY);
+			//Calculate the direction of the punch hitbox
+			var xx = x + lengthdir_x(TILEW/2, dir);
+			var yy = y + lengthdir_y(TILEW/2, dir);
+			//Create dmg hitbox (hitboxes are more resource efficient compared to individial enemy collision checks)
+			var inst = damageHitbox(
+				xx,yy,
+				24,24,
+				targX,targY,
+				2,
+				10,3,
+				object_is_ancestor(object_index, obj_enemy),
+				true, false,
+				xx-x,yy-y
+			);
 	
+			if(!variable_instance_exists(inst, "resourceCollect"))
+				variable_instance_set(inst, "resourceCollect", true);
+		}
+		return cooldown;
+	}
 }
 	
 function Wood(amount = 1) : Item(spr_wood,amount,0,"Wood",":Resource:") constructor {}	
