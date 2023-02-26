@@ -12,4 +12,14 @@ switch(animType) {
 				mouse_x, mouse_y
 			)
 	}break;
+	
+	case itemAnimations.SWORD: {
+		if(isItem(global.heldItem))
+			drawHoldingSword(
+				spr_playerArmB, spr_playerArmF,
+				global.heldItem.itemSpr,
+				leftAttackCooldown > 0,
+				mouse_x, mouse_y
+			)
+	}break;
 }

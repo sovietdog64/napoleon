@@ -149,7 +149,7 @@ function Workbench(amount = 1) : PlaceableItem(spr_woodBench,amount,0,"Workbench
 	solid = true;
 }
 	
-function WoodHatchet(amount = 1) : Axe(spr_woodHatchet,amount,2,"Wood Hatchet", "Hatchet that can cut down trees\nDamage: 2", itemAnimations.KNIFE_STAB) constructor {
+function WoodHatchet(amount = 1) : Axe(spr_woodHatchet,amount,2,"Wood Hatchet", "Hatchet that can cut down trees\nDamage: 2", itemAnimations.SWORD) constructor {
 	
 }
 	

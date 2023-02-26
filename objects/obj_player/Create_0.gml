@@ -85,6 +85,7 @@ hipF = new Point(x+10, y+10);
 footF = new Point(hipF.x, y+20);
 
 legLen = sprite_get_width(spr_playerLegB)*2;
+armLen = sprite_get_width(spr_playerArmB)*2;
 fBOrigin = new Point(hipB.x, hipB.y+legLen);
 fFOrigin = new Point(hipF.x, hipF.y+legLen);
 

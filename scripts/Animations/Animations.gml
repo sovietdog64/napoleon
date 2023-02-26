@@ -99,6 +99,14 @@ function drawHoldingKnife(armBehindSpr, armFrontSpr, knifeSpr, isStabbing, targX
 		draw_sprite_ext(knifeSpr, 0, hand.x, hand.y, 0.2 * image_xscale, 0.2, dir, c_white, 1);
 	sprite_set_offset(knifeSpr, tempOffX, tempOffY);
 }
+
+function drawHoldingSword(armBehindSpr, armFrontSpr, swordSpr, isSwiping, targX, targY, dirFacing = image_xscale) {
+	var arms = drawArms(armBehindSpr, armFrontSpr);
+	var hand = arms.front.hand;
+	var dir = 0;
+	var offset = (ITEM_SIZE*0.2)/2;
+	draw_sprite_ext(swordSpr, 0, hand.x-offset*dirFacing, hand.y-offset, 0.2*dirFacing, 0.2, dir, c_white, 1)
+}
 #endregion drawing
 
 #region movements
@@ -249,7 +257,7 @@ function armBehindWalk(radius, spd, directionFacing = image_xscale, doProgress =
 		
 		//Arm
 		{
-			handB.x = hBOrigin.x + radius*(walkSpd)*dcos(footProgress);
+			handB.x = hBOrigin.x + radius*walkSpd*dcos(footProgress);
 			var yy = radius*(walkSpd)*dsin(footProgress);
 			if(yy < 0)
 				yy *= -1;
@@ -280,5 +288,21 @@ function knifeStab(distance, targX, targY, duration = 10) {
 	handF.x = x + lengthdir_x(len, dir);
 	handF.y = y + lengthdir_y(len, dir);
 	
+}
+	
+function swordSwipe(targX, targY, animSpeed, swipeForDegrees = 90, directionFacing = image_xscale) {
+	handProgress += handDir*animSpeed*4;
+	
+	if(abs(handProgress) > swipeForDegrees) {
+		animType = itemAnimations.NONE;
+		handProgress = 1;
+	}
+	
+	var dir = point_direction(x, y, targX, targY);
+	dir = handProgress-(dir*directionFacing)-swipeForDegrees/2;
+	dir *= directionFacing;
+	
+	handF.x = hFOrigin.x + armLen*walkSpd*dcos(dir);
+	handF.y = hFOrigin.y + armLen*walkSpd*dsin(dir);
 }
 #endregion movements

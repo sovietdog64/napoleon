@@ -362,6 +362,15 @@ switch(animType) {
 		} else
 			armWalk(footRadius, walkAnimSpd, dirFacing);
 	} break;
+	
+	case itemAnimations.SWORD: {
+		legWalk(footRadius, walkAnimSpd, dirFacing)
+		if(leftAttackCooldown > 0) {
+			swordSwipe(mouse_x, mouse_y, walkAnimSpd/2, 90, image_xscale);
+			armBehindWalk(footRadius, walkAnimSpd, dirFacing);
+		} else
+			armWalk(footRadius, walkAnimSpd, dirFacing);
+	}break;
 }
 
 
