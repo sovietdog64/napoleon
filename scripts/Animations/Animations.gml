@@ -312,7 +312,7 @@ function swordSwipe(targX, targY, animSpeed, swipeForDegrees = 90, directionFaci
 	}
 	
 	var dir = point_direction(x, y, targX, targY);
-	dir = handProgress-(dir*directionFacing)-swipeForDegrees/2;
+	dir = handProgress-(dir*directionFacing)-swipeForDegrees/4;
 	dir *= directionFacing;
 	
 	handF.x = hFOrigin.x + armLen*walkSpd*dcos(dir);

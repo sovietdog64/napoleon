@@ -99,11 +99,7 @@ var spr = isItem(global.heldItem) ? global.heldItem.itemSpr : 0;
 }
 
 {//Item usage/animations
-	if(isPlaceableItem(global.heldItem)) {
-		if(global.canPlaceItem && LMOUSE_DOWN) 
-			placeItem(global.heldItem, roundToTile(mouse_x, TILEW/2), roundToTile(mouse_y, TILEW/2));
-	}
-	else if(isItem(global.heldItem)) {
+	if(isItem(global.heldItem)) {
 		
 		decrementCooldowns(leftAttackCooldowns)
 		decrementCooldowns(rightAttackCooldowns)
@@ -393,7 +389,6 @@ switch(animType) {
 	case itemAnimations.KNIFE_STAB: {
 		legWalk(footRadius, walkAnimSpd, dirFacing)
 		if(leftAttackCooldowns[spr] > 0) {
-			var factor = 20/global.heldItem.cooldown;
 			knifeStab(legLen*2, mouse_x, mouse_y, 13);
 			armBehindWalk(footRadius, walkAnimSpd, dirFacing);
 		} else
@@ -405,10 +400,11 @@ switch(animType) {
 		if(leftAttackCooldowns[spr] > 0) {
 			var factor = 20/global.heldItem.cooldown;
 			factor *= 1.2;
-			swordSwipe(mouse_x, mouse_y,(walkAnimSpd/2)*factor*1.3, 90*factor, image_xscale);
+			swordSwipe(mouse_x, mouse_y,(walkAnimSpd/2)*factor*1.1, 90*factor*1.1, image_xscale);
 			armBehindWalk(footRadius, walkAnimSpd, dirFacing);
-		} else
+		} else {
 			armWalk(footRadius, walkAnimSpd, dirFacing);
+		}
 	}break;
 }
 
