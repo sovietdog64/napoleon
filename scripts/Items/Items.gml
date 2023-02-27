@@ -147,23 +147,7 @@ function CraftingRecipie(_item, _itemsRequired, _toolsRequired = undefined) cons
 }
 
 #region all items
-function Workbench(amount = 1) : PlaceableItem(spr_woodBench,amount,0,"Workbench") constructor {
 
-	desc = "A bench used for making a variety of things\nCrafting slots: " + string(4);
-	
-	placedSprite = spr_woodBenchP;
-	static rightClickAction = function() {
-		instance_create_depth(0,0,0,obj_craftingScreen, {numOfSlots : 4})
-	};
-	
-	breakingTool = Axe;
-	hp = 180;
-	
-	static leftClickAction = function(){}
-	
-	solid = true;
-}
-	
 function WoodHatchet(amount = 1) : Axe(spr_woodHatchet,amount,2,"Wood Hatchet", "Hatchet that can cut down trees\nDamage: 2", itemAnimations.SWORD) constructor {
 	cooldown = room_speed*0.4;
 	static leftPress = function(targX, targY) {
@@ -196,12 +180,6 @@ function WoodHatchet(amount = 1) : Axe(spr_woodHatchet,amount,2,"Wood Hatchet", 
 	
 function Wood(amount = 1) : Item(spr_wood,amount,0,"Wood",":Resource:") constructor {}	
 
-function WoodBlock(amount) : PlaceableItem(spr_woodBlock,amount,0,"Wood Block") constructor {
-	placedSprite = spr_woodBlockP;
-	breakingTool = Axe;
-	hp = 120;
-}
-	
 function WoodShaft(amount = 1) : Item(spr_woodShaft,amount,0,"Wood","A shaft that serves as a handle for all sorts of weapons.") constructor {}
 
 function Handle(amount = 1) : Item(spr_woodHandle,amount,0,"Handle","A handle used for swords") constructor {}
