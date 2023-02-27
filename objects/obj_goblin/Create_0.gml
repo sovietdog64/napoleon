@@ -5,7 +5,8 @@
 event_inherited();
 hp = 10;
 maxHp = hp;
-maxAtkCooldown = room_speed*0.2;
+maxAtkCooldown = room_speed*0.4;
+
 #region animations
 //Vars for limb positions
 shoulderB = new Point(0,0)

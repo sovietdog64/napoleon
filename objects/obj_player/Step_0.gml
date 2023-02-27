@@ -346,26 +346,31 @@ if(global.hp <= 0 && !global.dead) {
 
 #region animations
 
-shoulderB.x = x+5*image_xscale;
-shoulderB.y = y-2;
-hBOrigin.x = shoulderB.x;
-hBOrigin.y = y+10;
+//Setting limb positions
+{//arms
+	shoulderB.x = x+5*image_xscale;
+	shoulderB.y = y-2;
+	hBOrigin.x = shoulderB.x;
+	hBOrigin.y = y+10;
 
-shoulderF.x = x-3*image_xscale;
-shoulderF.y = y-2;
-hFOrigin.x = shoulderF.x;
-hFOrigin.y = y+10;
+	shoulderF.x = x-3*image_xscale;
+	shoulderF.y = y-2;
+	hFOrigin.x = shoulderF.x;
+	hFOrigin.y = y+10;
+}
 
-
-hipB.x = x-5*sign(image_xscale);
-hipB.y = y+8;
-fBOrigin.x = hipB.x;
-fBOrigin.y = hipB.y+legLen-footRadius;
+{//legs
+	hipB.x = x-5*sign(image_xscale);
+	hipB.y = y+8;
+	fBOrigin.x = hipB.x;
+	fBOrigin.y = hipB.y+legLen-footRadius;
 	
-hipF.x = x+2*sign(image_xscale);
-hipF.y = y+8;
-fFOrigin.x = hipF.x;
-fFOrigin.y = hipF.y+legLen-footRadius;
+	hipF.x = x+2*sign(image_xscale);
+	hipF.y = y+8;
+	fFOrigin.x = hipF.x;
+	fFOrigin.y = hipF.y+legLen-footRadius;
+}
+
 
 var dirFacing = sign(x - xprevious);
 if(dirFacing == 0)
@@ -388,6 +393,7 @@ switch(animType) {
 	case itemAnimations.KNIFE_STAB: {
 		legWalk(footRadius, walkAnimSpd, dirFacing)
 		if(leftAttackCooldowns[spr] > 0) {
+			var factor = 20/global.heldItem.cooldown;
 			knifeStab(legLen*2, mouse_x, mouse_y, 13);
 			armBehindWalk(footRadius, walkAnimSpd, dirFacing);
 		} else
@@ -397,7 +403,9 @@ switch(animType) {
 	case itemAnimations.SWORD: {
 		legWalk(footRadius, walkAnimSpd, dirFacing)
 		if(leftAttackCooldowns[spr] > 0) {
-			swordSwipe(mouse_x, mouse_y, walkAnimSpd/2, 90, image_xscale);
+			var factor = 20/global.heldItem.cooldown;
+			factor *= 1.2;
+			swordSwipe(mouse_x, mouse_y,(walkAnimSpd/2)*factor*1.3, 90*factor, image_xscale);
 			armBehindWalk(footRadius, walkAnimSpd, dirFacing);
 		} else
 			armWalk(footRadius, walkAnimSpd, dirFacing);
