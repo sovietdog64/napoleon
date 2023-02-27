@@ -18,12 +18,6 @@ function Placeable(sprite, rightClickFunction = undefined, leftClickFunction = u
 function Axe(itemSprite, itemAmount, dmg, itemName, itemDescription, animationTypeEnum = itemAnimations.KNIFE_STAB) : Item(itemSprite, itemAmount, dmg, itemName, itemDescription, animationTypeEnum) constructor {}
 function Pickaxe(itemSprite, itemAmount, dmg, itemName, itemDescription, animationTypeEnum = itemAnimations.KNIFE_STAB) : Item(itemSprite, itemAmount, dmg, itemName, itemDescription, animationTypeEnum) constructor {}
 
-function PlaceableItem(itemSprite, itemAmount, dmg, itemName, itemDescription, sprite, rightClickFunction = function(){}, leftClickFunction = function(){}) : Item(itemSprite, itemAmount, dmg, itemName, itemDescription) constructor {
-	solid = true;
-	static rightClickAction = rightClickFunction;
-	static leftClickAction = leftClickFunction;
-}
-
 #endregion item classes
 
 #region item utils
