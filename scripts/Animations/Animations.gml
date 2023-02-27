@@ -79,35 +79,46 @@ function drawLimbLeftSpr(segment1Spr, segment2Spr, xx, yy, targX, targY) {
 	};
 }
 	
-function drawHoldingKnife(armBehindSpr, armFrontSpr, knifeSpr, isStabbing, targX, targY) {
+function drawHoldingKnife(armBehindSpr, armFrontSpr, knifeSpr, isStabbing, targX, targY, directionFacing = image_xscale) {
 	var arms = drawArms(armBehindSpr, armFrontSpr);
 	var dir = 0;
 	var hand = arms.front.hand;
 	
 	var tempOffX = sprite_get_xoffset(knifeSpr);
 	var tempOffY = sprite_get_xoffset(knifeSpr);
-	sprite_set_offset(knifeSpr, ITEM_SIZE/2, ITEM_SIZE/2)
+	
+	
+	sprite_set_offset(knifeSpr, ITEM_SIZE/4, ITEM_SIZE/2)
+	
 	if(isStabbing) {
 		dir = point_direction(x, y, targX, targY);
-		if(dir > 90 && dir <= 270)
-			dir -= 180
-		else if(dir > 270)
-			dir -= 270
-		draw_sprite_ext(knifeSpr, 0, hand.x, hand.y, 0.2 * image_xscale, 0.2, dir, c_white, 1);
+		draw_sprite_ext(knifeSpr, 0, hand.x, hand.y, 0.2*directionFacing, 0.2, dir, c_white, 1);
 	}
 	else
-		draw_sprite_ext(knifeSpr, 0, hand.x, hand.y, 0.2 * image_xscale, 0.2, dir, c_white, 1);
+		draw_sprite_ext(knifeSpr, 0, hand.x, hand.y, 0.2 * directionFacing, 0.2, dir, c_white, 1);
+	
 	sprite_set_offset(knifeSpr, tempOffX, tempOffY);
 }
 
-function drawHoldingSword(armBehindSpr, armFrontSpr, swordSpr, isSwiping, targX, targY, dirFacing = image_xscale) {
+function drawHoldingSword(armBehindSpr, armFrontSpr, swordSpr, isSwiping, targX, targY, directionFacing = image_xscale) {
 	var arms = drawArms(armBehindSpr, armFrontSpr);
 	var hand = arms.front.hand;
 	var dir = 0;
-	var offset = (ITEM_SIZE*0.2)/2;
-	var xOffset = (hand.x-offset*dirFacing)+2*dirFacing
-	var yOffset = hand.y-offset
-	draw_sprite_ext(swordSpr, 0, xOffset, yOffset, 0.2*dirFacing, 0.2, dir, c_white, 1)
+	
+	var prevOffX = sprite_get_xoffset(swordSpr);
+	var prevOffY = sprite_get_yoffset(swordSpr);
+	
+	
+	sprite_set_offset(swordSpr, ITEM_SIZE*0.2, ITEM_SIZE*0.8);
+	
+	if(isSwiping) {//Set rotation to target
+		dir = point_direction(x, y, targX, targY);
+		draw_sprite_ext(swordSpr, 0, hand.x, hand.y, 0.25, 0.25*directionFacing, dir, c_white, 1)
+	}
+	else
+		draw_sprite_ext(swordSpr, 0, hand.x, hand.y, 0.25*directionFacing, 0.25, dir, c_white, 1)
+	
+	sprite_set_offset(swordSpr, prevOffX, prevOffY)
 }
 #endregion drawing
 

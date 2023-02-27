@@ -30,7 +30,7 @@ switch(state) {
 	
 	case states.ATTACK:{
 		attackCooldown = maxAtkCooldown;
-		var dir = point_direction(x, y, targX, targY);
+		var dir = point_direction(x, y, obj_player.x, obj_player.y);
 		var len = attackDist*0.3;
 		var xx = lengthdir_x(len, dir);
 		var yy = lengthdir_y(len, dir);

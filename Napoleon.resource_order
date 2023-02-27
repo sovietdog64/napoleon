@@ -149,7 +149,6 @@
     {"name":"spr_water","order":4,"path":"sprites/spr_water/spr_water.yy",},
     {"name":"spr_transition","order":2,"path":"sprites/spr_transition/spr_transition.yy",},
     {"name":"fnt_notif","order":1,"path":"fonts/fnt_notif/fnt_notif.yy",},
-    {"name":"spr_goblinRag","order":1,"path":"sprites/spr_goblinRag/spr_goblinRag.yy",},
     {"name":"spr_invPanel","order":1,"path":"sprites/spr_invPanel/spr_invPanel.yy",},
     {"name":"m16Reload","order":2,"path":"sequences/m16Reload/m16Reload.yy",},
     {"name":"spr_grass2","order":1,"path":"sprites/spr_grass2/spr_grass2.yy",},
