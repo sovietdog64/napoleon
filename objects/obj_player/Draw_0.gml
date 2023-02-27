@@ -6,6 +6,8 @@ var spr = isItem(global.heldItem) ? global.heldItem.itemSpr : 0;
 
 switch(animType) {
 	case itemAnimations.KNIFE_STAB: {
+		if(!arrayInBounds(leftAttackCooldowns, spr))
+			break;
 		if(isItem(global.heldItem))
 			drawHoldingKnife(
 				spr_playerArmB, spr_playerArmF,
@@ -16,6 +18,8 @@ switch(animType) {
 	}break;
 	
 	case itemAnimations.SWORD: {
+		if(!arrayInBounds(leftAttackCooldowns, spr))
+			break;
 		if(isItem(global.heldItem))
 			drawHoldingSword(
 				spr_playerArmB, spr_playerArmF,

@@ -1,3 +1,5 @@
+#region item classes
+
 function Item(itemSprite, itemAmount, dmg, itemName, itemDescription, animationTypeEnum = itemAnimations.NONE) constructor {
 	itemSpr = itemSprite;
 	amount = itemAmount;
@@ -21,6 +23,10 @@ function PlaceableItem(itemSprite, itemAmount, dmg, itemName, itemDescription, s
 	static rightClickAction = rightClickFunction;
 	static leftClickAction = leftClickFunction;
 }
+
+#endregion item classes
+
+#region item utils
 
 //Returns the amount needed to remove after removing
 //Ex. item has amount of 3. amount to remove was 10. The item's amount will be subtracted to 0, and the func will return 7, because 3 out of 10 items were removed.
@@ -64,6 +70,35 @@ function placeItem(placeableItem, placeX, placeY) {
 	
 	return 1;
 }
+	
+function itemsAreSame(item, item2) {
+	if(!isItem(item) || !isItem(item2))
+		return false;
+	return 
+		item.itemSpr == item2.itemSpr &&
+		item.name == item2.name &&
+		item.desc == item2.desc &&
+		instanceof(item) == instanceof(item2) &&
+		item.animationType == item2.animationType;
+}
+
+function itemsAreSimilar(item, item2, includeAmount = false) {
+	if(!isItem(item) || !isItem(item2))
+		return false;
+	var boolean = instanceof(item) == instanceof(item2);
+	if(includeAmount)
+		boolean = instanceof(item) == instanceof(item2) && item.amount == item2.amount;
+	return boolean;
+}
+
+function decrementCooldowns(cooldownArr) {
+	for(var i=0; i<array_length(cooldownArr); i++) {
+		if(is_numeric(cooldownArr[i]))
+			cooldownArr[i] -= 1;
+	}
+}
+
+#endregion item utils
 	
 function CraftingRecipie(_item, _itemsRequired, _toolsRequired = undefined) constructor {
 	item = _item;
@@ -110,33 +145,6 @@ function CraftingRecipie(_item, _itemsRequired, _toolsRequired = undefined) cons
 	}
 	
 }
-	
-function itemsAreSame(item, item2) {
-	if(!isItem(item) || !isItem(item2))
-		return false;
-	return 
-		item.itemSpr == item2.itemSpr &&
-		item.name == item2.name &&
-		item.desc == item2.desc &&
-		instanceof(item) == instanceof(item2) &&
-		item.animationType == item2.animationType;
-}
-
-function itemsAreSimilar(item, item2, includeAmount = false) {
-	if(!isItem(item) || !isItem(item2))
-		return false;
-	var boolean = instanceof(item) == instanceof(item2);
-	if(includeAmount)
-		boolean = instanceof(item) == instanceof(item2) && item.amount == item2.amount;
-	return boolean;
-}
-
-function decrementCooldowns(cooldownArr) {
-	for(var i=0; i<array_length(cooldownArr); i++) {
-		if(is_numeric(cooldownArr[i]))
-			cooldownArr[i] -= 1;
-	}
-}
 
 #region all items
 function Workbench(amount = 1) : PlaceableItem(spr_woodBench,amount,0,"Workbench") constructor {
@@ -162,7 +170,7 @@ function WoodHatchet(amount = 1) : Axe(spr_woodHatchet,amount,2,"Wood Hatchet", 
 		with(other) {
 			handProgress = 1;
 			attackState = attackStates.MELEE;
-			animType = itemAnimations.KNIFE_STAB;
+			animType = itemAnimations.SWORD;
 			var dir = point_direction(x, y, targX, targY);
 			//Calculate the direction of the punch hitbox
 			var xx = x + lengthdir_x(TILEW/2, dir);
@@ -180,7 +188,7 @@ function WoodHatchet(amount = 1) : Axe(spr_woodHatchet,amount,2,"Wood Hatchet", 
 			);
 	
 			if(!variable_instance_exists(inst, "resourceCollect"))
-				variable_instance_set(inst, "resourceCollect", true);
+				variable_instance_set(inst, "resourceCollect", Axe);
 		}
 		return cooldown;
 	}
@@ -194,6 +202,35 @@ function WoodBlock(amount) : PlaceableItem(spr_woodBlock,amount,0,"Wood Block") 
 	hp = 120;
 }
 	
-function WoodShaft(amount = 1) : Item(spr_woodShaft,amount,0,"Wood",":Resource:") constructor {}
+function WoodShaft(amount = 1) : Item(spr_woodShaft,amount,0,"Wood","A shaft that serves as a handle for all sorts of weapons.") constructor {}
+
+function Handle(amount = 1) : Item(spr_woodHandle,amount,0,"Handle","A handle used for swords") constructor {}
+
+function WoodSword(amount = 1) : Item(spr_woodSword,amount,3,"Wood Sword","Perfect sword for training... or combat if you are brave enough.", itemAnimations.SWORD) constructor {
+	cooldown = room_speed*0.2;
+	static leftPress = function(targX, targY) {
+		with(other) {
+			handProgress = 1;
+			attackState = attackStates.MELEE;
+			animType = itemAnimations.SWORD;
+			var dir = point_direction(x, y, targX, targY);
+			//Calculate the direction of the punch hitbox
+			var xx = x + lengthdir_x(TILEW*0.7, dir);
+			var yy = y + lengthdir_y(TILEW*0.7, dir);
+			//Create dmg hitbox (hitboxes are more resource efficient compared to individial enemy collision checks)
+			damageHitbox(
+				xx,yy,
+				24,24,
+				targX,targY,
+				2,
+				10,3,
+				object_is_ancestor(object_index, obj_enemy),
+				true, false,
+				xx-x,yy-y
+			);
+		}
+		return cooldown;
+	}
+}
 
 #endregion all items

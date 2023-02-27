@@ -3,6 +3,8 @@
 
 // Inherit the parent event
 event_inherited();
+hp = 10;
+maxHp = hp;
 maxAtkCooldown = room_speed*0.2;
 #region animations
 //Vars for limb positions
