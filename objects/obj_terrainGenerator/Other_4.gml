@@ -1,4 +1,4 @@
-if(room = rm_init)
+if(room == rm_init || room == rm_dungeon)
 	return;
 var xCount = room_width div PX_CHUNK_W;
 var yCount = room_height div PX_CHUNK_H;
