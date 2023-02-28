@@ -37,4 +37,4 @@
 #macro HIGHEST_HOUSE_H 300
 
 #macro MAX_DUNGEON_ROOM_SIZE (TILEW*power(2, 5))
-#macro MIN_DUNGEON_ROOM_SIZE (TILEW*power(2,3))
+#macro MIN_DUNGEON_ROOM_SIZE (TILEW*power(2,4))

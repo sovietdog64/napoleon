@@ -6,7 +6,7 @@ dungeonMap = ds_grid_create(
 x=0;
 y=0;
 
-maxRooms = irandom_range(5, 15);
+maxRooms = irandom_range(10, 15);
 
 roomCount = 1;
 
@@ -25,3 +25,5 @@ dungeonMap[# 0,0] = instance_create_layer(
 		creatorID : id,
 	}
 )
+
+originRm = dungeonMap[# 0,0];
