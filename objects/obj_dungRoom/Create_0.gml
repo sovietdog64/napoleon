@@ -98,3 +98,29 @@ repeat(maxNewRooms) {
 		return;
 }
 	
+x = cellMid.x-rmWidth/2;
+y = cellMid.y-rmHeight/2;
+	
+var rmHeightTiles = rmHeight div TILEW;
+var rmWidthTiles = rmWidth div TILEW;
+	
+var lay = layer_get_id("Ground")
+for(var r=0; r<rmHeightTiles; r += rmHeightTiles-1) {
+	for(var c=0; c<rmWidthTiles; c++) {
+		layer_sprite_create(
+			lay,
+			x+c*TILEW,y+r*TILEW,
+			spr_grass
+		)
+	}
+}
+
+for(var c=0; c<rmWidthTiles; c += rmWidthTiles-1) {
+	for(var r=0; r<rmHeightTiles; r++) {
+		layer_sprite_create(
+			lay,
+			x+c*TILEW,y+r*TILEW,
+			spr_wall
+		)
+	}
+}
