@@ -336,6 +336,7 @@ function Point(px, py) constructor {
 	y = py;
 }
 
+
 function Line(_x1, _y1, _x2, _y2) constructor {
 	x1 = _x1; 
 	y1 = _y1;

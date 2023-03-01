@@ -55,6 +55,7 @@
     {"name":"Timelines","order":6,"path":"folders/Timelines.yy",},
   ],
   "ResourceOrderSettings": [
+    {"name":"obj_dungeonDoor","order":6,"path":"objects/obj_dungeonDoor/obj_dungeonDoor.yy",},
     {"name":"terrainGenTest","order":2,"path":"rooms/terrainGenTest/terrainGenTest.yy",},
     {"name":"PlayerStateFree","order":5,"path":"scripts/PlayerStateFree/PlayerStateFree.yy",},
     {"name":"rm_colMiniboss","order":4,"path":"rooms/rm_colMiniboss/rm_colMiniboss.yy",},
@@ -88,6 +89,7 @@
     {"name":"InventoryFuncs","order":10,"path":"scripts/InventoryFuncs/InventoryFuncs.yy",},
     {"name":"spr_556x45mm","order":1,"path":"sprites/spr_556x45mm/spr_556x45mm.yy",},
     {"name":"spr_bulletFlash","order":2,"path":"sprites/spr_bulletFlash/spr_bulletFlash.yy",},
+    {"name":"spr_dungDoor","order":2,"path":"sprites/spr_dungDoor/spr_dungDoor.yy",},
     {"name":"spr_musketCartridge","order":3,"path":"sprites/spr_musketCartridge/spr_musketCartridge.yy",},
     {"name":"obj_wall","order":5,"path":"objects/obj_wall/obj_wall.yy",},
     {"name":"spr_m16Mag","order":3,"path":"sprites/spr_m16Mag/spr_m16Mag.yy",},

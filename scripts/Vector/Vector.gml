@@ -41,6 +41,11 @@ function Vector2(xx, yy) constructor {
 		y = xx;
 	}
 	
+	static normalize = function() {
+		x = sign(x);
+		y = sign(y);
+	}
+	
 }
 
 function Vec2Zero() : Vector2(0,0) constructor {}

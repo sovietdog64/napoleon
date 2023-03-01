@@ -1,21 +1,15 @@
 {
   "resourceType": "GMObject",
   "resourceVersion": "1.0",
-  "name": "obj_dungeonBranch",
-  "eventList": [
-    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,},
-    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,},
-  ],
+  "name": "obj_dungeonDoor",
+  "eventList": [],
   "managed": true,
   "overriddenProperties": [],
   "parent": {
     "name": "Dungeon",
     "path": "folders/Objects/Structures/Dungeon.yy",
   },
-  "parentObjectId": {
-    "name": "obj_dungRoom",
-    "path": "objects/obj_dungRoom/obj_dungRoom.yy",
-  },
+  "parentObjectId": null,
   "persistent": false,
   "physicsAngularDamping": 0.1,
   "physicsDensity": 0.5,
@@ -30,8 +24,11 @@
   "physicsShapePoints": [],
   "physicsStartAwake": true,
   "properties": [],
-  "solid": false,
-  "spriteId": null,
+  "solid": true,
+  "spriteId": {
+    "name": "spr_dungDoor",
+    "path": "sprites/spr_dungDoor/spr_dungDoor.yy",
+  },
   "spriteMaskId": null,
   "visible": true,
 }

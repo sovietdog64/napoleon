@@ -33,30 +33,6 @@ layer_sprite_yscale(
 
 #endregion ground
 
-#region walls
-
-for(var i=0; i<2; i++) {
-	var wall = instance_create_layer(
-		x+(rmWidth-TILEW)*i, y,
-		"OnGround",
-		obj_solid
-	)
-	wall.sprite_index = spr_dungWall;
-	wall.image_yscale = (rmHeight/TILEW);
-}
-
-for(var i=0; i<2; i++) {
-	var wall = instance_create_layer(
-		x, y+(rmHeight-TILEW)*i,
-		"OnGround",
-		obj_solid
-	)
-	wall.sprite_index = spr_dungWall;
-	wall.image_xscale = (rmWidth/TILEW);
-}
-	
-#endregion walls
-
 //90% chance of branching to another room
 if(chance(90)) {
 	var xx = mapPos.x;
@@ -145,3 +121,6 @@ repeat(maxNewRooms) {
 	else //stop if out of bounds.
 		return;
 }
+
+
+alarm_set(0, 2);
