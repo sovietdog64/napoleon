@@ -1,1 +1,1 @@
-room_goto(rm_dungeon);
+//room_goto(rm_dungeon);
