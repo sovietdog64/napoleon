@@ -26,16 +26,16 @@ for(var i=0; i<branchLen; i++) {
 	if(!withinBoundsGrid(dungeonMap, newRoomPos.x, newRoomPos.y))
 		return;
 	
-	var roomWidth = irandom_range(MIN_DUNGEON_ROOM_SIZE, MAX_DUNGEON_ROOM_SIZE-TILEW*5);
-	var roomHeight = irandom_range(MIN_DUNGEON_ROOM_SIZE, MAX_DUNGEON_ROOM_SIZE-TILEW*5);
+	var roomWidth = irandom_range(MIN_DUNGEON_ROOM_TILES, MAX_DUNGEON_ROOM_TILES);
+	var roomHeight = irandom_range(MIN_DUNGEON_ROOM_TILES, MAX_DUNGEON_ROOM_TILES);
 	
 	dungeonMap[# newRoomPos.x, newRoomPos.y] = instance_create_layer(
 		newRoomPos.x*DUNG_CELL_SIZE, newRoomPos.y*DUNG_CELL_SIZE,
 		"Instances",
 		obj_dungeonBranch,
 		{
-			rmWidth : ,
-			rmHeight : irandom_range(MIN_DUNGEON_ROOM_SIZE, MAX_DUNGEON_ROOM_SIZE-TILEW*5),
+			rmWidth : roomWidth*TILEW,
+			rmHeight : roomHeight*TILEW,
 			branchDir : new Vector2(dirX, dirY),
 			mapPos : newRoomPos.copy(),
 			creatorID : id,
