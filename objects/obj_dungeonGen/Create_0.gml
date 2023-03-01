@@ -21,7 +21,7 @@ var newRoomPos = mapPos.copy();
 //Making main branch of rooms
 for(var i=0; i<branchLen; i++) {
 	var dirX = mainBranchDir.y;
-	var dirY = mainBranchDir.x * choose(1, -1);
+	var dirY = mainBranchDir.x;
 	//Stop if the new branch is going to be out of bounds.
 	if(!withinBoundsGrid(dungeonMap, newRoomPos.x, newRoomPos.y))
 		return;

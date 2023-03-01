@@ -50,3 +50,6 @@ creatorID.dungeonMap[# otherMapPos.x, otherMapPos.y] = inst;
 
 array_push(bridgedTo, inst);
 array_push(inst.bridgedTo, id);
+
+obj_player.x = x;
+obj_player.y = y;

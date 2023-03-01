@@ -1,3 +1,5 @@
+if(room == rm_dungeon)
+	return;
 var xCount = ds_grid_width(allChunks);
 var yCount = ds_grid_height(allChunks);
 
@@ -29,17 +31,20 @@ if(instance_exists(obj_player))
 	for(var i=0; i<len; i++) {
 		var inst = deactivatedInstances[i];
 		
-		var inRenderDist = rectangle_in_circle(
-			inst.bbox_left, inst.bbox_top, inst.bbox_right, inst.bbox_bottom,
-			obj_player.x, obj_player.y,
-			TILEW*global.renderDist
-		)
+		try {
+			var inRenderDist = rectangle_in_circle(
+				inst.bbox_left, inst.bbox_top, inst.bbox_right, inst.bbox_bottom,
+				obj_player.x, obj_player.y,
+				TILEW*global.renderDist
+			)
 	
-		if(inRenderDist) {
-			instance_activate_object(inst);
-			array_delete(deactivatedInstances, i, 1);
-			len = array_length(deactivatedInstances);
-		}
+			if(inRenderDist) {
+				instance_activate_object(inst);
+				array_delete(deactivatedInstances, i, 1);
+				len = array_length(deactivatedInstances);
+			}
+		} catch(err) {}
+		
 	}
 
 //Loop through all chunks and see if it is unloaded and visible at the same time.

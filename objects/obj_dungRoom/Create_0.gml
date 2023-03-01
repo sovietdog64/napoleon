@@ -9,6 +9,49 @@ cellMid = new Line(
 	cellX+DUNG_CELL_SIZE, cellY+DUNG_CELL_SIZE)
 cellMid = cellMid.getMidpoint();
 
+x = cellMid.x-rmWidth/2;
+y = cellMid.y-rmHeight/2;
+
+#region ground
+
+ground = layer_sprite_create(
+	layer_get_id("Ground"),
+	x+TILEW, y+TILEW,
+	spr_dungFloor
+)
+
+layer_sprite_xscale(
+	ground,
+	(rmWidth-TILEW-TILEW)/sprite_get_width(spr_dungFloor)
+)
+
+layer_sprite_yscale(
+	ground,
+	(rmHeight-TILEW-TILEW)/sprite_get_height(spr_dungFloor)
+)
+
+#endregion ground
+
+for(var i=0; i<2; i++) {
+	var wall = instance_create_layer(
+		x+(rmWidth-TILEW)*i, y,
+		"OnGround",
+		obj_solid
+	)
+	wall.sprite_index = spr_dungWall;
+	wall.image_yscale = (rmHeight/TILEW);
+}
+
+for(var i=0; i<2; i++) {
+	var wall = instance_create_layer(
+		x, y+(rmHeight-TILEW)*i,
+		"OnGround",
+		obj_solid
+	)
+	wall.sprite_index = spr_dungWall;
+	wall.image_xscale = (rmWidth/TILEW);
+}
+
 //90% chance of branching to another room
 if(chance(90)) {
 	var xx = mapPos.x;
@@ -96,31 +139,4 @@ repeat(maxNewRooms) {
 	}
 	else //stop if out of bounds.
 		return;
-}
-	
-x = cellMid.x-rmWidth/2;
-y = cellMid.y-rmHeight/2;
-	
-var rmHeightTiles = rmHeight div TILEW;
-var rmWidthTiles = rmWidth div TILEW;
-	
-var lay = layer_get_id("Ground")
-for(var r=0; r<rmHeightTiles; r += rmHeightTiles-1) {
-	for(var c=0; c<rmWidthTiles; c++) {
-		layer_sprite_create(
-			lay,
-			x+c*TILEW,y+r*TILEW,
-			spr_grass
-		)
-	}
-}
-
-for(var c=0; c<rmWidthTiles; c += rmWidthTiles-1) {
-	for(var r=0; r<rmHeightTiles; r++) {
-		layer_sprite_create(
-			lay,
-			x+c*TILEW,y+r*TILEW,
-			spr_wall
-		)
-	}
 }
