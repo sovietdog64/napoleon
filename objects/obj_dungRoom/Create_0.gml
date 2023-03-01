@@ -1,12 +1,22 @@
 var cellX = mapPos.x*DUNG_CELL_SIZE;
 var cellY = mapPos.y*DUNG_CELL_SIZE;
 
+if(collision_rectangle(
+	cellX, cellY,
+	cellX+DUNG_CELL_SIZE, cellY+DUNG_CELL_SIZE,
+	obj_solid, 0, 1) != noone
+) {
+	instance_destroy();
+	return;
+}
+
 bridgedTo = [];
 
 //Get the room's cell midpoint for centering
 cellMid = new Line(
 	cellX, cellY,
-	cellX+DUNG_CELL_SIZE, cellY+DUNG_CELL_SIZE)
+	cellX+DUNG_CELL_SIZE, cellY+DUNG_CELL_SIZE
+)
 cellMid = cellMid.getMidpoint();
 
 x = cellMid.x-rmWidth/2;
