@@ -1,4 +1,7 @@
-if(global.cutscene) return;
+if(global.cutscene) 
+	return;
+if(!instance_exists(obj_player))
+	return;
 var c;
 draw_set_color(c_white);
 draw_set_font(fnt_hud);  

@@ -28,11 +28,14 @@ global.drag = 0.9;
 global.savingGame = false;
 global.loadingGame = false;
 
-global.noHud = false;
 global.screenOpen = false;
 
 global.canPlaceItem = false;
 global.reachDistance = TILEW*4;
+
+global.renderDist = 20;
+
+global.pathfindGrid = 0;
 
 #endregion globals
 
@@ -42,7 +45,9 @@ enum states {
 	IDLE,
 	MOVE,
 	ATTACK,
+	ATTACKED,
 	DEAD,
+	HURT,
 }
 
 enum attackStates {
@@ -89,9 +94,12 @@ enum inventories {
 #endregion enums
 
 #region crafting recipies
+
 global.craftingRecipies = 
 [
-	new CraftingRecipie(new Workbench(), [new Wood(4)]),
-	new CraftingRecipie(new WoodBlock(4), [new Wood(2)], [Axe])
+	new CraftingRecipie(new WoodShaft(2), [new Wood(1)], [Axe]),
+	new CraftingRecipie(new Handle(2), [new WoodShaft()], [Axe]),
+	new CraftingRecipie(new WoodSword(), [new Wood(3), new Handle()])
 ]
+
 #endregion crafting recipies

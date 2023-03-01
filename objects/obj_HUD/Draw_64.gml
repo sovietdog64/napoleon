@@ -1,4 +1,7 @@
 ///@description inv handling/player GUI
+if(!instance_exists(obj_player))
+	return;
+
 if(global.gamePaused || obj_player.inDialogue) 
 	return;
 

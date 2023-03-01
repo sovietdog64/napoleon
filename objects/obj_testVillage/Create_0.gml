@@ -4,12 +4,11 @@ radius = 0;
 
 //Roads
 for(var i=0; i<360; i += 90) { //Roads spawn in directions of all quadrantial directions
-	var xScale = irandom_range(10, 30);
+	var xScale = irandom_range(10, 20);
 	var inst = instance_create_layer(x, y, "Structures", obj_villPath,
 															{
 																image_angle : i,
 																image_xscale : xScale,
-																loaded : loaded,
 															})
 	//Update radius when a longer path is created
 	if(inst.sprite_width > radius)
@@ -28,7 +27,6 @@ for(var i=0; i<360; i += 90) { //Roads spawn in directions of all quadrantial di
 														{
 															image_angle : dir,
 															image_xscale : irandom_range(10, 30),
-															loaded : loaded
 														})
 		//Update radius if the distance to the end of the new path is longer
 		var pathEndX = xx+lengthdir_x(newPath.sprite_width, dir);
@@ -39,4 +37,4 @@ for(var i=0; i<360; i += 90) { //Roads spawn in directions of all quadrantial di
 		array_push(roads, newPath);
 	}
 }
-prevLoaded = loaded;
+event_inherited()

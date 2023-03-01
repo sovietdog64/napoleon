@@ -2,9 +2,9 @@ init = true;
 #region default enemy stuff
 hsp = 0;
 vsp = 0;
-hspWalk = random_range(3, 5);
-vspJump = -10;
-jumpCooldown = room_speed*0.7;
+walkSpd = random_range(1, 2);
+
+
 maxHp = 5;
 hp = maxHp;	
 
@@ -12,7 +12,7 @@ state = states.MOVE;
 
 lungeForward = false;
 
-detectionRange = 800;
+detectionRange = TILEW*10;
 
 xpDrop = 5;
 if(global.level >= 5)
@@ -25,19 +25,6 @@ attackCooldown = maxAttackCooldown;
 
 timeSinceFoundPlayer = 0;
 
-//hitX/hitY is x/y pos of the object or hitbox that hitting this enemy. call this function when u want to hit an enemy back
-knockBack = function(hitX, hitY, kbSpeed) {
-	hsp = 0;
-	vsp = 0;
-	var dir = point_direction(x, y, hitX, hitY)-180;
-	//Determine vector of knockback (i like using the "dist*sin-cos" thing)
-	var xSpd = kbSpeed*dcos(dir);
-	var ySpd = -kbSpeed*dsin(dir);
-	isHurt = true;
-	hsp = xSpd;
-	vsp = ySpd;
-}
-
 #endregion default enemy stuff
 if(!layer_exists("Enemies")) {
 	layer_create(layer_get_depth("Instances")+1, "Enemies");
@@ -46,23 +33,25 @@ if(!layer_exists("Enemies")) {
 
 #region pathfinding
 alert = false;
-detectionRange = 300;
+detectionRange = TILEW*7;
 
-//Distance from player where enemy stops to attack
-attackDist = 30;
+attackDist = TILEW;
+maxAtkCooldown = room_speed;
 
 deadTime = 0;
 
+knockbackTime = 0;
+
 path = path_add();
+path_endaction = path_action_stop;
 
-var w = ceil(room_width/sprite_width);
-var h = ceil(room_height/sprite_height);
-//Create grid fir enemy pathfinding
-grid = mp_grid_create(0, 0, w, h, sprite_width, sprite_height);
+pathFailed = false;
 
-//Add solids to grid
-mp_grid_add_instances(grid, obj_solid, 0);
+targX = 0;
+targY = 0;
 
 alarm_set(0, 10);
 
 #endregion pathfinding
+
+

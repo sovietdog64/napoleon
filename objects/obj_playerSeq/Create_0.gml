@@ -4,7 +4,7 @@ handB = new Point(x, y);
 shoulderF = new Point(x, y);
 handF = new Point(x, y);
 
-hspWalk = 0;
+walkSpd = 0;
 
 heldItem = copyStruct(global.heldItem);
 

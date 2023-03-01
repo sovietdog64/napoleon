@@ -1,4 +1,4 @@
-if(room = rm_init)
+if(room == rm_init || room == rm_dungeon)
 	return;
 var xCount = room_width div PX_CHUNK_W;
 var yCount = room_height div PX_CHUNK_H;
@@ -15,9 +15,9 @@ ds_grid_clear(allChunks, 0);
 
 playerSpawnSetup = true;
 
-for(var xx=0; xx<ds_grid_width(allChunks);xx++)
+for(var xx=0; xx<ds_grid_width(allChunks); xx++)
 	for(var yy=0; yy<ds_grid_height(allChunks); yy++) {
-		loadChunk(xx,yy);
+		prepareChunk(xx,yy);
 	}
 
 //If player still didn't spawn, then force-spawn the player in a random chunk

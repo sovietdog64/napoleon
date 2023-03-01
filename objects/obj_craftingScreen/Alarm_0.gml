@@ -4,8 +4,9 @@ for(var i=0; i<array_length(global.craftingRecipies); i++) {
 	if(craftable) {
 		itemResultSlot[0] = duplicateItem(craftingRecipie.item);
 		craftRecipie = craftingRecipie;
+		break;
 	}
-	else if(itemsAreSimilar(itemResultSlot[0], craftingRecipie.item)) {
+	else if(itemsAreSame(itemResultSlot[0], craftingRecipie.item)) {
 		itemResultSlot[0] = -1;
 	}
 }

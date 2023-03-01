@@ -1,13 +1,14 @@
 draw_self();
 if(hp == 0)
 	return;
+
+var w = sprite_width;
+
 {//Drawing health bar
+	var x1 = x-(w/2)-1;
+	var y1 = bbox_top-sprite_height;
 	draw_set_color(c_black);
-	var xx = x-sprite_width/2;
-	var yy = (y-sprite_height/2)-20;
-	var yy2 = yy+15;
-	draw_rectangle(xx, yy, x+sprite_width/2, yy2, 0);
+	draw_rectangle(x1,y1, x1+w+1, y1+7, 0);
 	draw_set_color(c_green);
-	var barLength = (sprite_width)*(hp/maxHp)-1;
-	draw_rectangle(xx+1, yy+1, xx+barLength, yy2-1, 0);
+	draw_rectangle(x1+1,y1+1, x1+(w*hp/maxHp), y1+6, 0);
 }

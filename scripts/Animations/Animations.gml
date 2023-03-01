@@ -79,25 +79,46 @@ function drawLimbLeftSpr(segment1Spr, segment2Spr, xx, yy, targX, targY) {
 	};
 }
 	
-function drawHoldingKnife(armBehindSpr, armFrontSpr, knifeSpr, isStabbing, targX, targY) {
+function drawHoldingKnife(armBehindSpr, armFrontSpr, knifeSpr, isStabbing, targX, targY, directionFacing = image_xscale) {
 	var arms = drawArms(armBehindSpr, armFrontSpr);
 	var dir = 0;
 	var hand = arms.front.hand;
 	
 	var tempOffX = sprite_get_xoffset(knifeSpr);
 	var tempOffY = sprite_get_xoffset(knifeSpr);
-	sprite_set_offset(knifeSpr, ITEM_SIZE/2, ITEM_SIZE/2)
+	
+	
+	sprite_set_offset(knifeSpr, ITEM_SIZE/4, ITEM_SIZE/2)
+	
 	if(isStabbing) {
 		dir = point_direction(x, y, targX, targY);
-		if(dir > 90 && dir <= 270)
-			dir -= 180
-		else if(dir > 270)
-			dir -= 270
-		draw_sprite_ext(knifeSpr, 0, hand.x, hand.y, 0.2 * image_xscale, 0.2, dir, c_white, 1);
+		draw_sprite_ext(knifeSpr, 0, hand.x, hand.y, 0.2*directionFacing, 0.2, dir, c_white, 1);
 	}
 	else
-		draw_sprite_ext(knifeSpr, 0, hand.x, hand.y, 0.2 * image_xscale, 0.2, dir, c_white, 1);
+		draw_sprite_ext(knifeSpr, 0, hand.x, hand.y, 0.2 * directionFacing, 0.2, dir, c_white, 1);
+	
 	sprite_set_offset(knifeSpr, tempOffX, tempOffY);
+}
+
+function drawHoldingSword(armBehindSpr, armFrontSpr, swordSpr, isSwiping, targX, targY, directionFacing = image_xscale) {
+	var arms = drawArms(armBehindSpr, armFrontSpr);
+	var hand = arms.front.hand;
+	var dir = 0;
+	
+	var prevOffX = sprite_get_xoffset(swordSpr);
+	var prevOffY = sprite_get_yoffset(swordSpr);
+	
+	
+	sprite_set_offset(swordSpr, ITEM_SIZE*0.2, ITEM_SIZE*0.8);
+	
+	if(isSwiping) {//Set rotation to target
+		dir = point_direction(x, y, targX, targY);
+		draw_sprite_ext(swordSpr, 0, hand.x, hand.y, 0.25, 0.25*directionFacing, dir, c_white, 1)
+	}
+	else
+		draw_sprite_ext(swordSpr, 0, hand.x, hand.y, 0.25*directionFacing, 0.25, dir, c_white, 1)
+	
+	sprite_set_offset(swordSpr, prevOffX, prevOffY)
 }
 #endregion drawing
 
@@ -108,7 +129,7 @@ function walkMovements(radius, spd, directionFacing = image_xscale) {
 		if(footProgress > 360) 
 			footProgress = 0;
 		footDir = abs(footDir) * sign(directionFacing);
-		footDir = spd * sign(footDir) * hspWalk/2;
+		footDir = spd * sign(footDir) * walkSpd/2;
 
 		//Legs
 		{
@@ -121,14 +142,14 @@ function walkMovements(radius, spd, directionFacing = image_xscale) {
 	
 		//Arms
 		{
-			handF.x = hFOrigin.x + radius*(hspWalk)*dcos(footProgress-180);
-			var yy = radius*(hspWalk)*dsin(footProgress-180);
+			handF.x = hFOrigin.x + radius*(walkSpd)*dcos(footProgress-180);
+			var yy = radius*(walkSpd)*dsin(footProgress-180);
 			if(yy < 0)
 				yy *= -1;
 			handF.y = hFOrigin.y + yy;
 		
-			handB.x = hBOrigin.x + radius*(hspWalk)*dcos(footProgress);
-			var yy = radius*(hspWalk)*dsin(footProgress);
+			handB.x = hBOrigin.x + radius*(walkSpd)*dcos(footProgress);
+			var yy = radius*(walkSpd)*dsin(footProgress);
 			if(yy < 0)
 				yy *= -1;
 			handB.y = hBOrigin.y + yy;
@@ -169,7 +190,7 @@ function legWalk(radius, spd, directionFacing = image_xscale) {
 		if(footProgress > 360) 
 			footProgress = 0;
 		footDir = abs(footDir) * sign(directionFacing);
-		footDir = spd * sign(footDir) * hspWalk/2;
+		footDir = spd * sign(footDir) * walkSpd/2;
 
 		//Legs
 		{
@@ -203,19 +224,19 @@ function armWalk(radius, spd, directionFacing = image_xscale, doProgress = false
 			if(footProgress > 360) 
 				footProgress = 0;
 			footDir = abs(footDir) * sign(directionFacing);
-			footDir = spd * sign(footDir) * hspWalk/2;
+			footDir = spd * sign(footDir) * walkSpd/2;
 		}	
 		
 		//Arms
 		{
-			handF.x = hFOrigin.x + radius*(hspWalk)*dcos(footProgress-180);
-			var yy = radius*(hspWalk)*dsin(footProgress-180);
+			handF.x = hFOrigin.x + radius*(walkSpd)*dcos(footProgress-180);
+			var yy = radius*(walkSpd)*dsin(footProgress-180);
 			if(yy < 0)
 				yy *= -1;
 			handF.y = hFOrigin.y + yy;
 		
-			handB.x = hBOrigin.x + radius*(hspWalk)*dcos(footProgress);
-			var yy = radius*(hspWalk)*dsin(footProgress);
+			handB.x = hBOrigin.x + radius*(walkSpd)*dcos(footProgress);
+			var yy = radius*(walkSpd)*dsin(footProgress);
 			if(yy < 0)
 				yy *= -1;
 			handB.y = hBOrigin.y + yy;
@@ -237,10 +258,40 @@ function armWalk(radius, spd, directionFacing = image_xscale, doProgress = false
 	}
 }
 
-function knifeStab(distance, targX, targY) {
+function armBehindWalk(radius, spd, directionFacing = image_xscale, doProgress = false) {
+	if(abs(x - xprevious) > 0 || abs(y - yprevious) > 0) {
+		if(doProgress) {
+			footProgress += footDir;
+			if(footProgress > 360) 
+				footProgress = 0;
+			footDir = abs(footDir) * sign(directionFacing);
+			footDir = spd * sign(footDir) * walkSpd/2;
+		}	
+		
+		//Arm
+		{
+			handB.x = hBOrigin.x + radius*walkSpd*dcos(footProgress);
+			var yy = radius*(walkSpd)*dsin(footProgress);
+			if(yy < 0)
+				yy *= -1;
+			handB.y = hBOrigin.y + yy;
+		}
+	}
+	else {
+		//Arm
+		{
+			var dir = point_direction(handB.x, handB.y, hBOrigin.x, hBOrigin.y);
+			var dist = point_distance(handB.x, handB.y, hBOrigin.x, hBOrigin.y)/10;
+			handB.x += lengthdir_x(dist, dir);
+			handB.y += lengthdir_y(dist, dir);
+		}
+	}
+}
+
+function knifeStab(distance, targX, targY, duration = 10) {
 	
 	handProgress += handDir;
-	if(handProgress > 10) {
+	if(handProgress > duration) {
 		animType = itemAnimations.NONE;
 		handProgress = 1;
 	}
@@ -250,5 +301,21 @@ function knifeStab(distance, targX, targY) {
 	handF.x = x + lengthdir_x(len, dir);
 	handF.y = y + lengthdir_y(len, dir);
 	
+}
+	
+function swordSwipe(targX, targY, animSpeed, swipeForDegrees = 90, directionFacing = image_xscale) {
+	handProgress += handDir*animSpeed*4;
+	
+	if(abs(handProgress) > swipeForDegrees) {
+		animType = itemAnimations.NONE;
+		handProgress = 1;
+	}
+	
+	var dir = point_direction(x, y, targX, targY);
+	dir = handProgress-(dir*directionFacing)-swipeForDegrees/4;
+	dir *= directionFacing;
+	
+	handF.x = hFOrigin.x + armLen*walkSpd*dcos(dir);
+	handF.y = hFOrigin.y + armLen*walkSpd*dsin(dir);
 }
 #endregion movements

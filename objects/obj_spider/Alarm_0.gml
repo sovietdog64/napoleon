@@ -7,5 +7,5 @@ if(global.gamePaused || obj_player.state = PlayerStateLocked) {
 	path_speed = 0;
 }
 else {
-	path_speed = hspWalk;
+	path_speed = walkSpd;
 }

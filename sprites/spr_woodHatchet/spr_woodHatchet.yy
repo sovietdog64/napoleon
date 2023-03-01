@@ -2,8 +2,8 @@
   "resourceType": "GMSprite",
   "resourceVersion": "1.0",
   "name": "spr_woodHatchet",
-  "bbox_bottom": 48,
-  "bbox_left": 13,
+  "bbox_bottom": 63,
+  "bbox_left": 0,
   "bbox_right": 60,
   "bbox_top": 8,
   "bboxMode": 0,
@@ -25,8 +25,8 @@
   "nineSlice": null,
   "origin": 0,
   "parent": {
-    "name": "Items",
-    "path": "folders/Sprites/Items.yy",
+    "name": "Wood",
+    "path": "folders/Sprites/Items/Wood.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

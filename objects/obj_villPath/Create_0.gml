@@ -1,13 +1,13 @@
-depth = layer_get_depth(layer_get_id("Instances"))+1;
 var maxHouses = ceil(sprite_width/250);
 var leftCount = irandom_range(1, maxHouses);
 var rightCount = irandom_range(1, maxHouses);
 leftHouses = [];
 rightHouses = [];
+
 //Adding houses
 for(var i=0; i<leftCount; i++) {
 	//40% chance of house spawning
-	if(random(1) < 0.4) {
+	if(random(1) < 0.5) {
 		var spr = spr_house;
 		if(image_angle == 0)
 			spr = choose(spr_house4);
@@ -34,7 +34,7 @@ for(var i=0; i<leftCount; i++) {
 }
 
 for(var i=0; i<rightCount; i++) {
-	if(random(1) < 0.4) {
+	if(random(1) < 0.5) {
 		var spr = spr_house;
 		if(image_angle == 0)
 			spr = choose(spr_house2);
@@ -58,5 +58,5 @@ for(var i=0; i<rightCount; i++) {
 	}
 }
 	
-timer = 5;
-excavate = true;
+event_inherited()
+solid = false;

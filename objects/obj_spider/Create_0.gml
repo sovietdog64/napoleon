@@ -2,9 +2,9 @@ init = true;
 #region default enemy stuff
 hsp = 0;
 vsp = 0;
-hspWalk = random_range(3, 5);
-vspJump = -10;
-jumpCooldown = room_speed*0.7;
+walkSpd = random_range(1, 2);
+
+
 maxHp = 5;
 hp = maxHp;	
 

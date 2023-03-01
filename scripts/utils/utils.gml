@@ -341,9 +341,9 @@ function Line(_x1, _y1, _x2, _y2) constructor {
 	y1 = _y1;
 	x2 = _x2;
 	y2 = _y2;
-	length = point_distance(_x1, _y1, _x2, _y2);
-	dir = point_direction(_x1, _y1, _x2, _y2);
-	midpoint = lineMidpoint(_x1, _y1, _x2, _y2);
+	static getLength = function() {return point_distance(x1, y1, x2, y2)};
+	static getDir = function() {return point_direction(x1, y1, x2, y2);}
+	static getMidpoint = function() {return lineMidpoint(x1, y1, x2, y2)};
 }
 
 function lineMidpoint(x1, y1, x2, y2) {
@@ -430,7 +430,7 @@ function numRound(num) {
 		return ceil(num);
 }
 	
-function randPointInCircle(radius, snapToTile = false) {
+function randPointInCircle(radius, snapToTile = false, tileSize = TILEW) {
 	var theta = 2*pi*random(1);
 	var u = random(1)+random(1);
 	var r;
@@ -441,8 +441,8 @@ function randPointInCircle(radius, snapToTile = false) {
 	var xx = radius*r*cos(theta);
 	var yy = radius*r*sin(theta);
 	if(snapToTile) {
-		xx = roundToTile(xx, TILEW/8);
-		yy = roundToTile(yy, TILEW/8);
+		xx = roundToTile(xx, tileSize);
+		yy = roundToTile(yy, tileSize);
 	}
 	return new Point(xx, yy);
 }
@@ -460,8 +460,8 @@ function randPointInEllipse(ellipseWidth, ellipseHeight, snapToTile = false) {
 	var xx = ellipseWidth*r*cos(theta)/2;
 	var yy = ellipseHeight*r*sin(theta)/2;
 	if(snapToTile) {
-		xx = roundToTile(xx, TILEW/8);
-		yy = roundToTile(yy, TILEW/8);
+		xx = roundToTile(xx, TILEW/2);
+		yy = roundToTile(yy, TILEW/2);
 	}
 	return new Point(xx, yy);
 }
@@ -494,4 +494,39 @@ function numericalKeyPressed() {
 		if(keyboard_check_pressed(ord(string(i))))
 			return i;
 	}
+}
+	
+function pointDistToRect(x1, y1, x2, y2, px, py) {
+	var dx = max(x1 - px, 0, px - x2);
+	var dy = max(y1 - py, 0, py - y2);
+	return sqrt(dx*dx + dy*dy);
+}
+
+function damageHitbox(xx, yy, w, h, targX, targY, dmg, duration, kbDur, fromEnemy, follow, lastForInst = false, offX = 0, offY = 0) {
+	var inst = instance_create_layer(xx, yy, "Instances", obj_damageHitbox);
+	with(inst) {
+		image_xscale = w/sprite_width;
+		image_yscale = h/sprite_height;
+		dmgSourceId = other.id;
+		enemyHit = fromEnemy;
+		if(follow) {
+			instToFollow = other.id;
+			followOffsetX = offX;
+			followOffsetY = offY;
+		}
+		damage = dmg;
+		lifeSpan = duration;
+		lifeSpanSameAsInst = lastForInst;
+		knockbackDur = kbDur;
+		image_angle = point_direction(x, y, targX, targY);
+	}
+	return inst;
+}
+
+function arrayInBounds(array, ind) {
+	return ind < array_length(array);
+}
+	
+function chance(percentage) {
+	return random(100) < percentage;
 }

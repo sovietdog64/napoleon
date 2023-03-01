@@ -1,3 +1,5 @@
+#region item classes
+
 function Item(itemSprite, itemAmount, dmg, itemName, itemDescription, animationTypeEnum = itemAnimations.NONE) constructor {
 	itemSpr = itemSprite;
 	amount = itemAmount;
@@ -16,11 +18,9 @@ function Placeable(sprite, rightClickFunction = undefined, leftClickFunction = u
 function Axe(itemSprite, itemAmount, dmg, itemName, itemDescription, animationTypeEnum = itemAnimations.KNIFE_STAB) : Item(itemSprite, itemAmount, dmg, itemName, itemDescription, animationTypeEnum) constructor {}
 function Pickaxe(itemSprite, itemAmount, dmg, itemName, itemDescription, animationTypeEnum = itemAnimations.KNIFE_STAB) : Item(itemSprite, itemAmount, dmg, itemName, itemDescription, animationTypeEnum) constructor {}
 
-function PlaceableItem(itemSprite, itemAmount, dmg, itemName, itemDescription, sprite, rightClickFunction = function(){}, leftClickFunction = function(){}) : Item(itemSprite, itemAmount, dmg, itemName, itemDescription) constructor {
-	solid = true;
-	static rightClickAction = rightClickFunction;
-	static leftClickAction = leftClickFunction;
-}
+#endregion item classes
+
+#region item utils
 
 //Returns the amount needed to remove after removing
 //Ex. item has amount of 3. amount to remove was 10. The item's amount will be subtracted to 0, and the func will return 7, because 3 out of 10 items were removed.
@@ -45,42 +45,6 @@ function removeFromItem(item, amountToRemove) {
 	return amountToRemove;
 }
 
-#region all item constructors
-
-///@param {array} outputArray An optional param. Use it if you want to run script_execute() on it.
-function Workbench(_amount = 1) : PlaceableItem(spr_woodBench,_amount,0,"Workbench") constructor {
-
-	desc = "A bench used for making a variety of things\nCrafting slots: " + string(4);
-	
-	placedSprite = spr_woodBenchP;
-	static rightClickAction = function() {
-		instance_create_depth(0,0,0,obj_craftingScreen, {numOfSlots : 4})
-	};
-	
-	breakingTool = Axe;
-	hp = 180;
-	
-	static leftClickAction = function(){}
-	
-	solid = true;
-}
-	
-function WoodHatchet(_amount = 1) : Axe(spr_woodHatchet,_amount,2,"Wood Hatchet", "Hatchet that can cut down trees\nDamage: 2", itemAnimations.KNIFE_STAB) constructor {
-	
-}
-	
-function Wood(_amount = 1) : Item(spr_wood,_amount,0,"Wood",":Resource:") constructor {
-	
-}	
-
-function WoodBlock(amount) : PlaceableItem(spr_woodBlock,amount,0,"Wood Block") constructor {
-	placedSprite = spr_woodBlockP;
-	breakingTool = Axe;
-	hp = 120;
-}
-
-#endregion all item constructors
-
 function placeItem(placeableItem, placeX, placeY) {
 	if(!is_struct(placeableItem))
 		return 0;
@@ -91,7 +55,7 @@ function placeItem(placeableItem, placeX, placeY) {
 	placeableItem.amount--;
 	instance_create_layer(
 		placeX, placeY,
-		layer,
+		"Instances",
 		obj_placeable,
 		{
 			item : newItem,
@@ -101,52 +65,48 @@ function placeItem(placeableItem, placeX, placeY) {
 	return 1;
 }
 	
+function itemsAreSame(item, item2) {
+	if(!isItem(item) || !isItem(item2))
+		return false;
+	return 
+		item.itemSpr == item2.itemSpr &&
+		item.name == item2.name &&
+		item.desc == item2.desc &&
+		instanceof(item) == instanceof(item2) &&
+		item.animationType == item2.animationType;
+}
+
+function itemsAreSimilar(item, item2, includeAmount = false) {
+	if(!isItem(item) || !isItem(item2))
+		return false;
+	var boolean = instanceof(item) == instanceof(item2);
+	if(includeAmount)
+		boolean = instanceof(item) == instanceof(item2) && item.amount == item2.amount;
+	return boolean;
+}
+
+function decrementCooldowns(cooldownArr) {
+	for(var i=0; i<array_length(cooldownArr); i++) {
+		if(is_numeric(cooldownArr[i]))
+			cooldownArr[i] -= 1;
+	}
+}
+
+#endregion item utils
+	
 function CraftingRecipie(_item, _itemsRequired, _toolsRequired = undefined) constructor {
 	item = _item;
 	itemsRequired = _itemsRequired;
 	toolsRequired = _toolsRequired;
+	itemsAndTools = itemsRequired;
+	
+	if(is_array(toolsRequired))
+		itemsAndTools = array_concat(itemsRequired, toolsRequired)
 	
 	//Checks if can craft an item
 	//If cannot, it will return an array of the missing items
 	static canCraft = function(craftInv) {
-		var craftable = true;
-		var missingItems = [];
-		//the var "craftable" will remain true until a missing item is found
-		for(var i=0; i<array_length(itemsRequired); i++) {
-			var reqItem = itemsRequired[i];
-			//If missing item, set craftable to false & add the required item to list of missing items
-			//else, continue in the loop
-			var search = InvSearch(craftInv, reqItem.itemSpr, reqItem.amount);
-			if(search == -1) {
-				craftable = false;
-				array_push(missingItems, reqItem);
-			}
-		}
-		
-		//Checking if the right tool is in the grid
-		if(is_array(toolsRequired))
-			for(var i=0; i<array_length(toolsRequired); i++) {
-				var reqTool = toolsRequired[i];
-				var search;
-				//If the required tool is not an item type, then search with item sprite
-				if(is_struct(reqTool)) {
-					search = InvSearch(craftInv, reqTool.itemSpr, reqTool.amount);
-				}
-				//Else if required tool is an item type, search through item type.
-				else {
-					search = InvSearch(craftInv, reqTool);
-				}
-				
-				if(search == -1) {
-					craftable = false;
-					array_push(missingItems, reqTool);
-				}
-			}
-		
-		if(craftable)
-			return true;
-		else
-			return missingItems;
+		return InvSearchContainsOnly(craftInv, itemsAndTools);
 	}
 	
 	static craftItem = function(craftInv) {
@@ -179,14 +139,70 @@ function CraftingRecipie(_item, _itemsRequired, _toolsRequired = undefined) cons
 	}
 	
 }
+
+#region all items
+
+function WoodHatchet(amount = 1) : Axe(spr_woodHatchet,amount,2,"Wood Hatchet", "Hatchet that can cut down trees\nDamage: 2", itemAnimations.SWORD) constructor {
+	cooldown = room_speed*0.4;
+	static leftPress = function(targX, targY) {
+		with(other) {
+			handProgress = 1;
+			attackState = attackStates.MELEE;
+			animType = itemAnimations.SWORD;
+			var dir = point_direction(x, y, targX, targY);
+			//Calculate the direction of the punch hitbox
+			var xx = x + lengthdir_x(TILEW/2, dir);
+			var yy = y + lengthdir_y(TILEW/2, dir);
+			//Create dmg hitbox (hitboxes are more resource efficient compared to individial enemy collision checks)
+			var inst = damageHitbox(
+				xx,yy,
+				24,24,
+				targX,targY,
+				2,
+				10,3,
+				object_is_ancestor(object_index, obj_enemy),
+				true, false,
+				xx-x,yy-y
+			);
 	
-function itemsAreSimilar(item, item2) {
-	if(!isItem(item) || !isItem(item2))
-		return false;
-	return 
-		item.itemSpr == item2.itemSpr &&
-		item.name == item2.name &&
-		item.desc == item2.desc &&
-		instanceof(item) == instanceof(item2) &&
-		item.animationType == item2.animationType;
+			if(!variable_instance_exists(inst, "resourceCollect"))
+				variable_instance_set(inst, "resourceCollect", Axe);
+		}
+		return cooldown;
+	}
 }
+	
+function Wood(amount = 1) : Item(spr_wood,amount,0,"Wood",":Resource:") constructor {}	
+
+function WoodShaft(amount = 1) : Item(spr_woodShaft,amount,0,"Wood","A shaft that serves as a handle for all sorts of weapons.") constructor {}
+
+function Handle(amount = 1) : Item(spr_woodHandle,amount,0,"Handle","A handle used for swords") constructor {}
+
+function WoodSword(amount = 1) : Item(spr_woodSword,amount,3,"Wood Sword","Perfect sword for training... or combat if you are brave enough.", itemAnimations.SWORD) constructor {
+	cooldown = room_speed*0.2;
+	static leftPress = function(targX, targY) {
+		with(other) {
+			handProgress = 1;
+			attackState = attackStates.MELEE;
+			animType = itemAnimations.SWORD;
+			var dir = point_direction(x, y, targX, targY);
+			//Calculate the direction of the punch hitbox
+			var xx = x + lengthdir_x(TILEW*0.7, dir);
+			var yy = y + lengthdir_y(TILEW*0.7, dir);
+			//Create dmg hitbox (hitboxes are more resource efficient compared to individial enemy collision checks)
+			damageHitbox(
+				xx,yy,
+				24,24,
+				targX,targY,
+				2,
+				10,3,
+				object_is_ancestor(object_index, obj_enemy),
+				true, false,
+				xx-x,yy-y
+			);
+		}
+		return cooldown;
+	}
+}
+
+#endregion all items

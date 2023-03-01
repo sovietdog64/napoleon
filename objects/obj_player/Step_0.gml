@@ -38,99 +38,122 @@ if(mouse_x - x >= 0)
 else
 	image_xscale = -abs(image_xscale);
 
-{//Horizontal movement
-	//Checks direction  & speed of horizontal movement.
-	if(isHurt) {
-		hsp *= 0.8;
-		vsp *= 0.8;
-		if(abs(hsp) < 1 && abs(vsp) < 1) {
-			isHurt = false;
-			hsp = 0;
-			vsp = 0;
-		}
-	} 
-	else if(lungeForward) {
-		hsp *= 0.8;
-		vsp *= 0.8;
-		if(abs(hsp) < 1 && abs(vsp) < 1) {
-			lungeForward = false;
-			hsp = 0;
-			vsp = 0;
-		}
+if(isHurt) {
+	hsp *= 0.8;
+	vsp *= 0.8;
+	if(abs(hsp) < 1 && abs(vsp) < 1) {
+		isHurt = false;
+		hsp = 0;
+		vsp = 0;
 	}
-	else {
-		hsp = horizDirection * hspWalk;
-		direction = point_direction(x, y, mouse_x, mouse_y)
+} 
+else if(lungeForward) {
+	hsp *= 0.8;
+	vsp *= 0.8;
+	if(abs(hsp) < 1 && abs(vsp) < 1) {
+		lungeForward = false;
+		hsp = 0;
+		vsp = 0;
 	}
 }
+
+//Horizontal movement
+if(!isHurt && !lungeForward) {
+	hsp = horizDirection * walkSpd;
+	direction = point_direction(x, y, mouse_x, mouse_y)
+}
+
 		
-{//Vertical movement
-	if(!isHurt && !lungeForward)
-		vsp = vertDirection * hspWalk;
-}
+//Vertical movement
+if(!isHurt && !lungeForward)
+	vsp = vertDirection * walkSpd;
+
 	
-if(abs(vertDirection) && abs(horizDirection)) {
-	hspWalk = hspWalk/sqrt(2);
+if(hsp != 0 && vsp != 0) {
+	hsp /= sqrt(2);
+	vsp /= sqrt(2);
 }
 #endregion movement
 
 #region items
 
-{//Item usage/animations
-	leftAttackCooldown--;
-	if(isPlaceableItem(global.heldItem)) {
-		if(global.canPlaceItem && LMOUSE_DOWN) 
-			placeItem(global.heldItem, roundToTile(mouse_x, TILEW/2), roundToTile(mouse_y, TILEW/2));
+var canLeftPress = variable_struct_exists(global.heldItem, "leftPress");
+var canRightPress = variable_struct_exists(global.heldItem, "rightPress");
+
+var canLeftDown = variable_struct_exists(global.heldItem, "leftDown");
+var canRightDown = variable_struct_exists(global.heldItem, "rightDown");
+
+
+var spr = isItem(global.heldItem) ? global.heldItem.itemSpr : 0;
+
+{//Updating list of cooldowns for missing items
+	//Add to cooldowns if this item is not in the list.
+	if(canLeftPress && !arrayInBounds(leftAttackCooldowns, spr)) {
+		array_insert(leftAttackCooldowns, spr, 0)
 	}
-	else if(isItem(global.heldItem)) {
-		//Using items on left press
-		if(LMOUSE_PRESSED && leftAttackCooldown <= 0) {
-			switch(global.heldItem.itemSpr) {
-				case spr_boxingGloves: boxingGloveAttack(mouse_x, mouse_y, 12); break;
-				case spr_tanto: tantoStab(mouse_x, mouse_y, 12); break;
-				case spr_woodHatchet : hatchetSwipe(mouse_x,mouse_y, 12); break;
-			}
-		}
-		//Right press
-		else if(RMOUSE_PRESSED && leftAttackCooldown <= 0) {
-			switch(global.heldItem.itemSpr) {
-				case spr_tanto: tantoSlash(mouse_x, mouse_y, 12); break;
+		
+	//Add to cooldowns if this item is not in the list.
+	if(canRightPress && !arrayInBounds(rightAttackCooldowns, spr)) {
+		array_insert(rightAttackCooldowns, spr, 0);
+	}
+}
+
+{//Item usage/animations
+	if(isItem(global.heldItem)) {
+		
+		decrementCooldowns(leftAttackCooldowns)
+		decrementCooldowns(rightAttackCooldowns)
+		
+		//Left press
+		{
+			//Will skip the leftclick if there isn't a leftclick action
+			if(LMOUSE_PRESSED && canLeftPress && leftAttackCooldowns[spr] <= 0) { 
+				//If cooldown is 0 for this item, then do its left click action
+				var cooldown = global.heldItem.leftPress(mouse_x, mouse_y);
+				if(is_numeric(cooldown))
+					leftAttackCooldowns[spr] = cooldown;
 			}
 		}
 		
-		//Using items when holding down left
-		if(mouse_check_button(mb_left) && leftAttackCooldown <= 0) {
-			if(isFirearm(global.heldItem)) {
-				leftAttackCooldown = global.heldItem.cooldown;
-				attackState = attackStates.SHOOT;
-				var firedBullet = fireBullet(x, y, mouse_x, mouse_y, global.heldItem);
-				//If mag empty, try reloading
-				if(!firedBullet) {
-					var ammoItem = getItemFromInv(global.heldItem.ammoItemSpr);
-					//If found ammo, place reload animation
-					if(ammoItem != -1) {
-						var inst = placeSequenceAnimation(x, y, global.heldItem.reloadSeq);
-						var copy = copyStruct(global.heldItem);
-						var seqStruct =
-						{
-							sequenceElementId : inst,
-							followImageScale : true,
-							followMouseDirection : false,
-							assetIndex : copy.reloadSeq,
-						}
-						array_push(followingSequences, seqStruct);
-						leftAttackCooldown = copy.reloadDuration+2;
-						attackState = attackStates.RELOAD;
-					}
-				}
-				else
-					screenShake(room_speed*0.2, 10);
+		{//Left down
+			if(LMOUSE_DOWN && canLeftDown && leftAttackCooldowns[spr] <= 0) {
+				//If cooldown is 0 for this item, then do its left click action
+				var cooldown = global.heldItem.leftDown(mouse_x, mouse_y);
+				if(is_numeric(cooldown))
+					leftAttackCooldowns[spr] = cooldown;
 			}
 		}
+		
+			
+		//Right press
+		{
+			 //Will skip the rightclick if there isn't a rightclick action
+			if(RMOUSE_PRESSED && canRightPress && rightAttackCooldowns[spr] <= 0) {	
+				//If cooldown is 0 for this item, then do its right click action
+				var cooldown = global.heldItem.rightPress(mouse_x, mouse_y);
+				if(is_numeric(cooldown))
+					rightAttackCooldowns[spr] = cooldown;
+			}
+		}
+			
+		{//Right down
+			if(LMOUSE_DOWN && canRightDown && rightAttackCooldowns[spr] <= 0) {
+				//If cooldown is 0 for this item, then do its right click action
+				var cooldown = global.heldItem.rightDown(mouse_x, mouse_y);
+				if(is_numeric(cooldown))
+					rightAttackCooldowns[spr] = cooldown;
+			}
+		}
+		
 	}
 
 }
-if(leftAttackCooldown <= 0)
+	
+	
+if(isItem(global.heldItem))
+	if(canLeftPress && leftAttackCooldowns[global.heldItem.itemSpr] <= 0)
+		attackState = attackStates.NONE
+else
 	attackState = attackStates.NONE;
 
 #endregion items
@@ -201,12 +224,12 @@ if(runCooldown > 0)
 {
 	if(global.stamina > 10 && keyboard_check(vk_shift) && runCooldown <= 0) {
 		global.stamina -= 0.6;
-		hspWalk = minHspWalk*1.5;
+		walkSpd = minWalkSpd*1.5;
 	}
 	else {
 		if(runCooldown <= 0 && global.stamina <= 10)
 			runCooldown = room_speed*3;
-		hspWalk = minHspWalk;
+		walkSpd = minWalkSpd;
 	}
 	global.stamina += 0.2;	
 }
@@ -216,7 +239,7 @@ if(runCooldown > 0)
 #region collisions
 //collisions that change player spd
 if(place_meeting(x, y, obj_water)) {
-	hspWalk *= 0.7;
+	walkSpd *= 0.7;
 }
 
 //Collision
@@ -311,68 +334,53 @@ if(instance_exists(obj_camera)) {
 	}
 }
 
-//Death of player. Makes player invisible and 1s delay to respawn
 if(global.hp <= 0 && !global.dead) {
-	global.hp = 5;
 	global.dead = true;
-	x = enteredX;
-	y = enteredY;
-	global.setPosToSpawnPos = true;
-	room_goto(global.spawnRoom);
+	image_alpha = 0;
+	alarm_set(0, room_speed*3);
 }
-if(!instance_exists(obj_game)) instance_create_layer(0,0, "Instances", obj_game);
 
 #region animations
-//Make lower-depth objects partially visible when being drawn over player
-with(all) {
-	var isntObstacle = !object_is_ancestor(object_index, obj_notCameraObstacle)
-	if(isntObstacle && id != other.id) {
-		if(depth < other.depth && sprite_exists(sprite_index) && visible) {
-			var xOffset = sprite_get_xoffset(sprite_index);
-			var yOffset = sprite_get_yoffset(sprite_index);
-			var collision = collision_rectangle(
-				x-xOffset-1, y-yOffset-1,
-				x-xOffset+sprite_width+1, y-yOffset+sprite_height+1,
-				other.object_index, 0, 1
-			)
-			if(collision != noone && collision.id == other.id) {
-				image_alpha = 0.5;
-			}
-			else
-				image_alpha = 1;
-		}
-	}
+
+//Setting limb positions
+{//arms
+	shoulderB.x = x+5*image_xscale;
+	shoulderB.y = y-2;
+	hBOrigin.x = shoulderB.x;
+	hBOrigin.y = y+10;
+
+	shoulderF.x = x-3*image_xscale;
+	shoulderF.y = y-2;
+	hFOrigin.x = shoulderF.x;
+	hFOrigin.y = y+10;
 }
 
-shoulderB.x = x+5*image_xscale;
-shoulderB.y = y-2;
-hBOrigin.x = shoulderB.x;
-hBOrigin.y = y+10;
-
-shoulderF.x = x-3*image_xscale;
-shoulderF.y = y-2;
-hFOrigin.x = shoulderF.x;
-hFOrigin.y = y+10;
-
-
-hipB.x = x-5*sign(image_xscale);
-hipB.y = y+8;
-fBOrigin.x = hipB.x;
-fBOrigin.y = hipB.y+legLen-footRadius;
+{//legs
+	hipB.x = x-5*sign(image_xscale);
+	hipB.y = y+8;
+	fBOrigin.x = hipB.x;
+	fBOrigin.y = hipB.y+legLen-footRadius;
 	
-hipF.x = x+2*sign(image_xscale);
-hipF.y = y+8;
-fFOrigin.x = hipF.x;
-fFOrigin.y = hipF.y+legLen-footRadius;
+	hipF.x = x+2*sign(image_xscale);
+	hipF.y = y+8;
+	fFOrigin.x = hipF.x;
+	fFOrigin.y = hipF.y+legLen-footRadius;
+}
 
-var dirFacing = sign(mouse_x - x);
+
+var dirFacing = sign(x - xprevious);
 if(dirFacing == 0)
-	dirFacing = 1;
-	
-if(isItem(global.heldItem))
+	dirFacing = sign(image_xscale);
+
+var spr = 0;
+
+if(isItem(global.heldItem)) {
 	animType = global.heldItem.animationType;
+	spr = global.heldItem.itemSpr;
+}
 else
 	animType = itemAnimations.NONE;
+
 
 switch(animType) {
 	case itemAnimations.NONE: 
@@ -380,11 +388,24 @@ switch(animType) {
 	break;
 	case itemAnimations.KNIFE_STAB: {
 		legWalk(footRadius, walkAnimSpd, dirFacing)
-		if(leftAttackCooldown > 0)
-			knifeStab(legLen*2, mouse_x, mouse_y, dirFacing);
-		else
+		if(leftAttackCooldowns[spr] > 0) {
+			knifeStab(legLen*2, mouse_x, mouse_y, 13);
+			armBehindWalk(footRadius, walkAnimSpd, dirFacing);
+		} else
 			armWalk(footRadius, walkAnimSpd, dirFacing);
 	} break;
+	
+	case itemAnimations.SWORD: {
+		legWalk(footRadius, walkAnimSpd, dirFacing)
+		if(leftAttackCooldowns[spr] > 0) {
+			var factor = 20/global.heldItem.cooldown;
+			factor *= 1.2;
+			swordSwipe(mouse_x, mouse_y,(walkAnimSpd/2)*factor*1.1, 90*factor*1.1, image_xscale);
+			armBehindWalk(footRadius, walkAnimSpd, dirFacing);
+		} else {
+			armWalk(footRadius, walkAnimSpd, dirFacing);
+		}
+	}break;
 }
 
 
