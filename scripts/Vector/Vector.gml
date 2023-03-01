@@ -35,6 +35,12 @@ function Vector2(xx, yy) constructor {
 		return x == vec.x && y == vec.y;
 	}
 	
+	static flip = function() {
+		var xx = x;
+		x = y;
+		y = xx;
+	}
+	
 }
 
 function Vec2Zero() : Vector2(0,0) constructor {}

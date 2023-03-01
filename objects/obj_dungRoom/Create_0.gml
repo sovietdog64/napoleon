@@ -1,15 +1,6 @@
 var cellX = mapPos.x*DUNG_CELL_SIZE;
 var cellY = mapPos.y*DUNG_CELL_SIZE;
 
-if(collision_rectangle(
-	cellX, cellY,
-	cellX+DUNG_CELL_SIZE, cellY+DUNG_CELL_SIZE,
-	obj_solid, 0, 1) != noone
-) {
-	instance_destroy();
-	return;
-}
-
 bridgedTo = [];
 
 //Get the room's cell midpoint for centering
@@ -42,6 +33,8 @@ layer_sprite_yscale(
 
 #endregion ground
 
+#region walls
+
 for(var i=0; i<2; i++) {
 	var wall = instance_create_layer(
 		x+(rmWidth-TILEW)*i, y,
@@ -61,6 +54,8 @@ for(var i=0; i<2; i++) {
 	wall.sprite_index = spr_dungWall;
 	wall.image_xscale = (rmWidth/TILEW);
 }
+	
+#endregion walls
 
 //90% chance of branching to another room
 if(chance(90)) {
@@ -99,12 +94,12 @@ if(chance(90)) {
 if(maxNewRooms <= 0)
 	return;
 
-//Rebound off of edge of room when creating new rooms
+//Stop making new rooms if going out of room.
 if(!withinBoundsGrid(
 	creatorID.dungeonMap,
 	mapPos.x+branchDir.x, mapPos.y+branchDir.y
 )) {
-	branchDir.negate();
+	return;
 }
 
 var otherMapPos = mapPos.copy();

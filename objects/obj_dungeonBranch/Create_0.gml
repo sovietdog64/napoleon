@@ -33,6 +33,11 @@ if(!withinBoundsGrid(creatorID.dungeonMap, otherMapPos.x, otherMapPos.y) ||
 var roomWidth = irandom_range(MIN_DUNGEON_ROOM_TILES, MAX_DUNGEON_ROOM_TILES);
 var roomHeight = irandom_range(MIN_DUNGEON_ROOM_TILES, MAX_DUNGEON_ROOM_TILES);
 
+var newBranchDir = branchDir.copy();
+if(choose(0, 1)) {
+	newBranchDir.flip();
+}
+
 var inst = instance_create_layer(
 	otherMapPos.x*DUNG_CELL_SIZE, otherMapPos.y*DUNG_CELL_SIZE,
 	"Instances",
@@ -41,7 +46,7 @@ var inst = instance_create_layer(
 		rmWidth : roomWidth*TILEW,
 		rmHeight : roomHeight*TILEW,
 		mapPos : otherMapPos.copy(),
-		branchDir : branchDir.copy(),
+		branchDir : newBranchDir,
 		creatorID : creatorID,
 		maxNewRooms : maxNewRooms,
 	}

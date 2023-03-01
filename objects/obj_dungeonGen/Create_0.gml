@@ -3,6 +3,8 @@ dungeonMap = ds_grid_create(
 	room_height div DUNG_CELL_SIZE
 );
 
+branches = [];
+
 //Choosing where dungeon map should start
 mapPos = new Vec2Zero();
 mainBranchDir = new Vec2Zero();
@@ -30,7 +32,7 @@ for(var i=0; i<branchLen; i++) {
 	var roomWidth = irandom_range(MIN_DUNGEON_ROOM_TILES, MAX_DUNGEON_ROOM_TILES);
 	var roomHeight = irandom_range(MIN_DUNGEON_ROOM_TILES, MAX_DUNGEON_ROOM_TILES);
 	
-	dungeonMap[# newRoomPos.x, newRoomPos.y] = instance_create_layer(
+	var inst = instance_create_layer(
 		newRoomPos.x*DUNG_CELL_SIZE, newRoomPos.y*DUNG_CELL_SIZE,
 		"Instances",
 		obj_dungeonBranch,
@@ -43,5 +45,15 @@ for(var i=0; i<branchLen; i++) {
 			maxNewRooms : irandom_range(1, 3),
 		}
 	)
+	dungeonMap[# newRoomPos.x, newRoomPos.y] = inst;
+	branches[i] = inst;
+	
 	newRoomPos.addVec(mainBranchDir);
+}
+for(var i=0; i<array_length(branches); i++) {
+	if(i != 0) {
+		var branch = branches[i];
+		array_push(branch.bridgedTo, branches[i-1]);
+		array_push(branches[i-1].bridgedTo, branch);
+	}
 }
