@@ -152,6 +152,33 @@ function saveRoom() {
 	variable_struct_set(global.levelData, room_get_name(room), roomStruct);
 }
 	
+function saveRoom2() {
+	var roomStruct = {
+		instances : []
+	};
+	for(var i=0; i<instance_number(all); i++) {
+		var inst = instance_find(all, i);
+		with(inst) {
+			if(!persistent && object_index != obj_player) {
+				array_push(roomStruct.instances, structifyInstance(id));
+			}
+		}
+	}
+
+	variable_struct_set(global.levelData, room_get_name(room), roomStruct);
+}
+	
+function loadRoom2() {
+	var roomStruct = variable_struct_get(global.levelData, room_get_name(room));
+	var instances = roomStruct.instances;
+	
+	for(var i=0; i<array_length(instances); i++) {
+		var inst = instances[i];
+		
+		
+	}
+}
+	
 function loadRoom() {
 	var roomStruct = 0;
 	if(!variable_struct_exists(global.levelData, room_get_name(room)))
@@ -501,6 +528,7 @@ function loadGame(fileNum = 0) {
 	global.loadingGame = false;
 }
 	
+
 	
 function structifyInstance(inst) {
 	if(variable_instance_exists(inst, "instStruct_"))
@@ -547,6 +575,11 @@ function structifyInstance(inst) {
 	}
 	variable_instance_set(inst, "instStruct_", instStruct);
 	return instStruct;
+}
+	
+function structToInstance(struct) {
+	if(!variable_struct_exists(struct, "object_index"))
+		return;
 }
 
 function duplicateArray(array) {
