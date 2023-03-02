@@ -71,9 +71,7 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Tile Sets","folderPath":"folders/Tile Sets.yy","order":0,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Timelines","folderPath":"folders/Timelines.yy","order":6,},
   ],
-  "IncludedFiles": [
-    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"IncludedFile1","CopyToMask":-1,"filePath":"","parent":{"name":"Dungeon","path":"",},},
-  ],
+  "IncludedFiles": [],
   "isEcma": false,
   "MetaData": {
     "IDEVersion": "2023.1.1.62",

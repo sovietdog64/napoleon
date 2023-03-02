@@ -500,3 +500,39 @@ function loadGame(fileNum = 0) {
 	
 	global.loadingGame = false;
 }
+	
+	
+function structifyInstance(inst) {
+	var instStruct = {
+		object_index : inst.object_index,
+		x : inst.x,
+		y : inst.y,
+	};
+	
+	var keys = variable_instance_get_names(inst);
+	var key,val;
+	for(var i=0; i<array_length(keys); i++) {
+		key = keys[i];
+		val = variable_instance_get(inst, key);
+		if(is_array(val)) {
+			val = duplicateArray(val);
+		}
+	}
+}
+
+function duplicateArray(array) {
+	var newArray = [];
+	for(var i=0; i<array_length(array); i++) {
+		var val = array[i];
+		if(instance_exists(val)) {
+			if(variable_instance_exists(val, "instStruct_"))
+				val = val.instStruct_;
+		}
+		if(is_array(val))
+			val = duplicateArray(val);
+	}
+}
+
+function duplicateStruct(struct) {
+	
+}
