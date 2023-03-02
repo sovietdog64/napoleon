@@ -1,8 +1,5 @@
 var cellX = mapPos.x*DUNG_CELL_SIZE;
 var cellY = mapPos.y*DUNG_CELL_SIZE;
-obj_dungeonGen.roomCount++;
-if(obj_dungeonGen.roomCount >= obj_dungeonGen.maxRooms)
-	return;
 
 bridgedTo = [];
 
@@ -19,7 +16,7 @@ x = cellMid.x-rmWidth/2;
 y = cellMid.y-rmHeight/2;
 
 alarm_set(0, 2);
-
+	
 //90% chance of branching to another room
 if(chance(90)) {
 	var xx = mapPos.x;
@@ -73,6 +70,10 @@ if(instance_exists(creatorID.dungeonMap[# otherMapPos.x, otherMapPos.y]))
 	return;
 
 
+obj_dungeonGen.roomCount++;
+if(obj_dungeonGen.roomCount >= obj_dungeonGen.maxRooms)
+	return;
+
 //Creating the rooms
 repeat(maxNewRooms) {
 	//Keep going forward in the branch until a free cell is found. Will stay in bounds
@@ -100,8 +101,10 @@ repeat(maxNewRooms) {
 		)
 		creatorID.dungeonMap[# otherMapPos.x, otherMapPos.y] = inst;
 		//Bridge to the new room created
-		array_push(bridgedTo, inst);
-		array_push(inst.bridgedTo, id);
+		try {
+			array_push(bridgedTo, inst);
+			array_push(inst.bridgedTo, id);
+		} catch(err) {}
 		
 		otherMapPos.addVec(branchDir);
 	}

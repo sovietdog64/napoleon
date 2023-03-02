@@ -1,8 +1,5 @@
 var cellX = mapPos.x*DUNG_CELL_SIZE;
 var cellY = mapPos.y*DUNG_CELL_SIZE;
-obj_dungeonGen.roomCount++;
-if(obj_dungeonGen.roomCount >= obj_dungeonGen.maxRooms)
-	return;
 
 bridgedTo = [];
 buildedBridgeTo = [];
@@ -17,6 +14,8 @@ x = cellMid.x-rmWidth/2;
 y = cellMid.y-rmHeight/2;
 
 alarm_set(0, 2);
+
+
 
 if(maxNewRooms <= 0)
 	return;
@@ -39,6 +38,11 @@ if(!withinBoundsGrid(creatorID.dungeonMap, otherMapPos.x, otherMapPos.y) ||
 	return;
 }
 
+obj_dungeonGen.roomCount++;
+if(obj_dungeonGen.roomCount >= obj_dungeonGen.maxRooms)
+	return;
+
+//Creating new room
 var roomWidth = irandom_range(MIN_DUNGEON_ROOM_TILES, MAX_DUNGEON_ROOM_TILES);
 var roomHeight = irandom_range(MIN_DUNGEON_ROOM_TILES, MAX_DUNGEON_ROOM_TILES);
 
@@ -62,5 +66,7 @@ var inst = instance_create_layer(
 )
 creatorID.dungeonMap[# otherMapPos.x, otherMapPos.y] = inst;
 
-array_push(bridgedTo, inst);
-array_push(inst.bridgedTo, id);
+try {
+	array_push(bridgedTo, inst);
+	array_push(inst.bridgedTo, id);
+} catch(err) {}
