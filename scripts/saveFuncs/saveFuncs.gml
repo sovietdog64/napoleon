@@ -526,7 +526,7 @@ function structifyInstance(inst) {
 		val = variable_instance_get(inst, key);
 		var debugTemp = string(val);
 		
-		if(is_bool(val) || is_numeric(val) || is_string(val)) {
+		if(is_bool(val) || is_string(val)) {
 			variable_struct_set(instStruct, key, val);
 			continue;
 		}
@@ -535,10 +535,12 @@ function structifyInstance(inst) {
 			val = structifyInstance(val);
 		else if(is_array(val)) 
 			val = duplicateArray(val);
+		else if(is_method(val)) {
+			variable_struct_remove(instStruct, key);
+			continue;
+		}
 		else if(is_struct(val))
 			val = duplicateStruct(val);
-		else if(script_exists(val))
-			val = script_get_name(val);
 		
 		
 		variable_struct_set(instStruct, key, val);
@@ -551,15 +553,17 @@ function duplicateArray(array) {
 	var newArray = [];
 	for(var i=0; i<array_length(array); i++) {
 		var val = array[i];
-		if(is_numeric(val) || is_string(val)) {
+		if(is_bool(val) || is_string(val)) {
 			array_push(newArray, val);
 			continue;
 		}
-		if(instance_exists(val)) {
+		if(instance_exists(val))
 			val = structifyInstance(val);
-		}
-		if(is_array(val))
+		else if(is_array(val)) 
 			val = duplicateArray(val);
+		else if(is_method(val)) {
+			continue;
+		}
 		else if(is_struct(val))
 			val = duplicateStruct(val);
 		
@@ -583,20 +587,21 @@ function duplicateStruct(struct) {
 	for(var i=0; i<array_length(keys); i++) {
 		key = keys[i];
 		val = variable_struct_get(struct, key);
-		if(is_numeric(val) || is_string(val)) {
+		if(is_bool(val) || is_string(val)) {
 			variable_struct_set(newStruct, key, val);
 			continue;
 		}
 		
-		if(instance_exists(val)) {
+		if(instance_exists(val))
 			val = structifyInstance(val);
-		}
-		if(is_array(val))
+		else if(is_array(val)) 
 			val = duplicateArray(val);
+		else if(is_method(val)) {
+			variable_struct_remove(newStruct, key);
+			continue;
+		}
 		else if(is_struct(val))
 			val = duplicateStruct(val);
-		else if(script_exists(val))
-			val = script_get_name(val);
 		
 		variable_struct_set(newStruct, key, val);
 	}
