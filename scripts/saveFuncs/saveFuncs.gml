@@ -503,36 +503,91 @@ function loadGame(fileNum = 0) {
 	
 	
 function structifyInstance(inst) {
+	if(variable_instance_exists(inst, "instStruct_"))
+		return inst.instStruct_;
+	
+	if(!instance_exists(inst))
+		return -1;
+	
 	var instStruct = {
-		object_index : inst.object_index,
 		x : inst.x,
 		y : inst.y,
 	};
+	
+	if(variable_instance_exists(inst, "object_index"))
+		variable_struct_set(instStruct, "object_index", object_get_name(inst.object_index));
+	if(variable_instance_exists(inst, "sprite_index"))
+		variable_struct_set(instStruct, "sprite_index", sprite_get_name(inst.sprite_index));
 	
 	var keys = variable_instance_get_names(inst);
 	var key,val;
 	for(var i=0; i<array_length(keys); i++) {
 		key = keys[i];
 		val = variable_instance_get(inst, key);
+		if(instance_exists(val))
+			val = structifyInstance(val);
 		if(is_array(val)) {
 			val = duplicateArray(val);
 		}
+		else if(is_struct(val))
+			val = duplicateStruct(val);
+		variable_struct_set(instStruct, key, val);
 	}
+	variable_instance_set(inst, "instStruct_", instStruct);
+	return instStruct;
 }
 
 function duplicateArray(array) {
 	var newArray = [];
 	for(var i=0; i<array_length(array); i++) {
 		var val = array[i];
+		if(is_numeric(val) || is_string(val)) {
+			array_push(newArray, val);
+			continue;
+		}
 		if(instance_exists(val)) {
-			if(variable_instance_exists(val, "instStruct_"))
-				val = val.instStruct_;
+			val = structifyInstance(val);
 		}
 		if(is_array(val))
 			val = duplicateArray(val);
+		else if(is_struct(val))
+			val = duplicateStruct(val);
+		
+		array_push(newArray, val);
 	}
+	return newArray;
 }
 
 function duplicateStruct(struct) {
+	var class = instanceof(struct);
+	var constructr = asset_get_index(class);
+	var newStruct = {};
 	
+	if(script_exists(constructr)) {
+		newStruct = new constructr();
+		variable_struct_set(newStruct, "class", class);
+	}
+	
+	var keys = variable_struct_get_names(struct);
+	var key, val;
+	for(var i=0; i<array_length(keys); i++) {
+		key = keys[i];
+		val = variable_struct_get(struct, key);
+		if(is_numeric(val) || is_string(val)) {
+			variable_struct_set(newStruct, key, val);
+			continue;
+		}
+		
+		if(instance_exists(val)) {
+			val = structifyInstance(val);
+		}
+		if(is_array(val))
+			val = duplicateArray(val);
+		else if(is_struct(val))
+			val = duplicateStruct(val);
+		
+		variable_struct_set(newStruct, key, val);
+	}
+	
+	return newStruct;
 }
