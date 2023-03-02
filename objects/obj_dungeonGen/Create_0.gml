@@ -3,6 +3,8 @@ dungeonMap = ds_grid_create(
 	room_height div DUNG_CELL_SIZE
 );
 
+roomCount = 0;
+
 branches = [];
 
 //Choosing where dungeon map should start

@@ -31,7 +31,10 @@
   "physicsStartAwake": true,
   "properties": [],
   "solid": false,
-  "spriteId": null,
+  "spriteId": {
+    "name": "spr_dungGen",
+    "path": "sprites/spr_dungGen/spr_dungGen.yy",
+  },
   "spriteMaskId": null,
   "visible": true,
 }

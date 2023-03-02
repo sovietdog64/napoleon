@@ -1,7 +1,11 @@
 var cellX = mapPos.x*DUNG_CELL_SIZE;
 var cellY = mapPos.y*DUNG_CELL_SIZE;
+obj_dungeonGen.roomCount++;
+if(obj_dungeonGen.roomCount >= obj_dungeonGen.maxRooms)
+	return;
 
 bridgedTo = [];
+buildedBridgeTo = [];
 
 //Get the room's cell midpoint for centering
 cellMid = new Line(
@@ -11,6 +15,8 @@ cellMid = cellMid.getMidpoint();
 
 x = cellMid.x-rmWidth/2;
 y = cellMid.y-rmHeight/2;
+
+alarm_set(0, 2);
 
 if(maxNewRooms <= 0)
 	return;
@@ -58,5 +64,3 @@ creatorID.dungeonMap[# otherMapPos.x, otherMapPos.y] = inst;
 
 array_push(bridgedTo, inst);
 array_push(inst.bridgedTo, id);
-
-alarm_set(0, 2);

@@ -7,7 +7,7 @@ draw_set_color(c_gray);
 for(var i=0; i<array_length(bridgedTo); i++) {
 	var rm = bridgedTo[i];
 	draw_line(
-		x+rmWidth/2, y+rmHeight/2,
+		cellMid.x, cellMid.y,
 		rm.cellMid.x, rm.cellMid.y
 	)
 }

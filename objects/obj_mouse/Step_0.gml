@@ -28,7 +28,7 @@ if(LMOUSE_DOWN) {
 }
 	
 if(RMOUSE_PRESSED) {
-	if(selectedObj != -1 && dist <= global.reachDistance) {
+	if(selectedObj != noone && dist <= global.reachDistance) {
 		switch(selectedObj.object_index) {
 			case obj_placeable: {
 				selectedObj.rightClick();

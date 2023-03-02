@@ -1,7 +1,12 @@
 var cellX = mapPos.x*DUNG_CELL_SIZE;
 var cellY = mapPos.y*DUNG_CELL_SIZE;
+obj_dungeonGen.roomCount++;
+if(obj_dungeonGen.roomCount >= obj_dungeonGen.maxRooms)
+	return;
 
 bridgedTo = [];
+
+buildedBridgeTo = [];
 
 //Get the room's cell midpoint for centering
 cellMid = new Line(
@@ -13,25 +18,7 @@ cellMid = cellMid.getMidpoint();
 x = cellMid.x-rmWidth/2;
 y = cellMid.y-rmHeight/2;
 
-#region ground
-
-ground = layer_sprite_create(
-	layer_get_id("Ground"),
-	x+TILEW, y+TILEW,
-	spr_dungFloor
-)
-
-layer_sprite_xscale(
-	ground,
-	(rmWidth-TILEW-TILEW)/sprite_get_width(spr_dungFloor)
-)
-
-layer_sprite_yscale(
-	ground,
-	(rmHeight-TILEW-TILEW)/sprite_get_height(spr_dungFloor)
-)
-
-#endregion ground
+alarm_set(0, 2);
 
 //90% chance of branching to another room
 if(chance(90)) {
@@ -121,6 +108,3 @@ repeat(maxNewRooms) {
 	else //stop if out of bounds.
 		return;
 }
-
-
-alarm_set(0, 2);

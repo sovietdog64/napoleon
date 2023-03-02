@@ -8,6 +8,7 @@ for(var i=0; i<num; i++) {
 	//Prevent adding game-control objects/tiles
 	if(inst.persistent || object_is_ancestor(inst.object_index, obj_noDepthSortPar))
 		continue;
+	
 	ds_priority_add(drawQueue, inst, inst.bbox_bottom);
 }
 
