@@ -524,13 +524,23 @@ function structifyInstance(inst) {
 	for(var i=0; i<array_length(keys); i++) {
 		key = keys[i];
 		val = variable_instance_get(inst, key);
+		var debugTemp = string(val);
+		
+		if(is_bool(val) || is_numeric(val) || is_string(val)) {
+			variable_struct_set(instStruct, key, val);
+			continue;
+		}
+		
 		if(instance_exists(val))
 			val = structifyInstance(val);
-		if(is_array(val)) {
+		else if(is_array(val)) 
 			val = duplicateArray(val);
-		}
 		else if(is_struct(val))
 			val = duplicateStruct(val);
+		else if(script_exists(val))
+			val = script_get_name(val);
+		
+		
 		variable_struct_set(instStruct, key, val);
 	}
 	variable_instance_set(inst, "instStruct_", instStruct);
@@ -585,6 +595,8 @@ function duplicateStruct(struct) {
 			val = duplicateArray(val);
 		else if(is_struct(val))
 			val = duplicateStruct(val);
+		else if(script_exists(val))
+			val = script_get_name(val);
 		
 		variable_struct_set(newStruct, key, val);
 	}

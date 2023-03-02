@@ -174,7 +174,6 @@
     {"name":"GUIFuncs","order":11,"path":"scripts/GUIFuncs/GUIFuncs.yy",},
     {"name":"spr_playerArmB","order":1,"path":"sprites/spr_playerArmB/spr_playerArmB.yy",},
     {"name":"spr_woodStairLeft","order":2,"path":"sprites/spr_woodStairLeft/spr_woodStairLeft.yy",},
-    {"name":"spr_foregroundColonial","order":1,"path":"sprites/spr_foregroundColonial/spr_foregroundColonial.yy",},
     {"name":"obj_dungeonBranch","order":5,"path":"objects/obj_dungeonBranch/obj_dungeonBranch.yy",},
     {"name":"spr_musketBallProj","order":2,"path":"sprites/spr_musketBallProj/spr_musketBallProj.yy",},
     {"name":"PlayerStateLocked","order":4,"path":"scripts/PlayerStateLocked/PlayerStateLocked.yy",},

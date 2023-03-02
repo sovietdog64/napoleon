@@ -88,7 +88,7 @@
 45,46,45,46,45,46,45,46,45,46,46,45,46,45,46,45,46,45,46,45,46,45,46,45,46,45,46,45,46,-19,-2147483648,45,30,31,30,31,30,31,30,31,30,31,30,31,30,31,30,31,30,31,30,31,30,31,30,31,30,31,31,30,31,30,31,30,
 31,30,31,30,31,30,31,30,31,30,31,30,31,-19,-2147483648,45,45,46,45,46,45,46,45,46,45,46,45,46,45,46,45,46,45,46,45,46,45,46,45,46,45,46,46,45,46,45,46,45,46,45,46,45,46,45,46,45,46,45,46,45,46,-19,-2147483648,45,
 30,31,30,31,30,31,30,31,30,31,30,31,30,31,30,31,30,31,30,31,30,31,30,31,30,31,31,30,31,30,31,30,31,30,31,30,31,30,31,30,31,30,31,30,31,-19,-2147483648,45,45,46,45,46,45,46,45,46,45,46,45,46,45,46,45,46,
-45,46,45,46,45,46,45,46,45,46,46,45,46,45,46,45,46,45,46,45,46,45,46,45,46,45,46,45,46,-26,-2147483648,-7,30,-32,-2147483648,],"TileDataFormat":1,},"tilesetId":{"name":"Colonial","path":"tilesets/Colonial/Colonial.yy",},"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
+45,46,45,46,45,46,45,46,45,46,46,45,46,45,46,45,46,45,46,45,46,45,46,45,46,45,46,45,46,-26,-2147483648,-7,30,-32,-2147483648,],"TileDataFormat":1,},"tilesetId":null,"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
     {"resourceType":"GMRBackgroundLayer","resourceVersion":"1.0","name":"Background","animationFPS":15.0,"animationSpeedType":0,"colour":4278190080,"depth":600,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":true,"hspeed":0.0,"htiled":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"properties":[],"spriteId":null,"stretch":false,"userdefinedAnimFPS":false,"userdefinedDepth":false,"visible":true,"vspeed":0.0,"vtiled":false,"x":0,"y":0,},
   ],
   "parent": {
