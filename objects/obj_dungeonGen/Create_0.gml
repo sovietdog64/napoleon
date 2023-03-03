@@ -1,3 +1,5 @@
+if(variable_instance_exists(id, "noCreateEvent"))
+	return;
 dungeonMap = ds_grid_create(
 	room_width div DUNG_CELL_SIZE,
 	room_height div DUNG_CELL_SIZE

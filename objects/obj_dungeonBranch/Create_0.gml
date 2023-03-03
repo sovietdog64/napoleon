@@ -1,3 +1,5 @@
+if(variable_instance_exists(id, "noCreateEvent"))
+	return;
 var cellX = mapPos.x*DUNG_CELL_SIZE;
 var cellY = mapPos.y*DUNG_CELL_SIZE;
 

@@ -530,40 +530,53 @@ function loadGame(fileNum = 0) {
 	
 
 	
-function structifyInstance(inst) {
-	if(variable_instance_exists(inst, "instStruct_"))
+function structifyInstance(inst, forceStructify = false) {
+	//if this instance was already structified, then return its struct. 
+	if(!forceStructify && variable_instance_exists(inst, "instStruct_") && is_struct(inst.instStruct_))
 		return inst.instStruct_;
+		
+	//If forcing the structify, then de-reference the previously-made struct.
+	if(forceStructify && variable_instance_exists(inst, "instStruct_")) {
+		delete inst.instStruct_;
+	}
 	
-	if(!instance_exists(inst))
-		return -1;
+	//If the current instance does not exist, then throw an exception saying so.
+	if(!forceStructify && !instance_exists(inst))
+		throw("ERROR: this instance you are trying to structify does not exist!");
 	
 	var instStruct = {
 		x : inst.x,
 		y : inst.y,
 	};
 	
+	//Setting the required built-in instance variables.
 	if(variable_instance_exists(inst, "object_index"))
 		variable_struct_set(instStruct, "object_index", object_get_name(inst.object_index));
 	if(variable_instance_exists(inst, "sprite_index"))
 		variable_struct_set(instStruct, "sprite_index", sprite_get_name(inst.sprite_index));
+	if(variable_instance_exists(inst, "depth"))
+		variable_struct_set(instStruct, "depth", inst.depth);
 	
+	//Saving all instance variables to the instance struct.
 	var keys = variable_instance_get_names(inst);
 	var key,val;
 	for(var i=0; i<array_length(keys); i++) {
 		key = keys[i];
 		val = variable_instance_get(inst, key);
 		var debugTemp = string(val);
-		
+		//If bool or string, just save it and continue on.
+		//I didnt include is_numeric, because numbers can be interpreted in various ways in gamemaker
 		if(is_bool(val) || is_string(val)) {
 			variable_struct_set(instStruct, key, val);
 			continue;
 		}
 		
+		//Create duplicates of instance arrays/structs for the instance struct.
 		if(instance_exists(val))
 			val = structifyInstance(val);
 		else if(is_array(val)) 
 			val = duplicateArray(val);
-		else if(is_method(val)) {
+		else if(is_method(val)) {//Remove method vars, because you literally cannot save method vars at all.
 			variable_struct_remove(instStruct, key);
 			continue;
 		}
@@ -577,10 +590,109 @@ function structifyInstance(inst) {
 	return instStruct;
 }
 	
+function structWithInstanceStructsConvert(struct, parStruct_or_array, parKey_or_array_index) {
+	
+	//If this struct is an instance struct, then convert it into an instance.
+	if(variable_struct_exists(struct, "object_index")) {
+		if(is_struct(parStruct_or_array)) {
+			parStruct_or_array[$ parKey_or_array_index] = structToInstance(struct);
+		}
+		else if(is_array(parStruct_or_array)) {
+			parStruct_or_array[parKey_or_array_index] = structToInstance(struct);
+		}
+		else
+			throw("ERROR: parStruct_or_array is neither a struct nor array!");
+		
+		return;
+	}
+	
+	//Not an instance struct? loop through all data in the struct, then turn the instance structs into instances.
+	var keys = variable_struct_get_names(struct);
+	var key,val;
+	for(var i=0; i<array_length(keys); i++) {
+		key = keys[i];
+		val = struct[$ key];
+		if(is_struct(val)) {
+			structWithInstanceStructsConvert(val, struct, key);
+		}
+		else if(is_array(val)) {
+			arrayWithInstanceStructsConvert(val);
+		}
+	}
+	
+}
+	
+function arrayWithInstanceStructsConvert(array) {
+	for(var i=0; i<array_length(array); i++) {
+		if(is_struct(array[i])) {
+			structWithInstanceStructsConvert(array[i], array, i);
+		}
+	}
+}
+	
 function structToInstance(struct) {
 	if(!variable_struct_exists(struct, "object_index"))
 		return;
+		
+	
+	//Have to store the index in another variable to prevent crash with editing read-only variable.
+	var objectIndex = asset_get_index(struct.object_index)
+	variable_struct_remove(struct, "object_index");
+	
+	
+	var keys = variable_struct_get_names(struct);
+	var key, val;
+	
+	//Converting struct strings into asset indexes 
+	for(var i=0; i<array_length(keys); i++) {
+		key = keys[i];
+		val = variable_struct_get(struct, key);
+		if(is_string(val) && asset_get_type(val) != asset_unknown) {
+			variable_struct_set(struct, key, asset_get_index(val));
+		}
+	}
+	
+	//Loop through all arrays & structs that may contain more instances, and turn them into structs as well.
+	for(var i=0; i<array_length(keys); i++) {
+		key = keys[i];
+		val = struct[$ key];
+		
+		if(is_struct(val)) {
+			structWithInstanceStructsConvert(val, struct, key);
+		}
+		else if(is_array(val)) {
+			arrayWithInstanceStructsConvert(val)
+		}
+	}
+		
+	variable_struct_set(struct, "noCreateEvent", true);
+		
+	var inst = instance_create_depth(
+		struct.x, struct.y,
+		struct.depth,
+		objectIndex,
+		struct
+	);
+		
+	//Making sure that instance values are the same
+	with(inst) {
+		for(var i=0; i<array_length(keys); i++) {
+			key = keys[i];
+			val = variable_struct_get(struct, key);
+			if(variable_instance_get(inst, key) != val) {
+				if(is_string(val) &&  asset_get_type(val) != asset_unknown) {
+					variable_instance_set(inst, key, asset_get_index(val));
+				}
+				else
+					variable_instance_set(inst, key, val);
+			}
+		}
+	}
+	
+	return inst;
+	
 }
+
 
 function duplicateArray(array) {
 	var newArray = [];

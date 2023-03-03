@@ -1,0 +1,1 @@
+show_debug_message(collision_point_list(mouse_x, mouse_y, obj_tree, 0, 1, ds_list_create(), 0))
