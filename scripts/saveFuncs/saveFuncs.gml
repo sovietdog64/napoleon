@@ -154,17 +154,40 @@ function saveRoom() {
 	
 function saveRoom2() {
 	var roomStruct = {
-		instances : []
+		instances : [],
+		deactivatedInstances : [],
+		instMem : {}, //This is the struct containing all inst structs. The other two arrays will reference these structs.
 	};
 	for(var i=0; i<instance_number(all); i++) {
 		var inst = instance_find(all, i);
-		with(inst) {
-			if(!persistent && object_index != obj_player) {
-				array_push(roomStruct.instances, structifyInstance(id));
+		if(!inst.persistent && inst.object_index != obj_player) {
+			if(variable_instance_exists(inst, "instSaveStruct_")) {
+				array_push(roomStruct.instances, inst.id);
+			}
+			else {
+				var instStruct = structifyInstance(inst);
+				variable_instance_set(inst, "instSaveStruct_", instStruct);
+				variable_struct_set(roomStruct.instMem, string(inst.id), instStruct);
 			}
 		}
+		
 	}
-
+	
+	for(var i=0; i<array_length(obj_terrainGenerator.deactivatedInstances); i++) {
+		var inst = obj_terrainGenerator.deactivatedInstances[i];
+		if(!inst.persistent && inst.object_index != obj_player) {
+			if(variable_instance_exists(inst, "instSaveStruct_")) {
+				array_push(roomStruct.deactivatedInstances, inst.id);
+			}
+			else {
+				var instStruct = structifyInstance(inst, false, true);
+				variable_instance_set(inst, "instSaveStruct_", instStruct);
+				variable_struct_set(roomStruct.instMem, string(inst.id), instStruct);
+			}
+		}
+		
+	}
+	
 	variable_struct_set(global.levelData, room_get_name(room), roomStruct);
 }
 	
@@ -173,9 +196,9 @@ function loadRoom2() {
 	var instances = roomStruct.instances;
 	
 	for(var i=0; i<array_length(instances); i++) {
-		var inst = instances[i];
-		
-		
+		var instStruct = instances[i];
+		var inst = structToInstance(instStruct);
+		instance_deactivate_object(inst);
 	}
 }
 	
@@ -530,18 +553,19 @@ function loadGame(fileNum = 0) {
 	
 
 	
-function structifyInstance(inst, forceStructify = false) {
-	//if this instance was already structified, then return its struct. 
-	if(!forceStructify && variable_instance_exists(inst, "instStruct_") && is_struct(inst.instStruct_))
-		return inst.instStruct_;
-		
+function structifyInstance(inst, forceStructify = false, isDeactivated = false) {
+	
 	//If forcing the structify, then de-reference the previously-made struct.
 	if(forceStructify && variable_instance_exists(inst, "instStruct_")) {
 		delete inst.instStruct_;
 	}
 	
+	//if this instance was already structified, then return its struct. 
+	if(variable_instance_exists(inst, "instStruct_") && is_struct(inst.instStruct_))
+		return inst.instStruct_;
+	
 	//If the current instance does not exist, then throw an exception saying so.
-	if(!forceStructify && !instance_exists(inst))
+	if(!isDeactivated && !instance_exists(inst))
 		throw("ERROR: this instance you are trying to structify does not exist!");
 	
 	var instStruct = {
@@ -587,6 +611,7 @@ function structifyInstance(inst, forceStructify = false) {
 		variable_struct_set(instStruct, key, val);
 	}
 	variable_instance_set(inst, "instStruct_", instStruct);
+	
 	return instStruct;
 }
 	

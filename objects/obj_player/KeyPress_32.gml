@@ -1,3 +1,7 @@
+saveRoom2();
+clipboard_set_text(json_stringify(global.levelData.terrainGenTest)) 
+
+return;
 var inst = collision_point(mouse_x, mouse_y, obj_tree, 0, 1);
 show_debug_message("ee")
 if(inst != noone) {
