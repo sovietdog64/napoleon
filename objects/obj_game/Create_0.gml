@@ -103,3 +103,11 @@ global.craftingRecipies =
 ]
 
 #endregion crafting recipies
+
+#region vars to ignore when saving
+
+global.objSaveVarsIgnore = {
+	"obj_enemy" : ["path"]
+}
+
+#endregion vars to ignore when saving

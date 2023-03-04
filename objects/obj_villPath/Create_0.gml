@@ -1,3 +1,5 @@
+if(variable_instance_exists(id, "noCreateEvent") && noCreateEvent)
+	return;
 var maxHouses = ceil(sprite_width/250);
 var leftCount = irandom_range(1, maxHouses);
 var rightCount = irandom_range(1, maxHouses);

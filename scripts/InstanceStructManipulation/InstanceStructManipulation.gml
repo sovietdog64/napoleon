@@ -23,16 +23,45 @@ function structifyInstance(inst, roomStruct) {
 	};
 	
 	//Setting the required built-in instance variables.
-	variable_struct_set(instStruct, "object_index", object_get_name(inst.object_index));
-	variable_struct_set(instStruct, "sprite_index", sprite_get_name(inst.sprite_index));
+	var objName = object_get_name(inst.object_index);
+	var sprName = sprite_get_name(inst.sprite_index);
+	variable_struct_set(instStruct, "object_index", objName);
+	if(asset_get_type(sprName) != asset_unknown)
+		variable_struct_set(instStruct, "sprite_index", sprName);
 	variable_struct_set(instStruct, "depth", inst.depth);
+	
+	variable_struct_set(instStruct, "image_xscale", inst.image_xscale)
+	variable_struct_set(instStruct, "image_yscale", inst.image_yscale)
+	variable_struct_set(instStruct, "image_index", inst.image_index)
+	variable_struct_set(instStruct, "image_angle", inst.image_angle)
+	
+	
+	//Get all var names to ignore for this instance
+	var varsToIgnore = [];
+	
+	var keys = variable_struct_get_names(global.objSaveVarsIgnore);
+	var key,val;
+	for(var i=0; i<array_length(keys); i++) {
+		var key = keys[i];
+		var objIndex = asset_get_index(key);
+		if(object_is_ancestor(inst.object_index, objIndex)) {
+			varsToIgnore = global.objSaveVarsIgnore[$ key];
+			break;
+		}
+	}
 	
 	//Saving all instance variables to the instance struct.
 	var keys = variable_instance_get_names(inst);
 	var key,val;
 	for(var i=0; i<array_length(keys); i++) {
 		key = keys[i];
+		
+		//if this value should be ignored when saving, then ignore it.
+		if(array_contains(varsToIgnore, key))
+			continue;
+			
 		val = variable_instance_get(inst, key);
+		
 		//If bool or string, just save it and continue on.
 		//I didnt include is_numeric, because numbers can be interpreted in various ways in gamemaker
 		if(is_bool(val)) {

@@ -1,3 +1,5 @@
+if(variable_instance_exists(id, "noCreateEvent") && noCreateEvent)
+	return;
 event_inherited();
 
 huts = [];

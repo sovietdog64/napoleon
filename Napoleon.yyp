@@ -172,7 +172,6 @@
     {"id":{"name":"obj_tree","path":"objects/obj_tree/obj_tree.yy",},"order":1,},
     {"id":{"name":"obj_dungeon","path":"objects/obj_dungeon/obj_dungeon.yy",},"order":0,},
     {"id":{"name":"obj_chest","path":"objects/obj_chest/obj_chest.yy",},"order":0,},
-    {"id":{"name":"obj_thing","path":"objects/obj_thing/obj_thing.yy",},"order":15,},
     {"id":{"name":"musketReload","path":"sequences/musketReload/musketReload.yy",},"order":0,},
     {"id":{"name":"spr_playerLegF","path":"sprites/spr_playerLegF/spr_playerLegF.yy",},"order":5,},
     {"id":{"name":"spr_musketBall","path":"sprites/spr_musketBall/spr_musketBall.yy",},"order":1,},

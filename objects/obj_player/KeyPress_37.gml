@@ -1,1 +1,17 @@
-show_debug_message(collision_point_list(mouse_x, mouse_y, obj_tree, 0, 1, ds_list_create(), 0))
+var setPos = false;
+with(obj_testVillage) {
+	setPos = true;
+	other.x = x;
+	other.y = y;
+}
+
+if(!setPos) {
+	for(var i=0; i<array_length(obj_terrainGenerator.deactivatedInstances); i++) {
+		var inst = obj_terrainGenerator.deactivatedInstances[i];
+		if(inst.object_index != obj_testVillage)
+			continue;
+		x = inst.x;
+		y = inst.y;
+		break;
+	}
+}

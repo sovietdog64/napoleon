@@ -189,8 +189,21 @@ function loadRoom2() {
 	var roomStruct = variable_struct_get(global.levelData, room_get_name(room));
 	var instances = roomStruct.instances;
 	
+	with(all) {
+		if(!persistent && object_index != obj_player) {
+			instance_destroy();
+		}
+	}
+	
 	for(var i=0; i<array_length(instances); i++) {
-		var instStruct = instances[i];
+		var memAddr = instances[i];
+		var instStruct = roomStruct.instMem[$ memAddr];
+		var inst = structToInstance(instStruct);
+	}
+	
+	for(var i=0; i<array_length(roomStruct.deactivatedInstances); i++) {
+		var memAddr = roomStruct.deactivatedInstances[i];
+		var instStruct = roomStruct.instMem[$ memAddr];
 		var inst = structToInstance(instStruct);
 		instance_deactivate_object(inst);
 	}

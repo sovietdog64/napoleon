@@ -1,4 +1,4 @@
-if(variable_instance_exists(id, "noCreateEvent"))
+if(variable_instance_exists(id, "noCreateEvent") && noCreateEvent)
 	return;
 var pathAngle = point_direction(0,0, dirVec.x, dirVec.y);
 
