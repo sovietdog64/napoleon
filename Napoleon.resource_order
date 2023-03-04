@@ -195,6 +195,7 @@
     {"name":"spr_boxingGloves","order":1,"path":"sprites/spr_boxingGloves/spr_boxingGloves.yy",},
     {"name":"obj_HUD","order":10,"path":"objects/obj_HUD/obj_HUD.yy",},
     {"name":"obj_notification","order":2,"path":"objects/obj_notification/obj_notification.yy",},
+    {"name":"InstanceStructManipulation","order":16,"path":"scripts/InstanceStructManipulation/InstanceStructManipulation.yy",},
     {"name":"rm_plains","order":3,"path":"rooms/rm_plains/rm_plains.yy",},
     {"name":"obj_wigglePar","order":11,"path":"objects/obj_wigglePar/obj_wigglePar.yy",},
     {"name":"Macros","order":3,"path":"scripts/Macros/Macros.yy",},

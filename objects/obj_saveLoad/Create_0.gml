@@ -20,11 +20,6 @@ global.statData =
 	completedQuests : array_create(0),
 }
 
-global.levelData = 
-{
-	entrance : 0,
-	level1 : 0,
-	level2 : 0,
-}
+global.levelData = {}
 
 global.allSaveableEnemyObjects = [];//Add objects like obj_spider for example only IF you want their death to be saved. Might want to do this for bosses only.
