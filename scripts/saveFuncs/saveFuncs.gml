@@ -158,34 +158,23 @@ function saveRoom2() {
 		deactivatedInstances : [],
 		instMem : {}, //This is the struct containing all inst structs. The other two arrays will reference these structs.
 	};
+	
 	for(var i=0; i<instance_number(all); i++) {
 		var inst = instance_find(all, i);
-		if(!inst.persistent && inst.object_index != obj_player) {
-			if(variable_instance_exists(inst, "instSaveStruct_")) {
-				array_push(roomStruct.instances, inst.id);
-			}
-			else {
-				var instStruct = structifyInstance(inst);
-				variable_instance_set(inst, "instSaveStruct_", instStruct);
-				variable_struct_set(roomStruct.instMem, string(inst.id), instStruct);
+		if(inst.persistent || inst.object_index == obj_player)
+			continue;
+		
+		var instStruct = {};
+		
+		switch(inst.object_index) {
+			case obj_tree: {
+				instStruct = structifyInstance(inst);
+			} break;
+			
+			case obj_goblin: {
+				
 			}
 		}
-		
-	}
-	
-	for(var i=0; i<array_length(obj_terrainGenerator.deactivatedInstances); i++) {
-		var inst = obj_terrainGenerator.deactivatedInstances[i];
-		if(!inst.persistent && inst.object_index != obj_player) {
-			if(variable_instance_exists(inst, "instSaveStruct_")) {
-				array_push(roomStruct.deactivatedInstances, inst.id);
-			}
-			else {
-				var instStruct = structifyInstance(inst, false, true);
-				variable_instance_set(inst, "instSaveStruct_", instStruct);
-				variable_struct_set(roomStruct.instMem, string(inst.id), instStruct);
-			}
-		}
-		
 	}
 	
 	variable_struct_set(global.levelData, room_get_name(room), roomStruct);
@@ -556,7 +545,7 @@ function loadGame(fileNum = 0) {
 function structifyInstance(inst, forceStructify = false, isDeactivated = false) {
 	
 	//If forcing the structify, then de-reference the previously-made struct.
-	if(forceStructify && variable_instance_exists(inst, "instStruct_")) {
+	if(forceStructify && variable_instance_exists(inst, "instStruct_") && is_struct(inst.instStruct_)) {
 		delete inst.instStruct_;
 	}
 	
@@ -567,6 +556,9 @@ function structifyInstance(inst, forceStructify = false, isDeactivated = false) 
 	//If the current instance does not exist, then throw an exception saying so.
 	if(!isDeactivated && !instance_exists(inst))
 		throw("ERROR: this instance you are trying to structify does not exist!");
+	
+	if(inst < 0)
+		return {};
 	
 	var instStruct = {
 		x : inst.x,
