@@ -157,9 +157,19 @@ function saveRoom2() {
 		instances : [],
 		deactivatedInstances : [],
 		instMem : {}, //This is the struct containing all inst structs. The other two arrays will reference these structs.
+		memory : {
+			arrays : {},
+			dsGrids : {},
+			dsLists : {},
+			structs : {},
+		},
+		savedMemory : {//This struct contains all structs saved and their reference in the save file.
+			savedArrays : {},
+			savedDsGrids : {},
+			savedDsLists : {},
+			savedStructs : {},
+		}
 	};
-	
-	variable_struct_set(global.levelData, room_get_name(room), roomStruct);
 	
 	for(var i=0; i<instance_number(all); i++) {
 		var inst = instance_find(all, i);
@@ -175,11 +185,7 @@ function saveRoom2() {
 		if(inst.persistent || inst.object_index == obj_player || !isInstance(inst))
 			continue;
 		
-		var memAddr = structifyInstance(inst, roomStruct);
-		
-		var instStruct = roomStruct.instMem[$ memAddr];
-		
-		variable_struct_set(instStruct, "deactivated", true);
+		structifyInstance(inst, roomStruct);
 	}
 	
 	variable_struct_set(global.levelData, room_get_name(room), roomStruct);

@@ -1,6 +1,6 @@
 //drawing chunks
-//var xCount = ds_grid_width(allChunks);
-//var yCount = ds_grid_height(allChunks);
+//var xCount = ds_grid_width(chunksGrid);
+//var yCount = ds_grid_height(chunksGrid);
 //for(var xx=0; xx<xCount; xx++) {
 //	for(var yy=0; yy<yCount; yy++) {
 //		draw_set_color(c_red);
@@ -8,8 +8,8 @@
 //	}
 //}
 
-//for(var xx=0; xx<ds_grid_width(terrainMap); xx++)
-//	for(var yy=0; yy<ds_grid_height(terrainMap); yy++) {
-//		if(numRound(terrainMap[# xx, yy]) == 6)
+//for(var xx=0; xx<ds_grid_width(terrainGrid); xx++)
+//	for(var yy=0; yy<ds_grid_height(terrainGrid); yy++) {
+//		if(numRound(terrainGrid[# xx, yy]) == 6)
 //			draw_circle(xx*TILEW, yy*TILEW, 10, 0);
 //	}

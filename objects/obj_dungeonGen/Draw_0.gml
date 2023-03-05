@@ -1,6 +1,6 @@
 //draw_set_color(c_maroon)
-//for(var r=0; r<ds_grid_width(dungeonMap); r++)
-//	for(var c=0; c<ds_grid_height(dungeonMap); c++) {
+//for(var r=0; r<ds_grid_width(dungeonGrid); r++)
+//	for(var c=0; c<ds_grid_height(dungeonGrid); c++) {
 //		var cellX = r*DUNG_CELL_SIZE;
 //		var cellY = c*DUNG_CELL_SIZE;
 //		draw_rectangle(

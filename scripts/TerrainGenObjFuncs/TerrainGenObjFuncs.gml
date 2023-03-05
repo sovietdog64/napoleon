@@ -1,5 +1,5 @@
 function placeChunk(chunkMapX, chunkMapY) {
-	var chunk = allChunks[# chunkMapX, chunkMapY];
+	var chunk = chunksGrid[# chunkMapX, chunkMapY];
 	
 	
 	var startX = chunkMapX * CHUNK_W;
@@ -7,7 +7,7 @@ function placeChunk(chunkMapX, chunkMapY) {
 	var tiles = ds_list_create();
 	for(var xx=startX; xx<startX+CHUNK_W; xx++)
 		for(var yy=startY; yy<startY+CHUNK_H; yy++) {
-			var ind = numRound(ds_grid_get(terrainMap, xx, yy))
+			var ind = numRound(ds_grid_get(terrainGrid, xx, yy))
 			var tile = placeTile(ind, xx, yy);
 			if(tile != undefined)
 				ds_list_add(tiles, tile);
@@ -22,7 +22,7 @@ function placeChunkStruct(chunk) {
 	var tiles = ds_list_create();
 	for(var xx=startX; xx<startX+CHUNK_W; xx++)
 		for(var yy=startY; yy<startY+CHUNK_H; yy++) {
-			var ind = numRound(ds_grid_get(terrainMap, xx, yy))
+			var ind = numRound(ds_grid_get(terrainGrid, xx, yy))
 			var tile = placeTile(ind, xx, yy);
 			if(tile != undefined)
 				ds_list_add(tiles, tile);
@@ -36,7 +36,7 @@ function placeChunkStruct(chunk) {
 }
 
 function updateChunkInstances(chunkMapX, chunkMapY) {
-	var chunk = allChunks[# chunkMapX, chunkMapY];
+	var chunk = chunksGrid[# chunkMapX, chunkMapY];
 	//list of all instances
 	var list = ds_list_create();
 	var chunkX = chunkMapX*PX_CHUNK_H;
@@ -53,7 +53,7 @@ function updateChunkInstances(chunkMapX, chunkMapY) {
 }
 
 function prepareChunk(chunkMapX, chunkMapY) {
-	allChunks[# chunkMapX, chunkMapY] = {
+	chunksGrid[# chunkMapX, chunkMapY] = {
 		structures : [],
 		structureType : structureTypes.ALL,
 		loaded : false,
@@ -64,7 +64,7 @@ function prepareChunk(chunkMapX, chunkMapY) {
 		mapY : chunkMapY,
 	}
 	
-	var chunk = allChunks[# chunkMapX, chunkMapY];
+	var chunk = chunksGrid[# chunkMapX, chunkMapY];
 	if(chunk.prepared)
 		return;
 	chunk.prepared = true;
@@ -76,7 +76,7 @@ function prepareChunk(chunkMapX, chunkMapY) {
 	//Getting chunk strucutre type + structure spawning
 	for(var xx=startX; xx<startX+CHUNK_W; xx++)
 		for(var yy=startY; yy<startY+CHUNK_H; yy++) {
-			var ind = numRound(terrainMap[# xx, yy]);
+			var ind = numRound(terrainGrid[# xx, yy]);
 			var tileType = getTileType(ind);
 			
 			//Spawning strucutres depending on 
@@ -128,7 +128,7 @@ function prepareChunk(chunkMapX, chunkMapY) {
 }
 
 function spawnStructure(chunkMapX, chunkMapY, spawnX, spawnY, obj, lay = "Structures", varStruct = undefined) {
-	var structures = allChunks[# chunkMapX, chunkMapY]
+	var structures = chunksGrid[# chunkMapX, chunkMapY]
 	var canSpawn = true;
 	for(var i=0; i<array_length(structures); i++) {
 		if(structures[i].object_index == obj)

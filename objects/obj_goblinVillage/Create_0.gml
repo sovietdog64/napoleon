@@ -24,8 +24,8 @@ for(var i=0; i<irandom_range(2, 5); i++) {
 
 mapSize = power(2, 4)+1;
 
-excavationMap = ds_grid_create(mapSize, mapSize);
+excavationGrid = ds_grid_create(mapSize, mapSize);
 
-lazyFloodFill(excavationMap, floor(mapSize/2), floor(mapSize/2), 0.995)
+lazyFloodFill(excavationGrid, floor(mapSize/2), floor(mapSize/2), 0.995)
 
 alarm_set(0, 5);

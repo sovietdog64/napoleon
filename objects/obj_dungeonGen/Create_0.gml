@@ -1,6 +1,6 @@
 if(variable_instance_exists(id, "noCreateEvent") && noCreateEvent)
 	return;
-dungeonMap = ds_grid_create(
+dungeonGrid = ds_grid_create(
 	room_width div DUNG_CELL_SIZE,
 	room_height div DUNG_CELL_SIZE
 );
@@ -14,11 +14,11 @@ mapPos = new Vec2Zero();
 mainBranchDir = new Vec2Zero();
 
 if(choose(1, 0)) {
-	mapPos.x = irandom(ds_grid_width(dungeonMap)-3);
+	mapPos.x = irandom(ds_grid_width(dungeonGrid)-3);
 	mainBranchDir.y = 1;
 }
 else {
-	mapPos.y = irandom(ds_grid_height(dungeonMap)-3);
+	mapPos.y = irandom(ds_grid_height(dungeonGrid)-3);
 	mainBranchDir.x = 1;
 }
 
@@ -30,7 +30,7 @@ for(var i=0; i<branchLen; i++) {
 	var dirX = mainBranchDir.y;
 	var dirY = mainBranchDir.x * choose(1, -1);
 	//Stop if the new branch is going to be out of bounds.
-	if(!withinBoundsGrid(dungeonMap, newRoomPos.x, newRoomPos.y))
+	if(!withinBoundsGrid(dungeonGrid, newRoomPos.x, newRoomPos.y))
 		return;
 	
 	var roomWidth = irandom_range(MIN_DUNGEON_ROOM_TILES, MAX_DUNGEON_ROOM_TILES);
@@ -49,7 +49,7 @@ for(var i=0; i<branchLen; i++) {
 			maxNewRooms : irandom_range(1, 3),
 		}
 	)
-	dungeonMap[# newRoomPos.x, newRoomPos.y] = inst;
+	dungeonGrid[# newRoomPos.x, newRoomPos.y] = inst;
 	branches[i] = inst;
 	
 	newRoomPos.addVec(mainBranchDir);

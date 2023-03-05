@@ -225,7 +225,9 @@ function getItemFromInv(itemSprite, amountNeeded = 1) {
 
 //Returns if string contains substring without case sensitivity
 function stringContainsNoCase(str, substr) {
-	return string_pos(string_lower(substr),string_lower(str));
+	substr = string_lower(substr);
+	str = string_lower(str);
+	return string_pos(substr,str);
 }
 
 //Returns if string contains substring WITH case sensitivity

@@ -5,7 +5,7 @@ var pathAngle = point_direction(0,0, dirVec.x, dirVec.y);
 var targMapPos = mapPos.copy();
 targMapPos.addVec(dirVec);
 
-var rm = creatorID.dungeonMap[# targMapPos.x, targMapPos.y];
+var rm = creatorID.dungeonGrid[# targMapPos.x, targMapPos.y];
 
 //Get path length
 var len = pointDistToRect(

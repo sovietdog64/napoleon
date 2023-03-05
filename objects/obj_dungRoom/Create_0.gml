@@ -43,7 +43,7 @@ if(chance(90)) {
 			break;
 			
 		}
-		var inst = creatorID.dungeonMap[# xx,yy];
+		var inst = creatorID.dungeonGrid[# xx,yy];
 		if(instance_exists(inst))
 			if(!array_contains(inst.bridgedTo, id)) {
 				array_push(bridgedTo, inst);
@@ -58,7 +58,7 @@ if(maxNewRooms <= 0)
 
 //Stop making new rooms if going out of room.
 if(!withinBoundsGrid(
-	creatorID.dungeonMap,
+	creatorID.dungeonGrid,
 	mapPos.x+branchDir.x, mapPos.y+branchDir.y
 )) {
 	return;
@@ -68,7 +68,7 @@ var otherMapPos = mapPos.copy();
 otherMapPos.addVec(branchDir);
 
 //If rooms will overlap, stop.
-if(instance_exists(creatorID.dungeonMap[# otherMapPos.x, otherMapPos.y]))
+if(instance_exists(creatorID.dungeonGrid[# otherMapPos.x, otherMapPos.y]))
 	return;
 
 
@@ -79,12 +79,12 @@ if(obj_dungeonGen.roomCount >= obj_dungeonGen.maxRooms)
 //Creating the rooms
 repeat(maxNewRooms) {
 	//Keep going forward in the branch until a free cell is found. Will stay in bounds
-	while(instance_exists(creatorID.dungeonMap[# otherMapPos.x, otherMapPos.y]) &&
-		  withinBoundsGrid(creatorID.dungeonMap, otherMapPos.x, otherMapPos.y)) {
+	while(instance_exists(creatorID.dungeonGrid[# otherMapPos.x, otherMapPos.y]) &&
+		  withinBoundsGrid(creatorID.dungeonGrid, otherMapPos.x, otherMapPos.y)) {
 		otherMapPos.addVec(branchDir);
 	}
 	
-	if(withinBoundsGrid(creatorID.dungeonMap, otherMapPos.x, otherMapPos.y)) {
+	if(withinBoundsGrid(creatorID.dungeonGrid, otherMapPos.x, otherMapPos.y)) {
 		//Create new room 
 		var roomWidth = irandom_range(MIN_DUNGEON_ROOM_TILES, MAX_DUNGEON_ROOM_TILES);
 		var roomHeight = irandom_range(MIN_DUNGEON_ROOM_TILES, MAX_DUNGEON_ROOM_TILES);
@@ -101,7 +101,7 @@ repeat(maxNewRooms) {
 				maxNewRooms : 0,
 			}
 		)
-		creatorID.dungeonMap[# otherMapPos.x, otherMapPos.y] = inst;
+		creatorID.dungeonGrid[# otherMapPos.x, otherMapPos.y] = inst;
 		//Bridge to the new room created
 		try {
 			array_push(bridgedTo, inst);

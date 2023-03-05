@@ -1,4 +1,4 @@
-allChunks = 0;
+chunksGrid = 0;
 
 depth = -999;
 

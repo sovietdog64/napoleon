@@ -1,7 +1,7 @@
 if(room == rm_dungeon)
 	return;
-var xCount = ds_grid_width(allChunks);
-var yCount = ds_grid_height(allChunks);
+var xCount = ds_grid_width(chunksGrid);
+var yCount = ds_grid_height(chunksGrid);
 
 if(instance_exists(obj_player))
 	for(var i=0; i<instance_number(all); i++) {
@@ -54,7 +54,7 @@ for(var xx=0; xx<xCount; xx++) {
 		var chunkX = xx*PX_CHUNK_W;
 		var chunkY = yy*PX_CHUNK_H;
 		
-		var chunk = allChunks[# xx, yy];
+		var chunk = chunksGrid[# xx, yy];
 		
 		var camInBounds = rectangle_in_rectangle(CAMX, CAMY, CAMX2, CAMY2,
 												chunkX, chunkY, chunkX+PX_CHUNK_W, chunkY+PX_CHUNK_H);

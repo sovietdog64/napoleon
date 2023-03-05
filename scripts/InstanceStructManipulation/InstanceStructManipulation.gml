@@ -1,4 +1,3 @@
-
 //This is meant to be used in obj_saveLoad only.
 function structifyInstance(inst, roomStruct) {
 	
@@ -64,36 +63,42 @@ function structifyInstance(inst, roomStruct) {
 		
 		//If bool or string, just save it and continue on.
 		//I didnt include is_numeric, because numbers can be interpreted in various ways in gamemaker
-		if(is_bool(val)) {
+		if(is_bool(val) || is_string(val)) {
 			variable_struct_set(instStruct, key, val);
 			continue;
 		}
 		
-		if(is_string(val)) {
-			if(stringContains("Spr", key)) 
+		if(is_numeric(val)) {
+			if(stringContains("Spr", key)) {
 				val = sprite_get_name(val);
-			else if(stringContains("Obj", key)) 
+				variable_struct_set(instStruct, key, val);
+				continue;
+			}
+			else if(stringContains("Obj", key)) {
 				val = object_get_name(val);
-			
-			variable_struct_set(instStruct, key, val);
-			continue;
+				variable_struct_set(instStruct, key, val);
+				continue;
+			}
 		}
 		
-		//Create duplicates of instance arrays/structs for the instance struct.
-		
+		//function calling its self looks very goofy, but it in this case, it makes sense since the code will convert all data down to the core data types.
 		if(isInstance(val)) 
 			val = structifyInstance(val, roomStruct);
 		
 		else if(is_array(val)) 
-			val = duplicateArray(val, roomStruct);
+			val = duplicateArraySave(val, roomStruct);
 		
 		else if(is_method(val)) {//Remove method vars, because you cannot save method vars in any way.
 			variable_struct_remove(instStruct, key);
 			continue;
 		}
+			
 		else if(is_struct(val))
-			val = duplicateStruct(val, roomStruct);
+			val = duplicateStructSave(val, roomStruct);
 		
+		else if(isDsGrid(key, val))
+			val = dsGridToArrSave(val, roomStruct);
+			
 		
 		variable_struct_set(instStruct, key, val);
 	}
@@ -158,9 +163,12 @@ function structWithInstanceStructsConvert(struct, parStruct_or_array, parKey_or_
 		if(is_struct(val)) {
 			structWithInstanceStructsConvert(val, struct, key);
 		}
+			
 		else if(is_array(val)) {
 			arrayWithInstanceStructsConvert(val);
 		}
+			
+		
 	}
 	
 }
@@ -237,7 +245,21 @@ function structToInstance(struct) {
 }
 
 
-function duplicateArray(array, roomStruct) {
+function duplicateArraySave(array, roomStruct) {
+	
+	//Prevent saving the array if it was marked as "saved" in this room struct.
+	var memoryAddrs = variable_struct_get_names(roomStruct.savedMemory.savedArrays);
+	var memoryAddr,val;
+	for(var i=0; i<array_length(memoryAddrs); i++) {
+		memoryAddr = memoryAddrs[i];
+		val = roomStruct.savedMemory.savedArrays[$ memoryAddr];
+		//If this array was previously saved in this room struct,
+		if(val == array) {
+			//Return its mem address in the save.
+			return memoryAddr;
+		}
+	}
+	
 	var newArray = [];
 	for(var i=0; i<array_length(array); i++) {
 		var val = array[i];
@@ -245,27 +267,57 @@ function duplicateArray(array, roomStruct) {
 			array_push(newArray, val);
 			continue;
 		}
-			
+		
 		if(isInstance(val))
 			val = structifyInstance(val, roomStruct);
 			
 		else if(is_array(val)) 
-			val = duplicateArray(val, roomStruct);
+			val = duplicateArraySave(val, roomStruct);
 			
 		else if(is_method(val)) {
 			continue;
 		}
+		
 		else if(is_struct(val))
-			val = duplicateStruct(val, roomStruct);
+			val = duplicateStructSave(val, roomStruct);
+		
+		
 		
 		array_push(newArray, val);
 	}
-	return newArray;
+	
+	
+	var memAddr = irandom_range(0, 2147483648);
+	while(variable_struct_exists(roomStruct.memory.arrays, string(memAddr) + "_array")) 
+		memAddr = irandom_range(0, 2147483648);
+	
+	//Save array to room memory
+	variable_struct_set(roomStruct.memory.arrays, string(memAddr) + "_array", newArray);
+	
+	//mark this array as "saved" for this room struct.
+	variable_struct_set(roomStruct.savedMemory.savedArrays, string(memAddr) + "_array", array);
+	
+	return string(memAddr) + "_array";
 }
 
-function duplicateStruct(struct, roomStruct) {
+function duplicateStructSave(struct, roomStruct) {
+	
+	//Prevent saving the struct if it was marked as "saved" in this room struct.
+	var memoryAddrs = variable_struct_get_names(roomStruct.savedMemory.savedStructs);
+	var memoryAddr,val;
+	for(var i=0; i<array_length(memoryAddrs); i++) {
+		memoryAddr = memoryAddrs[i];
+		val = roomStruct.savedMemory.savedStructs[$ memoryAddr];
+		//If this struct was previously saved in this room struct,
+		if(val == struct) {
+			//Return its mem address in the save.
+			return memoryAddr;
+		}
+	}
+	
 	var class = instanceof(struct);
 	var constructr = asset_get_index(class);
+	
 	var newStruct = {};
 	
 	if(script_exists(constructr)) {
@@ -287,27 +339,140 @@ function duplicateStruct(struct, roomStruct) {
 			val = structifyInstance(val, roomStruct);
 			
 		else if(is_array(val)) 
-			val = duplicateArray(val, roomStruct);
+			val = duplicateArraySave(val, roomStruct);
 			
 		else if(is_method(val)) {
 			variable_struct_remove(newStruct, key);
 			continue;
 		}
+			
 		else if(is_struct(val))
-			val = duplicateStruct(val, roomStruct);
+			val = duplicateStructSave(val, roomStruct);
+		
+		else if(isDsGrid(key, val))
+			val = dsGridToArrSave(val, roomStruct);
+		
 		
 		variable_struct_set(newStruct, key, val);
 	}
+		
+		
+	var memAddr = irandom_range(0, 2147483648);
+	while(variable_struct_exists(roomStruct.memory.structs, string(memAddr) + "_struct")) 
+		memAddr = irandom_range(0, 2147483648);
 	
-	return newStruct;
+	variable_struct_set(roomStruct.memory.structs, string(memAddr) + "_struct", newStruct);
+	
+	//mark this struct as "saved" for this room struct.
+	variable_struct_set(roomStruct.savedMemory.savedStructs, string(memAddr) + "_struct", struct);
+	
+	return string(memAddr) + "_struct";
 }
 	
 //Works with deactivated instances
-//Doesnt check if instance exists, because dactivated instances will always return false on that function.
+//Doesnt check if instance exists, because deactivated instances will always return false on that function.
 function isInstance(inst) {
 	//Has to be a numeric ID of some sort.
 	if(!is_numeric(inst))
 		return false;
 	
 	return string_pos("ref ", string(inst)) == 1;
+}
+	
+	
+function dsGridToArr(grid) {
+	var arr = [[]];
+	for(var r=0; r<ds_grid_width(grid); r++) {
+		for(var c=0; c<ds_grid_height(grid); c++)
+			arr[r][c] = grid[# c, r];
+	}
+	return arr;
+}
+
+function dsGridToArrSave(grid, roomStruct) {
+	
+	if(!is_struct(roomStruct))
+		throw("ERROR: inputted roomStruct is not a struct!");
+		
+	//Prevent saving the grid if it was marked as "saved" in this room struct.
+	var memoryAddrs = variable_struct_get_names(roomStruct.savedMemory.savedDsGrids);
+	var memoryAddr,val;
+	for(var i=0; i<array_length(memoryAddrs); i++) {
+		memoryAddr = memoryAddrs[i];
+		val = roomStruct.savedMemory.savedDsGrids[$ memoryAddr];
+		//If this grid was previously saved in this room struct,
+		if(val == grid) {
+			//Return its mem address in the save.
+			return memoryAddr;
+		}
+	}
+	
+	var arr = [[]];
+	var val;
+	for(var r=0; r<ds_grid_width(grid); r++) {
+		for(var c=0; c<ds_grid_height(grid); c++) {
+			val = grid[# c, r];
+			
+			if(isInstance(val)) 
+				val = structifyInstance(val, roomStruct);
+			
+			else if(is_array(val))
+				val = duplicateArraySave(val, roomStruct);
+			
+			else if(is_method(val))
+				continue;
+			
+			else if(is_struct(val))
+				val = duplicateStructSave(val, roomStruct);
+			
+				
+			arr[r][c] = val;
+		}
+	}
+	
+	var memAddr = irandom_range(0, 2147483648);
+	while(variable_struct_exists(roomStruct.memory.dsGrids, string(memAddr) + "_grid")) 
+		memAddr = irandom_range(0, 2147483648);
+		
+	var memAddrName = string(memAddr) + "_grid";
+	
+	//Save grid to room memory
+	variable_struct_set(roomStruct.memory.dsGrids, memAddrName, arr);
+	
+	//mark grid as "saved" for room struct
+	variable_struct_set(roomStruct.savedMemory.savedDsGrids, memAddrName, grid);
+	
+	return memAddrName;
+}
+	
+function isDsGrid(varName, grid) {
+	if(!stringContainsNoCase(varName, "grid"))
+		return false;
+	try {
+		var test = ds_grid_width(grid);
+		return test;
+	}
+	catch(err) {return false;}
+}
+
+function printGrid(grid) {
+	var str = "";
+	for(var r=0; r<ds_grid_width(grid); r++) {
+		str += "[ ";
+		for(var c=0; c<ds_grid_height(grid); c++)
+			str += string(grid[# c, r]) + ",";
+		
+		str += "\n";
+	}
+	show_debug_message(str);
+	return str;
+}
+
+function print2DArray(arr) {
+	var str = "";
+	for(var r=0; r<array_length(arr); r++) {
+		str += string(arr[r]) + "\n"
+	}
+	show_debug_message(str);
+	return str;
 }

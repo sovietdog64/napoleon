@@ -25,7 +25,7 @@ if(maxNewRooms <= 0)
 
 //If the new room is going to be out of bounds, go the opposite direction in creating rooms.
 if(!withinBoundsGrid(
-	creatorID.dungeonMap,
+	creatorID.dungeonGrid,
 	mapPos.x+branchDir.x, mapPos.y+branchDir.y
 )) {
 	branchDir.negate();
@@ -34,8 +34,8 @@ if(!withinBoundsGrid(
 var otherMapPos = mapPos.copy();
 otherMapPos.addVec(branchDir);
 
-if(!withinBoundsGrid(creatorID.dungeonMap, otherMapPos.x, otherMapPos.y) ||
-	instance_exists(creatorID.dungeonMap[# otherMapPos.x, otherMapPos.y]))
+if(!withinBoundsGrid(creatorID.dungeonGrid, otherMapPos.x, otherMapPos.y) ||
+	instance_exists(creatorID.dungeonGrid[# otherMapPos.x, otherMapPos.y]))
 {
 	return;
 }
@@ -66,7 +66,7 @@ var inst = instance_create_layer(
 		maxNewRooms : maxNewRooms,
 	}
 )
-creatorID.dungeonMap[# otherMapPos.x, otherMapPos.y] = inst;
+creatorID.dungeonGrid[# otherMapPos.x, otherMapPos.y] = inst;
 
 try {
 	array_push(bridgedTo, inst);
