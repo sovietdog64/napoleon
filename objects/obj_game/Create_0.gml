@@ -93,6 +93,14 @@ enum inventories {
 	CRAFTING,
 	EQUIPMENT,
 }
+	
+enum dungRoomTypes {
+	NONE,
+	ENEMY,
+	MERCHANT,
+	SPECIAL,
+	CHEST
+}
 
 #endregion enums
 
@@ -115,3 +123,8 @@ global.objSaveVarsIgnore = {
 
 #endregion vars to ignore when saving
 
+#region dungeon func
+
+global.dungeonCreationCode = function() {};
+
+#endregion dungeon func

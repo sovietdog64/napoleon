@@ -25,9 +25,14 @@
   "physicsShape": 1,
   "physicsShapePoints": [],
   "physicsStartAwake": true,
-  "properties": [],
-  "solid": false,
-  "spriteId": null,
+  "properties": [
+    {"resourceType":"GMObjectProperty","resourceVersion":"1.0","name":"saveRef","filters":[],"listItems":[],"multiselect":false,"rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"value":"0","varType":0,},
+  ],
+  "solid": true,
+  "spriteId": {
+    "name": "spr_dungeon",
+    "path": "sprites/spr_dungeon/spr_dungeon.yy",
+  },
   "spriteMaskId": null,
   "visible": true,
 }

@@ -1,5 +1,7 @@
-if(variable_instance_exists(id, "noCreateEvent") && noCreateEvent)
+if(variable_instance_exists(id, "noCreateEvent") && noCreateEvent) {
+	noCreateEvent = false;
 	return;
+}
 var pathAngle = point_direction(0,0, dirVec.x, dirVec.y);
 
 var targMapPos = mapPos.copy();

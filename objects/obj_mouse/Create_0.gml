@@ -189,6 +189,45 @@ handleScreenInput = function() {
 	}
 }
 	
+handleClickingObjects = function() {
+	var inst = collision_point(x, y, obj_selectablePar,0,0);
+	var dist = distance_to_object(obj_player);
+	
+	if(inst != noone && dist <= global.reachDistance)
+		selectedObj = inst;
+	else
+		selectedObj = noone;
+	
+	if(LMOUSE_DOWN) {
+		if(selectedObj != noone && dist <= global.reachDistance) {
+			if(variable_instance_exists(selectedObj, "leftDown"))
+				selectedObj.leftDown();
+		}
+		
+	}
+	
+	else if(RMOUSE_DOWN) {
+		if(selectedObj != noone && dist <= global.reachDistance) {
+			if(variable_instance_exists(selectedObj, "rightDown"))
+				selectedObj.rightDown();
+		}
+	}
+	
+	if(LMOUSE_PRESSED) {
+		if(selectedObj != noone && dist <= global.reachDistance) {
+			if(variable_instance_exists(selectedObj, "leftPress"))
+				selectedObj.leftPress();
+		}
+	}
+	
+	if(RMOUSE_PRESSED) {
+		if(selectedObj != noone && dist <= global.reachDistance) {
+			if(variable_instance_exists(selectedObj, "rightPress"))
+				selectedObj.rightPress();
+		}
+	}
+}
+	
 stateFree = function() {
 	mouseOver();
 	//drag an item if the slot is not empty

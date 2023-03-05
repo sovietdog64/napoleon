@@ -1,5 +1,11 @@
-if(variable_instance_exists(id, "noCreateEvent") && noCreateEvent)
+if(variable_instance_exists(id, "noCreateEvent") && noCreateEvent) {
+	noCreateEvent = false;
 	return;
+}
+
+if(choose(0, 1))
+	waves = irandom_range(4,5)
+
 var cellX = mapPos.x*DUNG_CELL_SIZE;
 var cellY = mapPos.y*DUNG_CELL_SIZE;
 
@@ -64,6 +70,8 @@ var inst = instance_create_layer(
 		branchDir : newBranchDir,
 		creatorID : creatorID,
 		maxNewRooms : maxNewRooms,
+		wallSpr : wallSpr,
+		groundSpr : groundSpr,
 	}
 )
 creatorID.dungeonGrid[# otherMapPos.x, otherMapPos.y] = inst;

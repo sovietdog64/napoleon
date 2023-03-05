@@ -192,7 +192,6 @@ function isItem(item) {
 	return is_struct(item) && variable_struct_exists(item, "itemSpr");
 }
 	
-function isPlaceableItem(item) {return is_struct(item) && variable_struct_exists(item, "placedSprite")}
 	
 function purchaseItem(item, price, levelReq) {
 	//TODO:check if enough money
@@ -532,4 +531,8 @@ function arrayInBounds(array, ind) {
 	
 function chance(percentage) {
 	return random(100) < percentage;
+}
+	
+function randomValueFromArray(array) {
+	return array[irandom(array_length(array)-1)];
 }

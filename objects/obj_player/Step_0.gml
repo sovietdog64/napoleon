@@ -158,62 +158,6 @@ else
 
 #endregion items
 
-#region sequences
-//Make specific sequences follow player
-for(var i=0; i<array_length(followingSequences); i++) {
-	var seq = followingSequences[i].sequenceElementId;
-	var struct = followingSequences[i];
-	if(!layer_sequence_exists("Animations", seq))
-		continue;
-	//if sequence finished, destroy instance
-	if(layer_sequence_is_finished(seq)) {
-		//If holding firearm and sequence matches firearm reloading sequence, reload gun ammo
-		if(isFirearm(global.heldItem)) {
-			if(!layer_sequence_exists("Animations", seq))
-				continue;
-			if(struct.assetIndex == global.heldItem.reloadSeq) {
-				reload(global.heldItem);
-			}
-		}
-		layer_sequence_destroy(seq);
-		array_delete(followingSequences, i, 1);
-		continue;
-	}
-	var seqName = sequenceGetName(struct.assetIndex);
-	//If sequence is a reload sequence, 
-	if(string_pos("Reload", seqName)) {
-		//If held item is fire arm and it is not matching the reloading seuqence, destroy sequence.
-		if(isFirearm(global.heldItem) && global.heldItem.reloadSeq != struct.assetIndex) {
-			leftAttackCooldown = 0;
-			layer_sequence_destroy(seq);
-			attackState = attackStates.NONE;
-			continue;
-		} 
-		else if(!isFirearm(global.heldItem)){//If not holding firearm, destroy reload sequence
-			leftAttackCooldown = 0;
-			layer_sequence_destroy(seq);
-			attackState = attackStates.NONE;
-			continue;
-		}
-	}
-	layer_sequence_x(seq, x);
-	layer_sequence_y(seq, y);
-	//Make sequence copy image scale/direction of mouse if specified to do so
-	if(variable_struct_exists(struct, "followImageScale") && struct.followImageScale) {
-		layer_sequence_xscale(seq, image_xscale);
-		layer_sequence_yscale(seq, image_yscale);
-	}
-	if(variable_struct_exists(struct, "followMouseDirection") && struct.followMouseDirection)
-		layer_sequence_angle(seq, point_direction(x, y, mouse_x, mouse_y));
-}
-
-#endregion sequences
-
-if(debug_mode) {
-	global.level = 5;
-	global.levelUpThreshold = 480;
-}
-
 #region stamina
 global.stamina = clamp(global.stamina, 0, global.maxStamina);
 

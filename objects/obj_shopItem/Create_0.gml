@@ -1,4 +1,4 @@
-image_speed = 0;
-inspectCooldown = 5;
-//Set all of these in creation code
-item = new Item(spr_boxingGloves, 1, 1, itemAnimations.PUNCHING);
+sprite_index = item.itemSpr;
+image_xscale = 0.4;
+image_yscale = 0.4;
+leftPress = buyItem

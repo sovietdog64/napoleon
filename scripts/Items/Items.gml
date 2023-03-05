@@ -206,3 +206,14 @@ function WoodSword(amount = 1) : Item(spr_woodSword,amount,3,"Wood Sword","Perfe
 }
 
 #endregion all items
+
+//Called by obj_shopItem only.
+function buyItem() {
+	//Remove money
+	
+	//Give item to player
+	var _item = duplicateItem(item);
+	if(!giveItemToPlayer(_item)) {
+		newTextBox("Not enough inventory space!", , 2)
+	}
+}

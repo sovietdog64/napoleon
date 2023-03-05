@@ -1,6 +1,8 @@
 /// @description Spawning initial goblins
-if(variable_instance_exists(id, "noCreateEvent") && noCreateEvent)
+if(variable_instance_exists(id, "noCreateEvent") && noCreateEvent) {
+	noCreateEvent = false;
 	return;
+}
 // Inherit the parent event
 event_inherited();
 

@@ -1,9 +1,13 @@
-if(variable_instance_exists(id, "noCreateEvent") && noCreateEvent)
+if(variable_instance_exists(id, "noCreateEvent") && noCreateEvent) {
+	noCreateEvent = false;
 	return;
+}
 dungeonGrid = ds_grid_create(
 	room_width div DUNG_CELL_SIZE,
 	room_height div DUNG_CELL_SIZE
 );
+
+alarm_set(0, 1)
 
 roomCount = 0;
 
@@ -47,8 +51,17 @@ for(var i=0; i<branchLen; i++) {
 			mapPos : newRoomPos.copy(),
 			creatorID : id,
 			maxNewRooms : irandom_range(1, 3),
+			wallSpr : wallSpr,
+			groundSpr : groundSpr,
 		}
 	)
+	
+	if(i == 0) {
+		with(inst) {
+			obj_player.x = cellMid.x;
+			obj_player.y = cellMid.y; 
+		}
+	}
 	dungeonGrid[# newRoomPos.x, newRoomPos.y] = inst;
 	branches[i] = inst;
 	

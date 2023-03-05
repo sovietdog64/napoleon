@@ -1,9 +1,14 @@
-if(variable_instance_exists(id, "noCreateEvent") && noCreateEvent)
+if(variable_instance_exists(id, "noCreateEvent") && noCreateEvent) {
+	noCreateEvent = false;
 	return;
+}
 var cellX = mapPos.x*DUNG_CELL_SIZE;
 var cellY = mapPos.y*DUNG_CELL_SIZE;
 
-bridgedTo = [];
+if(choose(0, 1))
+	waves = irandom_range(4,5)
+
+bridgedTo = [];	
 
 buildedBridgeTo = [];
 
@@ -76,6 +81,7 @@ obj_dungeonGen.roomCount++;
 if(obj_dungeonGen.roomCount >= obj_dungeonGen.maxRooms)
 	return;
 
+
 //Creating the rooms
 repeat(maxNewRooms) {
 	//Keep going forward in the branch until a free cell is found. Will stay in bounds
@@ -99,6 +105,8 @@ repeat(maxNewRooms) {
 				branchDir : branchDir.copy(),
 				creatorID : creatorID,
 				maxNewRooms : 0,
+				wallSpr : wallSpr,
+				groundSpr : groundSpr,
 			}
 		)
 		creatorID.dungeonGrid[# otherMapPos.x, otherMapPos.y] = inst;
@@ -113,3 +121,4 @@ repeat(maxNewRooms) {
 	else //stop if out of bounds.
 		return;
 }
+

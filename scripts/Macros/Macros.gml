@@ -6,6 +6,7 @@
 #macro LMOUSE_PRESSED mouse_check_button_pressed(mb_left)
 #macro LMOUSE_DOWN mouse_check_button(mb_left)
 #macro RMOUSE_PRESSED mouse_check_button_pressed(mb_right)
+#macro RMOUSE_DOWN mouse_check_button(mb_right)
 
 #macro GUI_MOUSE_X device_mouse_x_to_gui(0)
 #macro GUI_MOUSE_Y device_mouse_y_to_gui(0)
@@ -38,6 +39,6 @@
 
 #macro MAX_DUNGEON_ROOM_TILES 32
 #macro MAX_DUNGEON_ROOM_SIZE (TILEW*MAX_DUNGEON_ROOM_TILES)
-#macro MIN_DUNGEON_ROOM_TILES 20
+#macro MIN_DUNGEON_ROOM_TILES 10
 #macro MIN_DUNGEON_ROOM_SIZE (TILEW*MIN_DUNGEON_ROOM_TILES)
 #macro DUNG_CELL_SIZE (MAX_DUNGEON_ROOM_SIZE+TILEW*5)

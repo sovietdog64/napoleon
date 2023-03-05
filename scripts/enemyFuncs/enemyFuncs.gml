@@ -68,7 +68,7 @@ function checkForPlayer() {
 }
 	
 function damageEntity(targetId, dmgSourceId, dmg, time) {
-	if(targetId.state == states.DEAD)
+	if(!instance_exists(targetId) ||  targetId.state == states.DEAD)
 		return;
 	with(targetId) {
 		path_end();

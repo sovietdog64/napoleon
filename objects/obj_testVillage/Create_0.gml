@@ -1,5 +1,7 @@
-if(variable_instance_exists(id, "noCreateEvent") && noCreateEvent)
+if(variable_instance_exists(id, "noCreateEvent") && noCreateEvent) {
+	noCreateEvent = false;
 	return;
+}
 roads = [];
 //Might use this variable to prevent other strucutres from spawning in the village's radius
 radius = 0;

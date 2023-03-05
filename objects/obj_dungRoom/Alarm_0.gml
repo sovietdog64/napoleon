@@ -1,21 +1,21 @@
-/// @description Making ground/doors/walls/paths
+/// @description Making ground/walls/shops etc
 
 #region ground
 
 ground = layer_sprite_create(
 	layer_get_id("Ground"),
 	x+TILEW, y+TILEW,
-	spr_dungFloor
+	groundSpr
 )
 
 layer_sprite_xscale(
 	ground,
-	(rmWidth-TILEW-TILEW)/sprite_get_width(spr_dungFloor)
+	(rmWidth-TILEW-TILEW)/sprite_get_width(groundSpr)
 )
 
 layer_sprite_yscale(
 	ground,
-	(rmHeight-TILEW-TILEW)/sprite_get_height(spr_dungFloor)
+	(rmHeight-TILEW-TILEW)/sprite_get_height(groundSpr)
 )
 
 #endregion ground
@@ -45,7 +45,7 @@ for(var i=0; i<array_length(bridgedTo); i++) {
 	var doorPos = new Vector2(cellMid.x, cellMid.y);
 	doorPos.addVec(doorDirVec);
 	
-	var door = instance_create_layer(doorPos.x, doorPos.y, "Ground", obj_dungeonDoor);
+	var door = instance_create_layer(doorPos.x, doorPos.y, "Interactables", obj_dungeonDoor);
 	
 	if(doorDirVec.x != 0)
 		door.sprite_index = spr_dungDoorVert;
@@ -82,7 +82,7 @@ for(var i=0; i<2; i++) {
 		obj_solid
 	)
 	
-	wall.sprite_index = spr_dungWall;
+	wall.sprite_index = wallSpr;
 	wall.image_yscale = rmHeight/TILEW;
 	
 	var make2ndWall = false;
@@ -107,7 +107,7 @@ for(var i=0; i<2; i++) {
 			"OnGround",
 			obj_solid
 		)
-		wall2.sprite_index = spr_dungWall;
+		wall2.sprite_index = wallSpr;
 		wall2.image_yscale = (y+rmHeight - wall2.y)/TILEW;
 	}
 }
@@ -119,7 +119,7 @@ for(var i=0; i<2; i++) {
 		"OnGround",
 		obj_solid
 	)
-	wall.sprite_index = spr_dungWall;
+	wall.sprite_index = wallSpr;
 	wall.image_xscale = (rmWidth/TILEW);
 	
 	var make2ndWall = false;
@@ -143,9 +143,10 @@ for(var i=0; i<2; i++) {
 			"OnGround",
 			obj_solid
 		)
-		wall2.sprite_index = spr_dungWall;
+		wall2.sprite_index = wallSpr;
 		wall2.image_xscale = (x+rmWidth - wall2.x)/TILEW;
 	}
 }
 	
 #endregion walls
+

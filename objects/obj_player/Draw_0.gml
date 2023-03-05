@@ -30,4 +30,4 @@ switch(animType) {
 	}break;
 }
 	
-draw_circle(x, y, 100,1)
+draw_circle(x, y, TILEW*3,1)
