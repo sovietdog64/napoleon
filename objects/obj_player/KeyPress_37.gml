@@ -1,3 +1,5 @@
+
+clipboard_set_text(string(random_get_seed()))
 //var setPos = false;
 //with(obj_testVillage) {
 //	setPos = true;

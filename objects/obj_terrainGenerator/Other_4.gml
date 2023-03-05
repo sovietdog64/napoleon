@@ -10,7 +10,7 @@ if(!layer_exists(layer_get_id("Ground")))
 var size = power(2, 8)+1;
 terrainGrid = ds_grid_create(size, size)
 lazyFloodFill(terrainGrid, 0, 0, 0.99999);
-diamondSquare2(terrainGrid, 11, 0);
+diamondSquare2(terrainGrid, 11, 0, global.randomSeed);
 ds_grid_clear(chunksGrid, 0);
 
 playerSpawnSetup = true;

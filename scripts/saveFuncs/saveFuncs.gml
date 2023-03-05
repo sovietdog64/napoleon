@@ -191,15 +191,63 @@ function saveRoom2() {
 	variable_struct_set(global.levelData, room_get_name(room), roomStruct);
 }
 	
-function loadRoom2() {
-	var roomStruct = variable_struct_get(global.levelData, room_get_name(room));
-	var instances = roomStruct.instances;
+function loadRoom2(roomIndex) {
+	var roomStruct = global.levelData[$ room_get_name(roomIndex)]
 	
 	with(all) {
 		if(!persistent && object_index != obj_player) {
 			instance_destroy();
 		}
 	}
+	
+	var loadedStruct = {
+	    newLoadedMemory : {
+	        arrays : {},
+	        dsGrids : {},
+	        dsLists : {},
+	        structs : {},
+	    },
+		
+		newLoadedInstances : {},
+	}
+	
+	var arrayAddrs = variable_struct_get_names(roomStruct.memory.arrays);
+	for(var i=0; i<array_length(arrayAddrs); i++) {
+		loadArray(arrayAddrs[i], roomStruct, loadedStruct);
+	}
+	
+	var structAddrs = variable_struct_get_names(roomStruct.memory.structs);
+	for(var i=0; i<array_length(structAddrs); i++) {
+		loadStruct(structAddrs[i], roomStruct, loadedStruct);
+	}
+	
+	var gridAddrs = variable_struct_get_names(roomStruct.memory.dsGrids);
+	for(var i=0; i<array_length(gridAddrs); i++) {
+		loadGrid(gridAddrs[i], roomStruct, loadedStruct);
+	}
+	
+	for(var i=0; i<array_length(roomStruct.deactivatedInstances); i++) {
+		var instKey = roomStruct.deactivatedInstances[i];
+		var inst = loadInstanceStruct(instKey, roomStruct, loadedStruct);
+		instance_deactivate_object(inst);
+	}
+	
+	for(var i=0; i<array_length(roomStruct.instances); i++) {
+		var instKey = roomStruct.instances[i];
+		var inst = loadInstanceStruct(instKey, roomStruct, loadedStruct);
+	}
+	
+	
+	
+	delete loadedStruct;
+}
+
+	
+function loadRoom223456() {
+	var roomStruct = variable_struct_get(global.levelData, room_get_name(room));
+	var instances = roomStruct.instances;
+	
+
 	
 	for(var i=0; i<array_length(instances); i++) {
 		var memAddr = instances[i];

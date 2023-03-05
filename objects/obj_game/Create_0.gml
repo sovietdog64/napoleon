@@ -37,6 +37,9 @@ global.renderDist = 20;
 
 global.pathfindGrid = 0;
 
+randomize();
+global.randomSeed = random_get_seed();
+
 #endregion globals
 
 #region enums
@@ -111,3 +114,4 @@ global.objSaveVarsIgnore = {
 }
 
 #endregion vars to ignore when saving
+
