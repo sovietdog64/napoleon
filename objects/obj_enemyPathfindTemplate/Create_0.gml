@@ -4,6 +4,7 @@ hsp = 0;
 vsp = 0;
 walkSpd = random_range(1, 2);
 
+goldDrop = choose(1,2);
 
 maxHp = 5;
 hp = maxHp;	

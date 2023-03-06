@@ -7,7 +7,7 @@ hp = 10;
 maxHp = hp;
 maxAtkCooldown = room_speed*0.4;
 
-itemDrops = [new Gold(choose(1,2))]
+
 
 #region animations
 //Vars for limb positions

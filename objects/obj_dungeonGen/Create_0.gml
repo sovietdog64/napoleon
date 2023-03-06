@@ -58,8 +58,9 @@ for(var i=0; i<branchLen; i++) {
 	
 	if(i == 0) {
 		with(inst) {
-			obj_player.x = cellMid.x;
-			obj_player.y = cellMid.y; 
+			instance_destroy(obj_player);
+			instance_create_layer(cellMid.x,cellMid.y, "Instances", obj_player); 
+			isSpawnRoom = true;
 		}
 	}
 	dungeonGrid[# newRoomPos.x, newRoomPos.y] = inst;
@@ -74,3 +75,6 @@ for(var i=0; i<array_length(branches); i++) {
 		array_push(branches[i-1].bridgedTo, branch);
 	}
 }
+	
+if(instance_exists(obj_dungeonDoor))
+	obj_dungeonDoor.solid = false;

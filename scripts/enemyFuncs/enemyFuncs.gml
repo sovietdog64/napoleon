@@ -111,6 +111,10 @@ function is_dead() {
 				dropItem(itemDrops[i], x, y);
 			}
 		}
+		if(variable_instance_exists(id, "goldDrop")) {
+			if(choose(0,1))
+				dropItem(new Gold(goldDrop), x,y);
+		}
 		return 1;
 	}
 }

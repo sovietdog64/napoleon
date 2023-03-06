@@ -1,3 +1,5 @@
+if(variable_instance_exists(id, "isSpawnRoom") && isSpawnRoom)
+	return;
 if(roomType == dungRoomTypes.ENEMY && !roomDone) {	
 	if(initialEnemies) {
 		initialEnemies = false;
