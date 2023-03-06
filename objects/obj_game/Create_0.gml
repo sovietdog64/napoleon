@@ -42,6 +42,8 @@ global.pathfindGrid = 0;
 randomize();
 global.randomSeed = random_get_seed();
 
+global.dungeonRoomAddr = "";
+
 #endregion globals
 
 #region enums

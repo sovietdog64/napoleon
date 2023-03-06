@@ -70,6 +70,7 @@ if(roomType == dungRoomTypes.ENEMY && !roomDone) {
 		}
 	}
 }
+
 else if(spawnMerchant && roomType == dungRoomTypes.MERCHANT) {
 	spawnMerchant = false;
 	

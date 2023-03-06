@@ -152,7 +152,7 @@ function saveRoom() {
 	variable_struct_set(global.levelData, room_get_name(room), roomStruct);
 }
 	
-function saveRoom2() {
+function saveRoom2(roomIndex = room) {
 	var roomStruct = {
 		instances : [],
 		deactivatedInstances : [],
@@ -188,11 +188,17 @@ function saveRoom2() {
 		structifyInstance(inst, roomStruct);
 	}
 	
-	variable_struct_set(global.levelData, room_get_name(room), roomStruct);
+	if(roomIndex != rm_dungeon)
+		global.levelData[$ room_get_name(roomIndex)] = roomStruct;
+	else {
+		global.levelData.dungeons[$ global.dungeonRoomAddr] = roomStruct;
+	}
 }
 	
-function loadRoom2(roomIndex) {
-	var roomStruct = global.levelData[$ room_get_name(roomIndex)]
+function loadRoom2(roomIndex = room) {
+	var roomStruct = global.levelData[$ room_get_name(roomIndex)];
+	if(roomIndex == rm_dungeon)
+		roomStruct = global.levelData.dungeons[$ global.dungeonRoomAddr];
 	
 	with(all) {
 		if(!persistent && object_index != obj_player) {
