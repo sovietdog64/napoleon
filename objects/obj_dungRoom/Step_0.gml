@@ -1,5 +1,14 @@
 if(variable_instance_exists(id, "isSpawnRoom") && isSpawnRoom)
 	return;
+
+if(global.dead) {
+	wavesStarted = false;
+	if(instance_exists(obj_dungeonDoor))
+		obj_dungeonDoor.solid = false;
+		
+	return;
+}
+
 if(roomType == dungRoomTypes.ENEMY && !roomDone) {	
 	if(initialEnemies) {
 		initialEnemies = false;
@@ -7,7 +16,7 @@ if(roomType == dungRoomTypes.ENEMY && !roomDone) {
 			var p = randPointInEllipse(rmWidth - TILEW*2, rmHeight - TILEW*2);
 			var inst = instance_create_layer(
 				cellMid.x + p.x, cellMid.y + p.y,"Instances",
-				choose(obj_dungeonGen.enemy1, obj_dungeonGen.enemy2, obj_dungeonGen.enemy3)
+				choose(obj_dungeonGen.enemy1Obj, obj_dungeonGen.enemy2Obj, obj_dungeonGen.enemy3Obj)
 			)
 			array_push(roomEnemies, inst);
 		}
@@ -28,6 +37,8 @@ if(roomType == dungRoomTypes.ENEMY && !roomDone) {
 				if(instance_exists(roomEnemies[i]))
 					makeNewWave = false;
 			}
+				
+			//Spawning new enemies for next wave
 			if(makeNewWave) {
 				waves--;
 				roomEnemies = [];
@@ -37,7 +48,7 @@ if(roomType == dungRoomTypes.ENEMY && !roomDone) {
 					var p = randPointInEllipse(rmWidth - TILEW*2, rmHeight - TILEW*2);
 					var inst = instance_create_layer(
 						cellMid.x + p.x, cellMid.y + p.y,"Instances",
-						choose(obj_dungeonGen.enemy1, obj_dungeonGen.enemy2, obj_dungeonGen.enemy3)
+						choose(obj_dungeonGen.enemy1Obj, obj_dungeonGen.enemy2Obj, obj_dungeonGen.enemy3Obj)
 					)
 					array_push(roomEnemies, inst);
 				}
@@ -53,7 +64,7 @@ if(roomType == dungRoomTypes.ENEMY && !roomDone) {
 	else if(createSpawners) {
 		createSpawners = false;
 		with(instance_create_layer(cellMid.x, cellMid.y, "Instances", obj_spawner)) {
-			enemyObj = [obj_dungeonGen.enemy1, obj_dungeonGen.enemy2, obj_dungeonGen.enemy3];
+			enemyObj = [obj_dungeonGen.enemy1Obj, obj_dungeonGen.enemy2Obj, obj_dungeonGen.enemy3Obj];
 			elipseW = other.rmWidth-TILEW*2;
 			elipseH = other.rmHeight-TILEW*2;
 		}

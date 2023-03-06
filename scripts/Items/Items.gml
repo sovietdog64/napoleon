@@ -211,21 +211,10 @@ function Gold(amount = 1) : Item(spr_gold,amount,3,"Gold","") constructor {}
 
 //Called by obj_shopItem only.
 function buyItem() {
-	//Remove money
-	
-	//Attempt to charge money. If not enough money, 
-	if(!InvRemovePlayer(spr_gold, price))
-		newTextBox("Not enough money!", ,2); //show textbox saying so.
-	
-	//Give item to player
-	var _item = duplicateItem(item);
-	if(!giveItemToPlayer(_item)) {
-		newTextBox("Not enough inventory space!", , 2)
-	}
-	else {
-		stock -= item.amount;
-	
-		if(stock <= 0)
-			instance_destroy()
-	}
+	newTextBox(
+		"Description: " + item.desc +
+		"\nPrice: " + string(price) +
+		"\nPurchase" + item.name + "?",
+		
+		["1:Buy", "0:Don't buy"])
 }

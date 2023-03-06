@@ -76,6 +76,7 @@
     {"name":"obj_entity","order":12,"path":"objects/obj_entity/obj_entity.yy",},
     {"name":"spr_sand2","order":2,"path":"sprites/spr_sand2/spr_sand2.yy",},
     {"name":"obj_damageHitbox","order":1,"path":"objects/obj_damageHitbox/obj_damageHitbox.yy",},
+    {"name":"spr_itemPedestal","order":4,"path":"sprites/spr_itemPedestal/spr_itemPedestal.yy",},
     {"name":"spr_stone","order":3,"path":"sprites/spr_stone/spr_stone.yy",},
     {"name":"spr_house4","order":3,"path":"sprites/spr_house4/spr_house4.yy",},
     {"name":"spr_grass4","order":3,"path":"sprites/spr_grass4/spr_grass4.yy",},

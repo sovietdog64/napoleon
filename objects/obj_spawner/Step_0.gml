@@ -2,8 +2,11 @@ var spawnEnemies = true;
 for(var i=0; i<array_length(enemiesSpawned); i++) {
 	if(instance_exists(enemiesSpawned[i])) {
 		spawnEnemies = false;
+		show_debug_message("test")
 		break;
 	}
+	else
+		spawnEnemies = true;
 }
 
 //Spawn enemies if all previously spawned enemies are dead.

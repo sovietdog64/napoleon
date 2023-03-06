@@ -107,6 +107,7 @@
     {"id":{"name":"spr_sand2","path":"sprites/spr_sand2/spr_sand2.yy",},"order":2,},
     {"id":{"name":"obj_damageHitbox","path":"objects/obj_damageHitbox/obj_damageHitbox.yy",},"order":1,},
     {"id":{"name":"spr_house","path":"sprites/spr_house/spr_house.yy",},"order":0,},
+    {"id":{"name":"spr_itemPedestal","path":"sprites/spr_itemPedestal/spr_itemPedestal.yy",},"order":4,},
     {"id":{"name":"spr_stone","path":"sprites/spr_stone/spr_stone.yy",},"order":3,},
     {"id":{"name":"spr_house4","path":"sprites/spr_house4/spr_house4.yy",},"order":3,},
     {"id":{"name":"spr_grass4","path":"sprites/spr_grass4/spr_grass4.yy",},"order":3,},

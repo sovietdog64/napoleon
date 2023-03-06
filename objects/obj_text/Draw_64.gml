@@ -19,9 +19,9 @@ if(responses[0] != -1 && textProgress >= string_length(textMsg)) {
 }
 
 draw_set_color(c_black);
-draw_text_transformed((x1+x2)/2, y1+8, print, 2, 2, 0);
+draw_text_transformed((x1+x2)/2, y1+8, print, 1, 1, 0);
 draw_set_color(c_white);
-draw_text_transformed((x1+x2)/2, y1+7, print, 2, 2, 0);
+draw_text_transformed((x1+x2)/2, y1+7, print, 1, 1, 0);
 
 draw_set_color(c_yellow);
 draw_text_transformed(RESOLUTION_W*0.85, RESOLUTION_H*0.6, "Press <SPACE> to continue", 1.5, 1.5, 0);

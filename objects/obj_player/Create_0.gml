@@ -17,7 +17,6 @@ invOpen = false;
 
 invOpen = false;
 
-followingSequences = array_create(0); //List of animations that follow the player.
 
 #region health
 
@@ -25,8 +24,8 @@ if(!variable_global_exists("hp"))
 	global.hp = 5;
 if(!variable_global_exists("maxHp"))
 	global.maxHp = 5;
-if(!variable_global_exists("dead"))
-	global.dead = false;
+
+global.dead = false;
 maxHurtCooldown = room_speed;
 
 hurtCooldown = 0;
