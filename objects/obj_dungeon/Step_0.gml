@@ -13,6 +13,9 @@ if(inst != noone) {
 			{
 				groundSpr : spr_dungFloor,
 				wallSpr : spr_dungWall,
+				itemsSold : [new WoodSword(), new WoodHatchet(), new Wood(10), new Handle(3)],
+				itemPrices : [20, 30, 10, 4],
+				chestItems : [new WoodHatchet(234)]
 			})
 	}
 	room_goto(rm_dungeon);

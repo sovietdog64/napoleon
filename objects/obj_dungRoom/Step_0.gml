@@ -31,7 +31,6 @@ if(roomType == dungRoomTypes.ENEMY && !roomDone) {
 				roomEnemies = [];
 				//Spawn enemies for this new wave
 				repeat(irandom_range(7, 15)) {
-					show_debug_message("ee")
 					//Rand point in room for enemy to spawn.
 					var p = randPointInEllipse(rmWidth - TILEW*2, rmHeight - TILEW*2);
 					var inst = instance_create_layer(
@@ -57,4 +56,34 @@ if(roomType == dungRoomTypes.ENEMY && !roomDone) {
 			elipseH = other.rmHeight-TILEW*2;
 		}
 	}
+}
+else if(spawnMerchant && roomType == dungRoomTypes.MERCHANT) {
+	spawnMerchant = false;
+	
+	var numOfItems = irandom_range(3, rmWidth div (ITEM_SIZE*0.4+TILEW));
+	numOfItems = clamp(numOfItems, 1, array_length(obj_dungeonGen.itemsSold)/2);
+	
+	var shopItems = array_create(numOfItems);
+	
+	var org = new Point(cellMid.x, cellMid.y+TILEW*3);
+	org.x -= (numOfItems/2)*(ITEM_SIZE*0.4+TILEW);
+	
+	for(var i=0; i<numOfItems; i++) {
+		var item = randomValueFromArray(obj_dungeonGen.itemsSold);
+		while(array_contains(shopItems, item))
+			item = randomValueFromArray(obj_dungeonGen.itemsSold);
+		
+		shopItems[i] = item;
+		
+		instance_create_layer(
+			org.x+(ITEM_SIZE*0.4+TILEW)*i, org.y,
+			"Instances", obj_shopItem,
+			{
+				item : item,
+				price : obj_dungeonGen.itemPrices[i]
+			}
+		)
+		
+	}
+	
 }

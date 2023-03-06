@@ -15,6 +15,8 @@ global.spawnY = 0;
 global.spawnRoom = rm_entrance;
 global.setPosToSpawnPos = false;
 
+global.gold = 0;
+
 //Array containing quest structs.
 global.activeQuests = array_create(0);
 //Array containing all completed quest names

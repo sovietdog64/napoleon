@@ -1,4 +1,4 @@
-if(selectedObj != noone) {
+if(instance_exists(selectedObj)) {
 	draw_set_color(c_black);
 	var inst = selectedObj;
 	draw_rectangle(

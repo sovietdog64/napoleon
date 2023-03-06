@@ -100,6 +100,7 @@
     {"name":"spr_McKinley","order":2,"path":"sprites/spr_McKinley/spr_McKinley.yy",},
     {"name":"TerrainGenObjFuncs","order":14,"path":"scripts/TerrainGenObjFuncs/TerrainGenObjFuncs.yy",},
     {"name":"spr_spawner","order":1,"path":"sprites/spr_spawner/spr_spawner.yy",},
+    {"name":"spr_gold","order":13,"path":"sprites/spr_gold/spr_gold.yy",},
     {"name":"spr_boar","order":1,"path":"sprites/spr_boar/spr_boar.yy",},
     {"name":"spr_sand","order":1,"path":"sprites/spr_sand/spr_sand.yy",},
     {"name":"spr_pine","order":5,"path":"sprites/spr_pine/spr_pine.yy",},

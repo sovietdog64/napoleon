@@ -44,6 +44,7 @@
     {"resourceType":"GMObjectProperty","resourceVersion":"1.0","name":"roomEnemies","filters":[],"listItems":[],"multiselect":false,"rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"value":"[]","varType":0,},
     {"resourceType":"GMObjectProperty","resourceVersion":"1.0","name":"roomType","filters":[],"listItems":[],"multiselect":false,"rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"value":"dungRoomTypes.NONE","varType":0,},
     {"resourceType":"GMObjectProperty","resourceVersion":"1.0","name":"createSpawners","filters":[],"listItems":[],"multiselect":false,"rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"value":"true","varType":0,},
+    {"resourceType":"GMObjectProperty","resourceVersion":"1.0","name":"spawnMerchant","filters":[],"listItems":[],"multiselect":false,"rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"value":"true","varType":0,},
   ],
   "solid": false,
   "spriteId": {

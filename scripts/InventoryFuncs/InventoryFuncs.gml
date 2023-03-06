@@ -149,19 +149,34 @@ function InvGetPlayer(itemSprite, amount = 1) {
 		return undefined;
 }
 
-function InvRemove(invArray, itemSprite, amount = undefined) {
-	var item = InvSearch(invArray, itemSprite);
-	if(isItem(item)) {
-		if(amount != undefined) {
+function InvRemovePlayer(itemSpr_or_type, amount = 1) {
+	//Can concat the arrays and edit the item amounts, because items are objects.
+	var arr = array_concat(global.invItems, global.hotbarItems);
+	var slots = InvSearch(arr, itemSpr_or_type, amount);
+	//Check if both inventories contain the right amount of items. if not, return 0
+	if(slots == -1)
+		return 0;
+	
+	
+	if(is_array(slots))
+		for(var i=0; i<array_length(slots); i++) {
+			var ind = slots[i];
+			var item = arr[ind];
 			item.amount -= amount;
-			return true;
+			
+			//If there is still some items to remove, then update the left over amount to delete
+			if(item.amount < 0) {
+				amount = abs(item.amount);
+				item.amount = 0;
+			}
+			//If the right amount of items was removed, then return 1.
+			else
+				return 1;
 		}
-		else {
-			item.amount = 0;
-			return true;
-		}
+	else {//If only one slot contained the right amount, then remove that amount and return 1.
+		arr[slots].amount -= amount;
+		return 1;
 	}
-	return false;
 }
 
 function InvAdd(invArray, item) {

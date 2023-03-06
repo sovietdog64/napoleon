@@ -1,4 +1,4 @@
-lerpProgress += (1 - lerpProgress) / 50;
+lerpProgress += (1 - lerpProgress) / 60;
 textProgress += global.textSpeed;
 
 x1 = lerp(x1, x1Target, lerpProgress);
@@ -27,11 +27,6 @@ if(keyboard_check_pressed(vk_space)) {
 		if(instance_exists(obj_textQueued)) {
 			with(obj_textQueued)
 				ticket--;
-		}
-		else {
-			with(obj_player) {
-				state = lastState;
-			}
 		}
 	}
 	else if(textProgress > 2) {

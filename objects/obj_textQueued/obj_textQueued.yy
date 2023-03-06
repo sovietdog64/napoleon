@@ -12,7 +12,10 @@
     "name": "Miscellaneous",
     "path": "folders/Objects/Miscellaneous.yy",
   },
-  "parentObjectId": null,
+  "parentObjectId": {
+    "name": "obj_noDepthSortPar",
+    "path": "objects/obj_noDepthSortPar/obj_noDepthSortPar.yy",
+  },
   "persistent": false,
   "physicsAngularDamping": 0.1,
   "physicsDensity": 0.5,

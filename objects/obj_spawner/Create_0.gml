@@ -6,6 +6,8 @@ maxSpawnCooldown = room_speed*5;
 enemyObj = obj_enemyPathfindTemplate; //The object index of enemy to spawn
 hp = 100;
 
+state = states.IDLE;
+
 elipseW = 0;
 	
 enemiesSpawned = [-1];

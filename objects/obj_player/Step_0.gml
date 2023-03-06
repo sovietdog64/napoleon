@@ -22,7 +22,13 @@ if(inv) {
 	
 #endregion opening inv
 
-if(instance_exists(obj_game) && global.gamePaused || global.screenOpen|| state = PlayerStateLocked)
+if(instance_exists(obj_text)) {
+	state = PlayerStateLocked;
+}
+else
+	state = PlayerStateFree;
+
+if(instance_exists(obj_game) && global.gamePaused || global.screenOpen|| state == PlayerStateLocked)
 	return;
 
 #region movement
@@ -354,3 +360,4 @@ switch(animType) {
 
 
 #endregion animations
+

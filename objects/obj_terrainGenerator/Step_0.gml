@@ -11,7 +11,9 @@ if(instance_exists(obj_player))
 			object_is_ancestor(ind, obj_inventory) ||
 			object_is_ancestor(ind, obj_guiScreenPar) ||
 			ind == obj_inventory ||
-			ind == obj_damageHitbox)
+			ind == obj_damageHitbox ||
+			ind == obj_text ||
+			ind == obj_textQueued)
 			continue;
 		
 		var inRenderDist = rectangle_in_circle(

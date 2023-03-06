@@ -284,7 +284,7 @@
 	//@param responseArray Array of responses that the player can choose
 	//@param [background] optional background index (frame of spr_textBox)
 	//Adds a text box to the queue of textboxes 
-	function newTextBox(msg, responseArray = [-1], background = 0){
+	function newTextBox(msg, responseArray = [-1], background = 0) {
 		var obj;
 		if(instance_exists(obj_text))
 			obj = obj_textQueued;
@@ -313,13 +313,6 @@
 				originInstance = other.id;
 			else
 				originInstance = noone;
-		}
-	
-		with(obj_player) {
-			if(state != PlayerStateLocked){
-				lastState = state;
-				state = PlayerStateLocked;
-			}
 		}
 	}
 		

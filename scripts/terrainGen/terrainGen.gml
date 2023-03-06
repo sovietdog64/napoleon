@@ -294,7 +294,6 @@ function excavate() {
 		}
 		else if(layer_get_element_type(element) == layerelementtype_instance) {
 			var inst = layer_instance_get_instance(element);
-			show_debug_message("FOUND TREE")
 			if(point_distance(x, y, inst.x, inst.y) <= radius) {
 				layer_sprite_create(sprLay, inst.x, inst.y, spr_grass);
 				instance_destroy(inst);

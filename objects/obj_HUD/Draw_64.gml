@@ -26,12 +26,18 @@ if(!global.screenOpen) {
 			draw_set_font(fnt_npc);
 			draw_set_halign(fa_left);
 			draw_text_transformed(xx-54, yy+INV_SLOT_SIZE, "Key " + string(i+1), 1, 1, 0);
-			//If a hotkey for an item in use is pressed, equip it.
+			//If a hotkey for a hotbar slot is pressed, equip it.
 			if(keyboard_check_pressed(ord(string(i+1)))) {
 				global.equippedItem = i;
 			}
 		}
 	}
+		
+	//Moneys
+	var xx = RESOLUTION_W*0.77
+	var yy = (RESOLUTION_H*0.01)+112;
+	draw_set_color(c_yellow);
+	draw_text_transformed(xx, yy, string(global.gold), 1.5, 1.5, 0)
 
 	//Health, quest, and crosshair/amount of ammo
 		draw_healthbar(RESOLUTION_W*0.01, RESOLUTION_H*0.12+30,
