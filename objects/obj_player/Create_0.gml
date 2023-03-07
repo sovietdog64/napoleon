@@ -13,9 +13,9 @@ isHurt = false;
 #endregion movement
 
 inDialogue = false;//bool stating whether the player is talking with an NPC.
-invOpen = false;
+global.invOpen = false;
 
-invOpen = false;
+global.invOpen = false;
 
 
 #region health

@@ -49,19 +49,6 @@ function copyStruct(struct) {
     return newCopy;
 }
 
-
-function sequenceGetName(sequenceId) {
-	if(layer_exists("Animations") &&  layer_sequence_exists("Animations", sequenceId)) {
-		return layer_sequence_get_sequence(sequenceId).name;
-	}
-	try {
-		return sequence_get(sequenceId).name;
-	}
-	catch(err) {
-		return -1;
-	}
-}
-
 {//Fire arm
 	function fireBullet(shooterX, shooterY, targX, targY, firearm, enemyHit = false, inaccuracy = 0) {
 		if(firearm.currentAmmoAmount <= 0) {
@@ -353,21 +340,6 @@ function lineMidpoint(x1, y1, x2, y2) {
 	var yy = (y1+y2)/2;
 	return new Point(xx, yy);
 }
-
-function raycast4Directional(distance, incrementInPixels, preciseCheck) {
-	for(var i=0; i < 361; i+=90) {
-		var len = 1;
-		while(len < distance) {
-			var xx = x+lengthdir_x(len, i);
-			var yy = y+lengthdir_y(len, i);
-			if(collision_point(xx, yy, obj_solid, preciseCheck, 1)) {
-				return 1;
-			}
-			len += incrementInPixels;
-		}
-	}
-	return undefined;
-}
 	
 function getVarAssetName(varName, varValue) {
 	if (stringContains("Spr", varName))
@@ -382,17 +354,6 @@ function getVarAssetName(varName, varValue) {
 	if (stringContains("Rm", varName) || stringContains("Room", varName))
 		return room_get_name(varValue);
 	return 0;
-}
-
-function instSetVars(inst, varStruct) {
-	var keys = variable_struct_get_names(varStruct);
-	for(var i=0; i<array_length(keys); i++) {
-		var key = keys[i], value = variable_struct_get(varStruct, key);
-		if(is_string(value))
-			if(asset_get_type(value) != asset_unknown)
-				value = asset_get_index(value);
-		variable_instance_set(inst, key, value);
-	}
 }
 
 function getSequenceLength(sequenceAssetID) {
@@ -483,8 +444,6 @@ function Rectangle(_x1, _y1, _x2, _y2) constructor {
 	y1 = _y1;
 	x2 = _x2;
 	y2 = _y2;
-	
-	midpoint = new Point((_x1+_x2)/2, (_y1+_y2)/2);
 	
 	pointInRect = function(px, py) {
 		return point_in_rectangle(px, py, x1, y1, x2, y2);

@@ -238,7 +238,7 @@
 	///@param isHotbarSlot State if the slot should be rendered as a hotbar slot (Places border around used hotbar slots).
 	function drawInvSlot(item, xx, yy, index, isHotbarSlot, amount) {
 		var scl = 1;
-		if(!obj_player.invOpen)
+		if(!global.invOpen)
 			scl = 0.5;
 		if(index == global.equippedItem && isHotbarSlot) 
 			draw_sprite_ext(spr_equippedSlot, 0, xx,yy, scl, scl, 0, c_white, 1);
@@ -252,7 +252,7 @@
 			draw_set_halign(fa_center)
 			var xx2 = xx+(INV_SLOT_SIZE/2)*scl;
 			var yy2 = yy+(INV_SLOT_SIZE/2)*scl;
-			if(obj_player.invOpen) {
+			if(global.invOpen) {
 				xx2 -= 10;
 				yy2 -= 10;
 			}

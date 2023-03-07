@@ -1,4 +1,5 @@
 function saveRoom2() {
+	closeAllScreens();
 	var roomStruct = {
 		instances : [],
 		deactivatedInstances : [],
@@ -19,7 +20,10 @@ function saveRoom2() {
 	
 	for(var i=0; i<instance_number(all); i++) {
 		var inst = instance_find(all, i);
-		if(inst.persistent || inst.object_index == obj_player || !isInstance(inst))
+		if(inst.persistent || 
+			inst.object_index == obj_player || 
+			!isInstance(inst) ||
+			object_is_ancestor(inst.object_index, obj_tilePar))
 			continue;
 		
 		structifyInstance(inst, roomStruct);
@@ -43,6 +47,7 @@ function saveRoom2() {
 }
 	
 function loadRoom2() {
+	closeAllScreens();
 	if(room != rm_dungeon)
 		if(!variable_struct_exists(global.levelData, room_get_name(room)))
 			return 0;

@@ -89,13 +89,17 @@ function GuiScreen(_x1, _y1, _x2, _y2, _buttons, _texts, _backgroundSpr, _subimg
 		0);
 		draw_set_alpha(1);
 		
-		drawSpritePosNineSlice(sprite_index, subimg, x1, y1, x2, y2);
+		if(sprite_exists(sprite_index))
+			drawSpritePosNineSlice(sprite_index, subimg, x1, y1, x2, y2);
+		
 		drawButtons();
 		drawTexts();
 	}
 }
 
 function closeAllScreens() {
+	var hasClosedScreens = instance_exists(obj_inventory) || instance_exists(obj_guiScreenPar);
 	instance_destroy(obj_inventory);
 	instance_destroy(obj_guiScreenPar);
+	return hasClosedScreens;
 }

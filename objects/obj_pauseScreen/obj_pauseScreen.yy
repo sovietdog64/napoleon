@@ -1,22 +1,20 @@
 {
   "resourceType": "GMObject",
   "resourceVersion": "1.0",
-  "name": "obj_game",
+  "name": "obj_pauseScreen",
   "eventList": [
     {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,},
-    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","collisionObjectId":null,"eventNum":27,"eventType":9,"isDnD":false,},
-    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","collisionObjectId":null,"eventNum":4,"eventType":7,"isDnD":false,},
-    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,},
+    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","collisionObjectId":null,"eventNum":64,"eventType":8,"isDnD":false,},
   ],
   "managed": true,
   "overriddenProperties": [],
   "parent": {
-    "name": "Game_control",
-    "path": "folders/Objects/Game_control.yy",
+    "name": "Gui Screens",
+    "path": "folders/Objects/Gui Screens.yy",
   },
   "parentObjectId": {
-    "name": "obj_gameControl",
-    "path": "objects/obj_gameControl/obj_gameControl.yy",
+    "name": "obj_guiScreenPar",
+    "path": "objects/obj_guiScreenPar/obj_guiScreenPar.yy",
   },
   "persistent": false,
   "physicsAngularDamping": 0.1,

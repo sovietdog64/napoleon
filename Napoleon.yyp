@@ -129,6 +129,7 @@
     {"id":{"name":"spr_musketCartridge","path":"sprites/spr_musketCartridge/spr_musketCartridge.yy",},"order":3,},
     {"id":{"name":"spr_tanto","path":"sprites/spr_tanto/spr_tanto.yy",},"order":0,},
     {"id":{"name":"spr_m16Mag","path":"sprites/spr_m16Mag/spr_m16Mag.yy",},"order":3,},
+    {"id":{"name":"obj_pauseScreen","path":"objects/obj_pauseScreen/obj_pauseScreen.yy",},"order":4,},
     {"id":{"name":"obj_selectablePar","path":"objects/obj_selectablePar/obj_selectablePar.yy",},"order":10,},
     {"id":{"name":"obj_dungRoom","path":"objects/obj_dungRoom/obj_dungRoom.yy",},"order":4,},
     {"id":{"name":"spr_woodSword","path":"sprites/spr_woodSword/spr_woodSword.yy",},"order":5,},

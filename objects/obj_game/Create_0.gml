@@ -4,8 +4,6 @@ persistent = true;
 
 global.loadedGame = false;
 
-drawPauseScreen = false;
-
 global.invItems = array_create(8, -1);
 global.hotbarItems = array_create(3, -1);
 global.equippedItem = 0;
@@ -41,6 +39,8 @@ global.pathfindGrid = 0;
 
 randomize();
 global.randomSeed = random_get_seed();
+
+global.invOpen = false;
 
 #endregion globals
 

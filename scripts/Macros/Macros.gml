@@ -1,5 +1,5 @@
 #macro RESOLUTION_W 683
-#macro RESOLUTION_H 384
+#macro RESOLUTION_H 393
 #macro INTERACTION_W sprite_get_width(spr_interactions)
 #macro INTERACTION_H sprite_get_height(spr_interactions)
 

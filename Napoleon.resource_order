@@ -95,6 +95,7 @@
     {"name":"spr_dungDoor","order":2,"path":"sprites/spr_dungDoor/spr_dungDoor.yy",},
     {"name":"spr_musketCartridge","order":3,"path":"sprites/spr_musketCartridge/spr_musketCartridge.yy",},
     {"name":"spr_m16Mag","order":3,"path":"sprites/spr_m16Mag/spr_m16Mag.yy",},
+    {"name":"obj_pauseScreen","order":4,"path":"objects/obj_pauseScreen/obj_pauseScreen.yy",},
     {"name":"obj_selectablePar","order":10,"path":"objects/obj_selectablePar/obj_selectablePar.yy",},
     {"name":"obj_dungRoom","order":4,"path":"objects/obj_dungRoom/obj_dungRoom.yy",},
     {"name":"spr_woodSword","order":5,"path":"sprites/spr_woodSword/spr_woodSword.yy",},
