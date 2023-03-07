@@ -1,157 +1,3 @@
-function saveRoom() {
-	//Get amount of saveable objects in room
-	
-	var roomStruct =
-	{
-		items : array_create(0),
-		enemies : array_create(0),
-		chests : array_create(0),
-		ships : array_create(0),
-		NPCs : array_create(0),
-		playerX : 0,
-		playerY : 0,
-		spawnX : 0,
-		spawnY : 0,
-	}
-	roomStruct.spawnX = global.spawnX;
-	roomStruct.spawnY = global.spawnY;
-	
-	//Player
-	if(instance_exists(obj_player)) {
-		roomStruct.playerX = obj_player.x;
-		roomStruct.playerY = obj_player.y;
-		if(global.savingGame) {
-			roomStruct.playerX = obj_player.enteredX;
-			roomStruct.playerY = obj_player.enteredY;
-		}
-	}
-	
-	//Get data from all saveable objects
-	
-	//NPCs
-	for(var i=0; i<instance_number(obj_npc); i++) {
-		var npc = instance_find(obj_npc, i);
-		if(!npc.saveNPC)
-			continue;
-		var npcStruct = 
-		{
-			x : npc.x,
-			y : npc.y,
-			sprite_index : npc.sprite_index,
-			objInd : 0,
-		};
-		npcStruct.objInd = object_get_name(npc.object_index);
-		//Names of all npc variables
-		var varNames = variable_instance_get_names(npc);
-		//Add object index to struct
-		//Loop through all variables in NPC instance & add them to struct
-		for(var j=0; j<array_length(varNames); j++) {
-			var varValue = variable_instance_get(npc, varNames[j]);
-			//Cannot save methods :/ (which is why it is necessary to specify the npc object index)
-			if(!is_method(varValue)) {
-				variable_struct_set(npcStruct, varNames[j], varValue);
-			}
-		}
-		array_push(roomStruct.NPCs, npcStruct);
-	}
-	
-	//Dropped Items
-	for(var i=0; i<instance_number(obj_item); i++) {
-		var itemInst = instance_find(obj_item, i);
-		var tempStruct = {};
-		if(!isItem(itemInst.item))
-			continue;
-		var instItemStruct = copyStruct(itemInst.item);
-		{//Loop through all item struct vars and add to temp struct (doing this because some variables in item structs include assets of varying types)
-		    var key, value;
-		    var keys = variable_struct_get_names(instItemStruct);
-		    for (var j = array_length(keys)-1; j >= 0; --j) {
-		        key = keys[j];
-		        value = variable_struct_get(instItemStruct, key);
-				var assetName = getVarAssetName(key, value);
-				if(assetName != 0)
-					value = assetName;
-				//TODO: may add more asset types if necessary
-		        variable_struct_set(tempStruct, key, value)
-		    }
-		}
-		var itemStruct = 
-		{
-			x : itemInst.x,
-			y : itemInst.y,
-			hsp : itemInst.hsp,
-			vsp : itemInst.vsp,
-			pickedUp : itemInst.pickedUp,
-			canBePickedUp : itemInst.canBePickedUp,
-			pickUpCoolDown : itemInst.pickUpCoolDown,
-			item : tempStruct,
-		}
-		array_push(roomStruct.items, itemStruct);
-	}
-	
-	//Enemies (ones that should be saved.)
-	for(var i=0; i<instance_number(obj_enemy); i++) {
-		var enemy = instance_find(obj_enemy, i);
-		if(!variable_instance_exists(enemy, "shouldSave") || !enemy.shouldSave)
-			continue;
-		if(!variable_instance_exists(enemy, "saveVars") || !enemy.saveVars)
-			continue;
-		//Store all instance variables in struct
-		var struct = {};
-		var keys = variable_instance_get_names(enemy);
-		for(var j=0; j<array_length(keys); j++) {
-			var key = keys[j], value = variable_instance_get(enemy, key);
-			var assetName = getVarAssetName(key, value);
-			if(assetName != 0)
-				value = assetName;
-			variable_struct_set(struct, key, value);
-		}
-		variable_struct_set(struct, "x", enemy.x);
-		variable_struct_set(struct, "y", enemy.y);
-		variable_struct_set(struct, "objIndex", object_get_name(enemy.object_index));
-		//Add enemy to room save
-		array_push(roomStruct.enemies, struct);
-	}
-	
-	//Chests
-	for(var i=0; i<instance_number(obj_chest); i++) {
-		var chest = instance_find(obj_chest, i);
-		var itemArray = array_create(0);
-		
-		for(var j=0; j<array_length(chest.items); j++) {//Loop through all items and stores them in an array
-			var tempStruct = {};
-			if(!isItem(chest.items[j]))
-				continue;
-			var itemStruct = copyStruct(chest.items[j]);
-			{//Loop through all item struct vars and add to temp struct (doing this because some variables in item structs include assets of varying types)
-			    var key, value;
-			    var keys = variable_struct_get_names(itemStruct);
-			    for (var l = array_length(keys)-1; l >= 0; --l) {
-			        key = keys[l];
-			        value = variable_struct_get(itemStruct, key);
-					var assetName = getVarAssetName(key, value);
-					if(assetName != 0)
-						value = assetName;
-					//TODO: may add more asset types if necessary
-			        variable_struct_set(tempStruct, key, value)
-			    }
-			}
-			array_push(itemArray, tempStruct);
-		}
-		var chestStruct = 
-		{
-			x : chest.x,
-			y : chest.y,
-			items : itemArray,
-			opened : chest.opened,
-		}
-		array_push(roomStruct.chests, chestStruct);
-	}
-	
-	//Store room struct in global.levelData
-	variable_struct_set(global.levelData, room_get_name(room), roomStruct);
-}
-	
 function saveRoom2() {
 	var roomStruct = {
 		instances : [],
@@ -190,11 +36,22 @@ function saveRoom2() {
 		structifyInstance(inst, roomStruct);
 	}
 	
-	variable_struct_set(global.levelData, room_get_name(room), roomStruct);
+	if(room != rm_dungeon)
+		variable_struct_set(global.levelData, room_get_name(room), roomStruct);
+	else
+		global.levelData.dungeonRooms[$ global.dungeonRoomAddress] = roomStruct;
 }
 	
-function loadRoom2(roomIndex = room) {
-	var roomStruct = global.levelData[$ room_get_name(roomIndex)]
+function loadRoom2() {
+	if(room != rm_dungeon)
+		if(!variable_struct_exists(global.levelData, room_get_name(room)))
+			return 0;
+	
+	var roomStruct = room == rm_dungeon ? 
+		global.levelData.dungeonRooms[$ global.dungeonRoomAddress] : global.levelData[$ room_get_name(room)];
+	
+	if(roomStruct == undefined || !variable_struct_exists(roomStruct, "memory"))
+		return 0;
 	
 	with(all) {
 		if(!persistent && object_index != obj_player) {
@@ -239,180 +96,9 @@ function loadRoom2(roomIndex = room) {
 		var inst = loadInstanceStruct(instKey, roomStruct, loadedStruct);
 	}
 	
-	
-	
 	delete loadedStruct;
-}
-
 	
-function loadRoom223456() {
-	var roomStruct = variable_struct_get(global.levelData, room_get_name(room));
-	var instances = roomStruct.instances;
-	
-
-	
-	for(var i=0; i<array_length(instances); i++) {
-		var memAddr = instances[i];
-		var instStruct = roomStruct.instMem[$ memAddr];
-		var inst = structToInstance(instStruct);
-	}
-	
-	for(var i=0; i<array_length(roomStruct.deactivatedInstances); i++) {
-		var memAddr = roomStruct.deactivatedInstances[i];
-		var instStruct = roomStruct.instMem[$ memAddr];
-		var inst = structToInstance(instStruct);
-		instance_deactivate_object(inst);
-	}
-}
-	
-function loadRoom() {
-	var roomStruct = 0;
-	if(!variable_struct_exists(global.levelData, room_get_name(room)))
-		return;
-	roomStruct = variable_struct_get(global.levelData, room_get_name(room));
-		
-	//Cancel if roomStruct is not a struct
-	if(!is_struct(roomStruct)) return;
-	
-	global.spawnX = roomStruct.spawnX;
-	global.spawnY = roomStruct.spawnY;
-	
-	var updateCameraTarg = false;
-	
-	//Player
-	if(instance_exists(obj_player)) {
-		obj_player.x = roomStruct.playerX;
-		obj_player.y = roomStruct.playerY;
-		if(global.setPosToSpawnPos || global.loadingGame){
-			obj_player.x = global.spawnX;
-			obj_player.y = global.spawnY;
-			global.setPosToSpawnPos = false;
-			updateCameraTarg = true;
-		}
-	}
-	
-	//Camera
-	if(instance_exists(obj_camera)) {
-		obj_camera.targX = roomStruct.playerX;
-		obj_camera.targY = roomStruct.playerY;
-		if(updateCameraTarg){
-			obj_camera.targX = global.spawnX;
-			obj_camera.targY = global.spawnY;
-		}
-	}
-	
-	//Get rid of all saveable instances and replace them with the ones in the game save.
-	//Items
-	if(instance_exists(obj_item))
-		instance_destroy(obj_item);
-		
-	for(var i=0; i<array_length(roomStruct.items); i++) {
-		var savedItem = roomStruct.items[i];
-		//Putting item values into temp struct (converts variable asset names into usable asset indexes)
-		var tempStruct = {};
-		//Copy struct just to make sure that none of the original content is being altered (i dont know if it will get altered, but im not gonna risk it)
-		var instItemStruct = copyStruct(savedItem.item);
-		var key, value;
-		var keys = variable_struct_get_names(instItemStruct);
-		for (var j = array_length(keys)-1; j >= 0; --j) {
-			key = keys[j];
-			value = variable_struct_get(instItemStruct, key);
-			//If the value of current variable the loop is checking is a string, and it is an asset, then set the value to be 
-			if(is_string(value)) {
-				if(asset_get_type(value) != asset_unknown) {
-					value = asset_get_index(value);
-				}
-			}
-			variable_struct_set(tempStruct, key, value);
-		}
-		
-		var inst = instance_create_layer(savedItem.x, savedItem.y, "Instances", obj_item);
-		inst.x = savedItem.x;
-		inst.y = savedItem.y;
-		inst.hsp = savedItem.hsp;
-		inst.vsp = savedItem.vsp;
-		inst.pickedUp = savedItem.pickedUp;
-		inst.canBePickedUp = savedItem.canBePickedUp;
-		inst.pickUpCoolDown = savedItem.pickUpCoolDown;
-		inst.item = tempStruct;
-	}
-	
-	
-	//Chests
-	if(instance_exists(obj_chest))
-		instance_destroy(obj_chest);
-		
-	for(var i=0; i<array_length(roomStruct.chests); i++) {
-		var savedChest = roomStruct.chests[i];
-		var itemArray = array_create(0);
-		//Loop through all items and store them in itemArray
-		for(var l=0; l<array_length(savedChest.items); l++) {
-			var savedItem = savedChest.items[l];
-			//Putting item values into temp struct (converts variable asset names into usable asset indexes)
-			var tempStruct = {};
-			//Copy struct just to make sure that none of the original content is being altered (i dont know if it will get altered, but im not gonna risk it)
-			var instItemStruct = copyStruct(savedItem);
-			var key, value;
-			var keys = variable_struct_get_names(instItemStruct);
-			for (var j = array_length(keys)-1; j >= 0; --j) {
-				key = keys[j];
-				value = variable_struct_get(instItemStruct, key);
-				//If the value of current variable the loop is checking is a string, and it is an asset, then set the value to be 
-				if(is_string(value)) {
-					if(asset_get_type(value) != asset_unknown) {
-						value = asset_get_index(value);
-					}
-				}
-				variable_struct_set(tempStruct, key, value);
-			}
-			array_push(itemArray, tempStruct);
-		}
-		
-		var inst = instance_create_layer(savedChest.x, savedChest.y, "Interactables", obj_chest, savedChest);
-		inst.x = savedChest.x;
-		inst.y = savedChest.y;
-		inst.items = itemArray;
-		inst.opened = savedChest.opened;
-	}
-		
-	//Enemies
-	for(var i=0; i<instance_number(obj_enemy); i++) {
-		var enemy = instance_find(obj_enemy, i);
-		if(!variable_instance_exists(enemy, "shouldSave") || !enemy.shouldSave)
-			continue;
-		instance_destroy(enemy);
-	}
-		
-	for(var i=0; i<array_length(roomStruct.enemies); i++) {
-		var saved = roomStruct.enemies[i];
-		var inst = instance_create_layer(saved.x, saved.y, "Enemies", asset_get_index(saved.objIndex));
-		instSetVars(inst, saved);
-	}
-	
-	//NPCs
-	//Destroy all saveable npcs 
-	for(var i=0; i<instance_number(obj_npc); i++) {
-		var npc = instance_find(obj_npc, i);
-		if(npc.saveNPC)
-			instance_destroy(npc);
-	}
-	//Adding saveable NPCs that are in game save
-	for(var i=0; i<array_length(roomStruct.NPCs); i++) {
-		var savedNpc = roomStruct.NPCs[i];
-		if(variable_struct_exists(savedNpc, "disappear") && savedNpc.disappear)
-			continue;
-		var varNames = variable_struct_get_names(savedNpc);
-		//Create NPC instance with sepcified object type
-		var objectIndex = asset_get_index(savedNpc.objInd);
-		var inst = instance_create_layer(savedNpc.x, savedNpc.y, "Interactables", objectIndex);
-		inst.sprite_index = savedNpc.sprite_index;
-		//Loop through all saved vars and add them to new NPC instance
-		for(var j=0; j<array_length(varNames); j++) {
-			var value = variable_struct_get(savedNpc, varNames[j]);
-			variable_instance_set(inst, varNames[j], value);
-		}
-	}
-	
+	return 1;
 }
 
 //Saving game to file

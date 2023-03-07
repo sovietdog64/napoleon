@@ -1,4 +1,4 @@
-///@description parallax scrolling background
+//@description parallax scrolling background
 if(layer_exists("BackgroundNear")) {
 	layer_x("BackgroundNear", camera_get_view_x(view_camera[0]) * 0.5);
 	layer_y("BackgroundNear", camera_get_view_y(view_camera[0]) * 0.5);

@@ -1,6 +1,5 @@
-return;
-/// @description Save state of room when room ended.
+/// @description Save s	tate of room when room ended.
 if(!skipRoomSave) {
-	saveRoom();
+	saveRoom2();
 }
 skipRoomSave = false;
