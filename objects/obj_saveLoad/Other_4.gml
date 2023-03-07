@@ -1,4 +1,4 @@
 return;
 /// @description Load last state of room when room started
-loadRoom2(room);
+loadRoom();
 global.dead = false;
