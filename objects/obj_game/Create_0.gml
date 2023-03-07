@@ -10,7 +10,7 @@ global.equippedItem = 0;
 
 global.spawnX = 0;
 global.spawnY = 0;
-global.spawnRoom = rm_entrance;
+global.spawnRoom = terrainGenTest;
 global.setPosToSpawnPos = false;
 
 global.gold = 0;

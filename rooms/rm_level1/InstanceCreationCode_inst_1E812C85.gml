@@ -1,1 +1,0 @@
-item = new Item(spr_musketBall, 10, 10);

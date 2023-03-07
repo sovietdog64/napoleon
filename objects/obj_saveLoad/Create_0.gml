@@ -4,7 +4,7 @@ global.statData =
 {
 	saveX : 0,
 	saveY : 0,
-	saveRm : "rm_entrance",
+	saveRm : "terrainGenTest",
 	
 	hp : 5,
 	equippedItem : -1,
