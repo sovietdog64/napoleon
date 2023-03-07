@@ -7,9 +7,12 @@ function structifyInstance(inst, roomStruct) {
 	if(!isInstance(inst))
 		throw("ERROR: this instance you are trying to structify is not an instance!");
 	
-	if(inst.object_index == obj_player) {
-		return;
+	try {
+		if(inst.object_index == obj_player) {
+			return;
+		}
 	}
+	catch(err) {return;}
 	
 	//Make sure roomStruct is a struct
 	if(!is_struct(roomStruct))

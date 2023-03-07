@@ -2,7 +2,10 @@
 global.gamePaused = false;
 persistent = true;
 
+global.loadingRoom = false;
 global.loadedGame = false;
+
+global.loadedOverworld = false;
 
 global.invItems = array_create(8, -1);
 global.hotbarItems = array_create(3, -1);
@@ -33,7 +36,8 @@ global.screenOpen = false;
 global.canPlaceItem = false;
 global.reachDistance = TILEW*4;
 
-global.renderDist = 20;
+global.renderDist = 24;
+global.chunkLoadDelay = room_speed*0.2;
 
 global.pathfindGrid = 0;
 
@@ -120,7 +124,7 @@ global.craftingRecipies =
 #region vars to ignore when saving
 
 global.objSaveVarsIgnore = {
-	"obj_enemy" : ["path"]
+	"obj_enemy" : ["path"],
 }
 
 #endregion vars to ignore when saving

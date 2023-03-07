@@ -1,70 +1,40 @@
 function placeChunk(chunkMapX, chunkMapY) {
-	var chunk = chunksGrid[# chunkMapX, chunkMapY];
-	
+	var chunk = global.chunksGrid[# chunkMapX, chunkMapY];
 	
 	var startX = chunkMapX * CHUNK_W;
 	var startY = chunkMapY * CHUNK_H;
-	var tiles = ds_list_create();
 	for(var xx=startX; xx<startX+CHUNK_W; xx++)
 		for(var yy=startY; yy<startY+CHUNK_H; yy++) {
-			var ind = numRound(ds_grid_get(terrainGrid, xx, yy))
-			var tile = placeTile(ind, xx, yy);
-			if(tile != undefined)
-				ds_list_add(tiles, tile);
+			var ind = numRound(ds_grid_get(global.terrainGrid, xx, yy))
+			placeTile(ind, xx, yy, chunk.previouslyLoaded);
 		}
-	chunk.tiles = tiles;
 }
 
 function placeChunkStruct(chunk) {
 	
 	var startX = chunk.mapX * CHUNK_W;
 	var startY = chunk.mapY * CHUNK_H;
-	var tiles = ds_list_create();
 	for(var xx=startX; xx<startX+CHUNK_W; xx++)
 		for(var yy=startY; yy<startY+CHUNK_H; yy++) {
-			var ind = numRound(ds_grid_get(terrainGrid, xx, yy))
-			var tile = placeTile(ind, xx, yy);
-			if(tile != undefined)
-				ds_list_add(tiles, tile);
+			var ind = numRound(ds_grid_get(global.terrainGrid, xx, yy))
+			placeTile(ind, xx, yy);
 		}
-	chunk.tiles = tiles;
-	
-	for(var i=0; i<ds_list_size(chunk.instances); i++)
-		instance_activate_object(chunk.instances[| i])
 
 	variable_struct_set(chunk, "loaded", true)
 }
 
-function updateChunkInstances(chunkMapX, chunkMapY) {
-	var chunk = chunksGrid[# chunkMapX, chunkMapY];
-	//list of all instances
-	var list = ds_list_create();
-	var chunkX = chunkMapX*PX_CHUNK_H;
-	var chunkY = chunkMapY*PX_CHUNK_H;
-	//Get all instances
-	collision_rectangle_list(
-		chunkX, chunkY,
-		chunkX+PX_CHUNK_H, chunkY+PX_CHUNK_H,
-		all, 0, 1, list, 0
-	);
-	
-	//save instances to chunk
-	chunk.instances = list;
-}
-
 function prepareChunk(chunkMapX, chunkMapY) {
-	chunksGrid[# chunkMapX, chunkMapY] = {
+	global.chunksGrid[# chunkMapX, chunkMapY] = {
 		structures : [],
 		structureType : structureTypes.ALL,
 		loaded : false,
 		prepared : false,
-		instances : ds_list_create(),
-		tiles : ds_list_create(),
+		previouslyLoaded : false,
 		mapX : chunkMapX,
 		mapY : chunkMapY,
 	}
 	
-	var chunk = chunksGrid[# chunkMapX, chunkMapY];
+	var chunk = global.chunksGrid[# chunkMapX, chunkMapY];
 	if(chunk.prepared)
 		return;
 	chunk.prepared = true;
@@ -76,7 +46,7 @@ function prepareChunk(chunkMapX, chunkMapY) {
 	//Getting chunk strucutre type + structure spawning
 	for(var xx=startX; xx<startX+CHUNK_W; xx++)
 		for(var yy=startY; yy<startY+CHUNK_H; yy++) {
-			var ind = numRound(terrainGrid[# xx, yy]);
+			var ind = numRound(global.terrainGrid[# xx, yy]);
 			var tileType = getTileType(ind);
 			
 			//Spawning strucutres depending on 
@@ -128,7 +98,7 @@ function prepareChunk(chunkMapX, chunkMapY) {
 }
 
 function spawnStructure(chunkMapX, chunkMapY, spawnX, spawnY, obj, lay = "Structures", varStruct = undefined) {
-	var structures = chunksGrid[# chunkMapX, chunkMapY]
+	var structures = global.chunksGrid[# chunkMapX, chunkMapY]
 	var canSpawn = true;
 	for(var i=0; i<array_length(structures); i++) {
 		if(structures[i].object_index == obj)
@@ -149,7 +119,7 @@ function spawnStructure(chunkMapX, chunkMapY, spawnX, spawnY, obj, lay = "Struct
 		return undefined;
 }
 
-function placeTile(_mapIndex, xx, yy, lay2 = layer_get_id("OnGround"), lay = layer_get_id("Ground")) {
+function placeTile(_mapIndex, xx, yy, chunkPrevLoaded, lay2 = layer_get_id("OnGround"), lay = layer_get_id("Ground")) {
 	var spr = undefined;
 	var obj = undefined;
 	var objSpr = undefined;
@@ -229,6 +199,10 @@ function placeTile(_mapIndex, xx, yy, lay2 = layer_get_id("OnGround"), lay = lay
 	}
 	
 	if(obj != undefined) {
+		
+		//If chunk previously loaded & object being made is not a tile, then stop making the object
+		if(chunkPrevLoaded && !object_is_ancestor(obj, obj_tilePar))
+			return returnVal;
 		var inst = instance_create_layer(xx*TILEW, yy*TILEH, objLayer, obj);
 		if(objSpr != undefined)
 			inst.sprite_index = objSpr;

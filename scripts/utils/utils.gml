@@ -493,5 +493,7 @@ function chance(percentage) {
 }
 	
 function randomValueFromArray(array) {
+	if(array_length(array) <= 0)
+		return -1;
 	return array[irandom(array_length(array)-1)];
 }

@@ -1,10 +1,13 @@
+if(!test)
+	return;
 var inst = collision_rectangle(
 	x-TILEW, y-TILEW,x+TILEW, y+TILEW,
 	obj_player,
 	0,1
 );
 
-if(inst != noone) {
+if(inst != noone && !prevPlayerEntered) {
+	prevPlayerEntered = true;
 	//If a saved room isnt assigned to this dungeon, then make a new one and assign it
 	if(!variable_instance_exists(id, "roomAddress")) {
 		
@@ -42,4 +45,6 @@ if(inst != noone) {
 	
 	room_goto(rm_dungeon);
 }
+else if(inst == noone && prevPlayerEntered)
+	prevPlayerEntered = false;
 

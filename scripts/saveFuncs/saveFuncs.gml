@@ -15,7 +15,13 @@ function saveRoom2() {
 			savedDsGrids : {},
 			savedDsLists : {},
 			savedStructs : {},
-		}
+		},
+		
+		spawnX : global.spawnX,
+		spawnY : global.spawnY,
+		
+		playerX : obj_player.x,
+		playerY : obj_player.y,
 	};
 	
 	for(var i=0; i<instance_number(all); i++) {
@@ -101,6 +107,9 @@ function loadRoom2() {
 		var inst = loadInstanceStruct(instKey, roomStruct, loadedStruct);
 	}
 	
+	instance_destroy(obj_player)
+	instance_create_layer(roomStruct.playerX, roomStruct.playerY, "Instances", obj_player);
+	
 	delete loadedStruct;
 	
 	return 1;
@@ -112,7 +121,7 @@ function saveGame(fileNum = 0) {
 	var saveArray = array_create(0);
 	
 	//Save current room
-	saveRoom();
+	saveRoom2();
 	
 	//Set & Save stats
 	global.statData.saveX = obj_player.x;

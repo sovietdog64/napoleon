@@ -1,3 +1,5 @@
+//Always make ground first.
+alarm_set(1, 2);
 if(variable_instance_exists(id, "noCreateEvent") && noCreateEvent) {
 	noCreateEvent = false;
 	return;

@@ -1,7 +1,14 @@
+if(chunkLoadTimer > 0) {
+	chunkLoadTimer--;
+	return;
+}
+
+chunkLoadTimer = global.chunkLoadDelay;
+
 if(room == rm_dungeon)
 	return;
-var xCount = ds_grid_width(chunksGrid);
-var yCount = ds_grid_height(chunksGrid);
+var xCount = ds_grid_width(global.chunksGrid);
+var yCount = ds_grid_height(global.chunksGrid);
 
 if(instance_exists(obj_player))
 	for(var i=0; i<instance_number(all); i++) {
@@ -16,11 +23,11 @@ if(instance_exists(obj_player))
 			ind == obj_textQueued)
 			continue;
 		
-		var inRenderDist = rectangle_in_circle(
-			inst.bbox_left, inst.bbox_top, inst.bbox_right, inst.bbox_bottom,
-			obj_player.x, obj_player.y,
-			TILEW*global.renderDist
-		)
+		
+		var inRenderDist = true;
+		with(inst) {
+			inRenderDist = distance_to_object(obj_player) <= global.renderDist*TILEW
+		}
 		
 		if(!inRenderDist) {
 			instance_deactivate_object(inst);
@@ -56,7 +63,7 @@ for(var xx=0; xx<xCount; xx++) {
 		var chunkX = xx*PX_CHUNK_W;
 		var chunkY = yy*PX_CHUNK_H;
 		
-		var chunk = chunksGrid[# xx, yy];
+		var chunk = global.chunksGrid[# xx, yy];
 		
 		var camInBounds = rectangle_in_rectangle(CAMX, CAMY, CAMX2, CAMY2,
 												chunkX, chunkY, chunkX+PX_CHUNK_W, chunkY+PX_CHUNK_H);
@@ -64,6 +71,10 @@ for(var xx=0; xx<xCount; xx++) {
 			chunk.loaded = true;
 			currentChunk = chunk;
 			placeChunk(xx,yy);
+			//Put this here in order to let chunks place their non-tile instances if its their
+			//first time being loaded.
+			//After this, the chunks wont re-make resources/instances that are not tiles
+			chunk.previouslyLoaded = true;
 		}
 	}
 }

@@ -1,4 +1,6 @@
-chunksGrid = 0;
+global.chunksGrid = 0;
+
+chunkLoadTimer = global.chunkLoadDelay;
 
 depth = -999;
 

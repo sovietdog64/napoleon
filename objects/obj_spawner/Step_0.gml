@@ -19,9 +19,11 @@ if(spawnEnemies) {
 		if(is_array(enemyObj)) { 
 			obj = randomValueFromArray(enemyObj)
 		}
-		var inst = instance_create_layer(
-			x+p.x, y+p.y, "Instances", enemyObj
-		)
-		array_push(enemiesSpawned, inst);
+		try{
+			var inst = instance_create_layer(
+				x+p.x, y+p.y, "Instances", enemyObj
+			)
+			array_push(enemiesSpawned, inst);
+		}catch(err) {}
 	}
 }
