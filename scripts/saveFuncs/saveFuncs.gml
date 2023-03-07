@@ -182,8 +182,10 @@ function saveRoom2() {
 	
 	for(var i=0; i<array_length(obj_terrainGenerator.deactivatedInstances); i++) {
 		var inst = obj_terrainGenerator.deactivatedInstances[i];
-		if(inst.persistent || inst.object_index == obj_player || !isInstance(inst))
-			continue;
+		try{
+			if(!isInstance(inst) || inst.persistent || inst.object_index == obj_player)
+				continue;
+		} catch(err) {continue;}
 		
 		structifyInstance(inst, roomStruct);
 	}
@@ -191,7 +193,7 @@ function saveRoom2() {
 	variable_struct_set(global.levelData, room_get_name(room), roomStruct);
 }
 	
-function loadRoom2(roomIndex) {
+function loadRoom2(roomIndex = room) {
 	var roomStruct = global.levelData[$ room_get_name(roomIndex)]
 	
 	with(all) {

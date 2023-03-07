@@ -2,7 +2,6 @@ var spawnEnemies = true;
 for(var i=0; i<array_length(enemiesSpawned); i++) {
 	if(instance_exists(enemiesSpawned[i])) {
 		spawnEnemies = false;
-		show_debug_message("test")
 		break;
 	}
 	else

@@ -7,6 +7,10 @@ function structifyInstance(inst, roomStruct) {
 	if(!isInstance(inst))
 		throw("ERROR: this instance you are trying to structify is not an instance!");
 	
+	if(inst.object_index == obj_player) {
+		return;
+	}
+	
 	//Make sure roomStruct is a struct
 	if(!is_struct(roomStruct))
 		throw("ERROR: the room struct inputted is not a struct!")
@@ -50,6 +54,11 @@ function structifyInstance(inst, roomStruct) {
 			break;
 		}
 	}
+	
+	//Have to make "memory addresses" because some instances will reference other ones, and making a struct for each instance referenced will create duplicates of the same instance when loading.
+	var memAddress = string(inst);
+	
+	variable_struct_set(roomStruct.instMem, memAddress, instStruct);
 	
 	//Saving all instance variables to the instance struct.
 	var keys = variable_instance_get_names(inst);
@@ -134,6 +143,15 @@ function duplicateArraySave(array, roomStruct) {
 	}
 	
 	var newArray = [];
+	
+	//Get the address for the array in the save
+	var memAddr = string(irandom_range(0, 2147483648)) + "_array";
+	while(variable_struct_exists(roomStruct.memory.arrays, memAddr))
+		memAddr = string(irandom_range(0, 2147483648)) + "_array";
+	
+	//Create the spot for the array before hand to prevent infinite loops
+	variable_struct_set(roomStruct.memory.arrays, memAddr, newArray);
+	
 	for(var i=0; i<array_length(array); i++) {
 		var val = array[i];
 		if(is_bool(val) || is_string(val)) {
@@ -160,15 +178,11 @@ function duplicateArraySave(array, roomStruct) {
 	}
 	
 	
-	var memAddr = irandom_range(0, 2147483648);
-	while(variable_struct_exists(roomStruct.memory.arrays, string(memAddr) + "_array")) 
-		memAddr = irandom_range(0, 2147483648);
-	
-	//Save array to room memory
-	variable_struct_set(roomStruct.memory.arrays, string(memAddr) + "_array", newArray);
+	//Save the complete array to room save's memory
+	variable_struct_set(roomStruct.memory.arrays, memAddr, newArray);
 	
 	//mark this array as "saved" for this room struct.
-	variable_struct_set(roomStruct.savedMemory.savedArrays, string(memAddr) + "_array", array);
+	variable_struct_set(roomStruct.savedMemory.savedArrays, memAddr, array);
 	
 	return string(memAddr) + "_array";
 }
@@ -313,64 +327,6 @@ function isInstance(inst) {
 #endregion saving
 	
 #region loading
-
-function structWithInstanceStructsConvert(struct, parStruct_or_array, parKey_or_array_index) {
-	
-	//If this struct is an instance struct, then convert it into an instance.
-	if(variable_struct_exists(struct, "object_index")) {
-		if(is_struct(parStruct_or_array)) {
-			parStruct_or_array[$ parKey_or_array_index] = structToInstance(struct);
-		}
-		else if(is_array(parStruct_or_array)) {
-			parStruct_or_array[parKey_or_array_index] = structToInstance(struct);
-		}
-		else
-			throw("ERROR: parStruct_or_array is neither a struct nor array!");
-		
-		return;
-	}
-	
-	//If struct is an object with a defined type, then turn it into that type.
-	if(variable_struct_exists(struct, "class") && is_string(struct.class) && asset_get_type(struct.class) == asset_script) {
-		//Getting the constructor of the type.
-		var scr = asset_get_index(struct.class);
-		var newStruct = new scr();
-		
-		var keys = variable_struct_get_names(struct);
-		var key,val;
-		for(var i=0; i<array_length(keys); i++) {
-			key = keys[i];
-			val = struct[$ key];
-			variable_struct_set(newStruct, key, val);
-		}
-		struct = newStruct;
-		
-		if(is_struct(parStruct_or_array)) 
-			parStruct_or_array[$ parKey_or_array_index] = newStruct;
-		
-		else if(is_array(parStruct_or_array)) 
-			parStruct_or_array[parKey_or_array_index] = newStruct;
-		
-	}
-	
-	//Not an instance struct? loop through all data in the struct, then turn the instance structs into instances.
-	var keys = variable_struct_get_names(struct);
-	var key,val;
-	for(var i=0; i<array_length(keys); i++) {
-		key = keys[i];
-		val = struct[$ key];
-		if(is_struct(val)) {
-			structWithInstanceStructsConvert(val, struct, key);
-		}
-			
-		else if(is_array(val)) {
-			arrayWithInstanceStructsConvert(val);
-		}
-		
-	}
-	
-}
-
 
 function loadArray(arrayKey, roomStruct, loadedStruct) {
 	//if previously loaded, then return the loaded array.
@@ -528,17 +484,13 @@ function loadGrid(gridKey, roomStruct, loadedStruct) {
 	return newGrid
 }
 	
-function arrayWithInstanceStructsConvert(array) {
-	for(var i=0; i<array_length(array); i++) {
-		if(is_struct(array[i])) {
-			structWithInstanceStructsConvert(array[i], array, i);
-		}
-	}
-}
-	
 function loadInstanceStruct(instKey, roomStruct, loadedStruct) {
 	if(!variable_struct_exists(roomStruct.instMem[$ instKey], "object_index"))
 		throw("ERROR: Invalid instance struct!");
+		
+	if(roomStruct.instMem[$ instKey].object_index == "obj_player") {
+		return;
+	}
 		
 	//if instance was already loaded, then return its instance ID.
 	if(variable_struct_exists(loadedStruct.newLoadedInstances, instKey)) {
@@ -550,6 +502,18 @@ function loadInstanceStruct(instKey, roomStruct, loadedStruct) {
 		
 	//Have to store the index in another variable to prevent crash with editing read-only variable.
 	var objectIndex = asset_get_index(savedInstStruct.object_index);
+	
+	//Create dummy instance to prevent infinite loop with instances containing each-other's IDs
+	instVarStruct[$ "noCreateEvent"] = true;
+	
+	var inst = instance_create_depth(
+		0, 0,
+		0,
+		objectIndex,
+		instVarStruct
+	)
+	
+	loadedStruct.newLoadedInstances[$ instKey] = inst;
 	
 	//Getting all data for instance into the var struct.
 	var keys = variable_struct_get_names(savedInstStruct);
@@ -588,15 +552,8 @@ function loadInstanceStruct(instKey, roomStruct, loadedStruct) {
 		instVarStruct[$ key] = val;
 	}
 	
-	instVarStruct[$ "noCreateEvent"] = true;
 	
-	var inst = instance_create_depth(
-		instVarStruct.x, instVarStruct.y,
-		instVarStruct.depth,
-		objectIndex,
-		instVarStruct
-	)
-	
+	//Update the dummy instance's variables to contain the right information.
 	with(inst) {
 		keys = variable_struct_get_names(instVarStruct);
 		var key,val;
@@ -608,72 +565,12 @@ function loadInstanceStruct(instKey, roomStruct, loadedStruct) {
 		}
 	}
 		
+	//And save it to the loaded instances
 	loadedStruct.newLoadedInstances[$ instKey] = inst;
 	
-	return inst;
-}
-	
-function structToInstance(struct) {
-	if(!variable_struct_exists(struct, "object_index"))
-		throw("ERROR: Invalid instance struct!");
-		
-	
-	//Have to store the index in another variable to prevent crash with editing read-only variable.
-	var objectIndex = asset_get_index(struct.object_index)
-	variable_struct_remove(struct, "object_index");
-	
-	
-	var keys = variable_struct_get_names(struct);
-	var key, val;
-	
-	//Converting struct strings into asset indexes 
-	for(var i=0; i<array_length(keys); i++) {
-		key = keys[i];
-		val = variable_struct_get(struct, key);
-		if(is_string(val) && asset_get_type(val) != asset_unknown) {
-			variable_struct_set(struct, key, asset_get_index(val));
-		}
-	}
-	
-	//Loop through all arrays & structs that may contain more instances, and turn them into structs as well.
-	for(var i=0; i<array_length(keys); i++) {
-		key = keys[i];
-		val = struct[$ key];
-		
-		if(is_struct(val)) {
-			structWithInstanceStructsConvert(val, struct, key);
-		}
-		else if(is_array(val)) {
-			arrayWithInstanceStructsConvert(val)
-		}
-	}
-		
-	variable_struct_set(struct, "noCreateEvent", true);
-		
-	var inst = instance_create_depth(
-		struct.x, struct.y,
-		struct.depth,
-		objectIndex,
-		struct
-	);
-		
-	//Making sure that instance values are the same
-	with(inst) {
-		for(var i=0; i<array_length(keys); i++) {
-			key = keys[i];
-			val = variable_struct_get(struct, key);
-			if(variable_instance_get(inst, key) != val) {
-				if(is_string(val) &&  asset_get_type(val) != asset_unknown) {
-					variable_instance_set(inst, key, asset_get_index(val));
-				}
-				else
-					variable_instance_set(inst, key, val);
-			}
-		}
-	}
+	delete instVarStruct;
 	
 	return inst;
-	
 }
 	
 #endregion loading
