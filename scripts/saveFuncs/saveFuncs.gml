@@ -100,6 +100,7 @@ function loadRoom2() {
 		var instKey = roomStruct.deactivatedInstances[i];
 		var inst = loadInstanceStruct(instKey, roomStruct, loadedStruct);
 		instance_deactivate_object(inst);
+		array_push(obj_terrainGenerator.deactivatedInstances, inst);
 	}
 	
 	for(var i=0; i<array_length(roomStruct.instances); i++) {
