@@ -188,7 +188,11 @@ if(runCooldown > 0)
 
 #region collisions
 //collisions that change player spd
-if(place_meeting(x, y, obj_water)) {
+var inst = collision_line(
+	bbox_left,bbox_bottom, bbox_right, bbox_bottom,
+	obj_water, 0,1
+)
+if(inst != noone) {
 	walkSpd *= 0.7;
 }
 
