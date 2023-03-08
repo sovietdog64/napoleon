@@ -23,7 +23,7 @@
     {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"c422e28a-afee-446b-8311-910cd444a0a4","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
   ],
   "nineSlice": null,
-  "origin": 3,
+  "origin": 9,
   "parent": {
     "name": "Dungeon",
     "path": "folders/Sprites/Tiles/Dungeon.yy",

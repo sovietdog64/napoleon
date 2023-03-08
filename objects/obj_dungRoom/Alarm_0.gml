@@ -1,5 +1,8 @@
 /// @description Making walls/doors/paths
 
+if(variable_instance_exists(id, "isSpawnRoom") && isSpawnRoom) 
+	instance_create_depth(x,y,depth, obj_dungExit);
+
 #region doors & paths
 
 for(var i=0; i<array_length(bridgedTo); i++) {
@@ -29,6 +32,7 @@ for(var i=0; i<array_length(bridgedTo); i++) {
 	
 	if(doorDirVec.x != 0)
 		door.sprite_index = spr_dungDoorVert;
+
 		
 	
 	//If bridge to this room was already built, move on.

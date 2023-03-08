@@ -1,5 +1,3 @@
-if(!test)
-	return;
 var inst = collision_rectangle(
 	x-TILEW, y-TILEW,x+TILEW, y+TILEW,
 	obj_player,

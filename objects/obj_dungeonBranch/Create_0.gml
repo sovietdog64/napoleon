@@ -5,6 +5,7 @@ if(variable_instance_exists(id, "noCreateEvent") && noCreateEvent) {
 	return;
 }
 
+
 if(choose(0, 1))
 	waves = irandom_range(4,5)
 

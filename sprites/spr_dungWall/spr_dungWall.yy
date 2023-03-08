@@ -6,7 +6,7 @@
   "bbox_left": 0,
   "bbox_right": 31,
   "bbox_top": 0,
-  "bboxMode": 0,
+  "bboxMode": 1,
   "collisionKind": 1,
   "collisionTolerance": 0,
   "DynamicTexturePage": false,
@@ -20,6 +20,7 @@
   "height": 32,
   "HTile": false,
   "layers": [
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"48948fbb-d212-40c2-b93c-f417ce5164bc","blendMode":0,"displayName":"Layer 1","isLocked":false,"opacity":100.0,"visible":false,},
     {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"663388c3-dfdc-46d0-8e01-69f06ef3ab6d","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
   ],
   "nineSlice": {
