@@ -2,7 +2,7 @@
 
 hsp = 0;//horizontal speed
 vsp = 0;//vertical speed
-walkSpd = 20;
+walkSpd = 2;
 minWalkSpd = walkSpd;
 runCooldown = 0;
 global.stamina = 100;
@@ -21,9 +21,9 @@ global.invOpen = false;
 #region health
 
 if(!variable_global_exists("hp"))
-	global.hp = 5;
+	global.hp = 20;
 if(!variable_global_exists("maxHp"))
-	global.maxHp = 5;
+	global.maxHp = global.hp;
 
 global.dead = false;
 maxHurtCooldown = room_speed;

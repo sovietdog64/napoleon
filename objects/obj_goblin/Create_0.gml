@@ -6,6 +6,7 @@ event_inherited();
 hp = 10;
 maxHp = hp;
 maxAtkCooldown = room_speed*0.4;
+itemDrops = [new Berry(irandom_range(0, 3))]
 
 
 

@@ -32,8 +32,8 @@ switch(state) {
 		attackCooldown = maxAtkCooldown;
 		var dir = point_direction(x, y, obj_player.x, obj_player.y);
 		var len = attackDist*0.3;
-		var xx = lengthdir_x(len, dir);
-		var yy = lengthdir_y(len, dir);
+		var xx = lengthdir_x(irandom_range(len-10, len), dir);
+		var yy = lengthdir_y(irandom_range(len-10, len), dir);
 		damageHitbox(
 			x+xx, y+yy,
 			24,24,

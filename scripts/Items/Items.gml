@@ -15,8 +15,86 @@ function Placeable(sprite, rightClickFunction = undefined, leftClickFunction = u
 	leftClickAction = leftClickFunction;
 }
 	
-function Axe(itemSprite, itemAmount, dmg, itemName, itemDescription, animationTypeEnum = itemAnimations.KNIFE_STAB) : Item(itemSprite, itemAmount, dmg, itemName, itemDescription, animationTypeEnum) constructor {}
 function Pickaxe(itemSprite, itemAmount, dmg, itemName, itemDescription, animationTypeEnum = itemAnimations.KNIFE_STAB) : Item(itemSprite, itemAmount, dmg, itemName, itemDescription, animationTypeEnum) constructor {}
+
+function Sword(itemSprite, itemAmount, _cooldown, _range, dmg, itemName, itemDescription) : 
+	Item(itemSprite, itemAmount, dmg, itemName, itemDescription, itemAnimations.SWORD) constructor {
+	cooldown = _cooldown;
+	range = _range;
+	static leftPress = function(targX, targY) {
+		with(other) {
+			handProgress = 1;
+			attackState = attackStates.MELEE;
+			animType = itemAnimations.SWORD;
+			var dir = point_direction(x, y, targX, targY);
+			//Calculate the direction of the punch hitbox
+			var xx = x + lengthdir_x(other.range, dir);
+			var yy = y + lengthdir_y(other.range, dir);
+			//Create dmg hitbox (hitboxes are more resource efficient compared to individial enemy collision checks)
+			damageHitbox(
+				xx,yy,
+				24,24,
+				targX,targY,
+				other.damage,
+				other.cooldown,3,
+				object_is_ancestor(object_index, obj_enemy),
+				true, false,
+				xx-x,yy-y
+			).sprite_index = spr_swipe;
+		}
+		return cooldown;
+	}
+}
+
+function Axe(itemSprite, itemAmount, _cooldown, _range, dmg, itemName, itemDescription) : 
+	Item(itemSprite, itemAmount, dmg, itemName, itemDescription, itemAnimations.KNIFE_STAB) constructor {
+	cooldown = _cooldown;
+	range = _range;
+	static leftPress = function(targX, targY) {
+		with(other) {
+			handProgress = 1;
+			attackState = attackStates.MELEE;
+			animType = itemAnimations.SWORD;
+			var dir = point_direction(x, y, targX, targY);
+			//Calculate the direction of the punch hitbox
+			var xx = x + lengthdir_x(other.range, dir);
+			var yy = y + lengthdir_y(other.range, dir);
+			//Create dmg hitbox (hitboxes are more resource efficient compared to individial enemy collision checks)
+			damageHitbox(
+				xx,yy,
+				24,24,
+				targX,targY,
+				other.damage,
+				other.cooldown,3,
+				object_is_ancestor(object_index, obj_enemy),
+				true, false,
+				xx-x,yy-y
+			).sprite_index = spr_swipe;
+		}
+		return cooldown;
+	}
+}
+
+function Food(itemSprite, itemAmount, healAmount, dmg, itemName, itemDescription) : 
+	Item(itemSprite, itemAmount, dmg, itemName, itemDescription) constructor {
+	heal = healAmount;
+	static leftPress = function() {
+		with(other) {
+			if(object_index == obj_player) {
+				global.hp += other.heal;
+				if(global.hp > global.maxHp)
+					global.hp = global.maxHp;
+			}
+			else {
+				hp += other.heal;
+				if(hp > maxHp)
+					hp = maxHp;
+			}
+		}
+			
+		amount--;
+	}
+}
 
 #endregion item classes
 
@@ -141,8 +219,9 @@ function CraftingRecipie(_item, _itemsRequired, _toolsRequired = undefined) cons
 }
 
 #region all items
+#region wood
 
-function WoodHatchet(amount = 1) : Axe(spr_woodHatchet,amount,2,"Wood Hatchet", "Hatchet that can cut down trees\nDamage: 2", itemAnimations.SWORD) constructor {
+function WoodHatchet(amount = 1) : Axe(spr_woodHatchet,amount,2,5,"Wood Hatchet", "Hatchet that can cut down trees\nDamage: 2", itemAnimations.SWORD) constructor {
 	cooldown = room_speed*0.4;
 	static leftPress = function(targX, targY) {
 		with(other) {
@@ -172,14 +251,27 @@ function WoodHatchet(amount = 1) : Axe(spr_woodHatchet,amount,2,"Wood Hatchet", 
 	}
 }
 	
-function Wood(amount = 1) : Item(spr_wood,amount,0,"Wood",":Resource:") constructor {}	
+function Wood(amount = 1) : Item(spr_wood,amount,0,"Wood","Resource") constructor {}	
 
 function WoodShaft(amount = 1) : Item(spr_woodShaft,amount,0,"Wood","A shaft that serves as a handle for all sorts of weapons.") constructor {}
 
 function Handle(amount = 1) : Item(spr_woodHandle,amount,0,"Handle","A handle used for swords") constructor {}
 
-function WoodSword(amount = 1) : Item(spr_woodSword,amount,3,"Wood Sword","Perfect sword for training... or combat if you are brave enough.", itemAnimations.SWORD) constructor {
-	cooldown = room_speed*0.2;
+function WoodSword(amount = 1) : Sword(spr_woodSword,amount,room_speed*0.2,10,3,"Wood Sword", "Perfect sword for training... or combat if you are brave enough.") constructor {}
+
+#endregion wood
+
+#region iron
+
+function Iron(amount = 1) : Item(spr_iron,amount,0,"Iron","Resource") constructor {};
+
+function IronSword(amount = 1) : Sword(spr_ironSword,amount,room_speed*0.2,TILEW*0.1,5,"Iron sword","Forged by an unknown blacksmith.") constructor {}
+
+function IronHatchet(amount = 1) : 
+	Axe(spr_ironHatchet,amount,3,5,"Iron Hatchet", "Forged by an unknown blacksmith.\nDamage: 2", itemAnimations.SWORD) 
+	constructor 
+{
+	cooldown = room_speed*0.4;
 	static leftPress = function(targX, targY) {
 		with(other) {
 			handProgress = 1;
@@ -187,25 +279,36 @@ function WoodSword(amount = 1) : Item(spr_woodSword,amount,3,"Wood Sword","Perfe
 			animType = itemAnimations.SWORD;
 			var dir = point_direction(x, y, targX, targY);
 			//Calculate the direction of the punch hitbox
-			var xx = x + lengthdir_x(TILEW*0.7, dir);
-			var yy = y + lengthdir_y(TILEW*0.7, dir);
+			var xx = x + lengthdir_x(TILEW/2, dir);
+			var yy = y + lengthdir_y(TILEW/2, dir);
 			//Create dmg hitbox (hitboxes are more resource efficient compared to individial enemy collision checks)
-			damageHitbox(
+			var inst = damageHitbox(
 				xx,yy,
 				24,24,
 				targX,targY,
-				2,
+				damage,
 				10,3,
 				object_is_ancestor(object_index, obj_enemy),
 				true, false,
 				xx-x,yy-y
 			);
+	
+			if(!variable_instance_exists(inst, "resourceCollect"))
+				variable_instance_set(inst, "resourceCollect", Axe);
 		}
 		return cooldown;
 	}
 }
 
+#endregion iron
+
 function Gold(amount = 1) : Item(spr_gold,amount,3,"Gold","") constructor {} 
+
+function BasicWand(amount = 1) : Item(spr_basicWand,amount,5,"Basic Wand", "A twig that never rots.") constructor {}
+
+function String(amount = 1) : Item(spr_string,amount,0,"String","Made of simple fibres") constructor {};
+
+function Berry(amount = 1) : Food(spr_berry,amount,0.5,0,"Berry","Freshly picked from bushes\nHeal:0.5") constructor {};
 
 #endregion all items
 
@@ -216,5 +319,6 @@ function buyItem() {
 		"\nPrice: " + string(price) +
 		"\nPurchase" + item.name + "?",
 		
-		["1:Buy", "0:Don't buy"])
+		["1:Buy", "0:Don't buy"]
+	);
 }

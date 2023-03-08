@@ -43,7 +43,7 @@ if(roomType == dungRoomTypes.ENEMY && !roomDone) {
 				waves--;
 				roomEnemies = [];
 				//Spawn enemies for this new wave
-				repeat(irandom_range(7, 15)) {
+				repeat(irandom_range(7, 10)) {
 					//Rand point in room for enemy to spawn.
 					var p = randPointInEllipse(rmWidth - TILEW*2, rmHeight - TILEW*2);
 					var inst = instance_create_layer(

@@ -3,10 +3,12 @@
 //Returns 1 if successfully gave item. Returns 0 if inventory too full
 //Return 2 when added item to an empty slot
 function giveItemToPlayer(item) {
+	if(!isItem(item))
+		return 0;
 	//Trying to give to hotbar
 	for(var i=0; i<array_length(global.hotbarItems); i++) {
 		var hotbarItem = global.hotbarItems[i];
-		if(isItem(hotbarItem)) {
+		if(isItem(hotbarItem) && isItem(item)) {
 			if(hotbarItem.itemSpr == item.itemSpr) {
 				hotbarItem.amount += item.amount;
 				return 1;
