@@ -81,4 +81,6 @@ show_debug_message("prepared chunks for: " + room_get_name(room));
 
 //spawn the player in a random position.
 instance_create_layer(random_range(100, room_width), random_range(100, room_height), "Instances", obj_player);
+global.spawnX = obj_player.x;
+global.spawnY = obj_player.y;
 giveItemToPlayer(new WoodHatchet())

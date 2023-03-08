@@ -29,6 +29,7 @@
     {"name":"Characters","order":8,"path":"folders/Sprites/Characters.yy",},
     {"name":"Enemies","order":8,"path":"folders/Sprites/Characters/Enemies.yy",},
     {"name":"globin","order":5,"path":"folders/Sprites/Characters/Enemies/globin.yy",},
+    {"name":"skeleGuard","order":6,"path":"folders/Sprites/Characters/Enemies/skeleGuard.yy",},
     {"name":"NPCs","order":1,"path":"folders/Sprites/Characters/NPCs.yy",},
     {"name":"Player","order":14,"path":"folders/Sprites/Characters/Player.yy",},
     {"name":"Dungeon","order":10,"path":"folders/Sprites/Dungeon.yy",},
@@ -53,7 +54,6 @@
     {"name":"Terrain","order":29,"path":"folders/Sprites/Tiles/Terrain.yy",},
     {"name":"Tilesets","order":6,"path":"folders/Sprites/Tilesets.yy",},
     {"name":"Timelines","order":6,"path":"folders/Timelines.yy",},
-    {"name":"skeleGuard","order":6,"path":"folders/Sprites/Characters/Enemies/skeleGuard.yy",},
   ],
   "ResourceOrderSettings": [
     {"name":"obj_dungeonDoor","order":6,"path":"objects/obj_dungeonDoor/obj_dungeonDoor.yy",},
