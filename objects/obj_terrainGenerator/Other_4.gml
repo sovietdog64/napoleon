@@ -33,26 +33,52 @@ lazyFloodFill(global.terrainGrid, 0, 0, 0.99999);
 diamondSquare2(global.terrainGrid, 11, 0, global.randomSeed);
 ds_grid_clear(global.chunksGrid, 0);
 
-playerSpawnSetup = true;
-
 for(var xx=0; xx<ds_grid_width(global.chunksGrid); xx++)
 	for(var yy=0; yy<ds_grid_height(global.chunksGrid); yy++) {
 		prepareChunk(xx,yy);
 	}
 
-show_debug_message("prepared chunks for: " + room_get_name(room));
+#region spawning structures
 
-//If player still didn't spawn, then force-spawn the player in a random chunk
-while(playerSpawnSetup == true) {
-	var xx = irandom(ds_grid_width(global.chunksGrid));
-	var yy = irandom(ds_grid_height(global.chunksGrid));
-	if(!is_struct(global.chunksGrid[# xx, yy]))
-		continue;
-	if(global.chunksGrid[# xx, yy].structureType == structureTypes.GROUND) {
-		playerSpawnSetup = false;
-		var playerSpawnX = irandom_range(xx*PX_CHUNK_W, xx*PX_CHUNK_W + PX_CHUNK_W);
-		var playerSpawnY = irandom_range(yy*PX_CHUNK_W, yy*PX_CHUNK_W + PX_CHUNK_W);
-		instance_create_layer(playerSpawnX, playerSpawnY, "Instances", obj_player);
-		giveItemToPlayer(new WoodHatchet())
+var numOfVillages = irandom_range(3, 5);
+repeat(numOfVillages) {
+	var spawnedStructure = false;
+	
+	while(!spawnedStructure) {
+		var chunkX = irandom(ds_grid_width(global.chunksGrid)-1);
+		var chunkY = irandom(ds_grid_height(global.chunksGrid)-1);
+		
+		var structure = spawnStructure(chunkX, chunkY, obj_testVillage);
+		//If successfuly spawned, then push structure to array in chunk struct.
+		if(structure != undefined) {
+			spawnedStructure = true;
+			array_push(global.chunksGrid[# chunkX, chunkY].structures, structure);
+		}
 	}
 }
+
+var numOfDungeons = irandom_range(3, 5);
+repeat(numOfDungeons) {
+	var spawnedStructure = false;
+	
+	while(!spawnedStructure) {
+		var chunkX = irandom(ds_grid_width(global.chunksGrid)-1);
+		var chunkY = irandom(ds_grid_height(global.chunksGrid)-1);
+		
+		var structure = spawnStructure(chunkX, chunkY, obj_dungeon);
+		//If successfuly spawned, then push structure to array in chunk struct.
+		if(structure != undefined) {
+			spawnedStructure = true;
+			array_push(global.chunksGrid[# chunkX, chunkY].structures, structure);
+		}
+	}
+}
+
+#endregion spawning structures
+
+
+show_debug_message("prepared chunks for: " + room_get_name(room));
+
+//spawn the player in a random position.
+instance_create_layer(random_range(100, room_width), random_range(100, room_height), "Instances", obj_player);
+giveItemToPlayer(new WoodHatchet())

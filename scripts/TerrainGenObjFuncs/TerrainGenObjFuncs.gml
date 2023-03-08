@@ -43,80 +43,126 @@ function prepareChunk(chunkMapX, chunkMapY) {
 	var numGroundTiles = 0, 
 		numWaterTiles = 0;
 	
-	//Getting chunk strucutre type + structure spawning
+	
+	//Getting chunk strucutre type + misc structure spawning
 	for(var xx=startX; xx<startX+CHUNK_W; xx++)
 		for(var yy=startY; yy<startY+CHUNK_H; yy++) {
 			var ind = numRound(global.terrainGrid[# xx, yy]);
 			var tileType = getTileType(ind);
 			
-			//Spawning strucutres depending on 
+			//goblin villages in woods
 			if(ind == 6 || ind == 7) {
-				//goblin villages in woods
 				if(random(1) < 0.001) {
-					var inst = spawnStructure(chunkMapX, chunkMapY, xx*TILEW, yy*TILEW, obj_goblinVillage);
-					if(inst != undefined)
-						array_push(chunk.structures, inst);
+					var canSpawn = true;
+					
+					for(var i=0; i<array_length(chunk.structures); i++) {
+						if(chunk.structures[i] == obj_goblinVillage) {
+							canSpawn = false;
+							break;
+						}
+					}
+					
+					if(canSpawn)
+						array_push(chunk.structures, instance_create_layer(
+							xx*TILEW, yy*TILEW,
+							"Structures",
+							obj_goblinVillage
+						));
 				}
 			}
+
 			if(tileType == structureTypes.GROUND)
 				numGroundTiles++;
 			else if(tileType == structureTypes.WATER)
 				numWaterTiles++;
 		}
-		
-	//Spawning structures
-	//if most were ground tiles, spawn ground structure + player spawn
+	
+	//Setting chunk structure types
 	if(numGroundTiles/CHUNK_AREA >= 0.5) {
 		
 		chunk.structureType = structureTypes.GROUND;
 		
-		//Spawn player in random pos
-		if(playerSpawnSetup && irandom(100) < 20) {
-			playerSpawnSetup = false;
-			var playerSpawnX = irandom_range(chunkMapX*PX_CHUNK_W, chunkMapX*PX_CHUNK_W + PX_CHUNK_W);
-			var playerSpawnY = irandom_range(chunkMapY*PX_CHUNK_W, chunkMapY*PX_CHUNK_W + PX_CHUNK_W);
-			instance_create_layer(playerSpawnX, playerSpawnY, "Instances", obj_player);
-			giveItemToPlayer(new WoodHatchet())
-			//var chestSpawnX = irandom_range(chunkMapX*PX_CHUNK_W, chunkMapX*PX_CHUNK_W + PX_CHUNK_W);
-			//var chestSpawnY = irandom_range(chunkMapY*PX_CHUNK_W, chunkMapY*PX_CHUNK_W + PX_CHUNK_W);
-			//var bonusChest = instance_create_layer(playerSpawnX, playerSpawnY, "Interactables", obj_chest);
-			//bonusChest.items = [new WoodHatchet()];
-		}
-		
-		var spawnX = irandom_range(chunkMapX*PX_CHUNK_W, chunkMapX*PX_CHUNK_W + PX_CHUNK_W);
-		var spawnY = irandom_range(chunkMapY*PX_CHUNK_W, chunkMapY*PX_CHUNK_W + PX_CHUNK_W);
-		//15% chance of village spawn in this chunk
-		if(irandom(100) < 15) 
-			spawnStructure(chunkMapX, chunkMapY, spawnX, spawnY, obj_testVillage);
+		//var spawnX = irandom_range(chunkMapX*PX_CHUNK_W, chunkMapX*PX_CHUNK_W + PX_CHUNK_W);
+		//var spawnY = irandom_range(chunkMapY*PX_CHUNK_W, chunkMapY*PX_CHUNK_W + PX_CHUNK_W);
+		////15% chance of village spawn in this chunk
+		//if(irandom(100) < 15) 
+		//	spawnStructure(chunkMapX, chunkMapY, spawnX, spawnY, obj_testVillage);
 		
 	}
 	
-	//If most were water tiles, spawn water structure (not added yet)
 	else if(numWaterTiles/CHUNK_AREA >= 0.5) {
 		chunk.structureType = structureTypes.WATER;
 	}
+	
 }
 
-function spawnStructure(chunkMapX, chunkMapY, spawnX, spawnY, obj, lay = "Structures", varStruct = undefined) {
-	var structures = global.chunksGrid[# chunkMapX, chunkMapY]
-	var canSpawn = true;
-	for(var i=0; i<array_length(structures); i++) {
-		if(structures[i].object_index == obj)
-			canSpawn = false;
-	}
+function spawnStructure(chunkMapX, chunkMapY, obj, lay = "Structures", varStruct = undefined) {
+	
+	{//Return undefined if there is a strucutre like this one nearby.
+		//This chunk of code just checks if a chunk nearby contains a structure that is similar to this one (same object index as param "obj"). 
+		//It checks the chunks in the 4 cardinal directions relative to this chunk.
 		
-	//If there isn't any other strucutre like this one in the chunk, spawn it
-	if(canSpawn) {
-		var inst;
-		if(is_struct(varStruct))
-			inst = instance_create_layer(spawnX, spawnY, lay, obj, varStruct);
-		else
-			inst = instance_create_layer(spawnX, spawnY, lay, obj);
-		return inst;
+		var gridX = chunkMapX;
+		var gridY = chunkMapY;
+		
+		//Stop spawning structure if the chunk its in already has one of its self
+		var chunkStructures = global.chunksGrid[# gridX, gridY].structures;	
+			
+		for(var j=0; j<array_length(chunkStructures); j++) {
+			var structure = chunkStructures[j];
+			if(structure.object_index == obj)
+				return undefined;
+		}
+		
+		for(var i=0; i<4; i++) {
+			var gridX = chunkMapX;
+			var gridY = chunkMapY;
+			
+			//Get the chunk to check
+			switch(i) {
+				case 0 :  //Left
+					gridX--;
+					break;
+					
+				case 1 : //Right
+					gridX++;
+					break;
+					
+				case 2 : //Up
+					gridY--;
+					break;
+					
+				case 3 : //Down
+					gridY++;
+					break;
+			}
+			
+			if(!withinBoundsGrid(global.chunksGrid, gridX, gridY))
+				continue;
+				
+			chunkStructures = global.chunksGrid[# gridX, gridY].structures;
+			
+			
+			for(var j=0; j<array_length(chunkStructures); j++) {
+				var structure = chunkStructures[j];
+				if(structure.object_index == obj)
+					return undefined;
+			}
+		}
 	}
-	//do not return the structure instance if couldn't spawn
+	
+	//If there isn't any other structure like this one nearby, spawn one
+	var inst;
+	var pxChunkX = chunkMapX*PX_CHUNK_W;
+	var pxChunkY = chunkMapY*PX_CHUNK_H;
+	var spawnX = irandom_range(pxChunkX, pxChunkX+PX_CHUNK_W);
+	var spawnY = irandom_range(pxChunkY, pxChunkY+PX_CHUNK_W);
+	
+	if(is_struct(varStruct))
+		inst = instance_create_layer(spawnX, spawnY, lay, obj, varStruct);
 	else
-		return undefined;
+		inst = instance_create_layer(spawnX, spawnY, lay, obj);
+	return inst;
 }
 
 function placeTile(_mapIndex, xx, yy, chunkPrevLoaded, lay2 = layer_get_id("OnGround"), lay = layer_get_id("Ground")) {

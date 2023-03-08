@@ -61,6 +61,5 @@ for(var i=0; i<rightCount; i++) {
 		array_push(rightHouses, inst);
 	}
 }
-	
-event_inherited()
+
 solid = false;

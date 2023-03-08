@@ -2,7 +2,7 @@
 
 hsp = 0;//horizontal speed
 vsp = 0;//vertical speed
-walkSpd = 20;
+walkSpd = 2;
 minWalkSpd = walkSpd;
 runCooldown = 0;
 global.stamina = 100;
@@ -36,9 +36,6 @@ hurtCooldown = 0;
 //Access cooldowns in this array by doing leftAttackCooldowns[<item sprite>]
 leftAttackCooldowns = [];
 rightAttackCooldowns = [];
-
-global.spawnX = x;
-global.spawnY = y;
 
 state = PlayerStateFree;
 attackState = attackStates.NONE;

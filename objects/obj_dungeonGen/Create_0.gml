@@ -59,7 +59,9 @@ for(var i=0; i<branchLen; i++) {
 	if(i == 0) {
 		with(inst) {
 			instance_destroy(obj_player);
-			instance_create_layer(cellMid.x,cellMid.y, "Instances", obj_player); 
+				instance_create_layer(cellMid.x,cellMid.y, "Instances", obj_player); 
+			global.spawnX = cellMid.x;
+			global.spawnY = cellMid.y;
 			isSpawnRoom = true;
 		}
 	}

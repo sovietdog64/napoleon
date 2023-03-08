@@ -1,1 +1,1 @@
-room_goto(terrainGenTest)
+//room_goto(terrainGenTest)

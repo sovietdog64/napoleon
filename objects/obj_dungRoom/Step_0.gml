@@ -70,6 +70,7 @@ if(roomType == dungRoomTypes.ENEMY && !roomDone) {
 		}
 	}
 }
+	
 else if(spawnMerchant && roomType == dungRoomTypes.MERCHANT) {
 	spawnMerchant = false;
 	
@@ -99,4 +100,10 @@ else if(spawnMerchant && roomType == dungRoomTypes.MERCHANT) {
 		
 	}
 	
+}
+
+else if(spawnChest && roomType == dungRoomTypes.CHEST) {
+	spawnChest = false;
+	chest = instance_create_layer(cellMid.x, cellMid.y,"Instances", obj_chest)
+	chest[0] = randomValueFromArray(obj_dungeonGen.chestItems);
 }
