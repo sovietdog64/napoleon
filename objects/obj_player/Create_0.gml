@@ -2,7 +2,7 @@
 
 hsp = 0;//horizontal speed
 vsp = 0;//vertical speed
-walkSpd = 2;
+walkSpd = 20;
 minWalkSpd = walkSpd;
 runCooldown = 0;
 global.stamina = 100;
