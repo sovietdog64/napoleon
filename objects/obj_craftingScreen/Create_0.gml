@@ -12,10 +12,13 @@ craftingSlots = array_create(numOfSlots, -1);
 resultInv = 0;
 itemResultSlot = array_create(1, -1);
 
+btnList = [];
+craftingRecipieBook = [];//Contains all craftable sprites
+
 screen = new GuiScreen(
 	RESOLUTION_W*0.05, RESOLUTION_H*0.05,
 	RESOLUTION_W*0.95, RESOLUTION_H*0.95,
-	[],
+	btnList,
 	[],
 	spr_invPanel,
 	0
