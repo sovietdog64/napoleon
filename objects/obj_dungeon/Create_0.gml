@@ -3,6 +3,9 @@ prevPlayerEntered = false;
 itemsSold = [];
 itemPrices = [];
 chestItems = [];
+enemy1Obj = obj_skeleGuard;
+enemy2Obj = obj_skeleGuard;
+enemy3Obj = obj_skeleGuard;
 
 switch(sprite_index) {
 	case spr_dungeon: {

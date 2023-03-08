@@ -27,6 +27,8 @@ if(inst != noone && !prevPlayerEntered) {
 					itemPrices : itemPrices,
 					chestItems : chestItems,
 					enemy1Obj : enemy1Obj,
+					enemy2Obj : enemy2Obj,
+					enemy3Obj : enemy3Obj,
 				})
 		}
 			

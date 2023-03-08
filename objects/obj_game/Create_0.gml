@@ -116,7 +116,9 @@ global.craftingRecipies =
 [
 	new CraftingRecipie(new WoodShaft(2), [new Wood(1)], [Axe]),
 	new CraftingRecipie(new Handle(2), [new WoodShaft()], [Axe]),
-	new CraftingRecipie(new WoodSword(), [new Wood(3), new Handle()])
+	new CraftingRecipie(new WoodSword(), [new Wood(3), new Handle()]),
+	new CraftingRecipie(new IronSword(), [new Iron(4), new Handle()]),
+	new CraftingRecipie(new IronHatchet(), [new Iron(3), new WoodShaft()()]),
 ]
 
 #endregion crafting recipies

@@ -1,4 +1,4 @@
-global.hp = 5;
+global.hp = global.maxHp;
 image_alpha = 1;
 global.dead = false;
 x = global.spawnX;
