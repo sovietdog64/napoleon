@@ -8,7 +8,7 @@ else
 
 {//Setting limb positions
 	{//Arms
-		shoulderF.x = x-2*image_xscale;
+		shoulderF.x = x-3*image_xscale;
 		shoulderF.y = y-2;
 
 		hFOrigin.x = shoulderF.x;
@@ -57,13 +57,17 @@ else
 	
 	switch(state) {
 		case states.ATTACKED: {
-			knifeStab(legLen, obj_player.x, obj_player.y, maxAtkCooldown);
+			if(atkType == "stab")
+				knifeStab(legLen, obj_player.x, obj_player.y, maxAtkCooldown);
+			else
+				swordSwipe(obj_player.x, obj_player.y, walkAnimSpd)
 			armBehindWalk(footRadius, walkAnimSpd);
 			legWalk(footRadius, walkAnimSpd, dirFacing)
 		} break;
 		
 		case states.MOVE:
-			walkMovements(footRadius, walkAnimSpd, dirFacing)
+			walkMovements(footRadius, walkAnimSpd, dirFacing);
+			atkType = choose("stab", "swipe");
 		break;
 	}
 }

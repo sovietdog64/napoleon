@@ -8,6 +8,8 @@ hp = 10;
 maxHp = hp;
 maxAtkCooldown = room_speed*0.4;
 
+atkType = "stab";
+
 
 
 #region animations
@@ -36,6 +38,7 @@ hipF = new Point(0,0);
 footF = new Point(0,0);
 
 legLen = sprite_get_width(spr_goblinLimbF)*2;
+armLen = legLen;
 fBOrigin = new Point(0,0);
 fFOrigin = new Point(0,0);
 
