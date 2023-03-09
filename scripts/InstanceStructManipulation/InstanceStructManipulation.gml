@@ -261,7 +261,7 @@ function duplicateStructSave(struct, roomStruct) {
 }
 
 
-function dsGridToArrSave(grid, roomStruct) {
+function dsGridToArrSave(grid, roomStruct, customMemAddr = undefined) {
 	
 	if(!is_struct(roomStruct))
 		throw("ERROR: inputted roomStruct is not a struct!");
@@ -281,8 +281,8 @@ function dsGridToArrSave(grid, roomStruct) {
 	
 	var arr = [[]];
 	var val;
-	for(var r=0; r<ds_grid_width(grid); r++) {
-		for(var c=0; c<ds_grid_height(grid); c++) {
+	for(var r=0; r<ds_grid_height(grid); r++) {
+		for(var c=0; c<ds_grid_width(grid); c++) {
 			val = grid[# c, r];
 			
 			if(isInstance(val)) 
@@ -307,6 +307,9 @@ function dsGridToArrSave(grid, roomStruct) {
 		memAddr = irandom_range(0, 2147483648);
 		
 	var memAddrName = string(memAddr) + "_grid";
+	
+	if(customMemAddr != undefined)
+		memAddrName = customMemAddr;
 	
 	//Save grid to room memory
 	variable_struct_set(roomStruct.memory.dsGrids, memAddrName, arr);
@@ -582,13 +585,23 @@ function loadInstanceStruct(instKey, roomStruct, loadedStruct) {
 
 function dsGridToArr(grid) {
 	var arr = [[]];
-	for(var r=0; r<ds_grid_width(grid); r++) {
-		for(var c=0; c<ds_grid_height(grid); c++)
+	for(var r=0; r<ds_grid_height(grid); r++) {
+		for(var c=0; c<ds_grid_width(grid); c++)
 			arr[r][c] = grid[# c, r];
 	}
 	return arr;
 }
 
+function arrToDsGrid(arr) {
+	var grid = ds_grid_create(array_length(arr[0]),array_length(arr))
+	for(var r=0; r<ds_grid_height(grid); r++) {
+		for(var c=0; c<ds_grid_width(grid); c++) {
+			grid[# c,r] = arr[r][c];
+		}
+	}
+	
+	return grid;
+}
 	
 function isDsGrid(varName, grid) {
 	if(!stringContainsNoCase(varName, "grid"))
@@ -597,15 +610,14 @@ function isDsGrid(varName, grid) {
 		var test = ds_grid_width(grid);
 		return test;
 	}
-	catch(err) {return false;}
+	catch(err) {return false;}	
 }
 
 function printGrid(grid) {
 	var str = "";
 	for(var r=0; r<ds_grid_width(grid); r++) {
-		str += "[ ";
 		for(var c=0; c<ds_grid_height(grid); c++)
-			str += string(grid[# c, r]) + ",";
+			str += string(numRound(grid[# c, r])) + ",";
 		
 		str += "\n";
 	}

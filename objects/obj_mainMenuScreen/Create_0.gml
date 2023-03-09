@@ -5,21 +5,24 @@
 event_inherited();
 
 var buttonList = [
-	new GuiButton(spr_save1,0,RESOLUTION_W-150,RESOLUTION_H+100,function() {
-		global.saveNum = 1;								  
+	new GuiButton(spr_save1,0,RESOLUTION_W-150,RESOLUTION_H*0.1,function() {
+		global.saveNum = 0;								  
 	}),													  
-	new GuiButton(spr_save2,0,RESOLUTION_W-150,RESOLUTION_H+200,function() {
-		global.saveNum = 2;								  
+	new GuiButton(spr_save2,0,RESOLUTION_W-150,RESOLUTION_H*0.27,function() {
+		global.saveNum = 1;								  
 	}),													 
-	new GuiButton(spr_save3,0,RESOLUTION_W-150,RESOLUTION_H+300,function() {
-		global.saveNum = 3;
+	new GuiButton(spr_save3,0,RESOLUTION_W-150,RESOLUTION_H*0.45,function() {
+		global.saveNum = 2;
 	}),
-	new GuiButton(spr_start,0,RESOLUTION_W-86, RESOLUTION_H*0.9,function() {
+	new GuiButton(spr_start,0,RESOLUTION_W-150, RESOLUTION_H*0.7,function() {
 		var fileName = "saveData" + string(global.saveNum) + ".sav";
-		if(file_exists(fileName))
+		if(file_exists(fileName)) {
 			loadGame();
-		else
+		}
+		else {
+			global.saveGame = true;
 			room_goto(terrainGenTest);
+		}
 	})
 ]
 

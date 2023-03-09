@@ -66,6 +66,8 @@ for(var xx=0; xx<xCount; xx++) {
 		var chunkY = yy*PX_CHUNK_H;
 		
 		var chunk = global.chunksGrid[# xx, yy];
+		if(!is_struct(chunk))
+			continue;
 		
 		var camInBounds = rectangle_in_rectangle(CAMX, CAMY, CAMX2, CAMY2,
 												chunkX, chunkY, chunkX+PX_CHUNK_W, chunkY+PX_CHUNK_H);

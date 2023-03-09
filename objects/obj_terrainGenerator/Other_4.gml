@@ -15,8 +15,9 @@ try {
 	
 } catch(err) {};
 
-if(global.loadedOverworld)
+if(global.loadedOverworld) {
 	return;
+}
 
 global.loadedOverworld = true;
 

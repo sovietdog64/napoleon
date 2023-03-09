@@ -133,7 +133,7 @@ handleScreenInput = function() {
 			}
 		}
 		//Drop item when mouse clicked out of inventory
-		else if(shouldDropItem) {
+		else if(shouldDropItem && instance_exists(obj_player)) {
 			with(instance_create_layer(obj_player.x, obj_player.y, "Instances", obj_item)) {
 				item = duplicateItem(other.itemDrag);
 			}

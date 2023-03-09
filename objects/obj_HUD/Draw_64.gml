@@ -25,7 +25,7 @@ if(!global.screenOpen) {
 			draw_set_color(c_white);
 			draw_set_font(fnt_npc);
 			draw_set_halign(fa_left);
-			draw_text_transformed(xx-54, yy+INV_SLOT_SIZE, "Key " + string(i+1), 1, 1, 0);
+			draw_text_transformed(xx-32, yy+64, "Key " + string(i+1), 1, 1, 0);
 			//If a hotkey for a hotbar slot is pressed, equip it.
 			if(keyboard_check_pressed(ord(string(i+1)))) {
 				global.equippedItem = i;

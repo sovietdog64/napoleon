@@ -128,6 +128,9 @@ function GuiScreen(_x1, _y1, _x2, _y2, _buttons, _texts, _backgroundSpr, _subimg
 function closeAllScreens() {
 	var hasClosedScreens = instance_exists(obj_inventory) || instance_exists(obj_guiScreenPar);
 	instance_destroy(obj_inventory);
-	instance_destroy(obj_guiScreenPar);
+	with(obj_guiScreenPar) {
+		if(object_index != obj_mainMenuScreen)
+			instance_destroy();
+	}
 	return hasClosedScreens;
 }

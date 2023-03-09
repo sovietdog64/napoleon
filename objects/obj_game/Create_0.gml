@@ -8,6 +8,8 @@ global.loadedGame = false;
 
 global.loadedOverworld = false;
 
+global.terrainGrid = ds_grid_create(1,1);
+
 global.invItems = array_create(8, -1);
 global.hotbarItems = array_create(3, -1);
 global.equippedItem = 0;
@@ -45,6 +47,8 @@ global.dungeonRoomAddress = "";
 global.invOpen = false;
 
 #endregion globals
+
+global.saveGame = false;
 
 #region enums
 

@@ -125,6 +125,18 @@ function saveGame() {
 	
 	saveRoom2();
 	
+	dsGridToArrSave(
+		global.terrainGrid,
+		global.levelData.terrainGenTest,
+		"terrainGrid"
+	)
+	
+	dsGridToArrSave(
+		global.chunksGrid,
+		global.levelData.terrainGenTest,
+		"chunksGrid"
+	)
+	
 	var saveArray = [];
 	
 	global.statData.saveX = obj_player.x;
@@ -205,8 +217,7 @@ function loadGame() {
 	if(!room_exists(asset_get_index(global.statData.saveRm)))
 		return 1;
 	
-	obj_player.x = global.statData.saveX;
-	obj_player.y = global.statData.saveY;
+	
 	global.spawnX = global.statData.spawnX;
 	global.spawnY = global.statData.spawnY;
 	
@@ -273,10 +284,31 @@ function loadGame() {
 	
 	global.dungeonRoomAddress = global.statData.dungeonRoomAddress;
 	
+	var loadedStruct = {
+	    newLoadedMemory : {
+	        arrays : {},
+	        dsGrids : {},
+	        dsLists : {},
+	        structs : {},
+	    },
+		
+		newLoadedInstances : {},
+	}
+	
+	
+	global.terrainGrid = loadGrid(
+		"terrainGrid",
+		global.levelData.terrainGenTest,
+		loadedStruct
+	)
+	global.chunksGrid = loadGrid(
+		"chunksGrid",
+		global.levelData.terrainGenTest,
+		loadedStruct
+	)
+	
 	var loadRm = asset_get_index(global.statData.saveRm);
 	room_goto(loadRm);
-	obj_player.x = global.statData.saveX;
-	obj_player.y = global.statData.saveY;
 	
 	obj_saveLoad.skipRoomSave = true;
 }

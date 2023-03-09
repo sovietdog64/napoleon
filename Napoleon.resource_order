@@ -153,7 +153,7 @@
     {"name":"spr_playerLegF","order":5,"path":"sprites/spr_playerLegF/spr_playerLegF.yy",},
     {"name":"spr_musketBall","order":1,"path":"sprites/spr_musketBall/spr_musketBall.yy",},
     {"name":"obj_testVillage","order":1,"path":"objects/obj_testVillage/obj_testVillage.yy",},
-    {"name":"spr_saveAndExit","order":15,"path":"sprites/spr_saveAndExit/spr_saveAndExit.yy",},
+    {"name":"spr_exit","order":15,"path":"sprites/spr_exit/spr_exit.yy",},
     {"name":"spr_textBoxes","order":9,"path":"sprites/spr_textBoxes/spr_textBoxes.yy",},
     {"name":"spr_woodStairRight","order":3,"path":"sprites/spr_woodStairRight/spr_woodStairRight.yy",},
     {"name":"spr_triggerPosition","order":3,"path":"sprites/spr_triggerPosition/spr_triggerPosition.yy",},
