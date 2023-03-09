@@ -40,6 +40,7 @@ global.pathfindGrid = 0;
 
 randomize();
 global.randomSeed = random_get_seed();
+global.dungeonRoomAddress = "";
 
 global.invOpen = false;
 

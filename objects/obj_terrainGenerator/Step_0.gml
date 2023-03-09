@@ -1,3 +1,5 @@
+if(room == rm_mainMenu)
+	return;
 if(chunkLoadTimer > 0) {
 	chunkLoadTimer--;
 	return;

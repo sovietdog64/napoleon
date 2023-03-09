@@ -1,4 +1,4 @@
-if(room == rm_init || room == rm_dungeon)
+if(room == rm_init || room == rm_dungeon || room == rm_mainMenu)
 	return;
 
 deactivatedInstances = [];

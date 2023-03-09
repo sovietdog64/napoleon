@@ -8,4 +8,3 @@ collision_rectangle_list(x,y,x+rmWidth,y+rmWidth, obj_enemy, 0, 1, list, 0);
 for(var i=0; i<ds_list_size(list); i++) {
 	list[| i].playerInRoom = playerEntered;
 }
-

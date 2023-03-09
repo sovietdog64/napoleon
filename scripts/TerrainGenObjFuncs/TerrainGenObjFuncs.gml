@@ -233,6 +233,8 @@ function placeTile(_mapIndex, xx, yy, chunkPrevLoaded, lay2 = layer_get_id("OnGr
 			objLayer = lay;
 		}break;
 	}
+	if(!layer_exists(objLayer) || !layer_exists(sprLayer))
+		return;
 	
 	var returnVal = undefined;
 	
