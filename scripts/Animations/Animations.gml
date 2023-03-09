@@ -92,6 +92,8 @@ function drawHoldingKnife(armBehindSpr, armFrontSpr, knifeSpr, isStabbing, targX
 	
 	if(isStabbing) {
 		dir = point_direction(x, y, targX, targY);
+		if(dir >= 90 && dir <= 270)
+			dir -= 180;
 		draw_sprite_ext(knifeSpr, 0, hand.x, hand.y, 0.2*directionFacing, 0.2, dir, c_white, 1);
 	}
 	else

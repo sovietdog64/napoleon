@@ -32,12 +32,6 @@ if(!global.screenOpen) {
 			}
 		}
 	}
-		
-	//Moneys
-	var xx = RESOLUTION_W*0.77
-	var yy = (RESOLUTION_H*0.01)+112;
-	draw_set_color(c_yellow);
-	draw_text_transformed(xx, yy, string(global.gold), 1.5, 1.5, 0)
 
 	//Health, quest, and crosshair/amount of ammo
 		draw_healthbar(RESOLUTION_W*0.01, RESOLUTION_H*0.12+30,

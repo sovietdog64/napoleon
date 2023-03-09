@@ -1,5 +1,10 @@
+
+
+
+
 if(variable_instance_exists(id, "isSpawnRoom") && isSpawnRoom)
 	return;
+
 
 if(global.dead) {
 	wavesStarted = false;
@@ -16,7 +21,10 @@ if(roomType == dungRoomTypes.ENEMY && !roomDone) {
 			var p = randPointInEllipse(rmWidth - TILEW*2, rmHeight - TILEW*2);
 			var inst = instance_create_layer(
 				cellMid.x + p.x, cellMid.y + p.y,"Instances",
-				choose(obj_dungeonGen.enemy1Obj, obj_dungeonGen.enemy2Obj, obj_dungeonGen.enemy3Obj)
+				choose(obj_dungeonGen.enemy1Obj, obj_dungeonGen.enemy2Obj, obj_dungeonGen.enemy3Obj),
+				{
+					dungRoom : id,
+				}
 			)
 			array_push(roomEnemies, inst);
 		}
@@ -48,7 +56,10 @@ if(roomType == dungRoomTypes.ENEMY && !roomDone) {
 					var p = randPointInEllipse(rmWidth - TILEW*2, rmHeight - TILEW*2);
 					var inst = instance_create_layer(
 						cellMid.x + p.x, cellMid.y + p.y,"Instances",
-						choose(obj_dungeonGen.enemy1Obj, obj_dungeonGen.enemy2Obj, obj_dungeonGen.enemy3Obj)
+						choose(obj_dungeonGen.enemy1Obj, obj_dungeonGen.enemy2Obj, obj_dungeonGen.enemy3Obj),
+						{
+							dungRoom : id,
+						}
 					)
 					array_push(roomEnemies, inst);
 				}
@@ -67,6 +78,9 @@ if(roomType == dungRoomTypes.ENEMY && !roomDone) {
 			enemyObj = [obj_dungeonGen.enemy1Obj, obj_dungeonGen.enemy2Obj, obj_dungeonGen.enemy3Obj];
 			elipseW = other.rmWidth-TILEW*2;
 			elipseH = other.rmHeight-TILEW*2;
+			minEnemies = 7;
+			maxEnemies = 11;
+			dungRoom = other.id;
 		}
 	}
 }
@@ -81,6 +95,8 @@ else if(spawnMerchant && roomType == dungRoomTypes.MERCHANT) {
 	
 	var org = new Point(cellMid.x, cellMid.y+TILEW*3);
 	org.x -= (numOfItems/2)*(ITEM_SIZE*0.4+TILEW);
+	
+	instance_create_depth(cellMid.x, cellMid.y, 0, obj_merchant);
 	
 	for(var i=0; i<numOfItems; i++) {
 		var item = randomValueFromArray(obj_dungeonGen.itemsSold);

@@ -90,3 +90,6 @@ fFOrigin = new Point(hipF.x, hipF.y+legLen);
 animType = itemAnimations.NONE;
 
 #endregion animations
+
+charge = 0;
+charged = false;

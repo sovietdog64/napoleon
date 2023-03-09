@@ -52,7 +52,7 @@ function structifyInstance(inst, roomStruct) {
 	for(var i=0; i<array_length(keys); i++) {
 		var key = keys[i];
 		var objIndex = asset_get_index(key);
-		if(object_is_ancestor(inst.object_index, objIndex)) {
+		if(object_is_ancestor(inst.object_index, objIndex) || inst.object_index == objIndex) {
 			varsToIgnore = global.objSaveVarsIgnore[$ key];
 			break;
 		}
@@ -187,7 +187,7 @@ function duplicateArraySave(array, roomStruct) {
 	//mark this array as "saved" for this room struct.
 	variable_struct_set(roomStruct.savedMemory.savedArrays, memAddr, array);
 	
-	return string(memAddr) + "_array";
+	return string(memAddr);
 }
 
 

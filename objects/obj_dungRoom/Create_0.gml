@@ -1,5 +1,7 @@
 //Always make ground first.
 alarm_set(1, 2);
+alarm_set(2, 1);
+playerInRoom = false;
 if(variable_instance_exists(id, "noCreateEvent") && noCreateEvent) {
 	noCreateEvent = false;
 	return;

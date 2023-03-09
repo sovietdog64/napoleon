@@ -1,5 +1,6 @@
 #region globals
 global.gamePaused = false;
+global.saveNum = 0;
 persistent = true;
 
 global.loadingRoom = false;
@@ -14,9 +15,6 @@ global.equippedItem = 0;
 global.spawnX = 0;
 global.spawnY = 0;
 global.spawnRoom = terrainGenTest;
-global.setPosToSpawnPos = false;
-
-global.gold = 0;
 
 //Array containing quest structs.
 global.activeQuests = array_create(0);
@@ -28,16 +26,15 @@ surface_resize(application_surface, RESOLUTION_W, RESOLUTION_H);
 global.heldItem = global.hotbarItems[global.equippedItem];
 
 global.drag = 0.9;
-global.savingGame = false;
-global.loadingGame = false;
 
 global.screenOpen = false;
 
-global.canPlaceItem = false;
 global.reachDistance = TILEW*4;
 
 global.renderDist = 24;
 global.chunkLoadDelay = room_speed*0.2;
+
+global.craftingRecipieBook = [];//Contains all unlocked recipies
 
 global.pathfindGrid = 0;
 
@@ -114,11 +111,12 @@ enum dungRoomTypes {
 
 global.craftingRecipies = 
 [
-	new CraftingRecipie(new WoodShaft(2), [new Wood(1)], [Axe]),
-	new CraftingRecipie(new Handle(2), [new WoodShaft()], [Axe]),
+	new CraftingRecipie(new WoodStick(2), [new Wood(1)], [Axe]),
+	new CraftingRecipie(new Handle(2), [new WoodStick()], [Axe]),
 	new CraftingRecipie(new WoodSword(), [new Wood(3), new Handle()]),
 	new CraftingRecipie(new IronSword(), [new Iron(4), new Handle()]),
-	new CraftingRecipie(new IronHatchet(), [new Iron(3), new WoodShaft()]),
+	new CraftingRecipie(new IronHatchet(), [new Iron(3), new WoodStick()]),
+	new CraftingRecipie(new Bow(), [new String(2), new WoodStick(3)]),
 ]
 
 #endregion crafting recipies
@@ -127,6 +125,7 @@ global.craftingRecipies =
 
 global.objSaveVarsIgnore = {
 	"obj_enemy" : ["path"],
+	"obj_spawner" : ["enemiesSpawned"]
 }
 
 #endregion vars to ignore when saving

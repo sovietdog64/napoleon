@@ -1,29 +1,18 @@
-var spawnEnemies = true;
 for(var i=0; i<array_length(enemiesSpawned); i++) {
-	if(instance_exists(enemiesSpawned[i])) {
-		spawnEnemies = false;
-		break;
-	}
-	else
-		spawnEnemies = true;
+	if(instance_exists(enemiesSpawned[i]))
+		return;
 }
 
-//Spawn enemies if all previously spawned enemies are dead.
-if(spawnEnemies) {
-	enemiesSpawned = [];
-	//spawn enemies based on range
-	repeat(irandom_range(minEnemies, maxEnemies)) {
-		//ellipse fitting dung room size.
-		var p = randPointInEllipse(elipseW, elipseH);
-		var obj = enemyObj;
-		if(is_array(enemyObj)) { 
-			obj = randomValueFromArray(enemyObj)
-		}
-		try{
-			var inst = instance_create_layer(
-				x+p.x, y+p.y, "Instances", enemyObj
-			)
-			array_push(enemiesSpawned, inst);
-		}catch(err) {}
-	}
+//Empty array of non-existing enemies first
+enemiesSpawned = [];
+
+//Spawning random amount of enemies
+repeat(irandom_range(minEnemies, maxEnemies)) {
+	var obj = is_array(enemyObj) ? randomValueFromArray(enemyObj) : enemyObj;
+	if(!object_exists(obj))
+		continue;
+	var p = randPointInEllipse(elipseW, elipseH);
+	var inst = instance_create_depth(x + p.x, y + p.y, 0, obj, {dungRoom : dungRoom});
+	//Add new enemy to enemies-spawned
+	array_push(enemiesSpawned, inst);
 }

@@ -39,7 +39,10 @@ function saveRoom2() {
 	for(var i=0; i<array_length(obj_terrainGenerator.deactivatedInstances); i++) {
 		var inst = obj_terrainGenerator.deactivatedInstances[i];
 		try{
-			if(!isInstance(inst) || inst.persistent || inst.object_index == obj_player)
+			if(inst.persistent || 
+				inst.object_index == obj_player || 
+				!isInstance(inst) ||
+				object_is_ancestor(inst.object_index, obj_tilePar))
 				continue;
 		} catch(err) {continue;}
 		
@@ -50,6 +53,8 @@ function saveRoom2() {
 		variable_struct_set(global.levelData, room_get_name(room), roomStruct);
 	else
 		global.levelData.dungeonRooms[$ global.dungeonRoomAddress] = roomStruct;
+	
+	clipboard_set_text(json_stringify(global.levelData))
 }
 	
 function loadRoom2() {
@@ -116,204 +121,162 @@ function loadRoom2() {
 	return 1;
 }
 
-//Saving game to file
-function saveGame(fileNum = 0) {
-	global.savingGame = true;
-	var saveArray = array_create(0);
+function saveGame() {
 	
-	//Save current room
 	saveRoom2();
 	
-	//Set & Save stats
+	var saveArray = [];
+	
 	global.statData.saveX = obj_player.x;
 	global.statData.saveY = obj_player.y;
 	global.statData.spawnX = global.spawnX;
 	global.statData.spawnY = global.spawnY;
-	global.statData.spawnRoom = room_get_name(global.spawnRoom);
 	global.statData.saveRm = room_get_name(room);
-	
 	if(global.dead) {
 		global.statData.saveX = global.spawnX;
 		global.statData.saveY = global.spawnY;
-		global.statData.saveRm = global.spawnRoom;
 	}
 	
 	global.statData.hp = global.hp;
-	global.statData.equippedItem = global.equippedItem;
-	//Have to save name of items, because gamemaker is dum with item indexes
-	//Inventory
-	var tempArray = array_create(0);
+	global.statData.maxHp = global.maxHp;
+	
+	global.statData.invItems = [];
 	for(var i=0; i<array_length(global.invItems); i++) {
-		if(!isItem(global.invItems[i])) {
-			array_push(tempArray, -1);
-			continue;
+		var item = global.invItems[i];
+		
+		var newStruct = {}
+		if(isItem(item)){
+			newStruct = copyStruct(item);
+			newStruct.itemSpr = sprite_get_name(newStruct.itemSpr);
+			newStruct.class = instanceof(item);
+			array_push(global.statData.invItems, newStruct)
 		}
-		var tempStruct = {};
-		var itemStruct = copyStruct(global.invItems[i]);
-		{//Loop through all item struct vars and add to temp struct (doing this because some variables in item structs include assets of varying types)
-		    var key, value;
-		    var keys = variable_struct_get_names(itemStruct);
-		    for (var j = array_length(keys)-1; j >= 0; --j) {
-		        key = keys[j];
-		        value = variable_struct_get(itemStruct, key);
-				if(is_numeric(value)) {
-					var assetName = getVarAssetName(key, value);
-					if(assetName != 0)
-						value = assetName;
-				}
-				//TODO: may add more asset types if necessary
-		        variable_struct_set(tempStruct, key, value)
-		    }
-		}
-		array_push(tempArray, tempStruct);
+		else
+			array_push(global.statData.invItems, -1);
 	}
-	global.statData.invItems = tempArray;
-	//Hotbar items
-	tempArray = array_create(0);
+	
+	global.statData.hotbarItems = [];
 	for(var i=0; i<array_length(global.hotbarItems); i++) {
-		if(!isItem(global.hotbarItems[i])) {
-			array_push(tempArray, -1);
-			continue;
+		var item = global.hotbarItems[i];
+		
+		var newStruct = {}
+		if(isItem(item)){
+			newStruct = copyStruct(item);
+			newStruct.itemSpr = sprite_get_name(newStruct.itemSpr);
+			newStruct.class = instanceof(item);
+			array_push(global.statData.hotbarItems, newStruct)
 		}
-		var tempStruct = {};
-		var itemStruct = copyStruct(global.hotbarItems[i]);
-		{//Loop through all item struct vars and add to temp struct (doing this because some variables in item structs include assets of varying types)
-		    var key, value;
-		    var keys = variable_struct_get_names(itemStruct);
-		    for (var j = array_length(keys)-1; j >= 0; --j) {
-		        key = keys[j];
-		        value = variable_struct_get(itemStruct, key);
-				if(is_numeric(value)) {
-					var assetName = getVarAssetName(key, value);
-					if(assetName != 0)
-						value = assetName;
-				}
-				//TODO: may add more asset types if necessary
-		        variable_struct_set(tempStruct, key, value)
-		    }
-		}
-		array_push(tempArray, tempStruct);
+		else
+			array_push(global.statData.hotbarItems, -1);
 	}
-	global.statData.hotbarItems = tempArray;
+		
 	global.statData.level = global.level;
 	global.statData.levelUpThreshold = global.levelUpThreshold;
 	global.statData.xp = global.xp;
+
+	global.statData.dungeonRoomAddress = global.dungeonRoomAddress;
 	
-	global.statData.activeQuests = global.activeQuests;
-	global.statData.completedQuests = global.completedQuests;
+	
 	array_push(saveArray, global.statData);
-	
-	//Save all room data
 	array_push(saveArray, global.levelData);
 	
-	//The real stuff (saving to a file)
-	var fileName = "saveData" + string(fileNum) + ".sav";
+	var fileName = "saveData" + string(global.saveNum) + ".sav";
 	var json = json_stringify(saveArray);
-	var buf = buffer_create(string_byte_length(json) + 1, buffer_fixed, 1);
+	var buf = buffer_create(string_byte_length(json)+1, buffer_fixed, 1);
 	buffer_write(buf, buffer_string, json);
 	buffer_save(buf, fileName);
 	buffer_delete(buf);
-	global.savingGame = false;
 }
 
-//Loading game from file
-function loadGame(fileNum = 0) {
-	global.loadingGame = true;
-	//Load saved data
-	var fileName = "saveData" + string(fileNum) + ".sav";
-	if(!file_exists(fileName)) return;
+function loadGame() {
+	var fileName = "saveData" + string(global.saveNum) + ".sav";
+	if(!file_exists(fileName))
+		return;
 	
-	//Load buffer, get json, delete buf from memory to free memory
 	var buf = buffer_load(fileName);
 	var json = buffer_read(buf, buffer_string);
 	buffer_delete(buf);
 	
-	//Turn string into usable data.
-	var loadArray = json_parse(json);
+	var loadArr = json_parse(json);
 	
-	//Load the game save
-	global.statData = array_get(loadArray, 0);
-	global.levelData = array_get(loadArray, 1);
+	global.statData = array_get(loadArr, 0);
+	global.levelData = array_get(loadArr, 1);
 	
-	//Load Stats
-	//If saved room does not exist, return -1
-	if(!room_exists(asset_get_index(global.statData.saveRm))) {
-		show_debug_message("save room not exist: " + string(global.statData.saveRm));
-		return -1;
-	}
+	if(!room_exists(asset_get_index(global.statData.saveRm)))
+		return 1;
+	
+	obj_player.x = global.statData.saveX;
+	obj_player.y = global.statData.saveY;
+	global.spawnX = global.statData.spawnX;
+	global.spawnY = global.statData.spawnY;
+	
 	global.hp = global.statData.hp;
-	global.equippedItem = global.statData.equippedItem;
-	//Inventory
-	var tempArray = array_create(0);
+	global.maxHp = global.statData.maxHp;
+	
+	global.invItems = [];
 	for(var i=0; i<array_length(global.statData.invItems); i++) {
-		var savedItem = global.statData.invItems[i];
-		//Putting item values into temp struct (converts variable asset names into usable asset indexes)
-		var tempStruct = {};
-		//Copy struct just to make sure that none of the original content is being altered (i dont know if it will get altered, but im not gonna risk it)
-		var itemStruct = copyStruct(savedItem);
-		var key, value;
-		var keys = variable_struct_get_names(itemStruct);
-		for (var j = array_length(keys)-1; j >= 0; --j) {
-			key = keys[j];
-			value = variable_struct_get(itemStruct, key);
-			//If the value of current variable the loop is checking is a string, and it is an asset, then set the value to be 
-			if(is_string(value)) {
-				if(asset_get_type(value) != asset_unknown) {
-					value = asset_get_index(value);
+		var item = global.statData.invItems[i];
+		
+		var newStruct = {}
+		if(isItem(item)) {
+			if(variable_struct_exists(item, "class")) {
+				var func = asset_get_index(item.class);
+				newStruct = new func();
+				
+				var keys = variable_struct_get_names(item);
+				var key,val;
+				for(var j=0; j<array_length(keys); j++) {
+					key = keys[j];
+					val = item[$ key];
+					if(key == "itemSpr")
+						val = asset_get_index(val);
+					variable_struct_set(newStruct, key, val);
 				}
+				
+				array_push(global.invItems, newStruct);
 			}
-			variable_struct_set(tempStruct, key, value);
 		}
-		array_push(tempArray, tempStruct);
+		else
+			array_push(global.invItems, -1)
 	}
-	global.invItems = tempArray;
-	//Hotbar items
-	tempArray = array_create(0);
+		
+	global.hotbarItems = [];
 	for(var i=0; i<array_length(global.statData.hotbarItems); i++) {
-		var savedItem = global.statData.hotbarItems[i];
-		//Putting item values into temp struct (converts variable asset names into usable asset indexes)
-		var tempStruct = {};
-		//Copy struct just to make sure that none of the original content is being altered (i dont know if it will get altered, but im not gonna risk it)
-		var itemStruct = copyStruct(savedItem);
-		var key, value;
-		var keys = variable_struct_get_names(itemStruct);
-		for (var j = array_length(keys)-1; j >= 0; --j) {
-			key = keys[j];
-			value = variable_struct_get(itemStruct, key);
-			//If the value of current variable the loop is checking is a string, and it is an asset, then set the value to be 
-			if(is_string(value)) {
-				if(asset_get_type(value) != asset_unknown) {
-					value = asset_get_index(value);
+		var item = global.statData.hotbarItems[i];
+		
+		var newStruct = {}
+		if(isItem(item)) {
+			if(variable_struct_exists(item, "class")) {
+				var func = asset_get_index(item.class);
+				newStruct = new func();
+				
+				var keys = variable_struct_get_names(item);
+				var key,val;
+				for(var j=0; j<array_length(keys); j++) {
+					key = keys[j];
+					val = item[$ key];
+					if(key == "itemSpr")
+						val = asset_get_index(val);
+					variable_struct_set(newStruct, key, val);
 				}
+				
+				array_push(global.hotbarItems, newStruct);
 			}
-			variable_struct_set(tempStruct, key, value);
 		}
-		array_push(tempArray, tempStruct);
+		else
+			array_push(global.hotbarItems, -1)
 	}
-	global.hotbarItems = tempArray;
+	
 	global.level = global.statData.level;
 	global.levelUpThreshold = global.statData.levelUpThreshold;
 	global.xp = global.statData.xp;
 	
-	global.spawnX = global.statData.spawnX;
-	global.spawnY = global.statData.spawnY;
-	global.spawnRoom = asset_get_index(global.statData.spawnRoom);
+	global.dungeonRoomAddress = global.statData.dungeonRoomAddress;
 	
-	global.activeQuests = global.statData.activeQuests;
-	global.completedQuests = global.statData.completedQuests;
-	
-	//Go to the right room in the game save
-	var loadRm = asset_get_index(global.statData.spawnRoom);
-	global.loadedGame = true;
-	global.setPosToSpawnPos = true;
+	var loadRm = asset_get_index(global.statData.saveRm);
 	room_goto(loadRm);
-	obj_player.x = global.statData.spawnX;
-	obj_player.y = global.statData.spawnY;
-	//Make sure save object does not save the room that is being exited
+	obj_player.x = global.statData.saveX;
+	obj_player.y = global.statData.saveY;
+	
 	obj_saveLoad.skipRoomSave = true;
-	
-	global.loadingGame = false;
 }
-	
-
-	

@@ -12,8 +12,37 @@ craftingSlots = array_create(numOfSlots, -1);
 resultInv = 0;
 itemResultSlot = array_create(1, -1);
 
-btnList = [];
-craftingRecipieBook = [];//Contains all craftable sprites
+btnList = [
+	//new GuiButton(spr_next,0,RESOLUTION_W-230, 170, function(){})
+];
+
+for(var i=0; i<array_length(global.craftingRecipieBook); i++) {
+	var itemSpr = global.craftingRecipieBook[i];
+
+	var numOfBtns = array_length(btnList);
+	{//Finding items required
+		var recipie;
+		for(var j=0; j<array_length(global.craftingRecipies); j++) {
+			var temp = global.craftingRecipies[j];
+			if(temp.item.itemSpr == itemSpr) {
+				recipie = temp;
+				break;
+			}
+		}
+	
+		var reqItems = is_array(recipie.toolsRequired) ? array_concat(recipie.itemsRequired,recipie.toolsRequired) : recipie.itemsRequired;
+	
+		var hoverText = getHoverTextCrafting(reqItems, recipie.item);
+	}
+	
+	
+	array_push(btnList, new GuiButton(
+		itemSpr,0,
+		(RESOLUTION_W-300)+26*(numOfBtns%8), 40+26*(numOfBtns div 8),,
+		hoverText,
+		0.4,0.4
+	))
+}
 
 screen = new GuiScreen(
 	RESOLUTION_W*0.05, RESOLUTION_H*0.05,

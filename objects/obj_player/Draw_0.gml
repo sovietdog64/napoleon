@@ -29,3 +29,12 @@ switch(animType) {
 			)
 	}break;
 }
+	
+if(instanceof(global.heldItem) == "Bow") {
+	var x1 = x-sprite_width/2;
+	var y1 = y-sprite_height;
+	draw_healthbar(
+		x1, y1, x1+sprite_width, y1+5,
+		100*(charge / room_speed), c_black, c_red, c_green, 0, 1, 1
+	)
+}

@@ -75,8 +75,10 @@ function damageEntity(targetId, dmgSourceId, dmg, time) {
 		hp -= dmg;
 		var dead = is_dead();
 		
-		if(dead)
-			var dis = 15;
+		if(dead) {
+			instance_destroy();
+			break;
+		}
 		else
 			var dis = 10;
 			
@@ -108,7 +110,8 @@ function is_dead() {
 			global.xp += xpDrop;
 		if(variable_instance_exists(id, "itemDrops")) {
 			for(var i=0; i<array_length(itemDrops); i++) {
-				dropItem(itemDrops[i], x, y);
+				if(itemDrops[i].amount != 0)
+					dropItem(itemDrops[i], x, y);
 			}
 		}
 		if(variable_instance_exists(id, "goldDrop")) {
@@ -117,6 +120,7 @@ function is_dead() {
 		}
 		return 1;
 	}
+	return 0;
 }
 
 function enemyAnimate() {

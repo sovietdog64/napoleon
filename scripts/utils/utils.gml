@@ -36,7 +36,7 @@ function giveItemToPlayer(item) {
 	return 0;
 }
 
-function copyStruct(struct) {
+function copyStruct(struct, ignoreMethods = false) {
 	if(!is_struct(struct))
 		return -1;
     var key, value;
@@ -45,6 +45,8 @@ function copyStruct(struct) {
     for (var i = array_length(keys)-1; i >= 0; --i) {
             key = keys[i];
             value = struct[$ key];
+			if(ignoreMethods && is_method(value))
+				continue;
             variable_struct_get(struct, key);
             variable_struct_set(newCopy, key, value)
     }
@@ -447,7 +449,7 @@ function Rectangle(_x1, _y1, _x2, _y2) constructor {
 	x2 = _x2;
 	y2 = _y2;
 	
-	pointInRect = function(px, py) {
+	static pointInRect = function(px, py) {
 		return point_in_rectangle(px, py, x1, y1, x2, y2);
 	}
 }

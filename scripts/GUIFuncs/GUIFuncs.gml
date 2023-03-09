@@ -1,18 +1,47 @@
-function GuiButton(_sprite, _subimg, xx, yy, _actionFunc) constructor {
+function GuiButton(_sprite, _subimg, xx, yy, _actionFunc = function() {}, _hoverText = "", sprXscale = 1, sprYscale = 1) constructor {
 	x = xx;
 	y = yy;
 	sprite_index = _sprite;
+	btnScaleX = sprXscale;
+	btnScaleY = sprYscale;
+	sprite_width = sprite_get_width(sprite_index) * btnScaleX;
+	sprite_height = sprite_get_height(sprite_index) * btnScaleY;
 	subimg = _subimg;
-	var w = sprite_get_width(sprite_index);
-	var h = sprite_get_height(sprite_index);
 	var xOff = sprite_get_xoffset(sprite_index);
 	var yOff = sprite_get_yoffset(sprite_index);
 	xx -= xOff;
 	yy -= yOff;
-	rectangle = new Rectangle(xx, yy, xx+w, yy+h);
+	rectangle = new Rectangle(xx, yy, xx+sprite_width, yy+sprite_height);
+	hovered = false;
 	clickAction = _actionFunc;
+	hoverText = _hoverText;
 	static draw = function() {
-		draw_sprite(sprite_index, subimg, x, y);
+		hovered = rectangle.pointInRect(GUI_MOUSE_X, GUI_MOUSE_Y);
+		draw_sprite_ext(sprite_index,0, x,y, btnScaleX, btnScaleY, 0,c_white,1)
+		if(hovered) {
+			draw_set_color(c_black);
+			draw_rectangle(x,y, x+sprite_width,y+sprite_height, 1);
+			if(hoverText != "") {
+				draw_set_alpha(0.5);
+				draw_rectangle(
+					GUI_MOUSE_X, GUI_MOUSE_Y,
+					GUI_MOUSE_X+string_width(hoverText)+20, GUI_MOUSE_Y+string_height(hoverText)+20,
+					0
+				)
+				draw_set_alpha(1);
+				
+				var h = draw_get_halign()
+				var v = draw_get_valign()
+				
+				draw_set_halign(fa_left);
+				draw_set_valign(fa_top);
+				draw_set_color(c_white);
+				draw_text(GUI_MOUSE_X+10, GUI_MOUSE_Y+10, hoverText);
+				
+				draw_set_halign(h);
+				draw_set_valign(v);
+			}
+		}
 	}
 }
 
@@ -68,8 +97,7 @@ function GuiScreen(_x1, _y1, _x2, _y2, _buttons, _texts, _backgroundSpr, _subimg
 	static drawButtons = function() {
 		if(is_array(buttons))
 			for(var i=0; i<array_length(buttons); i++) {
-				var b = buttons[i];
-				draw_sprite(b.sprite_index, b.subimg, b.x, b.y);
+				buttons[i].draw();
 			}
 	}
 	

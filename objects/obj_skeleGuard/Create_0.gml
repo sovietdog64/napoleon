@@ -4,9 +4,16 @@
 // Inherit the parent event
 event_inherited();
 
+playerInRoom = false;
+
 hp = 10;
 maxHp = hp;
 maxAtkCooldown = room_speed*0.4;
+
+var hasBandage = chance(35);
+
+if(hasBandage) 
+	itemDrops = [new Bandage(1)]
 
 atkType = "stab";
 
@@ -44,3 +51,4 @@ fFOrigin = new Point(0,0);
 
 animType = itemAnimations.NONE;
 #endregion animations
+

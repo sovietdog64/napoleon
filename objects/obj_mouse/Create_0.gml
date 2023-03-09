@@ -76,6 +76,7 @@ mouseOver = function() {
 handleScreenInput = function() {
 	mouseOver();
 	var numKey = numericalKeyPressed();
+	
 	//Handling mouse click in inv
 	if(LMOUSE_PRESSED) {
 		//Placing items in slot that is being hovered

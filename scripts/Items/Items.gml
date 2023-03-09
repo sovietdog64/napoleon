@@ -218,10 +218,23 @@ function CraftingRecipie(_item, _itemsRequired, _toolsRequired = undefined) cons
 	
 }
 
+function getHoverTextCrafting(reqItems, item) {
+	var hoverText = "";
+	hoverText += item.name + "\n";
+	for(var i=0; i<array_length(reqItems); i++) {
+		var itemOrScript = reqItems[i];
+		if(isItem(itemOrScript)) 
+			hoverText += itemOrScript.name + " " + string(itemOrScript.amount) + "x\n";
+		else
+			hoverText += script_get_name(itemOrScript) + "\n";
+	}
+	return hoverText;
+}
+
 #region all items
 #region wood
 
-function WoodHatchet(amount = 1) : Axe(spr_woodHatchet,amount,2,5,"Wood Hatchet", "Hatchet that can cut down trees\nDamage: 2", itemAnimations.SWORD) constructor {
+function WoodHatchet(amount = 1) : Axe(spr_woodHatchet,amount,room_speed*0.4,5,2,"Wood Hatchet", "Hatchet that can cut down trees\nDamage: 2", itemAnimations.SWORD) constructor {
 	cooldown = room_speed*0.4;
 	static leftPress = function(targX, targY) {
 		with(other) {
@@ -253,11 +266,45 @@ function WoodHatchet(amount = 1) : Axe(spr_woodHatchet,amount,2,5,"Wood Hatchet"
 	
 function Wood(amount = 1) : Item(spr_wood,amount,0,"Wood","Resource") constructor {}	
 
-function WoodShaft(amount = 1) : Item(spr_woodShaft,amount,0,"Wood","A shaft that serves as a handle for all sorts of weapons.") constructor {}
+function WoodStick(amount = 1) : Item(spr_woodStick,amount,0,"Wood Stick","A stick that serves as\n a handle for all sorts\n of weapons.") constructor {}
 
 function Handle(amount = 1) : Item(spr_woodHandle,amount,0,"Handle","A handle used for swords") constructor {}
 
-function WoodSword(amount = 1) : Sword(spr_woodSword,amount,room_speed*0.2,10,3,"Wood Sword", "Perfect sword for training... or combat if you are brave enough.") constructor {}
+function WoodSword(amount = 1) : Sword(spr_woodSword,amount,room_speed*0.2,10,3,"Wood Sword", "Perfect sword for training...\n or combat if you are brave enough.") constructor {}
+
+function Bow(amount = 1) : Item(spr_bow,amount,10,"Bow","A bow that shoots arrows", itemAnimations.KNIFE_STAB) constructor{
+	cooldown = room_speed*0.7;
+	maxCharge = room_speed;
+	projSpd = 10;
+	
+	static leftDown = function() {
+		if(!variable_instance_exists(other.id, "charge"))
+			other.charge = 0;
+		if(!variable_instance_exists(other.id, "charged"))
+			other.charged = 0;
+			
+		other.charge++;
+		if(other.charge > maxCharge) {
+			other.charged = true;
+		}
+	}
+	
+	static leftRelease = function(targX, targY) {
+		if(other.charged) {
+			other.charge = 0;
+			other.charged = false;
+			instance_create_depth(other.x,other.y,0,obj_arrow, {
+				damage : damage,
+				speed : projSpd,
+				fromEnemy : object_is_ancestor(other.object_index, obj_enemy),
+				direction : point_direction(other.x,other.y, targX,targY),
+			})
+			return cooldown;
+		}
+		other.charge = 0;
+		other.charged = false;
+	}
+}
 
 #endregion wood
 
@@ -268,7 +315,7 @@ function Iron(amount = 1) : Item(spr_iron,amount,0,"Iron","Resource") constructo
 function IronSword(amount = 1) : Sword(spr_ironSword,amount,room_speed*0.2,TILEW*0.1,5,"Iron sword","Forged by an unknown blacksmith.") constructor {}
 
 function IronHatchet(amount = 1) : 
-	Axe(spr_ironHatchet,amount,3,5,"Iron Hatchet", "Forged by an unknown blacksmith.\nDamage: 2", itemAnimations.SWORD) 
+	Axe(spr_ironHatchet,amount,room_speed*0.4,5,2,"Iron Hatchet", "Forged by an unknown blacksmith.\nDamage: 2", itemAnimations.SWORD) 
 	constructor 
 {
 	cooldown = room_speed*0.4;
@@ -309,6 +356,8 @@ function BasicWand(amount = 1) : Item(spr_basicWand,amount,5,"Basic Wand", "A tw
 function String(amount = 1) : Item(spr_string,amount,0,"String","Made of simple fibres") constructor {};
 
 function Berry(amount = 1) : Food(spr_berry,amount,0.5,0,"Berry","Freshly picked from bushes\nHeal:0.5") constructor {};
+
+function Bandage(amount = 1) : Food(spr_bandage,amount,2,0,"Bandage","Heals you 1 health when consumed") constructor {};
 
 #endregion all items
 

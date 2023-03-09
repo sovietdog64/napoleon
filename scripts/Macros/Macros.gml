@@ -5,6 +5,7 @@
 
 #macro LMOUSE_PRESSED mouse_check_button_pressed(mb_left)
 #macro LMOUSE_DOWN mouse_check_button(mb_left)
+#macro LMOUSE_RELEASED mouse_check_button_released(mb_left)
 #macro RMOUSE_PRESSED mouse_check_button_pressed(mb_right)
 #macro RMOUSE_DOWN mouse_check_button(mb_right)
 

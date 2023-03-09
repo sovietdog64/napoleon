@@ -83,10 +83,16 @@ if(hsp != 0 && vsp != 0) {
 
 #region items
 
+if(instanceof(global.heldItem) != "Bow") {
+	charge = 0;
+	charged = false;
+}
+
 var canLeftPress = variable_struct_exists(global.heldItem, "leftPress");
 var canRightPress = variable_struct_exists(global.heldItem, "rightPress");
 
 var canLeftDown = variable_struct_exists(global.heldItem, "leftDown");
+var canLeftRelease = variable_struct_exists(global.heldItem, "leftRelease");
 var canRightDown = variable_struct_exists(global.heldItem, "rightDown");
 
 
@@ -94,12 +100,12 @@ var spr = isItem(global.heldItem) ? global.heldItem.itemSpr : 0;
 
 {//Updating list of cooldowns for missing items
 	//Add to cooldowns if this item is not in the list.
-	if(canLeftPress && !arrayInBounds(leftAttackCooldowns, spr)) {
+	if((canLeftPress || canLeftDown || canLeftRelease) && !arrayInBounds(leftAttackCooldowns, spr)) {
 		array_insert(leftAttackCooldowns, spr, 0)
 	}
 		
 	//Add to cooldowns if this item is not in the list.
-	if(canRightPress && !arrayInBounds(rightAttackCooldowns, spr)) {
+	if((canRightPress || canRightDown) && !arrayInBounds(rightAttackCooldowns, spr)) {
 		array_insert(rightAttackCooldowns, spr, 0);
 	}
 }
@@ -125,6 +131,14 @@ var spr = isItem(global.heldItem) ? global.heldItem.itemSpr : 0;
 			if(LMOUSE_DOWN && canLeftDown && leftAttackCooldowns[spr] <= 0) {
 				//If cooldown is 0 for this item, then do its left click action
 				var cooldown = global.heldItem.leftDown(mouse_x, mouse_y);
+				if(is_numeric(cooldown))
+					leftAttackCooldowns[spr] = cooldown;
+			}
+		}
+			
+		{//Left release
+			if(LMOUSE_RELEASED && canLeftRelease) {
+				var cooldown = global.heldItem.leftRelease(mouse_x,mouse_y);
 				if(is_numeric(cooldown))
 					leftAttackCooldowns[spr] = cooldown;
 			}
@@ -231,7 +245,7 @@ if(inst != noone) {
 		if(hurtCooldown <= 0 && !isHurt) {
 			var enem = instance_place(x, y, obj_enemy);
 			var noCollide = variable_instance_exists(enem, "noCollideDmg") && enem.noCollideDmg;
-			if(!noCollide && enem != noone && enem.hp > 0) {
+			if(!noCollide && enem != noone && enem.object_index != obj_spawner && enem.hp > 0) {
 				global.hp--;
 				knockBack(enem.x, enem.y, 25);
 				//isHurt = true;

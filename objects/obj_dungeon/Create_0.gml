@@ -13,5 +13,6 @@ switch(sprite_index) {
 		itemPrices = [20, 70, 30];
 		chestItems = [new String(irandom_range(1, 4)), new Iron(irandom_range(1, 4))];
 		enemy1Obj = obj_skeleGuard;
+		enemy2Obj = obj_skeleGuardShooter;
 	} break;
 }
