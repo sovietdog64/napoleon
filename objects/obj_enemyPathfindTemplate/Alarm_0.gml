@@ -8,7 +8,7 @@ if(!instance_exists(obj_player)) {
 	return;
 }
 
-if(!global.gamePaused && obj_player.state != PlayerStateLocked && state == states.MOVE) {
+if(obj_player.state != PlayerStateLocked && state == states.MOVE) {
 	if(distance_to_object(obj_player) <= detectionRange) {
 		targX = obj_player.x;
 		targY = obj_player.y;

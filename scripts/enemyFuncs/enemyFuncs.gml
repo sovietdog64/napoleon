@@ -46,7 +46,7 @@ function checkIfStopped() {
 function checkForPlayer() {
 	if(!instance_exists(obj_player))
 		return 0;
-	if(global.gamePaused || obj_player.state = PlayerStateLocked)
+	if(obj_player.state = PlayerStateLocked)
 		return 0;
 	var dist = distance_to_object(obj_player);
 	//If not close enought o enemy and not close enough to attack

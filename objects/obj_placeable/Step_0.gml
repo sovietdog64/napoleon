@@ -1,4 +1,4 @@
-if(global.screenOpen || global.gamePaused)
+if(global.screenOpen)
 	return;
 
 if(hp <= 0) {

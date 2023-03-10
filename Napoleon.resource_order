@@ -84,6 +84,7 @@
     {"name":"spr_grass4","order":3,"path":"sprites/spr_grass4/spr_grass4.yy",},
     {"name":"obj_textQueued","order":6,"path":"objects/obj_textQueued/obj_textQueued.yy",},
     {"name":"spr_house2","order":1,"path":"sprites/spr_house2/spr_house2.yy",},
+    {"name":"obj_pause","order":13,"path":"objects/obj_pause/obj_pause.yy",},
     {"name":"spr_benchColonial","order":2,"path":"sprites/spr_benchColonial/spr_benchColonial.yy",},
     {"name":"obj_solid","order":2,"path":"objects/obj_solid/obj_solid.yy",},
     {"name":"spr_dungGen","order":1,"path":"sprites/spr_dungGen/spr_dungGen.yy",},

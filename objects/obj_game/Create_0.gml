@@ -1,3 +1,4 @@
+
 #region globals
 global.gamePaused = false;
 global.saveNum = 0;
@@ -143,3 +144,4 @@ global.dungeonCreationCode = function() {};
 #endregion dungeon func
 
 alarm_set(0, room_speed);
+

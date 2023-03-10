@@ -1,5 +1,5 @@
 ///@description This is an NPC template
-if(instance_exists(obj_game) && global.gamePaused || global.invOpen) 
+if(global.invOpen) 
 	return;
 
 if(!instance_exists(obj_game))

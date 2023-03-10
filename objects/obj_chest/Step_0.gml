@@ -1,5 +1,4 @@
-if(global.gamePaused) 
-	return;
+
 if(!opened)
 	sprite_index = spr_chest; 
 else 

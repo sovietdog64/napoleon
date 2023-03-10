@@ -1,5 +1,5 @@
 solid = false;
-if(instance_exists(obj_game) && global.gamePaused || global.invOpen) return;
+if(global.invOpen) return;
 if(!isItem(item)) {
 	instance_destroy();
 	return;

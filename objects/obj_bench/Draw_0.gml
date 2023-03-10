@@ -3,7 +3,7 @@ if(!instance_exists(obj_game))
 	return;
 if(!instance_exists(obj_player)) 
 	return;
-if(global.gamePaused && obj_player.inDialogue) 
+if(obj_player.inDialogue) 
 	return;
 	
 if(distance_to_point(obj_player.x, obj_player.y) <= 100) {

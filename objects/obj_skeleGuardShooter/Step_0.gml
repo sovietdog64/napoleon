@@ -53,7 +53,7 @@ switch(state) {
 	}
 }
 
-if(global.gamePaused || obj_player.state == PlayerStateLocked)
+if(obj_player.state == PlayerStateLocked)
 	path_end();
 
 if(pathFailed) {

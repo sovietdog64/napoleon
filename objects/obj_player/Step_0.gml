@@ -5,8 +5,7 @@ if(hurtCooldown > 0)
 	hurtCooldown--;
 if(global.dead)  
 	return;
-if(instance_exists(obj_game) && global.gamePaused) 
-	return;
+
 var inv = keyboard_check_pressed(ord("I"));
 #region opening inv
 //Opening/closing inventory. Handled in draw event
@@ -28,7 +27,7 @@ if(instance_exists(obj_text)) {
 else
 	state = PlayerStateFree;
 
-if(instance_exists(obj_game) && global.gamePaused || global.screenOpen|| state == PlayerStateLocked)
+if(state == PlayerStateLocked)
 	return;
 
 #region movement
