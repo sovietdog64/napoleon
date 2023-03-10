@@ -21,6 +21,8 @@ var buttonList = [
 		}
 		else {
 			global.saveGame = true;
+			obj_saveLoad.skipRoomLoad = true;
+			global.loadedOverworld = false;
 			room_goto(terrainGenTest);
 		}
 	})

@@ -287,19 +287,8 @@ y = clamp(y, 0, room_height);
 //Move camera towards mouse when holding firearm
 //If not firearm, center cam on player
 if(instance_exists(obj_camera)) {
-	if(isFirearm(global.heldItem)) {
-		var mouseDir = point_direction(x, y, mouse_x, mouse_y)
-		var mouseDist = distance_to_point(mouse_x, mouse_y);
-		mouseDist = clamp(mouseDist, 0, 100);
-		var xx = x+mouseDist*dcos(mouseDir);
-		var yy = y-mouseDist*dsin(mouseDir);
-		obj_camera.targX = xx;
-		obj_camera.targY = yy;
-	}
-	else {
-		obj_camera.targX = x;
-		obj_camera.targY = y;
-	}
+	obj_camera.targX = x;
+	obj_camera.targY = y;
 }
 
 if(global.hp <= 0 && !global.dead) {

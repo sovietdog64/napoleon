@@ -1,4 +1,5 @@
 skipRoomSave = false;
+skipRoomLoad = false;
 
 global.statData = 
 {

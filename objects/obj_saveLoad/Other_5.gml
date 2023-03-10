@@ -3,6 +3,6 @@ if(room == rm_init || room == rm_mainMenu)
 	return;
 
 if(!skipRoomSave) {
-	saveRoom2();
+	saveRoom();
 }
 skipRoomSave = false;

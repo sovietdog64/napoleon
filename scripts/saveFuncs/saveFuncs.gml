@@ -1,4 +1,4 @@
-function saveRoom2() {
+function saveRoom() {
 	closeAllScreens();
 	var roomStruct = {
 		instances : [],
@@ -54,10 +54,9 @@ function saveRoom2() {
 	else
 		global.levelData.dungeonRooms[$ global.dungeonRoomAddress] = roomStruct;
 	
-	clipboard_set_text(json_stringify(global.levelData))
 }
 	
-function loadRoom2() {
+function loadRoom() {
 	closeAllScreens();
 	if(room != rm_dungeon)
 		if(!variable_struct_exists(global.levelData, room_get_name(room)))
@@ -123,7 +122,7 @@ function loadRoom2() {
 
 function saveGame() {
 	
-	saveRoom2();
+	saveRoom();
 	
 	dsGridToArrSave(
 		global.terrainGrid,
@@ -136,6 +135,16 @@ function saveGame() {
 		global.levelData.terrainGenTest,
 		"chunksGrid"
 	)
+	
+	var keys = variable_struct_get_names(global.levelData);
+	var key;
+	for(var i=0; i<array_length(keys); i++) {
+		key = keys[i];
+		if(key == "dungeonRooms")
+			continue;
+		
+		variable_struct_remove(global.levelData[$ key], "savedMemory");
+	}
 	
 	var saveArray = [];
 	
@@ -220,6 +229,7 @@ function loadGame() {
 	
 	global.spawnX = global.statData.spawnX;
 	global.spawnY = global.statData.spawnY;
+	global.loadedOverworld = true;
 	
 	global.hp = global.statData.hp;
 	global.maxHp = global.statData.maxHp;
@@ -311,4 +321,7 @@ function loadGame() {
 	room_goto(loadRm);
 	
 	obj_saveLoad.skipRoomSave = true;
+	
+	with(obj_saveLoad)
+		alarm[1] = room_speed*0.5;
 }

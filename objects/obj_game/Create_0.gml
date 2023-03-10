@@ -7,6 +7,7 @@ global.loadingRoom = false;
 global.loadedGame = false;
 
 global.loadedOverworld = false;
+global.newWorld = false;
 
 global.terrainGrid = ds_grid_create(1,1);
 
@@ -140,3 +141,5 @@ global.objSaveVarsIgnore = {
 global.dungeonCreationCode = function() {};
 
 #endregion dungeon func
+
+alarm_set(0, room_speed);
