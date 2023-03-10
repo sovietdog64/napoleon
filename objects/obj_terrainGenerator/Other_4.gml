@@ -41,24 +41,7 @@ for(var xx=0; xx<ds_grid_width(global.chunksGrid); xx++)
 
 #region spawning structures
 
-var numOfVillages = irandom_range(3, 5);
-repeat(numOfVillages) {
-	var spawnedStructure = false;
-	
-	while(!spawnedStructure) {
-		var chunkX = irandom(ds_grid_width(global.chunksGrid)-1);
-		var chunkY = irandom(ds_grid_height(global.chunksGrid)-1);
-		
-		var structure = spawnStructure(chunkX, chunkY, obj_testVillage);
-		//If successfuly spawned, then push structure to array in chunk struct.
-		if(structure != undefined) {
-			spawnedStructure = true;
-			array_push(global.chunksGrid[# chunkX, chunkY].structures, structure);
-		}
-	}
-}
-
-var numOfDungeons = irandom_range(3, 5);
+var numOfDungeons = irandom_range(6, 10);
 repeat(numOfDungeons) {
 	var spawnedStructure = false;
 	

@@ -22,6 +22,7 @@ global.saveNum = 0;
 updatePreview();
 
 buttonList = [
+	new GuiButton(spr_exit,0,0,0,function() {game_end()}),
 	new GuiButton(spr_save1,0,RESOLUTION_W-150,RESOLUTION_H*0.1,function() {
 		global.saveNum = 0;								  
 		updatePreview();
@@ -46,7 +47,7 @@ buttonList = [
 			global.saveGame = true;
 			obj_saveLoad.skipRoomLoad = true;
 			global.loadedOverworld = false;
-			room_goto(rm_cutscene);
+			room_goto(terrainGenTest);
 		}
 		audio_stop_all();
 	})

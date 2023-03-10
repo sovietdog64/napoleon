@@ -145,3 +145,4 @@ global.dungeonCreationCode = function() {};
 
 alarm_set(0, room_speed);
 
+window_set_fullscreen(true);

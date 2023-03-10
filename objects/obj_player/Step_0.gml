@@ -367,4 +367,3 @@ switch(animType) {
 
 
 #endregion animations
-
