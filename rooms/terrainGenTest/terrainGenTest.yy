@@ -2,7 +2,7 @@
   "resourceType": "GMRoom",
   "resourceVersion": "1.0",
   "name": "terrainGenTest",
-  "creationCodeFile": "",
+  "creationCodeFile": "${project_dir}/rooms/terrainGenTest/RoomCreationCode.gml",
   "inheritCode": false,
   "inheritCreationOrder": false,
   "inheritLayers": false,

@@ -1,5 +1,4 @@
 function saveRoom() {
-	closeAllScreens();
 	var roomStruct = {
 		instances : [],
 		deactivatedInstances : [],
@@ -29,8 +28,10 @@ function saveRoom() {
 		if(inst.persistent || 
 			inst.object_index == obj_player || 
 			!isInstance(inst) ||
-			object_is_ancestor(inst.object_index, obj_tilePar))
-			continue;
+			object_is_ancestor(inst.object_index, obj_tilePar) ||
+			object_is_ancestor(inst.object_index, obj_guiScreenPar) ||
+			inst.object_index == obj_damageHitbox)
+				continue;
 		
 		structifyInstance(inst, roomStruct);
 		
@@ -42,8 +43,25 @@ function saveRoom() {
 			if(inst.persistent || 
 				inst.object_index == obj_player || 
 				!isInstance(inst) ||
-				object_is_ancestor(inst.object_index, obj_tilePar))
-				continue;
+				object_is_ancestor(inst.object_index, obj_tilePar) ||
+				object_is_ancestor(inst.object_index, obj_guiScreenPar) ||
+				inst.object_index == obj_damageHitbox)
+					continue;
+		} catch(err) {continue;}
+		
+		structifyInstance(inst, roomStruct);
+	}
+	
+	for(var i=0; i<array_length(obj_pause.pausedInstances); i++) {
+		var inst = obj_pause.pausedInstances[i];
+		try{
+			if(inst.persistent || 
+				inst.object_index == obj_player || 
+				!isInstance(inst) ||
+				object_is_ancestor(inst.object_index, obj_tilePar) ||
+				object_is_ancestor(inst.object_index, obj_guiScreenPar) ||
+				inst.object_index == obj_damageHitbox)
+					continue;
 		} catch(err) {continue;}
 		
 		structifyInstance(inst, roomStruct);
@@ -100,12 +118,12 @@ function loadRoom() {
 		loadGrid(gridAddrs[i], roomStruct, loadedStruct);
 	}
 	
-	for(var i=0; i<array_length(roomStruct.deactivatedInstances); i++) {
-		var instKey = roomStruct.deactivatedInstances[i];
-		var inst = loadInstanceStruct(instKey, roomStruct, loadedStruct);
-		instance_deactivate_object(inst);
-		array_push(obj_terrainGenerator.deactivatedInstances, inst);
-	}
+	//for(var i=0; i<array_length(roomStruct.deactivatedInstances); i++) {
+	//	var instKey = roomStruct.deactivatedInstances[i];
+	//	var inst = loadInstanceStruct(instKey, roomStruct, loadedStruct);
+	//	instance_deactivate_object(inst);
+	//	array_push(obj_terrainGenerator.deactivatedInstances, inst);
+	//}
 	
 	for(var i=0; i<array_length(roomStruct.instances); i++) {
 		var instKey = roomStruct.instances[i];
@@ -196,6 +214,11 @@ function saveGame() {
 	global.statData.xp = global.xp;
 
 	global.statData.dungeonRoomAddress = global.dungeonRoomAddress;
+	
+	if(buffer_exists(obj_pause.pauseSurfaceBuf)) {
+		var buf = obj_pause.pauseSurfaceBuf;
+		buffer_save(buf, "preview"+string(global.saveNum));
+	}
 	
 	
 	array_push(saveArray, global.statData);

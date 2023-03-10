@@ -22,7 +22,7 @@ screen = new GuiScreen(
 	buttonList,
 	[
 		new GuiText(RESOLUTION_W/2, RESOLUTION_H*0.2, "PAUSED", c_white, 3,3,0,fnt_hud),
-		new GuiText(RESOLUTION_W*0.2, RESOLUTION_H*0.2, "Save #: "+string(global.saveNum),c_yellow,1,1,0,fnt_hud)
+		new GuiText(RESOLUTION_W*0.2, RESOLUTION_H*0.2, "Save #: "+string(global.saveNum+1),c_yellow,1,1,0,fnt_hud)
 	],
 	-1,0
 )

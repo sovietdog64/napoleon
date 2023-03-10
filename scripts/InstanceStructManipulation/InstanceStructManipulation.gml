@@ -23,7 +23,7 @@ function structifyInstance(inst, roomStruct) {
 		return string(inst);
 	}
 	
-	var instArray = instance_exists(inst) ? roomStruct.instances : roomStruct.deactivatedInstances;
+	var instArray = roomStruct.instances;
 	
 	var instStruct = {
 		x : inst.x,
