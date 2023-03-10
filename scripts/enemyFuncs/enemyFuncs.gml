@@ -76,12 +76,15 @@ function damageEntity(targetId, dmgSourceId, dmg, time) {
 		
 		switch(object_index) {
 			case obj_goblin:
+				audio_play_sound(hurtGobl,0,0);
 				break;
 				
 			case obj_skeleGuard:
+				audio_play_sound(skeleHurt,0,0);
 				break;
 				
 			case obj_skeleGuardShooter:
+				audio_play_sound(skeleHurt,0,0);
 				break;
 				
 		}

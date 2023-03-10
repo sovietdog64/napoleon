@@ -8,7 +8,7 @@ maxHp = hp;
 maxAtkCooldown = room_speed*0.4;
 itemDrops = [new Berry(irandom_range(0, 3))]
 
-
+alarm_set(1, irandom_range(room_speed, room_speed*5));
 
 #region animations
 //Vars for limb positions
