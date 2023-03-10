@@ -246,6 +246,7 @@ if(inst != noone) {
 			var noCollide = variable_instance_exists(enem, "noCollideDmg") && enem.noCollideDmg;
 			if(!noCollide && enem != noone && enem.object_index != obj_spawner && enem.hp > 0) {
 				global.hp--;
+				audio_play_sound(hitHurt,0,0);
 				knockBack(enem.x, enem.y, 25);
 				//isHurt = true;
 				//lungeForward = false;

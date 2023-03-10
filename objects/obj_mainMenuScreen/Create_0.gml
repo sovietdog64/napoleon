@@ -46,8 +46,9 @@ buttonList = [
 			global.saveGame = true;
 			obj_saveLoad.skipRoomLoad = true;
 			global.loadedOverworld = false;
-			room_goto(terrainGenTest);
+			room_goto(rm_cutscene);
 		}
+		audio_stop_all();
 	})
 ]
 

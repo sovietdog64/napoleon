@@ -73,6 +73,19 @@ function damageEntity(targetId, dmgSourceId, dmg, time) {
 	with(targetId) {
 		path_end();
 		hp -= dmg;
+		
+		switch(object_index) {
+			case obj_goblin:
+				break;
+				
+			case obj_skeleGuard:
+				break;
+				
+			case obj_skeleGuardShooter:
+				break;
+				
+		}
+		
 		var dead = is_dead();
 		
 		if(dead) {

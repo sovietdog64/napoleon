@@ -51,6 +51,7 @@ else if (enemyHit){
 		dontHit = true;
 		obj_player.hurtCooldown = obj_player.maxHurtCooldown;
 		global.hp--;
+		audio_play_sound(hitHurt,0,0);
 		obj_player.knockBack(x, y, knockbackDur);
 	}
 }
