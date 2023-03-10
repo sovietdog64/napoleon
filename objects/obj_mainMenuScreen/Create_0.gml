@@ -50,6 +50,10 @@ buttonList = [
 			room_goto(terrainGenTest);
 		}
 		audio_stop_all();
+	}),
+	new GuiButton(spr_controls,0,0,RESOLUTION_H*0.8,function() {
+		instance_destroy();
+		instance_create_depth(0,0,0,obj_controls);
 	})
 ]
 
