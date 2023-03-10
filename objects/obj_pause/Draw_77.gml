@@ -1,3 +1,6 @@
+if(room == rm_init || room == rm_mainMenu)
+	return;
+
 gpu_set_blendenable(false);
 if(global.gamePaused) {
 	surface_set_target(application_surface);
