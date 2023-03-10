@@ -11,3 +11,5 @@ enemiesHit = array_create(0)//List of enemies that were hit (used to prevent dou
 scrnShakeLevel = 5;
 scrnShakeDur = room_speed*0.1;
 dontHit = false;
+
+playSwoop = true;

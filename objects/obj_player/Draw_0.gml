@@ -30,6 +30,7 @@ switch(animType) {
 	}break;
 }
 	
+	
 if(instanceof(global.heldItem) == "Bow") {
 	var x1 = x-sprite_width/2;
 	var y1 = y-sprite_height;

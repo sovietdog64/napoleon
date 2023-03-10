@@ -104,6 +104,8 @@ handleScreenInput = function() {
 						var invItemHovered = duplicateItem(invHover[slotHover]);
 						invHover[slotHover] = itemDrag;
 						itemDrag = invItemHovered;
+						var snd = choose(craftChop, craft1);
+						audio_play_sound(snd,0,0);
 						if(instance_exists(obj_craftingScreen)) {
 							with(obj_craftingScreen) {
 								craftRecipie.craftItem(craftingSlots);

@@ -75,10 +75,16 @@ if(variable_instance_exists(id, "resourceCollect")) {
 			var inst = ds_list_find_value(resources, i);
 			
 			inst.hp -= damage;
+			audio_play_sound(craftChop,0,0);
 			
 			screenShake(scrnShakeDur, scrnShakeLevel);
 			
 			array_push(enemiesHit, inst);
 		}
 	}
+}
+	
+if(playSwoop && sprite_index == spr_swipe) {
+	audio_play_sound(swordSwipeSnd,0,0)
+	playSwoop = false;
 }

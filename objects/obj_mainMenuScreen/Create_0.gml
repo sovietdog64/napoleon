@@ -54,7 +54,12 @@ buttonList = [
 	new GuiButton(spr_controls,0,0,RESOLUTION_H*0.8,function() {
 		instance_destroy();
 		instance_create_depth(0,0,0,obj_controls);
-	})
+	}),
+	new GuiButton(spr_deleteSave,0,RESOLUTION_W-200, RESOLUTION_H*0.7,function() {
+		var fileName = "saveData" + string(global.saveNum) + ".sav";
+		file_delete(fileName);
+		updatePreview();
+	}),
 ]
 
 textList = [
